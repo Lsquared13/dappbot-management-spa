@@ -13,3 +13,6 @@ npm run start
 npm run build
 aws sync build/ s3://[your-bucket] --profile [your-profile]
 ```
+
+## Related Documents
+- [**Scaling Analysis**](https://github.com/Eximchain/eximchain-notes/blob/master/dapperator/scaling.md)
