@@ -1,7 +1,6 @@
 import React, { useState, FC} from 'react';
 // @ts-ignore
 import { useResource } from 'react-request-hook';
-import logo from './logo.svg';
 import './App.css';
 import './variable.css';
 import './custom.css'

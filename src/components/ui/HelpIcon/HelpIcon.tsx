@@ -1,4 +1,4 @@
-import React, { FC, useState, useRef, Component, Fragment } from 'react';
+import React, { FC, useState, Fragment } from 'react';
 import Flyout from '../Flyout';
 import Icon from '../Icon';
 import Box from '../Box';
@@ -10,7 +10,7 @@ export interface HelpIconProps {
 }
 
 export const HelpIcon:FC<HelpIconProps> = (props) => {
-  
+
   const [icon, setIcon] = useState(null);
   const setIconFreeType = (newIcon:any)=>{setIcon(newIcon)}
   

@@ -1,5 +1,4 @@
-import React, { FunctionComponent, Fragment, useState } from 'react';
-import { FullResponse } from 'request-promise-native';
+import React, { FunctionComponent, Fragment } from 'react';
 import Button from './ui/Button';
 import Text from './ui/Text';
 

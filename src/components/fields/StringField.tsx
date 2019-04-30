@@ -2,7 +2,6 @@ import React, { FunctionComponent, ReactElement, useState, FocusEvent } from 're
 import { FieldProps, inputUpdater, inputValidator } from './shared'
 import TextField from '../ui/TextField';
 import HelpIcon from '../ui/HelpIcon';
-import { displayLabel } from './shared';
 
 interface Props extends FieldProps {
     value: string
@@ -12,11 +11,12 @@ interface Props extends FieldProps {
     errorMsg?: string,
     disabled?: boolean,
     help?: string
+    clean?: (value:string)=>string
 }
 
-const StringField: FunctionComponent<Props> = ({value, onChange, name, displayName, isValid, errorMsg, ...props}) => {
+const StringField: FunctionComponent<Props> = ({value, onChange, name, displayName, isValid, errorMsg, clean, ...props}) => {
 
-    const update = inputUpdater(onChange);
+    const update = inputUpdater(onChange, { clean : clean ? clean : (val)=>val });
     const [errMsg, setErr] = useState("");
 
     let validator = (e:FocusEvent<HTMLInputElement>)=>{ };
@@ -47,7 +47,7 @@ const StringField: FunctionComponent<Props> = ({value, onChange, name, displayNa
                                     value={value} 
                                     disabled={props.disabled}
                                     onChange={update} 
-                                    hasError={errMsg != ""}
+                                    hasError={errMsg !== ""}
                                     errorMessage={errMsg}
                                     onBlur={validator}
                                     />

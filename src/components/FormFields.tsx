@@ -44,6 +44,12 @@ export const FormFields:FunctionComponent<FormFieldProps> = (props)=>{
     return !!pattern.test(val);
   }
 
+  // Spaces to hyphens, eliminate non-alphanumerics
+  const cleanDappName = (val:string) => {
+    let spaceToHyphen = val.replace(/\s/g, '-');
+    return spaceToHyphen.replace(/[^A-Za-z0-9-]/g, '').toLowerCase();
+  }
+
   return (
     <section>
       <StringField 
@@ -58,6 +64,7 @@ export const FormFields:FunctionComponent<FormFieldProps> = (props)=>{
         displayName={'Dapp URL Subdomain'}
         name={'DappName'} 
         help={'This name will be lower-cased and have spaces replaced with dashes when used in the URL.  Only letters and numbers, please!'}
+        clean={cleanDappName}
         onChange={setDappName}/>
       <AddressField 
         value={ContractAddr} 

@@ -1,6 +1,6 @@
 import * as React from "react";
 import StyledBox from "./StyledBox";
-import { StringDictionary, FunctionDictionary, AnyDictionary } from '../shared';
+import { StringDictionary, FunctionDictionary } from '../shared';
 import {
   concat,
   fromClassName,

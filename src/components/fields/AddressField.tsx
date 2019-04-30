@@ -1,5 +1,5 @@
-import React, { useState, Fragment, FunctionComponent, FormEvent } from 'react';
-import { FieldProps, inputUpdater, displayLabel, inputValidator } from './shared';
+import React, { useState, FunctionComponent } from 'react';
+import { FieldProps, inputUpdater, inputValidator } from './shared';
 import TextField from '../ui/TextField';
 import HelpIcon from '../ui/HelpIcon';
 
@@ -12,7 +12,7 @@ interface Props extends FieldProps {
 const invalidAddrErr = "Please enter a valid hexademical address.  It should begin with 0x and be 42 characters long."
 
 const isValid = (newVal:string) => {
-    return /^0x[a-fA-F0-9]+$/.test(newVal) && newVal.length == 42;
+    return /^0x[a-fA-F0-9]+$/.test(newVal) && newVal.length === 42;
 }
 
 const clean = (newVal:string) => {
@@ -49,7 +49,7 @@ const AddressField: FunctionComponent<Props> = ({value, onChange, name, displayN
                                     value={value} 
                                     disabled={props.disabled}
                                     onChange={update} 
-                                    hasError={errorMsg != ""}
+                                    hasError={errorMsg !== ""}
                                     errorMessage={errorMsg}
                                     onBlur={validator} />
                             </div>

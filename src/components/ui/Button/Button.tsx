@@ -99,7 +99,7 @@ export const Button: React.SFC<ButtonProps> = props => {
   const classes = classnames(
     "btn",
     style,
-    style == "close" || style == "complete" ? "" : theme,
+    style === "close" || style === "complete" ? "" : theme,
     size,
     className,
     {

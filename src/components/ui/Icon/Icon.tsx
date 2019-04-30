@@ -234,7 +234,7 @@ const renderDuoToneIcon = (props: IconProps) => {
 };
 
 export const Icon: React.SFC<IconProps> = props => {
-  if (props.type == "duotone") {
+  if (props.type === "duotone") {
     return renderDuoToneIcon(props);
   } else {
     return renderSingleToneIcon(props);

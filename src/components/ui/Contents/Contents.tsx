@@ -456,7 +456,7 @@ export default class Contents extends React.Component<
     const { bgColor, children, width } = this.props;
 
     // Needed to prevent UI thrashing
-    const visibility = this.state.mainDir == undefined ? "hidden" : "visible";
+    const visibility = this.state.mainDir === undefined ? "hidden" : "visible";
     const background = `${bgColor}Bg`;
     const stroke = bgColor === "white" ? "#efefef" : undefined;
     const borderColor = bgColor === "white" ? "lightGray" : bgColor;

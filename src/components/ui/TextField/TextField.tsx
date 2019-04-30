@@ -4,7 +4,6 @@ import Flyout from "./../Flyout";
 import Box from "./../Box";
 import Text from "./../Text";
 import StyledTextField from "./StyledTextField";
-import Callout from "../Callout";
 
 export type eventData = {
   event: React.SyntheticEvent<HTMLInputElement>;

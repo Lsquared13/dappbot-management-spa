@@ -1,4 +1,4 @@
-import React, { ReactElement, FormEvent, FocusEvent, SyntheticEvent } from 'react';
+import React, { FocusEvent, SyntheticEvent } from 'react';
 
 export type ValidatorFunc = (newVal: string) => boolean;
 
