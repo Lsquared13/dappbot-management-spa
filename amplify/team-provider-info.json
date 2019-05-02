@@ -1,0 +1,14 @@
+{
+    "johnlocal": {
+        "awscloudformation": {
+            "AuthRoleName": "dapperatordeployspa-20190430131848-authRole",
+            "UnauthRoleArn": "arn:aws:iam::984931625683:role/dapperatordeployspa-20190430131848-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::984931625683:role/dapperatordeployspa-20190430131848-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "dapperatordeployspa-20190430131848-deployment",
+            "UnauthRoleName": "dapperatordeployspa-20190430131848-unauthRole",
+            "StackName": "dapperatordeployspa-20190430131848",
+            "StackId": "arn:aws:cloudformation:us-east-1:984931625683:stack/dapperatordeployspa-20190430131848/0471aef0-6b6c-11e9-9fae-1298ca2ea00e"
+        }
+    }
+}

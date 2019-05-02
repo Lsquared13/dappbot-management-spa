@@ -1,6 +1,6 @@
 import React, { FunctionComponent, ReactElement, useState, FocusEvent } from 'react';
 import { FieldProps, inputUpdater, inputValidator } from './shared'
-import TextField from '../ui/TextField';
+import TextField, { TextFieldTypes } from '../ui/TextField';
 import HelpIcon from '../ui/HelpIcon';
 
 interface Props extends FieldProps {
@@ -10,8 +10,10 @@ interface Props extends FieldProps {
     isValid?: (value:string)=>boolean,
     errorMsg?: string,
     disabled?: boolean,
-    help?: string
-    clean?: (value:string)=>string
+    help?: string,
+    clean?: (value:string)=>string,
+    fieldType?: TextFieldTypes
+    password?: boolean
 }
 
 const StringField: FunctionComponent<Props> = ({value, onChange, name, displayName, isValid, errorMsg, clean, ...props}) => {
@@ -28,7 +30,7 @@ const StringField: FunctionComponent<Props> = ({value, onChange, name, displayNa
         }
     }
 
-
+    let fieldType = props.fieldType || 'text';
     return (
         <div className="row form-group">
             <div className="col-sm-12 col-md-12">
@@ -41,7 +43,7 @@ const StringField: FunctionComponent<Props> = ({value, onChange, name, displayNa
                                     {props.help ? '  ' : ''}
                                     {props.help ? <HelpIcon helpTxt={props.help} /> : null}
                                 </div>
-                                <TextField type='text' 
+                                <TextField type={fieldType}
                                     id={name}
                                     name={name} 
                                     value={value} 

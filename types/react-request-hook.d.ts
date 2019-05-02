@@ -1,1 +1,1 @@
-export * from 'react-request-hook/dist/src'
+export * from 'react-request-hook/dist/src';

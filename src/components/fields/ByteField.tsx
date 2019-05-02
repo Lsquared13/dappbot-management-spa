@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactElement, Fragment } from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
 import { FieldProps, inputUpdater, displayLabel } from './shared'
 import TextField from '../ui/TextField';
 import HelpIcon from '../ui/HelpIcon';

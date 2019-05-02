@@ -1,4 +1,4 @@
-import React, { FC, useState, Fragment } from 'react';
+import React, { FC, useState } from 'react';
 import Flyout from '../Flyout';
 import Icon from '../Icon';
 import Box from '../Box';
@@ -36,10 +36,10 @@ export const HelpIcon:FC<HelpIconProps> = (props) => {
   )
 
   return (
-    <Fragment>
+    <>
       <Icon icon='help' innerRef={(iconRef)=>setIconFreeType(iconRef)} onMouseOver={open} />  
       {isOpen && flyoutHelp}
-    </Fragment>
+    </>
   )
 }
 

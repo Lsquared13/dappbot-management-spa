@@ -16,6 +16,17 @@ export interface TextFieldState {
   errorMessage?: string;
 }
 
+export enum TextFieldTypeEnum {
+  date = "date", 
+  email = "email",
+  number = "number",
+  password = "password",
+  text = "text",
+  url ="url"
+}
+
+export type TextFieldTypes = keyof typeof TextFieldTypeEnum;
+
 export interface TextFieldProps {
   /**
    * string, autoComplete
@@ -84,7 +95,7 @@ export interface TextFieldProps {
    * string, "date" | "email" | "number" | "password" | "text" | "url"
    * @default "text"
    **/
-  type?: "date" | "email" | "number" | "password" | "text" | "url";
+  type?: TextFieldTypes;
 }
 
 export default class TextField extends React.Component<
