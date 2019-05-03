@@ -16,7 +16,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({setErr, setChallenge
   const [newPass, setNewPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const sendNewPass = async () => {
     if (newPass !== confirmPass){
       setErr('The confirmation password does not match.');
@@ -39,7 +39,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({setErr, setChallenge
         displayName='New Password'
         fieldType='password'
         disabled={loading}
-        isValid={passwordChecker.validate}
+        isValid={()=> {return true}}
         help="Minimum of 8 characters; include upper and lowercase letters, numbers, and a symbol."
         onChange={setNewPass}
         name='newPassword' />
@@ -48,7 +48,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({setErr, setChallenge
         displayName='Confirm New Password'
         fieldType='password'
         disabled={loading}
-        isValid={passwordChecker.validate}
+        isValid={()=> {return true}}
         help="Must match field above."
         onChange={setConfirmPass}
         name='confirmPassword' />
