@@ -1,6 +1,6 @@
 import React, { useState, FC } from 'react';
 import { Router } from '@reach/router';
-import { StripeProvider } from 'react-stripe-elements';
+import { StripeProvider, Elements } from 'react-stripe-elements';
 import './App.css';
 import './variable.css';
 import './custom.css'
@@ -13,14 +13,16 @@ const App: FC = () => {
 
   return (
     <StripeProvider apiKey={process.env.REACT_APP_STRIPE_PUBLISHABLE_API_KEY as string}>
-      <Router>
-        <PageBase path='/'>
-          <Welcome default />
-          <Home path='home' user={user} />
-          <Login path='login' setUser={setUser} user={user} />
-          <PaymentPage path='signup' />
-        </PageBase>
-      </Router>
+      <Elements>
+        <Router>
+          <PageBase path='/'>
+            <Welcome default />
+            <Home path='home' user={user} />
+            <Login path='login' setUser={setUser} user={user} />
+            <PaymentPage path='signup' />
+          </PageBase>
+        </Router>
+      </Elements>
     </StripeProvider>
   );
 }

@@ -3,7 +3,7 @@ import { RouteComponentProps, Link } from '@reach/router';
 import { StringField, NumberField, Uints } from '../components/fields';
 import { Button, Box, Text } from '../components/ui';
 import { ErrorBox } from '../components';
-import {Elements, CardElement, injectStripe, ReactStripeElements } from 'react-stripe-elements';
+import { CardElement, injectStripe, ReactStripeElements } from 'react-stripe-elements';
 import request from 'request-promise-native';
 import validate from 'validator';
 
@@ -70,36 +70,34 @@ export const Payment:FC<PaymentProps> = (props) => {
     </section>
   ) : (
     <section>
-      <Elements>
-        <StringField name='name' 
-          value={name} 
-          disabled={loading}
-          displayName='Name'
-          onChange={setName}/>
-        <StringField name='email' 
-          value={email} 
-          isValid={validate.isEmail}
-          disabled={loading}
-          displayName='Email'
-          onChange={setEmail}/>
-        <NumberField name='numDapps' 
-          value={numDapps}
-          disabled={loading}
-          size={Uints.size32}
-          displayName='Number of Dapps'
-          onChange={setNumDapps} />
-        <StringField name='coupon' 
-          onChange={setCoupon}
-          displayName='Coupon'
-          help='If you were given a coupon code for discounted dapps, please enter it here.'
-          value={coupon} />
-        <CardElement />
-        <CheckoutBox numDapps={numDapps} />
-        <Button disabled={loading} onClick={createSubscription} block>
-          Submit
-        </Button>
-        <ErrorBox errMsg={err} />
-      </Elements>
+      <StringField name='name' 
+        value={name} 
+        disabled={loading}
+        displayName='Name'
+        onChange={setName}/>
+      <StringField name='email' 
+        value={email} 
+        isValid={validate.isEmail}
+        disabled={loading}
+        displayName='Email'
+        onChange={setEmail}/>
+      <NumberField name='numDapps' 
+        value={numDapps}
+        disabled={loading}
+        size={Uints.size32}
+        displayName='Number of Dapps'
+        onChange={setNumDapps} />
+      <StringField name='coupon' 
+        onChange={setCoupon}
+        displayName='Coupon'
+        help='If you were given a coupon code for discounted dapps, please enter it here.'
+        value={coupon} />
+      <CardElement />
+      <CheckoutBox numDapps={numDapps} />
+      <Button disabled={loading} onClick={createSubscription} block>
+        Submit
+      </Button>
+      <ErrorBox errMsg={err} />
     </section>
   )
 }

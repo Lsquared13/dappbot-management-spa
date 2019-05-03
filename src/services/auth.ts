@@ -1,8 +1,6 @@
 import Amplify, { Auth } from 'aws-amplify';
 import { CognitoUser } from '@aws-amplify/auth';
-const passwordValidator = require('password-validator')
-
-console.log('process.env: ',process.env);
+const passwordValidator = require('password-validator');
 
 Amplify.configure({
   Auth: {
@@ -87,6 +85,8 @@ passwordChecker
   .has().digits()
   .has().symbols()
   .has().not().spaces();
+
+console.log('passwordChecker: ',passwordChecker);
 
 export default {
   signIn,

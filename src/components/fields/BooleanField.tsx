@@ -1,5 +1,5 @@
 import React, { FunctionComponent, Fragment } from 'react';
-import { inputUpdater, FieldProps, displayLabel } from './shared'
+import { FieldProps } from './shared'
 import HelpIcon from '../ui/HelpIcon';
 
 interface Props extends FieldProps {

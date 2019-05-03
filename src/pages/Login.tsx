@@ -68,7 +68,8 @@ export const Login:FC<LoginProps> = (props) => {
         disabled={loading}
         help="Minimum of 8 characters; include upper and lowercase letters, numbers, and a symbol."
         onChange={setPassword}
-        isValid={passwordChecker.validate}
+        errorMsg="Your password must be at least 8 characters long.  Please include both upper and lowercase letters, a number, and a symbol."
+        isValid={(newVal)=>{return passwordChecker.validate(newVal)}}
         value={password}/>
       <Button disabled={loading} onClick={sendLogin}>Submit</Button>
     </>

@@ -8,7 +8,7 @@ export const Welcome:FC<RouteComponentProps> = (props) => {
     <Box alignSelf='center' style={{margin:'25%'}}>
       <h1>Welcome to Dappsmith</h1>
       <Button block onClick={()=>{navigate('/login')}}>Sign In</Button>
-      <Button block onClick={()=>{navigate('/payment')}}>Sign Up</Button>
+      <Button block onClick={()=>{navigate('/signup')}}>Sign Up</Button>
     </Box>
   )
 }

@@ -15,9 +15,9 @@ export interface UpdaterOptions {
     clean?: (newVal:string)=>string
 }
 
-export const inputUpdater = (onChange:Function, options:UpdaterOptions={}) => {
+export function inputUpdater (onChange:Function, options:UpdaterOptions={}) {
     const { withError, clean } = options;
-    return (e:SyntheticEvent<HTMLInputElement>)=>{
+    return function(e:SyntheticEvent<HTMLInputElement>){
         let val = e.currentTarget.value;
         if (withError) withError('');
         if (clean) val = clean(val);
@@ -25,8 +25,8 @@ export const inputUpdater = (onChange:Function, options:UpdaterOptions={}) => {
     };
 }
 
-export const inputValidator = (validator:ValidatorFunc, withError:Function, errorMsg:string="Invalid value.") => {
-    return (e:FocusEvent<HTMLInputElement>) => { 
+export function inputValidator (validator:ValidatorFunc, withError:Function, errorMsg:string="Invalid value.") {
+    return function(e:FocusEvent<HTMLInputElement>){ 
         if (!validator(e.target.value)){ 
             withError(errorMsg) 
         }

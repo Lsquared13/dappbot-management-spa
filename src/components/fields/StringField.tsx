@@ -3,6 +3,11 @@ import { FieldProps, inputUpdater, inputValidator } from './shared'
 import TextField, { TextFieldTypes } from '../ui/TextField';
 import HelpIcon from '../ui/HelpIcon';
 
+enum StringFieldTypes {
+    text = "text",
+    password = "password"
+}
+
 interface Props extends FieldProps {
     value: string
     onChange: (newVal:string)=>void
