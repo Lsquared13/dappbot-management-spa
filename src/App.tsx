@@ -7,10 +7,19 @@ import './custom.css'
 import PageBase from './components/PageBase';
 import { Home, Welcome, Login, PaymentPage } from './pages';
 
+
+// user: {
+//   signInUserSession: {
+//     idToken: {
+//       jwtToken: "eyJra...6iJnw"
+//     }
+//   }
+// }
 const App: FC = () => {
-
-  const [user, setUser] = useState({});
-
+  let user: any;
+  let setUser:any;
+  [user, setUser] = useState({});
+  console.log(user && user.signInUserSession && user.signInUserSession.idToken && JSON.stringify(user.signInUserSession.idToken.jwtToken))
   return (
     <StripeProvider apiKey={process.env.REACT_APP_STRIPE_PUBLISHABLE_API_KEY as string}>
       <Router>

@@ -7,6 +7,7 @@ import { ErrorBox, ForgotPassChallenge, NewPassChallenge, MfaChallenge } from '.
 import StringField from '../components/fields/StringField';
 import Auth, { passwordChecker } from '../services/auth';
 
+
 export interface LoginProps extends RouteComponentProps {
   setUser : (user:any)=>void
   user : any
@@ -22,11 +23,15 @@ export const Login:FC<LoginProps> = (props) => {
   const [loading, setLoading] = useState(false);
   const [challenge, setChallenge] = useState('');
 
+
+
+
   const sendLogin = async () => {
     setLoading(true);
     setErr('');
     try {
       const result:any = await Auth.signIn(email, password);
+      console.log(result);
       if (result.challenge) {
         setChallenge(result.challenge)
       }
@@ -68,7 +73,7 @@ export const Login:FC<LoginProps> = (props) => {
         disabled={loading}
         help="Minimum of 8 characters; include upper and lowercase letters, numbers, and a symbol."
         onChange={setPassword}
-        isValid={passwordChecker.validate}
+        isValid={()=>{return true}}
         value={password}/>
       <Button disabled={loading} onClick={sendLogin}>Submit</Button>
     </>
