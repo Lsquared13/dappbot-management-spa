@@ -12,6 +12,7 @@ interface PaymentProps extends RouteComponentProps, ReactStripeElements.Injected
 export const Payment:FC<PaymentProps> = (props) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [coupon, setCoupon] = useState('');
   const [numDapps, setNumDapps] = useState('0');
   
   const [loading, setLoading] = useState(false);
@@ -21,7 +22,7 @@ export const Payment:FC<PaymentProps> = (props) => {
       const token = await props.stripe.createToken({name});
       const lambdaRes = await request.post(process.env.REACT_APP_PAYMENT_ENDPOINT, {
         json: true,
-        body: { token, email, name }
+        body: { token, email, name, coupon }
       })
       console.log('Response from lambda fxn: ',lambdaRes);
     }
@@ -45,6 +46,11 @@ export const Payment:FC<PaymentProps> = (props) => {
           disabled={loading}
           size={Uints.size32}
           onChange={setNumDapps} />
+        <StringField name='coupon' 
+          onChange={setCoupon}
+          displayName='Coupon'
+          help='If you were given a coupon code for discounted dapps, please enter it here.'
+          value={coupon} />
         <CardElement />
         <Button disabled={loading} onClick={createSubscription} block>
           Submit
