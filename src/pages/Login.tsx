@@ -43,6 +43,9 @@ export const Login:FC<LoginProps> = (props) => {
   }
 
   // If we now have a Cognito user and no challenge
+  // TODO: This probably won't behave right, as CognitoUser
+  // can match with an empty object.  Need to determine a good
+  // property to check for.
   useEffect(()=>{
     if (challenge === '' && typeof user === typeof CognitoUser){
       props.navigate && props.navigate('/home');
@@ -57,8 +60,7 @@ export const Login:FC<LoginProps> = (props) => {
         displayName='Email'
         disabled={loading}
         isValid={isEmail}
-        help={"Maximum of 16 characters; only letters, numbers, and hyphens."}
-        name='username' />
+        name='email' />
       <StringField 
         fieldType='password' 
         name='password'

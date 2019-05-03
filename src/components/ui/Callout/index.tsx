@@ -1,6 +1,7 @@
 import * as  React from 'react';
 import classnames from 'classnames';
 import { findDOMNode } from 'react-dom';
+import './Callout.css';
 const CalloutStyles = {
     content: 'content',
     wrapper: 'wrapper',
@@ -9,7 +10,6 @@ const CalloutStyles = {
     return baseClass + (style ? "-" + style : "");
   }
   export type CalloutPlacementOptions = "left" | "middle" | "right";
-import './Callout.css';
 
 export interface Props {
   /**

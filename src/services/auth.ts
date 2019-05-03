@@ -2,9 +2,12 @@ import Amplify, { Auth } from 'aws-amplify';
 import { CognitoUser } from '@aws-amplify/auth';
 const passwordValidator = require('password-validator')
 
+console.log('process.env: ',process.env);
+
 Amplify.configure({
   Auth: {
     userPoolId: process.env.REACT_APP_USER_POOL_ID,
+    userPoolWebClientId: process.env.REACT_APP_USER_POOL_CLIENT_ID,
     region: process.env.REACT_APP_AWS_REGION
   }
 })
