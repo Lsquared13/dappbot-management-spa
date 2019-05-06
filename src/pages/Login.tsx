@@ -7,7 +7,6 @@ import { ErrorBox, ForgotPassChallenge, NewPassChallenge, MfaChallenge } from '.
 import StringField from '../components/fields/StringField';
 import Auth, { passwordChecker } from '../services/auth';
 
-import Footer from '../components/froala/Footer';
 import SecondaryNav from '../components/froala/SecondaryNav';
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
@@ -134,7 +133,6 @@ export const Login:FC<LoginProps> = (props) => {
       <SecondaryNav />
       { loginFields }  
       <ErrorBox errMsg={err}></ErrorBox>
-      <Footer />
     </>
   );
 }

@@ -5,7 +5,6 @@ import Button from '../components/ui/Button';
 import Navigation from '../components/froala/Navigation';
 import CallToAction from '../components/froala/CallToAction';
 import Content from '../components/froala/Content';
-import Footer from '../components/froala/Footer';
 
 export const Welcome:FC<RouteComponentProps> = (props) => {
   return (
@@ -13,7 +12,6 @@ export const Welcome:FC<RouteComponentProps> = (props) => {
       <Navigation />
       <CallToAction />
       <Content />
-      <Footer />
     </div>
   )
 }

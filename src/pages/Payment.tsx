@@ -7,7 +7,6 @@ import { CardElement, injectStripe, ReactStripeElements } from 'react-stripe-ele
 import request from 'request-promise-native';
 import validate from 'validator';
 
-import Footer from '../components/froala/Footer';
 import SecondaryNav from '../components/froala/SecondaryNav';
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
@@ -169,7 +168,6 @@ export const Payment:FC<PaymentProps> = (props) => {
       </section>
 
       <ErrorBox errMsg={err} />
-      <Footer />
     </div>
   )
 }

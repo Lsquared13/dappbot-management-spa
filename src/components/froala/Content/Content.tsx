@@ -125,10 +125,10 @@ const Content = () => (
             <p className="lead">Stay up-to-date with DappBot updates and more.</p>
           </div>
           <div className="col-12 col-lg-5 text-center">
-            <div className="input-group mt-4">
+            <div className="input-group mt-4" style={{flexDirection: "row"}}>
               <input type="text" className="form-control" placeholder="Enter your email address" />
               <div className="input-group-append">
-                <button className="btn btn-primary" type="button">Submit</button>
+                <button className="btn btn-primary" type="button" style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0,}}>Submit</button>
               </div>
             </div>
           </div>
