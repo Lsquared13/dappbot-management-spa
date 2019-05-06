@@ -4,16 +4,6 @@ import './../froala_blocks.min.css';
 import { navigate } from '@reach/router';
 
 const SignUp = () => (
-<div>
-  <header data-block-type="headers" data-id={1}>
-    <div className="container text-center">
-      <nav className="navbar">
-        <a className="ml-auto mr-auto" href="">
-          <img src="https://cdn.jsdelivr.net/gh/froala/design-blocks@2.0.1/dist/imgs//logo.png" height={30} alt="image" />
-        </a>
-      </nav>
-    </div>
-  </header>
   <section className="fdb-block fp-active" data-block-type="forms" data-id={2}>
     <div className="container">
       <div className="row justify-content-center">
@@ -50,7 +40,6 @@ const SignUp = () => (
       </div>
     </div>
   </section>
-</div>
 );
 
 export default SignUp;

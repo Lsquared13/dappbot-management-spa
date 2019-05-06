@@ -8,6 +8,9 @@ import StringField from '../components/fields/StringField';
 import Auth, { passwordChecker } from '../services/auth';
 
 import Footer from '../components/froala/Footer';
+import SecondaryNav from '../components/froala/SecondaryNav';
+import '../components/froala/bootstrap.min.css';
+import '../components/froala/froala_blocks.min.css';
 
 
 export interface LoginProps extends RouteComponentProps {
@@ -61,25 +64,56 @@ export const Login:FC<LoginProps> = (props) => {
   
   let loginFields = (
     <>
-      <StringField 
-        value={email} 
-        onChange={setEmail} 
-        displayName='Email'
-        disabled={loading}
-        isValid={isEmail}
-        name='email' />
-      <StringField 
-        fieldType='password' 
-        name='password'
-        displayName='Password'
-        disabled={loading}
-        help="Minimum of 8 characters; include upper and lowercase letters, numbers, and a symbol."
-        onChange={setPassword}
-        errorMsg="Your password must be at least 8 characters long.  Please include both upper and lowercase letters, a number, and a symbol."
-        isValid={(newVal)=>{return passwordChecker.validate(newVal)}}
-        value={password}/>
-      <Button disabled={loading} onClick={sendLogin}>Submit</Button>
-      <Footer />
+      <section className="fdb-block fp-active" data-block-type="forms">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-12 col-md-8 col-lg-7 col-md-5 text-center">
+              <div className="fdb-box fdb-touch">
+                <div className="row">
+                  <div className="col">
+                    <h2>Log In to Your Account</h2>
+                  </div>
+                </div>
+                <div className="row mt-4">
+                  <div className="col">
+                    {/* <input type="text" className="form-control" placeholder="Email" /> */}
+                    <StringField 
+                    value={email} 
+                    onChange={setEmail} 
+                    displayName='Email'
+                    disabled={loading}
+                    isValid={isEmail}
+                    name='email' />
+                  </div>
+                </div>
+                <div className="row mt-4">
+                  <div className="col">
+                    {/* <input type="password" className="form-control mb-1" placeholder="Password" /> */}
+                    <StringField 
+                    fieldType='password' 
+                    name='password'
+                    displayName='Password'
+                    disabled={loading}
+                    help="Minimum of 8 characters; include upper and lowercase letters, numbers, and a symbol."
+                    onChange={setPassword}
+                    errorMsg="Your password must be at least 8 characters long.  Please include both upper and lowercase letters, a number, and a symbol."
+                    isValid={(newVal)=>{return passwordChecker.validate(newVal)}}
+                    value={password}/>
+                    <p className="text-right">Don't have an account yet? <a href="/signup">Sign Up</a></p>
+                  </div>
+                </div>
+                <div className="row mt-4">
+                  <div className="col">
+                    <Button disabled={loading} onClick={sendLogin}>Submit</Button>
+                    {/* <button className="btn btn-primary" type="button">Submit</button> */}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+  
     </>
   )
   let challengeProps = {setChallenge, setErr}
@@ -96,8 +130,10 @@ export const Login:FC<LoginProps> = (props) => {
   }
   return (
     <>
+      <SecondaryNav />
       { loginFields }  
       <ErrorBox errMsg={err}></ErrorBox>
+      <Footer />
     </>
   );
 }
