@@ -2,14 +2,19 @@ import React, { FC } from 'react';
 import { Link, RouteComponentProps, navigate } from '@reach/router';
 import Box from '../components/ui/Box';
 import Button from '../components/ui/Button';
+import Navigation from '../components/froala/Navigation';
+import CallToAction from '../components/froala/CallToAction';
+import Content from '../components/froala/Content';
+import Footer from '../components/froala/Footer';
 
 export const Welcome:FC<RouteComponentProps> = (props) => {
   return (
-    <Box alignSelf='center' style={{margin:'25%'}}>
-      <h1>Welcome to Dappsmith</h1>
-      <Button block onClick={()=>{navigate('/login')}}>Sign In</Button>
-      <Button block onClick={()=>{navigate('/signup')}}>Sign Up</Button>
-    </Box>
+    <div>
+      <Navigation />
+      <CallToAction />
+      <Content />
+      <Footer />
+    </div>
   )
 }
 

@@ -7,6 +7,8 @@ import { ErrorBox, ForgotPassChallenge, NewPassChallenge, MfaChallenge } from '.
 import StringField from '../components/fields/StringField';
 import Auth, { passwordChecker } from '../services/auth';
 
+import Footer from '../components/froala/Footer';
+
 
 export interface LoginProps extends RouteComponentProps {
   setUser : (user:any)=>void
@@ -77,6 +79,7 @@ export const Login:FC<LoginProps> = (props) => {
         isValid={(newVal)=>{return passwordChecker.validate(newVal)}}
         value={password}/>
       <Button disabled={loading} onClick={sendLogin}>Submit</Button>
+      <Footer />
     </>
   )
   let challengeProps = {setChallenge, setErr}
