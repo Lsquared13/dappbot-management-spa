@@ -8,7 +8,7 @@ interface HeaderProps {
 export const Header:FunctionComponent<HeaderProps> = (props)=>{
   return (
     <header className='app-header'>
-      <h1>Dapperator</h1>
+      <h1 style={{textAlign:'center'}}>Dapperator</h1>
       <Divider />
     </header>
   )

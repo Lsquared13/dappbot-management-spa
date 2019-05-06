@@ -23,7 +23,7 @@ export const CheckoutBox:FC<{numDapps:string}> = ({numDapps}) => {
     <Box>
       <Text>
         You are purchasing <strong>{numDapps} dapps</strong> on our
-        <strong>Project Plan</strong>, at a cost of <strong>${priceTag} per month</strong>.
+         <strong>Project Plan</strong>, at a cost of <strong>${priceTag} per month</strong>.
       </Text>
     </Box>
   )

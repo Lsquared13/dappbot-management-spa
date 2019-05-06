@@ -4,7 +4,7 @@ import Box from './ui/Box';
 
 export const PageBase: FC<RouteComponentProps> = (props) => {
   return (
-    <div className='App body-right'>
+    <div className='App body-right' style={{marginTop:'5%'}}>
       <Box alignSelf='center' style={{ margin: '20%' }}>
         {props.children}
       </Box>
