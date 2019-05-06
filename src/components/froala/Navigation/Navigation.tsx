@@ -9,7 +9,7 @@ const Navigation = () => (
   <header data-block-type="headers" data-id={1}>
     <div className="container">
       <nav className="navbar navbar-expand-md">
-        <a className="navbar-brand" href="">
+        <a className="navbar-brand" href="/">
           <img src="DappBot.svg" alt="image" style={{height: 30}} />
         </a>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav3" aria-controls="navbarNav3" aria-expanded="false" aria-label="Toggle navigation">

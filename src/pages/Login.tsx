@@ -104,7 +104,9 @@ export const Login:FC<LoginProps> = (props) => {
                 </div>
                 <div className="row mt-4">
                   <div className="col">
-                    <Button disabled={loading} onClick={sendLogin}>Submit</Button>
+                    <div style={{textAlign: "left"}}>
+                      <Button disabled={loading} onClick={sendLogin}>Submit</Button>
+                    </div>
                     {/* <button className="btn btn-primary" type="button">Submit</button> */}
                   </div>
                 </div>
@@ -113,7 +115,6 @@ export const Login:FC<LoginProps> = (props) => {
           </div>
         </div>
       </section>
-  
     </>
   )
   let challengeProps = {setChallenge, setErr}
