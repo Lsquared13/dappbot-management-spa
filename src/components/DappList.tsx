@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 // @ts-ignore
 import { useResource } from 'react-request-hook';
 import {Table, TableColumn, Text, Button } from './ui';
-import { DappArgNames, DappDbItem } from '../types'; 
+import { DappArgNames, DappArgs } from '../types'; 
 
 interface DappListProps {
   user:any
@@ -21,17 +21,35 @@ export const DappList:FC<DappListProps> = (props) => {
     // will run on mount, then never again (unless called)
   }, [])
 
-  const dappList = [];
+  const dappList:DappArgs[] = [
+    {
+      DappName : 'Weyl',
+      Abi : 'test',
+      Web3URL : 'https://gamma-tx-executor-us-east.eximchain-dev.com',
+      GuardianURL : 'dummy',
+      ContractAddr : '0x00000000000000000000000002A'
+    },
+    {
+      DappName : 'CryptoKitty',
+      Abi : 'test',
+      Web3URL : 'https://my-api.infura.com',
+      GuardianURL : 'dummy',
+      ContractAddr : '0x02984750980928723084709822A'
+    }
+  ];
   let noDappMessage = '';
-  if (dappListResponse.data){
-    dappList.push(dappListResponse.data);
-  } else if (dappListResponse.isLoading) {
-    noDappMessage = "Checking for any dapps..."
-  } else if (dappListResponse.error) {
-    noDappMessage = dappListResponse.error.toString();
-  }
+  // Disabling parsing of actual call while I test GUI
+  // if (dappListResponse.data){
+  //   dappList.push(dappListResponse.data);
+  // } else if (dappListResponse.isLoading) {
+  //   noDappMessage = "Checking for any dapps..."
+  // } else if (dappListResponse.error) {
+  //   console.log(dappListResponse.error);
+  //   noDappMessage = dappListResponse.error.message;
+  // }
 
   if (noDappMessage !== ''){
+    console.log('Returning following noDappMsg: ',noDappMessage);
     return (<Text> { noDappMessage } </Text>);
   } else {
     if (dappList.length === 0){
@@ -42,6 +60,8 @@ export const DappList:FC<DappListProps> = (props) => {
       )
     }
 
+    console.log('Trying to return a Table');
+
     const renderHeader = (header:TableColumn) => {
       if (header.field === 'Actions') {
         return <Button onClick={resendListRequest}>Check Again</Button>
@@ -50,7 +70,7 @@ export const DappList:FC<DappListProps> = (props) => {
       }
     }
 
-    const renderCell = (record:DappDbItem, field:string) => {
+    const renderCell = (record:DappArgs, field:string) => {
       if (Object.values(DappArgNames).includes(field)){
         return record[field];
       } else if (field === 'Actions') {

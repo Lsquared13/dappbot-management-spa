@@ -86,8 +86,6 @@ passwordChecker
   .has().symbols()
   .has().not().spaces();
 
-console.log('passwordChecker: ',passwordChecker);
-
 export default {
   signIn,
   confirmMFA: confirmMFASignIn,
