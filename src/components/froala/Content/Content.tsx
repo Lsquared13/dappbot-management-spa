@@ -138,7 +138,7 @@ const Content = () => {
                       <div className="response" id="mce-error-response" style={{ display: 'none' }} />
                       <div className="response" id="mce-success-response" style={{ display: 'none' }} />
                     </div>    {/* real people should not fill this in and expect good things - do not remove this or risk form bot signups*/}
-                    <div style={{ position: 'absolute', left: '-5000px' }}><input type="text" name={process.env.REACT_APP_MAILCHIMP_NAME} tabIndex={-1} /></div>
+                    <div style={{ position: 'absolute', left: '-5000px' }}><input type="text" name={process.env.REACT_APP_MAILCHIMP_AUDIENCE_ID} tabIndex={-1} /></div>
                   </div>
                 </form>
               </div>
