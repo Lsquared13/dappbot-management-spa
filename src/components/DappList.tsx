@@ -40,10 +40,11 @@ export const DappList:FC<DappListProps> = (props) => {
         </Text>
       )
     }
+
     return (
-      <Table>
-  
-      </Table>
+      <Table records={dappList} />
     )
   }
 }
+
+export default DappList;

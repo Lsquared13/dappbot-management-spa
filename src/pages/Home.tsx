@@ -6,12 +6,13 @@ import { FormArgVals, FormArgNameStrs } from '../types';
 import { Button, Text } from '../components/ui';
 import Header from '../components/Header';
 import FormFields from '../components/FormFields';
+import DappList from '../components/DappList';
 
 interface HomeProps extends RouteComponentProps {
   user? : any
 }
 
-export const Home:FC<HomeProps> = (props) => {
+export const Home:FC<HomeProps> = ({user}) => {
 
   const [args, setArgs] = useState({
     DappName: '',
@@ -34,7 +35,7 @@ export const Home:FC<HomeProps> = (props) => {
       method : 'POST',
       data : args,
       // TODO: Figure out how to actually access AuthToken from user
-      headers : {"Authorization":props.user && props.user.AuthToken}
+      headers : {"Authorization":user && user.AuthToken}
     }
   })
   const [sent, markSent] = useState(false);
@@ -58,6 +59,7 @@ export const Home:FC<HomeProps> = (props) => {
   return (
     <>
       <Header />
+      <DappList user={user}/>
       <FormFields {...args} setVal={setArgVal} />
       <Button onClick={sendArgsToDappsmith} block>Submit</Button>
       <Text>{resultStr}</Text>
