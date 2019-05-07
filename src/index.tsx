@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-//@ts-ignore No types published
 import {RequestProvider} from 'react-request-hook';
 import axios from 'axios';
 import './index.css';

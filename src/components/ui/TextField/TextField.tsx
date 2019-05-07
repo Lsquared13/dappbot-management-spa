@@ -191,46 +191,33 @@ export default class TextField extends React.Component<
 
     return (
       <span>
-        <StyledTextField
-          aria-describedby={
-            errorMessage && this.state.focused
-              ? `${id}-gestalt-error`
-              : undefined
-          }
-          aria-invalid={errorMessage || hasError ? "true" : "false"}
-          autoComplete={autoComplete}
-          className={classes}
-          disabled={disabled}
-          id={id}
-          name={name}
-          onBlur={this.handleBlur}
-          onChange={this.handleChange}
-          onFocus={this.handleFocus}
-          onKeyDown={this.handleKeyDown}
-          pattern={pattern}
-          placeholder={placeholder}
-          innerRef={this.textfieldRef}
-          type={type}
-          value={value}
-        />
-        {errorMessage && this.state.errorIsOpen && (
-     
-          <Flyout
-            anchor={this.textfield}
-            color="orange"
-            idealDirection={idealErrorDirection}
-            onDismiss={() => this.setState({ errorIsOpen: false })}
-            shouldFocus={false}
-            size="sm"
-            positionRelativeToAnchor
-          >
-            <Box padding={3}>
-              <Text bold color="white">
-                <span id={`${id}-gestalt-error`}>{errorMessage}</span>
-              </Text>
-            </Box>
-          </Flyout>
-        )}
+        <Flyout label={errorMessage || ''} 
+          isVisible={!!(errorMessage && this.state.errorIsOpen)}
+          color="orange"
+          ariaLabel={errorMessage || ''} >
+          <StyledTextField
+            aria-describedby={
+              errorMessage && this.state.focused
+                ? `${id}-gestalt-error`
+                : undefined
+            }
+            aria-invalid={errorMessage || hasError ? "true" : "false"}
+            autoComplete={autoComplete}
+            className={classes}
+            disabled={disabled}
+            id={id}
+            name={name}
+            onBlur={this.handleBlur}
+            onChange={this.handleChange}
+            onFocus={this.handleFocus}
+            onKeyDown={this.handleKeyDown}
+            pattern={pattern}
+            placeholder={placeholder}
+            innerRef={this.textfieldRef}
+            type={type}
+            value={value}
+          />
+        </Flyout>
       </span>
     );
   }

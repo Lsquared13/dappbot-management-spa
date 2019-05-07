@@ -41,7 +41,6 @@ export interface ModalProps {
    **/
   role?: "alertdialog" | "dialog" | "popup";
   /**
-   * string, Ref for the element that the Flyout will attach to
    * options includes :  "sm" | "md" | "lg"
    * @default "sm"
    **/

@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-// @ts-ignore
 import { useResource } from 'react-request-hook';
 import {Table, TableColumn, Text, Button } from './ui';
 import { DappArgNames, DappArgs } from '../types'; 

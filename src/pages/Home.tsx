@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { RouteComponentProps } from '@reach/router';
-// @ts-ignore
 import { useResource } from 'react-request-hook';
 import { DappArgs, DappArgNameStrs } from '../types';
 import { Header, DappForm, DappList } from '../components';
