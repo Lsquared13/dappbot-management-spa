@@ -124,9 +124,7 @@ const Content = () => (
             <h2>The DappBot Newsletter</h2>
             <p className="lead">Stay up-to-date with DappBot updates and more.</p>
           </div>
-
           <div className="col-12 col-lg-5 text-center" id="mc_embed_signup">
-
             <form action="https://eximchain.us20.list-manage.com/subscribe/post?u=bcabb5ebaaec9e5f833f9d760&id=0bdb65877c" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" className="validate" target="_blank" noValidate>
               <div id="mc_embed_signup_scroll input-group mt-4" style={{display: "flex", flexDirection: "row",}}>
                 <input type="email" name="EMAIL" placeholder="Enter your email address" className="required email form-control" id="mce-EMAIL" style={{borderTopRightRadius: 0, borderBottomRightRadius: 0,}} />
@@ -140,20 +138,7 @@ const Content = () => (
                 <div style={{position: 'absolute', left: '-5000px'}}><input type="text" name="b_bcabb5ebaaec9e5f833f9d760_0bdb65877c" tabIndex={-1} /></div>
               </div>
             </form>
-
           </div>
-
-
-{/* 
-          <div className="col-12 col-lg-5 text-center">
-            <div className="input-group mt-4" style={{flexDirection: "row"}}>
-              <input type="text" className="form-control" placeholder="Enter your email address" />
-              <div className="input-group-append">
-                <button className="btn btn-primary" type="button" style={{borderTopLeftRadius: 0, borderBottomLeftRadius: 0,}}>Submit</button>
-              </div>
-            </div>
-          </div> */}
-
         </div>
       </div>
     </div>
