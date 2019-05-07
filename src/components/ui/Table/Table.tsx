@@ -2,14 +2,14 @@ import * as React from 'react';
 import './Table.scss';
 import classnames from 'classnames';
 
-export interface IColumns {
-  title: React.ReactNode
+export interface TableColumn {
+  title?: React.ReactNode
   field: string,
   displayName?: string
 }
 
 type CellRenderer = (record:any,field:string)=>React.ReactNode;
-type HeaderRenderer = (field:string)=>React.ReactNode;
+type HeaderRenderer = (column:TableColumn)=>React.ReactNode;
 
 export interface TableProps {
   /**
@@ -25,7 +25,7 @@ export interface TableProps {
    *
    *
    **/
-  columns?: IColumns[];
+  columns?: TableColumn[];
 
   /**
    * array, data
@@ -70,14 +70,14 @@ export const Table: React.SFC<TableProps> = (props) => {
   const { customClass, className, columns, records, children, renderCell, renderHeader } = props;
   const classes = classnames(customClass, className);
 
-  const generateTableMarkup = (columns: IColumns[], records: any) => {
+  const generateTableMarkup = (columns: TableColumn[], records: any) => {
     let header =
       <thead>
         <tr>
           {columns.map((column) => {
             let headerContents = renderHeader ?
-              renderHeader(column.field) :
-              column.title;
+              renderHeader(column) :
+              column.title || column.field;
             return <td>{headerContents}</td>
           })
           }

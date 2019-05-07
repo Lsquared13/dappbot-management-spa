@@ -1,7 +1,8 @@
 import React, { FC, useState } from 'react';
 // @ts-ignore
 import { useResource } from 'react-request-hook';
-import {Table, Text } from './ui';
+import {Table, TableColumn, Text, Button } from './ui';
+import { DappArgNames, DappDbItem } from '../types'; 
 
 interface DappListProps {
   user:any
@@ -41,8 +42,38 @@ export const DappList:FC<DappListProps> = (props) => {
       )
     }
 
+    const renderHeader = (header:TableColumn) => {
+      if (header.field === 'Actions') {
+        return <Button onClick={resendListRequest}>Check Again</Button>
+      } else {
+        return <strong>{header.displayName}</strong>
+      }
+    }
+
+    const renderCell = (record:DappDbItem, field:string) => {
+      if (Object.values(DappArgNames).includes(field)){
+        return record[field];
+      } else if (field === 'Actions') {
+        return (
+          <Button>Delete</Button>
+        )
+      } else {
+        throw new Error(`DappList was asked to render an unexpected field: ${field}`)
+      }
+    }
+
+    const columns = [
+      {field:'DappName', displayName:'Name'},
+      {field:'ContractAddr', displayName:'Deployed Address'},
+      {field:'Web3URL',displayName:'Web3 URL'},
+      {field:'Actions', displayName: ' '}
+    ]
+
     return (
-      <Table records={dappList} />
+      <Table records={dappList} 
+        renderCell={renderCell}
+        renderHeader={renderHeader}
+        columns={columns} />
     )
   }
 }
