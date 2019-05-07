@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { Link, RouteComponentProps, navigate } from '@reach/router';
-import SecondaryNav from '../components/froala/SecondaryNav';
+import Navigation from '../components/froala/Navigation';
 
 
 export const Privacy:FC<RouteComponentProps> = (props) => {
   return (
     <div>
-      <SecondaryNav />
+      <Navigation hideLogin={true} />
 
       <div className="container mt-4" id="wbars_all">
         <div className="iub_container iub_base_container">

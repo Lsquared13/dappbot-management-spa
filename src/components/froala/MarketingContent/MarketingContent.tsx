@@ -4,7 +4,7 @@ import './../froala_blocks.min.css';
 import { navigate } from '@reach/router';
 
 
-const Content = () => {
+const MarketingContent = () => {
   return (
     <div>
       <section className="fdb-block" data-block-type="features" data-id={3}>
@@ -149,4 +149,4 @@ const Content = () => {
   )
 }
 
-export default Content;
+export default MarketingContent;

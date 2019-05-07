@@ -4,7 +4,7 @@ import './../froala_blocks.min.css';
 import { navigate } from '@reach/router';
 
 interface NavProps {
-  hideLogin: boolean
+  hideLogin?: boolean
 }
 
 export const Navigation:FC<NavProps> = ({hideLogin}) => {
