@@ -5,7 +5,6 @@ import { navigate } from '@reach/router';
 
 
 const Content = () => {
-  console.log(process.env);
   return (
     <div>
       <section className="fdb-block" data-block-type="features" data-id={3}>
