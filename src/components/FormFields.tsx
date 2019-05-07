@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from 'react';
 import validate from 'validator';
-import { FormArgVals, FormArgNameStrs } from '../types';
+import { DappArgs, DappArgNameStrs } from '../types';
 import StringField from './fields/StringField';
 import AddressField from './fields/AddressField';
 
-interface FormFieldProps extends FormArgVals {
-  setVal: (name:FormArgNameStrs,val:string)=>void
+interface FormFieldProps extends DappArgs {
+  setVal: (name:DappArgNameStrs,val:string)=>void
 }
 
 export const FormFields:FunctionComponent<FormFieldProps> = (props)=>{
@@ -13,7 +13,7 @@ export const FormFields:FunctionComponent<FormFieldProps> = (props)=>{
     DappName, Abi, Web3URL, GuardianURL, ContractAddr, setVal
   } = props;
 
-  const setValFactory = (...fieldNames:FormArgNameStrs[]) => {
+  const setValFactory = (...fieldNames:DappArgNameStrs[]) => {
     return fieldNames.map(fieldName => (newVal:string)=>{setVal(fieldName, newVal)})
   };
 

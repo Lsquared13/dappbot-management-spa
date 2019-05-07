@@ -2,11 +2,8 @@ import React, { FC, useState } from 'react';
 import { RouteComponentProps } from '@reach/router';
 // @ts-ignore
 import { useResource } from 'react-request-hook';
-import { FormArgVals, FormArgNameStrs } from '../types';
-import { Button, Text } from '../components/ui';
-import Header from '../components/Header';
-import FormFields from '../components/FormFields';
-import DappList from '../components/DappList';
+import { DappArgs, DappArgNameStrs } from '../types';
+import { Header, DappForm, DappList } from '../components';
 
 interface HomeProps extends RouteComponentProps {
   user? : any
@@ -16,20 +13,19 @@ export const Home:FC<HomeProps> = ({user}) => {
 
   const [args, setArgs] = useState({
     DappName: '',
-    Owner: '',
     Abi: '',
     Web3URL: '',
     GuardianURL: '',
     ContractAddr: ''
   })
 
-  const setArgVal = (name:FormArgNameStrs,val:string) => {
-    const newArgs:FormArgVals = Object.assign({}, args);
+  const setArgVal = (name:DappArgNameStrs,val:string) => {
+    const newArgs:DappArgs = Object.assign({}, args);
     newArgs[name] = val;
     setArgs(newArgs)
   }
 
-  const [createResponse, sendCreateRequest] = useResource((args:FormArgVals) => {
+  const [createResponse, sendCreateRequest] = useResource((args:DappArgs) => {
     return {
       url : `${process.env.REACT_APP_DAPPSMITH_ENDPOINT}/test/create`,
       method : 'POST',
@@ -38,31 +34,18 @@ export const Home:FC<HomeProps> = ({user}) => {
       headers : {"Authorization":user && user.AuthToken}
     }
   })
-  const [sent, markSent] = useState(false);
-  const sendArgsToDappsmith = ()=>{
-    sendCreateRequest(args)
-    markSent(true)
-  }; 
+  
 
-  let resultStr = '';
-  if (sent && createResponse.isLoading){
-    resultStr = 'One moment...';
-  } else if (sent && !createResponse.isLoading){
-    if (createResponse.error){
-      resultStr = createResponse.error.message.toString();
-    }
-    if (createResponse.data){
-      resultStr = createResponse.data.toString();
-    }
-  }
+  
   
   return (
     <>
       <Header />
       <DappList user={user}/>
-      <FormFields {...args} setVal={setArgVal} />
-      <Button onClick={sendArgsToDappsmith} block>Submit</Button>
-      <Text>{resultStr}</Text>
+      <DappForm args={args} 
+        setArgVal={setArgVal}
+        response={createResponse} 
+        sendRequest={sendCreateRequest} />
     </>
   )
 }

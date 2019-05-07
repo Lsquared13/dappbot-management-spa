@@ -1,19 +1,23 @@
-export enum FormArgNames {
+export enum DappArgNames {
   DappName = 'DappName',
-  Owner = 'Owner',
   Abi = 'Abi',
   Web3URL = 'Web3URL',
   GuardianURL = 'GuardianURL',
   ContractAddr = 'ContractAddr'
 }
 
-export type FormArgNameStrs = keyof typeof FormArgNames;
+export type DappArgNameStrs = keyof typeof DappArgNames;
 
-export interface FormArgVals {
+export interface DappArgs {
   DappName: string
-  Owner: string
   Abi: string
   Web3URL: string
   GuardianURL: string
   ContractAddr: string
+}
+
+export interface DappDbItem extends DappArgs {
+  OwnerEmail : string,
+  CreationTime : string,
+  DnsName : string
 }
