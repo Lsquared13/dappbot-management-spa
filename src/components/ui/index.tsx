@@ -11,5 +11,6 @@ export * from './HelpIcon';
 export * from './Icon';
 export * from './Label';
 export * from './Modal';
+export * from './Table';
 export * from './Text';
 export * from './TextField';

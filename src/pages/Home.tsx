@@ -28,28 +28,30 @@ export const Home:FC<HomeProps> = (props) => {
     setArgs(newArgs)
   }
 
-  const [response, sendRequest] = useResource((args:FormArgVals) => {
+  const [createResponse, sendCreateRequest] = useResource((args:FormArgVals) => {
     return {
       url : `${process.env.REACT_APP_DAPPSMITH_ENDPOINT}/test/create`,
       method : 'POST',
-      data : args
+      data : args,
+      // TODO: Figure out how to actually access AuthToken from user
+      headers : {"Authorization":props.user && props.user.AuthToken}
     }
   })
   const [sent, markSent] = useState(false);
   const sendArgsToDappsmith = ()=>{
-    sendRequest(args)
+    sendCreateRequest(args)
     markSent(true)
   }; 
 
   let resultStr = '';
-  if (sent && response.isLoading){
+  if (sent && createResponse.isLoading){
     resultStr = 'One moment...';
-  } else if (sent && !response.isLoading){
-    if (response.error){
-      resultStr = response.error.message.toString();
+  } else if (sent && !createResponse.isLoading){
+    if (createResponse.error){
+      resultStr = createResponse.error.message.toString();
     }
-    if (response.data){
-      resultStr = response.data.toString();
+    if (createResponse.data){
+      resultStr = createResponse.data.toString();
     }
   }
   

@@ -11,7 +11,7 @@ const CalloutStyles = {
   }
   export type CalloutPlacementOptions = "left" | "middle" | "right";
 
-export interface Props {
+export interface CalloutProps {
   /**
    * string, placement of callout
    * options include:  "left" | "middle" | "right"
@@ -41,7 +41,7 @@ export interface State {
   visible: boolean
 }
 
-export class Callout extends React.Component<Props, State> {
+export class Callout extends React.Component<CalloutProps, State> {
 
   static defaultProps = {
     customClass: 'callout',
