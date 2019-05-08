@@ -7,7 +7,7 @@ import { ErrorBox, ForgotPassChallenge, NewPassChallenge, MfaChallenge } from '.
 import StringField from '../components/fields/StringField';
 import Auth, { passwordChecker } from '../services/auth';
 
-import SecondaryNav from '../components/froala/SecondaryNav';
+import Navigation from '../components/froala/Navigation';
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
 
@@ -130,7 +130,7 @@ export const Login:FC<LoginProps> = (props) => {
   }
   return (
     <>
-      <SecondaryNav />
+      <Navigation hideLogin={true} />
       { loginFields }  
       <ErrorBox errMsg={err}></ErrorBox>
     </>

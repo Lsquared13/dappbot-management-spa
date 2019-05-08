@@ -15,7 +15,7 @@ const Footer = () => (
             </li>
             <li className="w-100 d-block d-sm-none" />
             <li className="nav-item">
-              <a className="nav-link" href="">Privacy Policy</a>
+              <a className="nav-link" href="/privacy">Privacy Policy</a>
             </li>
           </ul>
         </div>

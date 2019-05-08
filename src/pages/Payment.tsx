@@ -7,7 +7,7 @@ import { CardElement, injectStripe, ReactStripeElements } from 'react-stripe-ele
 import request from 'request-promise-native';
 import validate from 'validator';
 
-import SecondaryNav from '../components/froala/SecondaryNav';
+import Navigation from '../components/froala/Navigation';
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
 
@@ -73,7 +73,7 @@ export const Payment:FC<PaymentProps> = (props) => {
     </div>
   ) : (
     <div>
-      <SecondaryNav />
+      <Navigation hideLogin={true} />
 
       <section className="fdb-block fp-active" data-block-type="forms">
         <div className="container">
