@@ -27,8 +27,10 @@ export function inputUpdater (onChange:Function, options:UpdaterOptions={}) {
 
 export function inputValidator (validator:ValidatorFunc, withError:Function, errorMsg:string="Invalid value.") {
     return function(e:FocusEvent<HTMLInputElement>){ 
-        if (!validator(e.target.value)){ 
+        if (e.target.value !== '' && !validator(e.target.value)){ 
             withError(errorMsg) 
+        } else {
+            withError('')
         }
     }
 }

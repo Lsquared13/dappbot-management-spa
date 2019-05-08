@@ -69,7 +69,7 @@ export const NumberField: FunctionComponent<Props> = ({value, onChange, name, di
                                     value={value} 
                                     disabled={props.disabled}
                                     onChange={updater} 
-                                    hasError={errMsg != ""}
+                                    showError={errMsg != ""}
                                     errorMessage={errMsg}
                                     onBlur={validator} />
                             </div>

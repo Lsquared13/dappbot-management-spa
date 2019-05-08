@@ -49,7 +49,7 @@ const AddressField: FunctionComponent<Props> = ({value, onChange, name, displayN
                                     value={value} 
                                     disabled={props.disabled}
                                     onChange={update} 
-                                    hasError={errorMsg !== ""}
+                                    showError={errorMsg !== ""}
                                     errorMessage={errorMsg}
                                     onBlur={validator} />
                             </div>

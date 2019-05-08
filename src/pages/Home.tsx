@@ -3,6 +3,7 @@ import { RouteComponentProps } from '@reach/router';
 import { useResource } from 'react-request-hook';
 import { DappArgs, DappArgNameStrs } from '../types';
 import { Header, DappForm, DappList } from '../components';
+import { Box } from '../components/ui';
 
 interface HomeProps extends RouteComponentProps {
   user? : any
@@ -38,14 +39,14 @@ export const Home:FC<HomeProps> = ({user}) => {
   
   
   return (
-    <>
+    <div style={{paddingLeft:'10%',paddingRight:'10%',paddingTop:'4%'}}>
       <Header />
       <DappList user={user}/>
       <DappForm args={args} 
         setArgVal={setArgVal}
         response={createResponse} 
         sendRequest={sendCreateRequest} />
-    </>
+    </div>
   )
 }
 

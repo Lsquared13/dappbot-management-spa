@@ -3,18 +3,12 @@ import classnames from "classnames";
 import Flyout from "./../Flyout";
 import Box from "./../Box";
 import Text from "./../Text";
-import StyledTextField from "./StyledTextField";
+import StyledTextField, { StyledErrorMessage } from "./StyledTextField";
 
 export type eventData = {
   event: React.SyntheticEvent<HTMLInputElement>;
   value?: string;
 };
-
-export interface TextFieldState {
-  focused: boolean;
-  errorIsOpen: boolean;
-  errorMessage?: string;
-}
 
 export enum TextFieldTypeEnum {
   date = "date", 
@@ -43,7 +37,7 @@ export interface TextFieldProps {
   /**
    * boolean, disabled
    **/
-  hasError?: boolean;
+  showError?: boolean;
   /**
    * string, id
    **/
@@ -99,34 +93,18 @@ export interface TextFieldProps {
 }
 
 export default class TextField extends React.Component<
-  TextFieldProps,
-  TextFieldState
+  TextFieldProps
 > {
   static defaultProps = {
     disabled: false,
-    hasError: false,
+    showError: false,
     idealErrorDirection: "right",
     type: "text"
   };
 
   state = {
-    focused: false,
-    errorIsOpen: false
+    focused: false
   };
-
-  static getDerivedStateFromProps(
-    props: TextFieldProps,
-    state: TextFieldState
-  ) {
-    if (props.errorMessage !== state.errorMessage) {
-      return {
-        errorIsOpen: !!props.errorMessage,
-        errorMessage: props.errorMessage
-      };
-    }
-
-    return null;
-  }
 
   handleChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
     this.props.onChange(event);
@@ -170,7 +148,7 @@ export default class TextField extends React.Component<
       autoComplete,
       disabled,
       errorMessage,
-      hasError,
+      showError,
       id,
       idealErrorDirection,
       name,
@@ -182,26 +160,22 @@ export default class TextField extends React.Component<
     const classes = classnames(
       "textField",
       disabled ? "disabled" : "enabled",
-      hasError || errorMessage ? "errored" : "normal"
+      showError || errorMessage ? "errored" : "normal"
     );
 
     // type='number' doesn't work on ios safari without a pattern
     // https://stackoverflow.com/questions/14447668/input-type-number-is-not-showing-a-number-keypad-on-ios
     const pattern = type === "number" ? "\\d*" : undefined;
-
+    
     return (
       <span>
-        <Flyout label={errorMessage || ''} 
-          isVisible={!!(errorMessage && this.state.errorIsOpen)}
-          color="orange"
-          ariaLabel={errorMessage || ''} >
-          <StyledTextField
+        <StyledTextField
             aria-describedby={
               errorMessage && this.state.focused
                 ? `${id}-gestalt-error`
                 : undefined
             }
-            aria-invalid={errorMessage || hasError ? "true" : "false"}
+            aria-invalid={errorMessage || showError ? "true" : "false"}
             autoComplete={autoComplete}
             className={classes}
             disabled={disabled}
@@ -217,7 +191,9 @@ export default class TextField extends React.Component<
             type={type}
             value={value}
           />
-        </Flyout>
+        <StyledErrorMessage className={classnames('textField','errorMsg', showError ? '' : 'hide')}>
+          { showError && errorMessage ? errorMessage : ''}
+        </StyledErrorMessage>
       </span>
     );
   }

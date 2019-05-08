@@ -42,4 +42,16 @@ export const StyledTextField = styled.input`
     background-color: var(--lightGray);
   }
 `;
+
+export const StyledErrorMessage = styled.span`
+  &.textField &.errorMsg {
+    color: red;
+    font-weight: 200 !important;
+    font-size: 0.5rem !important;
+  }
+
+  &.hide {
+    display: hidden;
+  }
+`
 export default StyledTextField;

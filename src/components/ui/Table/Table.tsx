@@ -72,29 +72,29 @@ export const Table: React.SFC<TableProps> = (props) => {
 
   const generateTableMarkup = (columns: TableColumn[], records: any) => {
     let header =
-      <thead>
+      <thead key='head'>
         <tr>
           {columns.map((column) => {
             let headerContents = renderHeader ?
               renderHeader(column) :
               column.title || column.field;
-            return <td>{headerContents}</td>
+            return <td key={`${column.field}`}>{headerContents}</td>
           })
           }
         </tr>
       </thead>
     let body =
-      <tbody>
+      <tbody key='body'>
         {
-          records.map((item: any) => {
+          records.map((item: any, index:number) => {
             return (
-              <tr>
+              <tr key={index}>
                 {
                   columns.map((column) => {
                     let cellContents = renderCell ? 
                       renderCell(item, column.field) : 
                       item[column.field]
-                    return <td>{cellContents}</td>
+                    return <td key={column.field}>{cellContents}</td>
                   })
                 }
               </tr>

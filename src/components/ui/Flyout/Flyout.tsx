@@ -1,24 +1,10 @@
-import React, { FC, SFC, cloneElement, ReactNode, ReactElement, useRef, MutableRefObject } from "react";
+import React, { FC, useState, ReactNode, useRef, useLayoutEffect } from "react";
 import { createPortal } from 'react-dom';
-import Controller from "./../Controller";
-// @ts-ignore
-import Tooltip, { useTooltip, TooltipPopup } from "@reach/tooltip"
-
-const centered = (triggerRect:any, tooltipRect:any) => {
-  const triggerCenter = triggerRect.left + triggerRect.width / 2;
-  const left = triggerCenter - tooltipRect.width / 2;
-  const maxLeft = window.innerWidth - tooltipRect.width - 2;
-  return {
-    left: Math.min(Math.max(2, left), maxLeft) + window.scrollX,
-    top: triggerRect.bottom + 8 + window.scrollY
-  }
-}
+import "@reach/tooltip/styles.css"
+// @ts-ignore Don't worry about missing export
+import { useTooltip, TooltipPopup } from "@reach/tooltip";
 
 export interface FlyoutProps {
-  /**
-   * HTMLElement, Ref for the element that the Flyout will attach to
-   **/
-  anchor?: HTMLElement;
   /**
    * React.ReactNode, React node as childeren
    **/
@@ -54,85 +40,51 @@ export interface FlyoutProps {
   size?: "xs" | "sm" | "md" | "lg" | "xl" | number;
 
   label: string,
-  ariaLabel: string,
-  isVisible?: boolean
+  ariaLabel: string
 }
 
-export const Flyout: FC<FlyoutProps> = ({ children, label, ariaLabel, ...props }) => {
-  const triggerRef:MutableRefObject<Element> = useRef(new Element());
-  const [trigger, tooltip] = useTooltip();
-  const { isVisible, triggerRect } = tooltip;
-  let portal = null;
-  const newElt = (
-    <>
-      { cloneElement(children as ReactElement, {trigger, ref:triggerRef}) }
-      {isVisible && portal}
-      <TooltipPopup {...tooltip}
-        style={{
-          background: 'black',
-          color: 'white',
-          border: 'none',
-          borderRadius: '3px',
-          padding: '0.5em 1em'
-        }} 
-        isVisible={props.isVisible ? props.isVisible : null}
-        label={label} 
-        position={centered}
-        ariaLabel={ariaLabel} />
-    </>
-  )
-  portal = createPortal(
-    <div style={{
-      position: 'absolute',
-      left : triggerRect && triggerRect.left - 10 + triggerRect.width / 2,
-      top : triggerRect && triggerRect.bottom + window.scrollY,
-      width : 0,
-      height : 0,
-      borderLeft: '10px solid transparent',
-      borderRight: '10px solid transparent',
-      borderBottom: '10px solid black'
-    }} />, triggerRef.current)
-  return newElt;
+export const Flyout:FC<FlyoutProps> = ({children, label, ariaLabel, ...props}) => {
+  // @ts-ignore TS doesn't understand that ref values are intentionally mutable across types.
+  const triggerRef = useRef()
+  const [trigger, tooltip] = useTooltip({ref:triggerRef});
+
+  const { triggerRect } = tooltip;
+
+  function centered(triggerRect:any, tooltipRect:any){
+    const triggerCenter = triggerRect.left + triggerRect.width / 2;
+    const left = triggerCenter - tooltipRect.width / 2;
+    const maxLeft = window.innerWidth - tooltipRect.width - 2;
+    let centeredPosition = {
+      left: Math.min(Math.max(2, left), maxLeft) + window.scrollX,
+      top: triggerRect.bottom + 8 + window.scrollY,
+      display: 'absolute'
+    }
+    return centeredPosition;
+  }
+  
+  let popup;
+  let popupProps = {
+    ...tooltip, label, ariaLabel,
+    position : centered,
+    style : {
+      background: 'black',
+      color: 'white',
+      border: 'none',
+      borderRadius: '3px',
+      padding: '0.5em 1em'
+    }
+  }
+  
+  if (triggerRect !== null){
+    popup = <TooltipPopup {...popupProps} />
+  }
+  return (
+    // @ts-ignore
+    <span {...trigger} >
+      { children }
+      { popup }
+    </span>
+  );
 }
-
-// export const OldFlyout: SFC<FlyoutProps> = props => {
-//   const {
-//     anchor,
-//     children,
-//     idealDirection,
-//     onDismiss,
-//     positionRelativeToAnchor = true,
-//     color = "white",
-//     shouldFocus = true,
-//     size
-//   } = props;
-
-//   if (!anchor) {
-//     return null;
-//   }
-
-//   return (
-//     <Controller
-//       anchor={anchor}
-//       bgColor={color}
-//       idealDirection={idealDirection}
-//       onDismiss={onDismiss}
-//       positionRelativeToAnchor={positionRelativeToAnchor}
-//       shouldFocus={shouldFocus}
-//       size={size}
-//     >
-//       {children}
-//     </Controller>
-//   );
-// };
-
-// Flyout.defaultProps = {
-//   color: "white",
-//   positionRelativeToAnchor: true,
-//   shouldFocus: true,
-//   size: "sm"
-// };
-
-// Flyout.displayName = "Flyout";
 
 export default Flyout;

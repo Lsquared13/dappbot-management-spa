@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useResource } from 'react-request-hook';
-import {Table, TableColumn, Text, Button } from './ui';
+import {Table, TableColumn, Text, Button, Flyout, Icon } from './ui';
 import { DappArgNames, DappArgs } from '../types'; 
 
 interface DappListProps {
@@ -61,6 +61,12 @@ export const DappList:FC<DappListProps> = (props) => {
 
     console.log('Trying to return a Table');
 
+    const handleViewAbi = () => { console.log('Hit the View ABI button!') };
+
+    const handleDelete = () => { console.log('Hit the delete button!') }
+
+    const handleEdit = () => { console.log('Hit the edit button!') }
+
     const renderHeader = (header:TableColumn) => {
       if (header.field === 'Actions') {
         return <Button onClick={resendListRequest}>Check Again</Button>
@@ -70,12 +76,40 @@ export const DappList:FC<DappListProps> = (props) => {
     }
 
     const renderCell = (record:DappArgs, field:string) => {
-      if (Object.values(DappArgNames).includes(field)){
-        return record[field];
-      } else if (field === 'Actions') {
+      if (field === 'Actions') {
+        let abiLabel = `View ${record.DappName} ABI`;
+        let deleteLabel = `Delete ${record.DappName}`;
+        let editLabel = `Edit ${record.DappName}`;
         return (
-          <Button>Delete</Button>
+          <>
+            <Flyout label={abiLabel} ariaLabel={abiLabel}>
+              <Button size='small' 
+                style='quietSecondary'
+                theme='outlineNeutral'
+                onClick={handleViewAbi}>
+                <Icon icon='search' type='thick' />
+              </Button>
+            </Flyout>
+            <Flyout label={editLabel} ariaLabel={editLabel}>
+              <Button size='small' 
+                style='quietSecondary' 
+                onClick={handleEdit}
+                theme='outlineNeutral'>
+                <Icon icon='edit' type='thin' />
+              </Button>
+            </Flyout>
+            <Flyout label={deleteLabel} ariaLabel={deleteLabel}>
+            <Button size='small' 
+                style='quietSecondary' 
+                onClick={handleDelete}
+                theme='outlineNeutral'>
+                <Icon icon='trash' type='thin' />
+              </Button>
+            </Flyout>
+          </>
         )
+      } else if (Object.values(DappArgNames).includes(field)){
+        return record[field];
       } else {
         throw new Error(`DappList was asked to render an unexpected field: ${field}`)
       }
