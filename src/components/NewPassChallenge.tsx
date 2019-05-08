@@ -39,7 +39,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({setErr, setChallenge
         displayName='New Password'
         fieldType='password'
         disabled={loading}
-        isValid={()=> {return true}}
+        isValid={(val)=>passwordChecker.validate(val)}
         help="Minimum of 8 characters; include upper and lowercase letters, numbers, and a symbol."
         onChange={setNewPass}
         name='newPassword' />
@@ -48,7 +48,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({setErr, setChallenge
         displayName='Confirm New Password'
         fieldType='password'
         disabled={loading}
-        isValid={()=> {return true}}
+        isValid={(val)=>passwordChecker.validate(val)}
         help="Must match field above."
         onChange={setConfirmPass}
         name='confirmPassword' />

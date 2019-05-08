@@ -43,7 +43,7 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
         value={newPass}
         displayName='New Password'
         fieldType='password'
-        isValid={passwordChecker.validate}
+        isValid={(val)=>passwordChecker.validate(val)}
         help="Minimum of 8 characters; include upper and lowercase letters, numbers, and a symbol."
         onChange={setNewPass}
         name='newPassword' />
@@ -51,7 +51,7 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
         value={confirmPass}
         displayName='Confirm Password'
         fieldType='password'
-        isValid={passwordChecker.validate}
+        isValid={(val)=>passwordChecker.validate(val)}
         help="Must match the field above."
         onChange={setConfirmPass}
         name='confirmPassword' />
