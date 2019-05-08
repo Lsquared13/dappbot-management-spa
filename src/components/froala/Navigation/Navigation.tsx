@@ -3,7 +3,7 @@ import './../bootstrap.min.css';
 import './../froala_blocks.min.css';
 import { navigate } from '@reach/router';
 
-interface NavProps {
+export interface NavProps {
   hideLogin?: boolean
 }
 

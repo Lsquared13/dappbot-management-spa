@@ -68,7 +68,7 @@ const Backdrop = ({ children }: { children?: React.ReactNode }) => (
   </React.Fragment>
 );
 
-export default class Modal extends React.Component<ModalProps> {
+export class Modal extends React.Component<ModalProps> {
   componentDidMount() {
     window.addEventListener("keyup", this.handleKeyUp);
   }
@@ -190,3 +190,6 @@ export default class Modal extends React.Component<ModalProps> {
     );
   }
 }
+
+
+export default Modal;
