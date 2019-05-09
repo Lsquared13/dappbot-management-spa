@@ -30,7 +30,8 @@ function authorizedRequestFactory<Data>(user: any, method: string, data: Data) {
       headers: {
         Authorization: user.signInUserSession && user.signInUserSession.accessToken,
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': process.env.REACT_APP_DAPPSMITH_ENDPOINT
+        'Access-Control-Allow-Origin': process.env.REACT_APP_DAPPSMITH_ENDPOINT,
+        Accept : 'application/json'
       },
     };
     console.log('request: ', request);
