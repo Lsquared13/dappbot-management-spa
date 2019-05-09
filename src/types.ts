@@ -16,6 +16,16 @@ export interface DappArgs {
   ContractAddr: string
 }
 
+export function SampleDappArgs():DappArgs{
+  return {
+    DappName: 'sample',
+    Abi : 'invalid',
+    Web3URL : 'invalid',
+    GuardianURL : 'invalid',
+    ContractAddr : 'invalid'
+  }
+}
+
 export interface DappDbItem extends DappArgs {
   OwnerEmail : string,
   CreationTime : string,

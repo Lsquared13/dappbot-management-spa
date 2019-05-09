@@ -3,6 +3,7 @@ import { RouteComponentProps } from '@reach/router';
 import { useResource } from 'react-request-hook';
 import { DappArgs, DappArgNameStrs } from '../types';
 import { Header, DappForm, DappList } from '../components';
+import ABIClerk from '../services/abiClerk';
 
 interface HomeProps extends RouteComponentProps {
   user? : any
@@ -24,18 +25,7 @@ export const Home:FC<HomeProps> = ({user}) => {
     setArgs(newArgs)
   }
 
-  const [createResponse, sendCreateRequest] = useResource((args:DappArgs) => {
-    return {
-      url : `${process.env.REACT_APP_DAPPSMITH_ENDPOINT}/test/create`,
-      method : 'POST',
-      data : args,
-      // TODO: Figure out how to actually access AuthToken from user
-      headers : {"Authorization":user && user.AuthToken}
-    }
-  })
-  
-
-  
+  const [createResponse, sendCreateRequest] = useResource(ABIClerk.create(user))
   
   return (
     <div style={{paddingLeft:'10%',paddingRight:'10%',paddingTop:'4%'}}>

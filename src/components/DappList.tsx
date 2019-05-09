@@ -1,17 +1,15 @@
 import React, { FC, useState } from 'react';
 import { useResource } from 'react-request-hook';
 import {Table, TableColumn, Text, Button, Flyout, Icon } from './ui';
-import AbiModal from './AbiModal';
+import Alert from 'react-s-alert';
 import { DappArgNames, DappArgs } from '../types'; 
+import copy from 'copy-to-clipboard';
 
 interface DappListProps {
   user:any
 }
 
 export const DappList:FC<DappListProps> = (props) => {
-
-  const [viewingABI, setViewingABI] = useState('');
-  const closeABI = () => { setViewingABI('') }
 
   const [dappListResponse, resendListRequest] = useResource(() => {
     return {
@@ -62,6 +60,11 @@ export const DappList:FC<DappListProps> = (props) => {
       )
     }
 
+    const handleCopy = (record:DappArgs) => {
+      copy(record.Abi)
+      Alert.success("ABI copied to your clipboard!");
+    }
+
     const handleDelete = () => { console.log('Hit the delete button!') }
 
     const handleEdit = () => { console.log('Hit the edit button!') }
@@ -92,7 +95,7 @@ export const DappList:FC<DappListProps> = (props) => {
               <Button size='small' 
                 style='quietSecondary'
                 theme='outlineNeutral'
-                onClick={()=>{ setViewingABI(record.DappName) }}>
+                onClick={()=>{ handleCopy(record) }}>
                 <Icon icon='copy' type='thick' />
               </Button>
             </Flyout>
@@ -128,29 +131,12 @@ export const DappList:FC<DappListProps> = (props) => {
       {field:'Actions', displayName: ' '}
     ]
 
-    let ABI = null;
-    if (viewingABI !== ''){
-      let thisDapp = dappList.find((record:DappArgs) => {
-        return record.DappName === viewingABI
-      })
-      if (!thisDapp){
-        throw new Error("")
-      }
-      ABI = (
-        <AbiModal Abi={thisDapp.Abi} 
-          isOpen={viewingABI !== ''}
-          DappName={thisDapp.DappName} 
-          onClose={closeABI} />
-      )
-    }
-
     return (
       <>
         <Table records={dappList} 
           renderCell={renderCell}
           renderHeader={renderHeader}
           columns={columns} />
-        { ABI }
       </>
     )
   }
