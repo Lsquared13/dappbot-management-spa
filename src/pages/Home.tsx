@@ -3,7 +3,6 @@ import { RouteComponentProps } from '@reach/router';
 import { useResource } from 'react-request-hook';
 import { DappArgs, DappArgNameStrs } from '../types';
 import { Header, DappForm, DappList } from '../components';
-import { Box } from '../components/ui';
 
 interface HomeProps extends RouteComponentProps {
   user? : any

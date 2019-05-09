@@ -83,7 +83,7 @@ export const DappList:FC<DappListProps> = (props) => {
 
     const renderCell = (record:DappArgs, field:string) => {
       if (field === 'Actions') {
-        let abiLabel = `View ${record.DappName} ABI`;
+        let abiLabel = `Copy ${record.DappName} ABI to your clipboard`;
         let deleteLabel = `Delete ${record.DappName}`;
         let editLabel = `Edit ${record.DappName}`;
         return (
@@ -93,7 +93,7 @@ export const DappList:FC<DappListProps> = (props) => {
                 style='quietSecondary'
                 theme='outlineNeutral'
                 onClick={()=>{ setViewingABI(record.DappName) }}>
-                <Icon icon='search' type='thick' />
+                <Icon icon='copy' type='thick' />
               </Button>
             </Flyout>
             <Flyout label={editLabel} ariaLabel={editLabel}>
