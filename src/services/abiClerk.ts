@@ -29,7 +29,8 @@ function authorizedRequestFactory<Data>(user: any, method: string, data: Data) {
       method: 'POST',
       headers: {
         Authorization: user.signInUserSession && user.signInUserSession.accessToken,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': process.env.REACT_APP_DAPPSMITH_ENDPOINT
       },
     };
     console.log('request: ', request);
