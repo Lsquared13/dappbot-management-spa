@@ -55,7 +55,7 @@ export const DappDetails:FC<DappDetailsProps> = ({user, id}) => {
         <div className="row mt-3">
           <div className="col-sm-12">
             <h5 className="card-title">Abi</h5>
-            <textarea className="form-control" placeholder="cryptokitty.dapp.bot" readOnly></textarea> 
+            <textarea className="form-control" readOnly>cryptokitty cryptokitty cryptokitty cryptokitty cryptokitty cryptokitty</textarea> 
           </div>
         </div>
 
@@ -69,6 +69,7 @@ export const DappDetails:FC<DappDetailsProps> = ({user, id}) => {
           <DappForm args={args} 
           setArgVal={setArgVal}
           response={createResponse} 
+          formTarget='edit'
           sendRequest={sendCreateRequest} />
         </div>
       </div>
