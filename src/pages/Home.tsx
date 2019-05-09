@@ -5,6 +5,7 @@ import { useResource, UseResourceResult } from 'react-request-hook';
 import { DappArgs, DappArgNameStrs, SampleDappArgs } from '../types';
 import { Header, DappForm, DappList } from '../components';
 import ABIClerk from '../services/abiClerk';
+import Navigation from '../components/froala/Navigation';
 
 interface HomeProps extends RouteComponentProps {
   user? : any
@@ -76,21 +77,33 @@ export const Home:FC<HomeProps> = ({user}) => {
     response = editResponse;
   }
   return (
-    <div style={{paddingLeft:'10%',paddingRight:'10%',paddingTop:'4%'}}>
-      <Header />
-      <DappList dappList={dappList} 
-        fetchList={sendListRequest}
-        setFormTarget={setFormTarget} 
-        dappsLoading={listResponse.isLoading}
-        dappLoadErr={listResponse.error}
-        delete={sendDeleteRequest}
-        deleteResponse={deleteResponse}
-        user={user}/>
-      <DappForm args={formArgs} 
-        setArgVal={setArgVal}
-        response={response} 
-        formTarget={formTarget}
-        sendRequest={request} />
+    <div className="container">
+      <Navigation hideLogin={true} />
+
+      <h3 className="mt-5">Your Dapps</h3>
+      <div className="card">
+        <div className="card-body">
+          <DappList dappList={dappList} 
+          fetchList={sendListRequest}
+          setFormTarget={setFormTarget} 
+          dappsLoading={listResponse.isLoading}
+          dappLoadErr={listResponse.error}
+          delete={sendDeleteRequest}
+          deleteResponse={deleteResponse}
+          user={user}/>
+        </div>
+      </div>
+
+      <h3 className="mt-5">Create/Edit Dapp</h3>
+      <div className="card">
+        <div className="card-body">
+          <DappForm args={formArgs} 
+            setArgVal={setArgVal}
+            response={response} 
+            formTarget={formTarget}
+            sendRequest={request} />
+          </div>
+        </div>
     </div>
   )
 }
