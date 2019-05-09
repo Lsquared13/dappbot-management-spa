@@ -26,7 +26,7 @@ function authorizedRequestFactory<Data>(user:any, method:string, data:Data){
       url : abiClerkEndpoint(method),
       data : args,
       method : 'POST',
-      headers : { Authorization : user && user.AuthToken }
+      headers : { Authorization : user && user.signInUserSession.accessToken }
     }
   }
 }
