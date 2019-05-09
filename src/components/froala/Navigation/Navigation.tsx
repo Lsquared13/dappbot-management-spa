@@ -14,7 +14,7 @@ export const Navigation:FC<NavProps> = ({hideLogin}) => {
         <div className="container text-center">
           <nav className="navbar">
             <a className="ml-auto mr-auto" href="/">
-              <img src="DappBot.svg" alt="image" style={{height: 30}} />
+              <img src="./DappBot.svg" alt="image" style={{height: 30}} />
             </a>
           </nav>
         </div>
