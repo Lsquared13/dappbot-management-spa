@@ -31,7 +31,8 @@ export const Home:FC<HomeProps> = ({user}) => {
       method : 'POST',
       data : args,
       // TODO: Figure out how to actually access AuthToken from user
-      headers : {"Authorization":user && user.AuthToken}
+      // DONE: Correct syntax is user.signInUserSession.accessToken
+      headers : {"Authorization":user && user.signInUserSession.accessToken}
     }
   })
   
