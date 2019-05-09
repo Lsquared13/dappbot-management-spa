@@ -5,7 +5,7 @@ import './App.css';
 import './variable.css';
 import './custom.css'
 import PageBase from './components/PageBase';
-import { Home, Welcome, Login, PaymentPage, Privacy } from './pages';
+import { Home, Welcome, Login, PaymentPage, Privacy, DappDetails } from './pages';
 
 
 // user: {
@@ -27,6 +27,7 @@ const App: FC = () => {
           <PageBase path='/'>
             <Welcome default />
             <Home path='home' user={user} />
+            <DappDetails path="home/:id" />
             <Login path='login' setUser={setUser} user={user} />
             <PaymentPage path='signup' />
             <Privacy path='privacy' />
