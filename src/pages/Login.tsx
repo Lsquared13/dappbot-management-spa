@@ -32,10 +32,11 @@ export const Login:FC<LoginProps> = (props) => {
 
   const sendLogin = async () => {
     setLoading(true);
+    setChallenge('');
     setErr('');
+    setUser('');
     try {
-      const result:any = await Auth.signIn(email, password);
-      console.log(result);
+      const result:any = await Auth.signIn(email, password);    
       if (result.challenge) {
         setChallenge(result.challenge)
       }
@@ -56,7 +57,7 @@ export const Login:FC<LoginProps> = (props) => {
   // can match with an empty object.  Need to determine a good
   // property to check for.
   useEffect(()=>{
-    if (challenge === '' && typeof user === typeof CognitoUser){
+    if (challenge === '' &&  user && user.signInUserSession && user.signInUserSession.accessToken){
       props.navigate && props.navigate('/home');
     }
   }, [user, challenge])
@@ -105,6 +106,7 @@ export const Login:FC<LoginProps> = (props) => {
                   <div className="col">
                     <div style={{textAlign: "left"}}>
                       <Button disabled={loading} onClick={sendLogin}>Submit</Button>
+                      <ErrorBox errMsg={err}></ErrorBox>
                     </div>
                     {/* <button className="btn btn-primary" type="button">Submit</button> */}
                   </div>
@@ -132,7 +134,6 @@ export const Login:FC<LoginProps> = (props) => {
     <>
       <Navigation hideLogin={true} />
       { loginFields }  
-      <ErrorBox errMsg={err}></ErrorBox>
     </>
   );
 }
