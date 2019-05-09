@@ -6,10 +6,15 @@ interface RequestArgs {
 }
 
 interface AuthorizedRequest extends RequestArgs {
+<<<<<<< Updated upstream
   headers: {
     Authorization: string
   },
   method: string
+=======
+  headers : any
+  method : string
+>>>>>>> Stashed changes
 }
 
 function abiClerkEndpoint(method: string) {
@@ -20,6 +25,7 @@ function abiClerkEndpoint(method: string) {
 // data.  The returned function takes an argument of the same type
 // as <Data>, so calls to `authorizedRequestFactory` simply need to
 // provide a sample `data` in order to get a properly typed request fxn.
+<<<<<<< Updated upstream
 function authorizedRequestFactory<Data>(user: any, method: string, data: Data) {
   return (args: Data) => {
     console.log('userVal: ',user);
@@ -36,6 +42,18 @@ function authorizedRequestFactory<Data>(user: any, method: string, data: Data) {
     };
     console.log('request: ', request);
     return request;
+=======
+function authorizedRequestFactory<Data>(user:any, method:string, data:Data){
+  return (args:Data)=>{
+    return {
+      url : abiClerkEndpoint(method),
+      data : args,
+      method : 'POST',
+      headers : { "Authorization" : user && user.signInUserSession.accessToken,
+        "Content-Type": "application/json"
+      }
+    }
+>>>>>>> Stashed changes
   }
 }
 
