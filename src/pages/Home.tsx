@@ -12,13 +12,7 @@ interface HomeProps extends RouteComponentProps {
 
 export const Home:FC<HomeProps> = ({user}) => {
 
-  const [formArgs, setArgs] = useState({
-    DappName: '',
-    Abi: '',
-    Web3URL: '',
-    GuardianURL: '',
-    ContractAddr: ''
-  })
+  const [formArgs, setArgs] = useState(SampleDappArgs())
 
   // Note that adding an empty dependency array means this hook
   // will run on mount, then never again (unless called)
@@ -54,9 +48,6 @@ export const Home:FC<HomeProps> = ({user}) => {
       setArgs(SampleDappArgs());
     } else {
       let targetRecord = dappList.find(record => record.DappName === target);
-      console.log('dappList: ',dappList);
-      console.log('target: ',target);
-      console.log('formTarget: ',formTarget);
       if (targetRecord){
         setArgs(targetRecord)
       } else {
