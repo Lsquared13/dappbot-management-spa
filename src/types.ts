@@ -18,11 +18,11 @@ export interface DappArgs {
 
 export function SampleDappArgs():DappArgs{
   return {
-    DappName: 'sample',
-    Abi : 'invalid',
-    Web3URL : 'invalid',
-    GuardianURL : 'invalid',
-    ContractAddr : 'invalid'
+    DappName: '',
+    Abi : '',
+    Web3URL : '',
+    GuardianURL : 'https://guardian.dapp.bot',
+    ContractAddr : ''
   }
 }
 

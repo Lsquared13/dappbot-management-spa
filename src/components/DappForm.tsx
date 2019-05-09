@@ -8,12 +8,11 @@ export interface DappFormProps {
   response : any
   args : DappArgs
   setArgVal : (name:DappArgNameStrs,val:string)=>void
-  isCreate?: boolean
+  formTarget: string
 }
 
 export const DappForm:FC<DappFormProps> = (props) => {
   const { sendRequest, response, args, setArgVal } = props;
-  let isCreate = !!props.isCreate;
   const [sent, markSent] = useState(false);
 
   const submitForm = ()=>{
@@ -33,10 +32,21 @@ export const DappForm:FC<DappFormProps> = (props) => {
     }
   }
 
+  const formSettings = {
+    disabled : [] as DappArgNameStrs[],
+    hidden : ['GuardianURL'] as DappArgNameStrs[]
+  };
+  const isCreate = props.formTarget === 'create';
+  if (!isCreate){
+    formSettings.disabled.push('DappName');
+  }
+  let title = isCreate ? 'Create a Dapp' : `Edit ${args.DappName}`;
+
   return (
     <>
-      <h3>{isCreate ? 'Create a Dapp' : 'Edit a Dapp' }</h3>
-      <FormFields {...args} setVal={setArgVal} />
+      <h3>{ title }</h3>
+      <FormFields {...args} {...formSettings}
+        setVal={setArgVal} />
       <Button onClick={submitForm} block>Submit</Button>
       <Text>{resultStr}</Text>
     </>

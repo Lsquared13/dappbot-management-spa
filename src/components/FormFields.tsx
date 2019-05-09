@@ -6,6 +6,8 @@ import AddressField from './fields/AddressField';
 
 interface FormFieldProps extends DappArgs {
   setVal: (name:DappArgNameStrs,val:string)=>void
+  disabled?: DappArgNameStrs[]
+  hidden?: DappArgNameStrs[]
 }
 
 export const FormFields:FunctionComponent<FormFieldProps> = (props)=>{
@@ -27,41 +29,75 @@ export const FormFields:FunctionComponent<FormFieldProps> = (props)=>{
     return spaceToHyphen.replace(/[^A-Za-z0-9-]/g, '').toLowerCase();
   }
 
+  const onlyVisible = (name:DappArgNameStrs, field:React.ReactNode) => {
+    if (props.hidden && props.hidden.includes(name)){
+      return null;
+    }
+    return field;
+  }
+
+  const isDisabled = (name:DappArgNameStrs) => props.disabled && props.disabled.includes(name);
+
   return (
     <section>
-      <StringField 
-        value={DappName} 
-        displayName={'Dapp URL Subdomain'}
-        name={'DappName'} 
-        help={'This name will be lower-cased and have spaces replaced with dashes when used in the URL.  Only letters and numbers, please!'}
-        clean={cleanDappName}
-        onChange={setDappName}/>
-      <AddressField 
-        value={ContractAddr} 
-        name={'ContractAddr'} 
-        displayName={'Dapp Contract Deployed Address'}
-        onChange={setContractAddr}/>
-      <StringField 
-        value={Abi} 
-        name={'Abi'} 
-        displayName={'Dapp Contract ABI'}
-        isValid={validate.isJSON}
-        errorMsg={"Please enter a valid ABI JSON for your contract."}
-        onChange={setAbi}/>
-      <StringField 
-        value={Web3URL} 
-        name={'Web3URL'} 
-        displayName={'Web3 URL'}
-        isValid={validate.isURL}
-        errorMsg={"Please enter a valid URL for a Web3 HTTP Provider on your network."}
-        onChange={setWeb3URL}/>
-      <StringField 
-        value={GuardianURL} 
-        name={'GuardianURL'} 
-        displayName={'Guardian URL'}
-        isValid={validate.isURL}
-        errorMsg={"Please enter a valid Guardian URL."}
-        onChange={setGuardianURL}/>
+      {
+        onlyVisible('DappName', 
+          <StringField 
+            value={DappName} 
+            displayName={'Dapp URL Subdomain'}
+            name={'DappName'} 
+            disabled={isDisabled('DappName')}
+            help={'This name will be lower-cased and have spaces replaced with dashes when used in the URL.  Only letters and numbers, please!'}
+            clean={cleanDappName}
+            onChange={setDappName}/>
+        )
+      }
+      {
+        onlyVisible('ContractAddr', 
+          <AddressField 
+            value={ContractAddr} 
+            name={'ContractAddr'} 
+            disabled={isDisabled('ContractAddr')}
+            displayName={'Dapp Contract Deployed Address'}
+            onChange={setContractAddr}/>
+        )
+      }
+      {
+        onlyVisible('Abi', 
+          <StringField 
+            value={Abi} 
+            name={'Abi'} 
+            displayName={'Dapp Contract ABI'}
+            isValid={validate.isJSON}
+            disabled={isDisabled('Abi')}
+            errorMsg={"Please enter a valid ABI JSON for your contract."}
+            onChange={setAbi}/>
+        )
+      }
+      {
+        onlyVisible('Web3URL', 
+          <StringField 
+            value={Web3URL} 
+            name={'Web3URL'} 
+            displayName={'Web3 URL'}
+            isValid={validate.isURL}
+            disabled={isDisabled('Web3URL')}
+            errorMsg={"Please enter a valid URL for a Web3 HTTP Provider on your network."}
+            onChange={setWeb3URL}/>
+        )
+      }
+      {
+        onlyVisible('GuardianURL', 
+          <StringField 
+            value={GuardianURL} 
+            name={'GuardianURL'} 
+            displayName={'Guardian URL'}
+            disabled={isDisabled('GuardianURL')}
+            isValid={validate.isURL}
+            errorMsg={"Please enter a valid Guardian URL."}
+            onChange={setGuardianURL}/>   
+        )
+      }
     </section>
   )
 }

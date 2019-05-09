@@ -26,7 +26,7 @@ function authorizedRequestFactory<Data>(user:any, method:string, data:Data){
       url : abiClerkEndpoint(method),
       data : args,
       method : 'POST',
-      headers : { Authorization : user && user.signInUserSession.accessToken }
+      headers : { Authorization : user.signInUserSession && user.signInUserSession.accessToken }
     }
   }
 }
@@ -44,8 +44,9 @@ function editRequest(user:any):(args:DappArgs)=>AuthorizedRequest{
   return authorizedRequestFactory(user, 'edit', SampleDappArgs());
 }
 
-function listRequest(user:any):(_:any)=>AuthorizedRequest{
-  return authorizedRequestFactory(user, 'list', {});
+function listRequest(user:any):()=>AuthorizedRequest{
+  const listFunc = authorizedRequestFactory(user, 'list', {});
+  return () => listFunc({});
 }
 
 function readRequest(user:any):(dappName:string)=>AuthorizedRequest{
