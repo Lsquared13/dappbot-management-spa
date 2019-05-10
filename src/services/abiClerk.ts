@@ -28,10 +28,8 @@ function authorizedRequestFactory<Data>(user: any, method: string, data: Data) {
       data: args,
       method: 'POST',
       headers: {
-        Authorization: user.signInUserSession && user.signInUserSession.accessToken,
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': process.env.REACT_APP_DAPPSMITH_ENDPOINT,
-        Accept : 'application/json'
+        Authorization: `Bearer ${user.signInUserSession && user.signInUserSession.idToken.jwtToken}`,
+        'Content-Type': 'application/json'
       },
     };
     console.log('request: ', request);

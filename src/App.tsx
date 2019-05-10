@@ -16,6 +16,7 @@ import { Home, Welcome, Login, PaymentPage, Privacy, DappDetails } from './pages
 //   }
 // }
 const App: FC = () => {
+  console.log("Running updated code! - v3")
   let user: any;
   let setUser:any;
   [user, setUser] = useState({});
