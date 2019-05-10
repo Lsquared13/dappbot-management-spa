@@ -21,7 +21,7 @@ export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
   // will run on mount, then never again (unless called)
   const [listResponse, sendListRequest] = useResource(ABIClerk.list(user));
   let dappList:DappArgs[] = [];
-  if (listResponse.data && (listResponse.data as any).message === 'Unauthorized'){
+  if (listResponse.data && (['The incoming token has expired', 'Unauthorized'].includes((listResponse.data as any).message))){
     // if (user !== {}) setUser({});
     (props.navigate as NavigateFn)('/login');
   }
