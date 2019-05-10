@@ -34,7 +34,7 @@ export const Login:FC<LoginProps> = (props) => {
     setLoading(true);
     setChallenge('');
     setErr('');
-    setUser('');
+    setUser({});
     try {
       const result:any = await Auth.signIn(email, password);    
       if (result.challenge) {

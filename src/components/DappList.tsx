@@ -56,7 +56,7 @@ export const DappList: FC<DappListProps> = ({ dappList, ...props }) => {
     if (header.field === 'Actions') {
       let createLabel = "Create a new dapp"
       return (
-        <>
+        <span style={{float:'right'}}>
           {refreshButton}
           <Flyout label={createLabel} ariaLabel={createLabel}>
             <Button size='small'
@@ -66,7 +66,7 @@ export const DappList: FC<DappListProps> = ({ dappList, ...props }) => {
               <Icon icon='add' type='thick' />
             </Button>
           </Flyout>
-        </>
+        </span>
       )
     } else {
       return <strong>{header.displayName}</strong>
@@ -79,10 +79,15 @@ export const DappList: FC<DappListProps> = ({ dappList, ...props }) => {
       let deleteLabel = `Delete ${record.DappName}`;
       let editLabel = `Edit ${record.DappName}`;
       let viewLabel = `Go to ${record.DappName}`;
+      let baseDomain = (process.env.REACT_APP_DAPPSMITH_ENDPOINT as string).split('https://')[1]
+      if (baseDomain.split('.').length > 2){
+        let pieces = baseDomain.split('.');
+        baseDomain = pieces.slice(pieces.length - 2, pieces.length).join('.')
+      }
       return (
-        <>
+        <span style={{float:'right'}}>
           <Flyout label={viewLabel} ariaLabel={viewLabel}>
-            <a target='_blank' href={`https://${record.DappName}.${(process.env.REACT_APP_DAPPSMITH_ENDPOINT as string).split('https://')[1]}`}>
+            <a target='_blank' href={`https://${record.DappName}.${baseDomain}`}>
               <Button size='small'
                 style='quietSecondary'
                 theme='outlineNeutral'>
@@ -114,7 +119,7 @@ export const DappList: FC<DappListProps> = ({ dappList, ...props }) => {
               <Icon icon='trash' type='thick' />
             </Button>
           </Flyout>
-        </>
+        </span>
       )
     } else if (Object.values(DappArgNames).includes(field)) {
       let val = record[field];
