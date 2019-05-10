@@ -16,11 +16,9 @@ import { Home, Welcome, Login, PaymentPage, Privacy, DappDetails } from './pages
 //   }
 // }
 const App: FC = () => {
-  console.log("Running updated code! - v3")
   let user: any;
   let setUser:any;
   [user, setUser] = useState({});
-  console.log(user && user.signInUserSession && user.signInUserSession.idToken && JSON.stringify(user.signInUserSession.idToken.jwtToken))
   return (
     <StripeProvider apiKey={process.env.REACT_APP_STRIPE_PUBLISHABLE_API_KEY as string}>
       <Elements>

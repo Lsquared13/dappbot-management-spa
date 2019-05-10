@@ -22,7 +22,6 @@ function abiClerkEndpoint(method: string) {
 // provide a sample `data` in order to get a properly typed request fxn.
 function authorizedRequestFactory<Data>(user: any, method: string, data: Data) {
   return (args: Data) => {
-    console.log('userVal: ',user);
     let request = {
       url: abiClerkEndpoint(method),
       data: args,
@@ -32,7 +31,6 @@ function authorizedRequestFactory<Data>(user: any, method: string, data: Data) {
         'Content-Type': 'application/json'
       },
     };
-    console.log('request: ', request);
     return request;
   }
 }

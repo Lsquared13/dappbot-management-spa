@@ -18,7 +18,8 @@ export const Home:FC<HomeProps> = ({user}) => {
   // Note that adding an empty dependency array means this hook
   // will run on mount, then never again (unless called)
   const [listResponse, sendListRequest] = useResource(ABIClerk.list(user));
-  let dappList:DappArgs[] = listResponse.data && (listResponse as any).data.items || [];
+  console.log('listResponse: ',JSON.stringify(listResponse, undefined, 2));
+  let dappList:DappArgs[] = listResponse.data && (listResponse as any).data.Items || [];
   // dappList.push(...[
   //   {
   //     DappName : 'Weyl',
