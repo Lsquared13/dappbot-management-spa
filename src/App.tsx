@@ -25,7 +25,7 @@ const App: FC = () => {
       <Elements>
         <Router>
           <PageBase path='/'>
-            <Welcome default />
+            <Welcome default user={user} />
             <Home path='home' user={user} setUser={setUser} />
             <DappDetails path="home/:id" />
             <Login path='login' setUser={setUser} user={user} />

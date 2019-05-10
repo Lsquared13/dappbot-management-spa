@@ -60,7 +60,7 @@ export const Login:FC<LoginProps> = (props) => {
     if (challenge === '' &&  user && user.signInUserSession && user.signInUserSession.accessToken){
       props.navigate && props.navigate('/home');
     }
-  }, [user, challenge])
+  }, [user.signInUserSession, challenge])
   
   let loginFields = (
     <>

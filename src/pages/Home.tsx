@@ -21,13 +21,16 @@ export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
   // will run on mount, then never again (unless called)
   const [listResponse, sendListRequest] = useResource(ABIClerk.list(user));
   let dappList:DappArgs[] = [];
-  if (listResponse.data && (['The incoming token has expired', 'Unauthorized'].includes((listResponse.data as any).message))){
-    // if (user !== {}) setUser({});
+  if (listResponse && listResponse.data && (['The incoming token has expired', 'Unauthorized'].includes((listResponse.data as any).message))){
+    let newUser = Object.assign(user, { signInUserSession : null });
     (props.navigate as NavigateFn)('/login');
+    setUser(newUser);
   }
   console.log('listResponse: ',listResponse);
   try {
-    dappList.push(...(listResponse as any).data.data.items)
+    if (listResponse.data){
+      dappList.push(...(listResponse as any).data.data.items)
+    }
   } catch (e) {
     console.log('Error when trying to load from listResponse: ',e);
   }
