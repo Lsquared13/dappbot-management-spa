@@ -1,9 +1,7 @@
-import React, { FC, useState } from 'react';
-import { useResource } from 'react-request-hook';
+import React, { FC, useState, useEffect } from 'react';
 import { Table, TableColumn, Text, Button, Flyout, Icon } from './ui';
 import copy from 'copy-to-clipboard';
 import Alert from 'react-s-alert';
-import ABIClerk from '../services/abiClerk';
 import { DappArgNames, DappArgs } from '../types';
 
 interface DappListProps {
@@ -18,40 +16,48 @@ interface DappListProps {
 }
 
 export const DappList: FC<DappListProps> = ({ dappList, ...props }) => {
-
-
-  let noDappMessage = '';
-  if (props.dappsLoading) {
-    noDappMessage = "Checking for any dapps..."
-  } else if (dappList.length === 0) {
-    noDappMessage = "You haven't made any dapps yet."
-  }
-
-  if (noDappMessage !== '') {
-    return (<Text> {noDappMessage} </Text>);
-  }
+  const { deleteResponse } = props;
+  let refreshLabel = "Refresh your list of dapps"
+  const refreshButton = (
+    <Flyout label={refreshLabel} ariaLabel={refreshLabel}>
+      <Button size='small'
+        style='quietSecondary'
+        theme='outlineNeutral'
+        onClick={props.fetchList}>
+        <Icon icon='cycle' type='thick' />
+      </Button>
+    </Flyout>
+  )
 
   const handleCopy = (record: DappArgs) => {
     copy(JSON.stringify(record.Abi, undefined, 2))
     Alert.success("ABI copied to your clipboard!");
   }
 
-  const handleDelete = () => { console.log('Hit the delete button!') }
+  const [deleteSent, markDeleteSent] = useState(false);
+  const handleDelete = (dappName:string) => { 
+    markDeleteSent(true);
+    props.delete(dappName);
+  }
+
+  useEffect(()=>{
+    if (deleteSent){
+      if (deleteResponse.error){
+        Alert.error(`There was an error deleting your dapp: ${deleteResponse.error.message}`)
+      } else if (!deleteResponse.isLoading && deleteResponse.data) {
+        Alert.success(`Your dapp was successfully deleted!`);
+        props.fetchList()
+        markDeleteSent(false);
+      }
+    }
+  }, [deleteSent, deleteResponse])
 
   const renderHeader = (header: TableColumn) => {
     if (header.field === 'Actions') {
-      let refreshLabel = "Refresh your list of dapps"
       let createLabel = "Create a new dapp"
       return (
         <>
-          <Flyout label={refreshLabel} ariaLabel={refreshLabel}>
-            <Button size='small'
-              style='quietSecondary'
-              theme='outlineNeutral'
-              onClick={props.fetchList}>
-              <Icon icon='cycle' type='thick' />
-            </Button>
-          </Flyout>
+          { refreshButton }
           <Flyout label={createLabel} ariaLabel={createLabel}>
             <Button size='small'
               style='quietSecondary'
@@ -93,7 +99,7 @@ export const DappList: FC<DappListProps> = ({ dappList, ...props }) => {
           <Flyout label={deleteLabel} ariaLabel={deleteLabel}>
             <Button size='small'
               style='quietSecondary'
-              onClick={handleDelete}
+              onClick={()=>{ handleDelete(record.DappName) }}
               theme='outlineNeutral'>
               <Icon icon='trash' type='thick' />
             </Button>
@@ -113,6 +119,17 @@ export const DappList: FC<DappListProps> = ({ dappList, ...props }) => {
     { field: 'Web3URL', displayName: 'Web3 URL' },
     { field: 'Actions', displayName: ' ' }
   ]
+
+  let noDappMessage = '';
+  if (props.dappsLoading) {
+    noDappMessage = "Checking for any dapps..."
+  } else if (dappList.length === 0) {
+    noDappMessage = "You haven't made any dapps yet."
+  }
+
+  if (noDappMessage !== '') {
+    return (<Text> {noDappMessage} { refreshButton } </Text>);
+  }
 
   return (
     <>

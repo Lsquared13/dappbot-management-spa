@@ -9,6 +9,7 @@ import Navigation from '../components/froala/Navigation';
 
 interface HomeProps extends RouteComponentProps {
   user? : any
+  setUser : (user:any)=>void
 }
 
 export const Home:FC<HomeProps> = ({user}) => {
@@ -18,8 +19,7 @@ export const Home:FC<HomeProps> = ({user}) => {
   // Note that adding an empty dependency array means this hook
   // will run on mount, then never again (unless called)
   const [listResponse, sendListRequest] = useResource(ABIClerk.list(user));
-  console.log('listResponse: ',JSON.stringify(listResponse, undefined, 2));
-  let dappList:DappArgs[] = listResponse.data && (listResponse as any).data.Items || [];
+  let dappList:DappArgs[] = listResponse.data && (listResponse as any).data.data.items || [];
   // dappList.push(...[
   //   {
   //     DappName : 'Weyl',
