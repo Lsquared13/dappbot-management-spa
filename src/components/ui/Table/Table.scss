@@ -71,6 +71,10 @@
   position: relative;
 }
 
+.table > tbody > tr > td > span {
+  display: flex;
+}
+
 .table > tbody > tr:hover {
   background-color: #F7F8F9;
 }
