@@ -35,8 +35,10 @@ export const DappList: FC<DappListProps> = ({ dappList, ...props }) => {
   }
 
   const [deleteSent, markDeleteSent] = useState(false);
+  const [deleteAlertId, setDeleteAlertId] = useState(0);
   const handleDelete = (dappName: string) => {
     markDeleteSent(true);
+    setDeleteAlertId(Alert.info(`Deleting ${dappName} now...`));
     props.delete(dappName);
   }
 
@@ -45,6 +47,7 @@ export const DappList: FC<DappListProps> = ({ dappList, ...props }) => {
       if (deleteResponse.error) {
         Alert.error(`There was an error deleting your dapp: ${deleteResponse.error.message}`)
       } else if (!deleteResponse.isLoading && deleteResponse.data) {
+        Alert.close(deleteAlertId);
         Alert.success(`Your dapp was successfully deleted!`);
         props.fetchList()
         markDeleteSent(false);
