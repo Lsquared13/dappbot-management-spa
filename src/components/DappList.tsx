@@ -82,7 +82,7 @@ export const DappList: FC<DappListProps> = ({ dappList, ...props }) => {
       return (
         <>
           <Flyout label={viewLabel} ariaLabel={viewLabel}>
-            <a target='_blank' href={`${record.DappName}.${(process.env.REACT_APP_DAPPSMITH_ENDPOINT as string).split('https://')[1]}`}>
+            <a target='_blank' href={`https://${record.DappName}.${(process.env.REACT_APP_DAPPSMITH_ENDPOINT as string).split('https://')[1]}`}>
               <Button size='small'
                 style='quietSecondary'
                 theme='outlineNeutral'>
@@ -118,7 +118,7 @@ export const DappList: FC<DappListProps> = ({ dappList, ...props }) => {
       )
     } else if (Object.values(DappArgNames).includes(field)) {
       let val = record[field];
-      let truncated = val.length > 16 ? `${val.slice(0,14)}...` : val;
+      let truncated = val.length > 32 ? `${val.slice(0,29)}...` : val;
       let tooltipMsg = `(Click to Copy)${truncated !== val ? ' '+val : ''}`;
       return (
         <Flyout label={tooltipMsg} ariaLabel={tooltipMsg}>
