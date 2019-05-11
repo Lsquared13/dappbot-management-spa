@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from '@reach/router';
 import './../bootstrap.min.css';
 import './../froala_blocks.min.css';
 
@@ -14,7 +15,7 @@ const Footer = () => (
             </li>
             <li className="w-100 d-block d-sm-none" />
             <li className="nav-item">
-              <a className="nav-link" href="/privacy">Privacy Policy</a>
+              <Link to='/privacy' className='nav-link'>Privacy Policy</Link>
             </li>
           </ul>
         </div>

@@ -43,6 +43,7 @@ Your S3 bucket needs to be configured to host a public website.  You can create 
     ]
 }
 ```
+3. At the bottom of the page, set the Default Root object to `index.html`.
 
 This will make all of the static file in the bucket publicly accessible to your users.
 
