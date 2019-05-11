@@ -14,30 +14,26 @@ export interface DappFormProps {
 
 export const DappForm:FC<DappFormProps> = (props) => {
   const { sendRequest, response, args, setArgVal } = props;
-
-  const [alertId, setAlertId] = useState(0);
+  const { isLoading, data, error } = response;
 
   const submitForm = ()=>{
     sendRequest(args)
-    Alert.close(alertId);
-    setAlertId(Alert.info("One moment, confirming your dapp is being created..."));
+    Alert.info("One moment, confirming your dapp is being created...")
   }; 
 
   // Handle errors appearing
   useEffect(()=>{
-    if (response.error){
-      Alert.close(alertId);
-      setAlertId(Alert.error(`Error: ${response.error.message}`));
+    if (error){
+      Alert.error(`Error: ${error.message}`)
     }
-  }, [response.error, alertId]);
+  }, [error]);
 
   // Handle a successful return
   useEffect(()=>{
-    if (!response.isLoading && response.data && response.data.data){
-      Alert.close(alertId);
-      setAlertId(Alert.success(`Success!  ${response.data.data.message}  Your dapp will be available in about five minutes.`));
+    if (!isLoading && data && data.data){
+      Alert.success(`Success!  ${data.data.message}  Your dapp will be available in about five minutes.`);
     }
-  }, [response.isLoading, response.data, alertId])
+  }, [isLoading, data])
 
   const formSettings = {
     disabled : [] as DappArgNameStrs[],
@@ -54,7 +50,7 @@ export const DappForm:FC<DappFormProps> = (props) => {
       <h3>{ title }</h3>
       <FormFields {...args} {...formSettings}
         setVal={setArgVal} />
-      <Button onClick={submitForm} block disabled={response.isLoading}>
+      <Button onClick={submitForm} block disabled={isLoading}>
         Submit
       </Button>
     </>
