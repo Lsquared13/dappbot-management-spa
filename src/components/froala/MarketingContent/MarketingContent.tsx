@@ -17,17 +17,28 @@ const MarketingContent = () => {
             <div className="col-12 col-sm-4">
               <img alt="Hosted Infrastructure" className="fdb-icon" src="Hosted.svg" />
               <h3><strong>Hosted MVP</strong></h3>
-              <p>Many startups and individual developers are looking to build on distributed ledgers but are not themselves blockchain experts. DappBot provides a working MVP foundation and rock-solid deployment infrastructure.</p>
+              <p>
+                Many startups and individual developers are looking to build applications on top of distributed ledgers, but are not themselves blockchain experts. 
+                <br /><br />
+                DappBot provides a working MVP foundation and rock-solid deployment infrastructure.</p>
             </div>
             <div className="col-12 col-sm-4 pt-4 pt-sm-0">
               <img alt="Rapid Prototyping" className="fdb-icon" src="Rapid.svg" />
               <h3><strong>Rapid Prototyping</strong></h3>
-              <p>Whether you’re a Blockchain Solution Provider need to constantly generate live demos for client pitch or Enterprise Blockchain R&D team still exploring the best smart contract use-cases. We help you dramatically cut iteration time and reduce DevOps effort to zero.</p>
+              <p>
+                Blockchain Solution Provider are constantly generating live demos for client pitches, and Enterprise Blockchain R&D teams are still exploring the best smart contract use-cases. 
+                <br /><br />
+                We help you dramatically cut iteration time and reduce DevOps effort to zero.
+              </p>
             </div>
             <div className="col-12 col-sm-4 pt-4 pt-sm-0">
               <img alt="Educational Tool" className="fdb-icon" src="Edu.svg" />
               <h3><strong>Education &amp; Training</strong></h3>
-              <p>Whether you’re developers learning about smart contracts or participating a Hackathon want an interface, but don’t want to waste time writing web apps. We can get them a Dapp in five minutes flat.</p>
+              <p>
+                If your developers are learning about smart contracts or participating in Hackathons, they don’t want to waste time writing web app interfaces.
+                <br /><br />
+                We can get them a Dapp in five minutes flat.
+              </p>
             </div>
           </div>
           <div className="row mt-5 justify-content-center">
@@ -58,12 +69,17 @@ const MarketingContent = () => {
               </div>
               <div className="row mt-5">
                 <div className="col-12 col-sm-6">
-                  <h3><strong>Customization</strong></h3>
+                  <h3><strong>Customization<small>{'  '}Coming Soon</small></strong></h3>
                   <p className="lead">Pick a custom subdomain, and edit your Dapp by simply updating a GitHub branch – just like working with Pages.</p>
                 </div>
                 <div className="col-12 col-sm-6 pt-3 pt-sm-0">
-                  <h3><strong>Multi-Dapp Organizations</strong></h3>
-                  <p className="lead">Managed organization accounts and your own multi-dapp endpoint.</p>
+                  <h3><strong>
+                      Multi-Dapp Organizations
+                      <small>{'  '}<a target="_blank" rel="noreferrer noopener" href="mailto:sales@eximchain.com?subject=Inquiry%3A%20DappBot%20Organization%20Accounts&body=Hello%2C%0A%0AI%20am%20interested%20in%20learning%20more%20about%20a%20DappBot%20Organization%20Account.">
+                      Contact Us
+                      </a></small>
+                  </strong></h3>
+                  <p className="lead">Managed organization accounts and your own dapp.bot endpoint, where you can deploy multiple dapps.</p>
                 </div>
               </div>
             </div>
