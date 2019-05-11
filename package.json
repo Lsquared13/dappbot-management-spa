@@ -48,7 +48,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && aws s3 sync build/ s3://www.dapp.bot && aws cloudfront create-invalidation --distribution-id E3O9BG490S5BQF --paths '/*'"
+    "deployStaging": "npm run build && aws s3 sync build/ s3://www.dapp.bot && aws cloudfront create-invalidation --distribution-id E3O9BG490S5BQF --paths '/*'",
+    "deployProduction": "npm run build && aws s3 sync build/ s3://prod.dapp.bot && aws cloudfront create-invalidation --distribution-id E3ULBBIFD64CEJ --paths '/*'"
   },
   "eslintConfig": {
     "extends": "react-app"
