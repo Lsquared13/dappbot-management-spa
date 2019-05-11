@@ -8,8 +8,8 @@ export const Privacy:FC<RouteComponentProps> = (props) => {
 
       <div className="container mt-4" id="wbars_all">
         <div className="iub_container iub_base_container">
-          <div id="wbars">
-            <div className="iub_content legal_pp">
+          <div id="wbars col-sm-12 row">
+            <div className="iub_content legal_pp col-sm-12">
               <div className="iub_header">
                 <h1>Privacy Policy of <strong>Dapp.bot</strong></h1>
                 <p>This Application collects some Personal Data from its Users.</p>

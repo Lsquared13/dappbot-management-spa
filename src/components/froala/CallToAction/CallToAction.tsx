@@ -15,7 +15,7 @@ const CallToAction = () => (
             DappBot is a Dapp Generating Platform that automatically converts smart contracts into live Dapps hosted on AWS.
           </p>
           <p className="mt-4">
-            <Link className="btn btn-primary" to='/signup'>Get Started</Link>
+            <Link className="btn btn-primary" to='/login'>Get Started</Link>
           </p>
         </div>
       </div>
