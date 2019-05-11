@@ -2,21 +2,21 @@ import React, { FC, useState } from 'react';
 import { RouteComponentProps } from '@reach/router';
 import { useResource } from 'react-request-hook';
 import { DappArgs, DappArgNameStrs } from '../types';
-import { Header, DappForm, DappList } from '../components';
+import { DappForm } from '../components';
 import ABIClerk from '../services/abiClerk';
 
 //eould have to fetch the list and filter by the path router.
 
-import Navigation from '../components/froala/Navigation';
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
 
 interface DappDetailsProps extends RouteComponentProps {
   user? : any
   id? : string
+  setUser: (newUser:any)=>void
 }
 
-export const DappDetails:FC<DappDetailsProps> = ({user, id}) => {
+export const DappDetails:FC<DappDetailsProps> = ({user, id, setUser}) => {
 
   const [args, setArgs] = useState({
     DappName: '',
@@ -36,7 +36,6 @@ export const DappDetails:FC<DappDetailsProps> = ({user, id}) => {
   
   return (
     <div className="container">
-      <Navigation hideLogin={true}/>
 
       <h3 className="mt-5">Cryptokitty Dapp</h3>
       <div className="card">
@@ -48,7 +47,7 @@ export const DappDetails:FC<DappDetailsProps> = ({user, id}) => {
             <p className="card-text">cryptokitty.dapp.bot</p>
           </div>
           <div className="col-sm-6 text-right">
-           <a className="btn btn-outline-primary" href="https://eximchain.com" target="_blank">View Dapp</a>
+           <a className="btn btn-outline-primary" href="https://eximchain.com" rel="noopener noreferrer" target="_blank">View Dapp</a>
           </div>
         </div>
 
@@ -78,7 +77,7 @@ export const DappDetails:FC<DappDetailsProps> = ({user, id}) => {
       <div className="card">
         <div className="card-body">
           <p className="card-text">Dapp will be removed from your account and the Dapps's subdomain will be able to access by other users. This can not be undone.</p>
-          <a href="#" className="btn btn-danger">Delete Dapp</a>
+          <button className="btn btn-danger">Delete Dapp</button>
         </div>
       </div>
 

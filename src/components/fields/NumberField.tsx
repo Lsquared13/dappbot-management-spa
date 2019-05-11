@@ -1,5 +1,5 @@
-import React, { FunctionComponent, Fragment, ReactElement, useState } from 'react';
-import { FieldProps, inputUpdater, ValidatorFunc, UpdaterOptions, displayLabel, inputValidator } from './shared'
+import React, { FunctionComponent, ReactElement, useState } from 'react';
+import { FieldProps, inputUpdater, inputValidator } from './shared'
 import TextField from '../ui/TextField';
 import HelpIcon from '../ui/HelpIcon';
 const BigNum = require('bignumber.js');
@@ -69,7 +69,7 @@ export const NumberField: FunctionComponent<Props> = ({value, onChange, name, di
                                     value={value} 
                                     disabled={props.disabled}
                                     onChange={updater} 
-                                    showError={errMsg != ""}
+                                    showError={errMsg !== ""}
                                     errorMessage={errMsg}
                                     onBlur={validator} />
                             </div>

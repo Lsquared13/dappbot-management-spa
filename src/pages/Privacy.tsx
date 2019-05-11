@@ -1,12 +1,10 @@
 import React, { FC } from 'react';
-import { Link, RouteComponentProps, navigate } from '@reach/router';
-import Navigation from '../components/froala/Navigation';
+import { RouteComponentProps } from '@reach/router';
 
 
 export const Privacy:FC<RouteComponentProps> = (props) => {
   return (
     <div>
-      <Navigation hideLogin={true} />
 
       <div className="container mt-4" id="wbars_all">
         <div className="iub_container iub_base_container">
@@ -18,7 +16,7 @@ export const Privacy:FC<RouteComponentProps> = (props) => {
               </div> {/* /header */}
               <div className="one_line_col">
                 <h2 id="owner_of_the_data">Owner and Data Controller</h2>
-                <a href="mailto:support@eximchain.com" target="_blank">support@eximchain.com</a>
+                <a href="mailto:support@eximchain.com" rel="noopener noreferrer" target="_blank">support@eximchain.com</a>
               </div> {/* /one_line_col */}
               <div className="one_line_col">
                 <h2 id="types_of_data">Types of Data collected</h2>
@@ -88,7 +86,7 @@ export const Privacy:FC<RouteComponentProps> = (props) => {
                           Place of processing:
                           United States
                           –
-                          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> – <a href="https://tools.google.com/dlpage/gaoptout?hl=en" target="_blank">Opt Out</a>.
+                          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> – <a href="https://tools.google.com/dlpage/gaoptout?hl=en" target="_blank" rel="noopener noreferrer">Opt Out</a>.
                           Privacy Shield participant.
                         </p>
                       </div> {/* /expand-content */}
@@ -103,7 +101,7 @@ export const Privacy:FC<RouteComponentProps> = (props) => {
                         <h4>Hotjar Heat Maps &amp; Recordings (Hotjar Ltd.)</h4>
                         <div className="wrap">
                           <p>Hotjar is a session recording and heat mapping service provided by Hotjar Ltd.<br />
-                            Hotjar honors generic „Do Not Track” headers. This means the browser can tell its script not to collect any of the User's data. This is a setting that is available in all major browsers. Find Hotjar’s <a href="https://www.hotjar.com/legal/compliance/opt-out" target="_blank" rel="noopener">opt-out information here</a>.</p>
+                            Hotjar honors generic „Do Not Track” headers. This means the browser can tell its script not to collect any of the User's data. This is a setting that is available in all major browsers. Find Hotjar’s <a href="https://www.hotjar.com/legal/compliance/opt-out" target="_blank" rel="noopener noreferrer">opt-out information here</a>.</p>
                         </div>
                         <p>
                           Personal Data collected:
@@ -113,7 +111,7 @@ export const Privacy:FC<RouteComponentProps> = (props) => {
                           Place of processing:
                           Malta
                           –
-                          <a href="https://www.hotjar.com/legal/policies/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> – <a href="https://www.hotjar.com/legal/compliance/opt-out" target="_blank" rel="noopener">Opt Out</a>.
+                          <a href="https://www.hotjar.com/legal/policies/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> – <a href="https://www.hotjar.com/legal/compliance/opt-out" target="_blank" rel="noopener noreferrer">Opt Out</a>.
                         </p>
                       </div> {/* /expand-content */}
                     </div> {/* /expand */}
@@ -128,7 +126,7 @@ export const Privacy:FC<RouteComponentProps> = (props) => {
                         <h4>Hotjar Poll &amp; Survey widgets (Hotjar Ltd.)</h4>
                         <div className="wrap">
                           <p>The Hotjar Poll &amp; Survey widgets are services that enable interaction with the Hotjar platform provided by Hotjar Ltd.<br />
-                            Hotjar honors generic „Do Not Track” headers. This means the browser can tell its script not to collect any of the User's data. This is a setting that is available in all major browsers. Find Hotjar’s <a href="https://www.hotjar.com/legal/compliance/opt-out" target="_blank" rel="noopener">opt-out information here</a>.</p>
+                            Hotjar honors generic „Do Not Track” headers. This means the browser can tell its script not to collect any of the User's data. This is a setting that is available in all major browsers. Find Hotjar’s <a href="https://www.hotjar.com/legal/compliance/opt-out" target="_blank" rel="noopener noreferrer">opt-out information here</a>.</p>
                         </div>
                         <p>
                           Personal Data collected:
@@ -138,7 +136,7 @@ export const Privacy:FC<RouteComponentProps> = (props) => {
                           Place of processing:
                           Malta
                           –
-                          <a href="https://www.hotjar.com/legal/policies/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> – <a href="https://www.hotjar.com/legal/compliance/opt-out" target="_blank" rel="noopener">Opt Out</a>.
+                          <a href="https://www.hotjar.com/legal/policies/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> – <a href="https://www.hotjar.com/legal/compliance/opt-out" target="_blank" rel="noopener noreferrer">Opt Out</a>.
                         </p>
                       </div> {/* /expand-content */}
                     </div> {/* /expand */}

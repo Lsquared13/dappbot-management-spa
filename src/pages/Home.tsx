@@ -1,12 +1,10 @@
 import React, { FC, useState, useEffect } from 'react';
 import Alert from 'react-s-alert';
 import { RouteComponentProps, NavigateFn } from '@reach/router';
-import { useResource, UseResourceResult } from 'react-request-hook';
+import { useResource } from 'react-request-hook';
 import { DappArgs, DappArgNameStrs, SampleDappArgs } from '../types';
-import { Header, DappForm, DappList } from '../components';
+import { DappForm, DappList } from '../components';
 import ABIClerk from '../services/abiClerk';
-import Navigation from '../components/froala/Navigation';
-import { setupMaster } from 'cluster';
 
 interface HomeProps extends RouteComponentProps {
   user? : any
@@ -26,7 +24,6 @@ export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
     (props.navigate as NavigateFn)('/login');
     setUser(newUser);
   }
-  console.log('listResponse: ',listResponse);
   try {
     if (listResponse.data){
       dappList.push(...(listResponse as any).data.data.items)
@@ -34,7 +31,7 @@ export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
   } catch (e) {
     console.log('Error when trying to load from listResponse: ',e);
   }
-  useEffect(()=>sendListRequest(), []);
+  useEffect(()=>sendListRequest(), [sendListRequest]);
 
   const [formTarget, unsafeSetFormTarget] = useState('create');
   const [formTouched, setFormTouched] = useState(false);
@@ -77,7 +74,6 @@ export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
   }
   return (
     <div className="container">
-      <Navigation hideLogin={true} />
 
       <h3 className="mt-5">Your Dapps</h3>
       <div className="card">

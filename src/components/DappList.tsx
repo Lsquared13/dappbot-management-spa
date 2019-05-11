@@ -15,15 +15,15 @@ interface DappListProps {
   deleteResponse: any
 }
 
-export const DappList: FC<DappListProps> = ({ dappList, ...props }) => {
+export const DappList: FC<DappListProps> = ({ dappList, fetchList, ...props }) => {
   const { deleteResponse } = props;
   let refreshLabel = "Refresh your list of dapps"
   const refreshButton = (
     <Flyout label={refreshLabel} ariaLabel={refreshLabel}>
       <Button size='small'
-        style='quietSecondary'
+        btnStyle='quietSecondary'
         theme='outlineNeutral'
-        onClick={props.fetchList}>
+        onClick={fetchList}>
         <Icon icon='cycle' type='thick' />
       </Button>
     </Flyout>
@@ -49,11 +49,11 @@ export const DappList: FC<DappListProps> = ({ dappList, ...props }) => {
       } else if (!deleteResponse.isLoading && deleteResponse.data) {
         Alert.close(deleteAlertId);
         Alert.success(`Your dapp was successfully deleted!`);
-        props.fetchList()
+        fetchList()
         markDeleteSent(false);
       }
     }
-  }, [deleteSent, deleteResponse])
+  }, [deleteSent, deleteResponse, deleteAlertId, fetchList])
 
   const renderHeader = (header: TableColumn) => {
     if (header.field === 'Actions') {
@@ -63,7 +63,7 @@ export const DappList: FC<DappListProps> = ({ dappList, ...props }) => {
           {refreshButton}
           <Flyout label={createLabel} ariaLabel={createLabel}>
             <Button size='small'
-              style='quietSecondary'
+              btnStyle='quietSecondary'
               theme='outlineNeutral'
               onClick={() => props.setFormTarget('create')}>
               <Icon icon='add' type='thick' />
@@ -90,9 +90,9 @@ export const DappList: FC<DappListProps> = ({ dappList, ...props }) => {
       return (
         <span style={{float:'right'}}>
           <Flyout label={viewLabel} ariaLabel={viewLabel}>
-            <a target='_blank' href={`https://${record.DappName}.${baseDomain}`}>
+            <a target='_blank' rel="noopener noreferrer" href={`https://${record.DappName}.${baseDomain}`}>
               <Button size='small'
-                style='quietSecondary'
+                btnStyle='quietSecondary'
                 theme='outlineNeutral'>
                 <Icon icon='world' type='thick' />
               </Button>
@@ -100,7 +100,7 @@ export const DappList: FC<DappListProps> = ({ dappList, ...props }) => {
           </Flyout>
           <Flyout label={abiLabel} ariaLabel={abiLabel}>
             <Button size='small'
-              style='quietSecondary'
+              btnStyle='quietSecondary'
               theme='outlineNeutral'
               onClick={() => { handleCopy(JSON.stringify(record.Abi, undefined, 2)) }}>
               <Icon icon='copy' type='thick' />
@@ -108,7 +108,7 @@ export const DappList: FC<DappListProps> = ({ dappList, ...props }) => {
           </Flyout>
           <Flyout label={editLabel} ariaLabel={editLabel}>
             <Button size='small'
-              style='quietSecondary'
+              btnStyle='quietSecondary'
               onClick={() => { props.setFormTarget(record.DappName) }}
               theme='outlineNeutral'>
               <Icon icon='edit' type='thick' />
@@ -116,7 +116,7 @@ export const DappList: FC<DappListProps> = ({ dappList, ...props }) => {
           </Flyout>
           <Flyout label={deleteLabel} ariaLabel={deleteLabel}>
             <Button size='small'
-              style='quietSecondary'
+              btnStyle='quietSecondary'
               onClick={() => { handleDelete(record.DappName) }}
               theme='outlineNeutral'>
               <Icon icon='trash' type='thick' />

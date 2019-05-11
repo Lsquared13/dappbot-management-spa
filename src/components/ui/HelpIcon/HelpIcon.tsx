@@ -1,8 +1,6 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import Flyout from '../Flyout';
 import Icon from '../Icon';
-import Box from '../Box';
-import Text from '../Text';
 
 export interface HelpIconProps {
   helpTxt: string,

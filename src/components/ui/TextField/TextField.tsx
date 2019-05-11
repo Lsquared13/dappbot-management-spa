@@ -1,8 +1,5 @@
 import * as React from "react";
 import classnames from "classnames";
-import Flyout from "./../Flyout";
-import Box from "./../Box";
-import Text from "./../Text";
 import StyledTextField, { StyledErrorMessage } from "./StyledTextField";
 
 export type eventData = {
@@ -150,7 +147,6 @@ export default class TextField extends React.Component<
       errorMessage,
       showError,
       id,
-      idealErrorDirection,
       name,
       placeholder,
       type,

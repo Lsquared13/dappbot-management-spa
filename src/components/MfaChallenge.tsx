@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { Button } from '../components/ui';
-import { ErrorBox } from '../components';
 import { StringField } from '../components/fields';
 import Auth from '../services/auth';
 import { CognitoUser } from '@aws-amplify/auth';

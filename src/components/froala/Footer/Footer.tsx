@@ -1,7 +1,6 @@
 import React from 'react';
 import './../bootstrap.min.css';
 import './../froala_blocks.min.css';
-import { navigate } from '@reach/router';
 
 const Footer = () => (
   <footer className="fdb-block footer-small" data-block-type="footers" data-id={11}>
@@ -11,7 +10,7 @@ const Footer = () => (
           <ul className="nav justify-content-center justify-content-md-start align-items-center">
             <li className="nav-item">
               <a className="nav-link active" href="/">
-              <img src="/DappBot.svg" alt="image" style={{height: 30}} /></a>
+              <img src="/DappBot.svg" alt="DappBot Logo" style={{height: 30}} /></a>
             </li>
             <li className="w-100 d-block d-sm-none" />
             <li className="nav-item">

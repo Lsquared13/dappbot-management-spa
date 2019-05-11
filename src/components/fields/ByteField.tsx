@@ -1,5 +1,5 @@
 import React, { FunctionComponent, ReactElement } from 'react';
-import { FieldProps, inputUpdater, displayLabel } from './shared'
+import { FieldProps, inputUpdater } from './shared'
 import TextField from '../ui/TextField';
 import HelpIcon from '../ui/HelpIcon';
 

@@ -1,7 +1,8 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { DappArgs, DappArgNameStrs } from '../types';
 import FormFields from './FormFields';
-import { Button, Text } from './ui';
+import Alert from 'react-s-alert';
+import { Button } from './ui';
 
 export interface DappFormProps {
   sendRequest : any
@@ -13,24 +14,30 @@ export interface DappFormProps {
 
 export const DappForm:FC<DappFormProps> = (props) => {
   const { sendRequest, response, args, setArgVal } = props;
-  const [sent, markSent] = useState(false);
+
+  const [alertId, setAlertId] = useState(0);
 
   const submitForm = ()=>{
     sendRequest(args)
-    markSent(true)
+    Alert.close(alertId);
+    setAlertId(Alert.info("One moment, confirming your dapp is being created..."));
   }; 
 
-  let resultStr = '';
-  if (sent && response.isLoading){
-    resultStr = 'One moment...';
-  } else if (sent && !response.isLoading){
+  // Handle errors appearing
+  useEffect(()=>{
     if (response.error){
-      resultStr = response.error.message.toString();
+      Alert.close(alertId);
+      setAlertId(Alert.error(`Error: ${response.error.message}`));
     }
-    if (response.data){
-      resultStr = response.data.toString();
+  }, [response.error, alertId]);
+
+  // Handle a successful return
+  useEffect(()=>{
+    if (!response.isLoading && response.data && response.data.data){
+      Alert.close(alertId);
+      setAlertId(Alert.success(`Success!  ${response.data.data.message}  Your dapp will be available in about five minutes.`));
     }
-  }
+  }, [response.isLoading, response.data, alertId])
 
   const formSettings = {
     disabled : [] as DappArgNameStrs[],
@@ -47,8 +54,9 @@ export const DappForm:FC<DappFormProps> = (props) => {
       <h3>{ title }</h3>
       <FormFields {...args} {...formSettings}
         setVal={setArgVal} />
-      <Button onClick={submitForm} block>Submit</Button>
-      <Text>{resultStr}</Text>
+      <Button onClick={submitForm} block disabled={response.isLoading}>
+        Submit
+      </Button>
     </>
   )
 }

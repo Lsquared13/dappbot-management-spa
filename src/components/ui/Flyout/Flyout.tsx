@@ -1,5 +1,4 @@
-import React, { FC, useState, ReactNode, useRef, useLayoutEffect } from "react";
-import { createPortal } from 'react-dom';
+import React, { FC, ReactNode, useRef } from "react";
 import "@reach/tooltip/styles.css"
 // @ts-ignore Don't worry about missing export
 import { useTooltip, TooltipPopup } from "@reach/tooltip";

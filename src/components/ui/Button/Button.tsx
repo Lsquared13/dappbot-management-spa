@@ -49,7 +49,7 @@ export interface ButtonProps {
    * options include: "standard" | "pill" | "quiet" | "quietSecondary" | "complete" | "close"
    * @default "standard"
    **/
-  style?:
+  btnStyle?:
     | "standard"
     | "pill"
     | "quiet"
@@ -91,7 +91,7 @@ export const Button: React.SFC<ButtonProps> = props => {
     disabled,
     loader,
     size,
-    style,
+    btnStyle: style,
     theme,
     type
   } = props;
@@ -132,7 +132,7 @@ Button.defaultProps = {
   disabled: false,
   loader: false,
   size: "large",
-  style: "standard",
+  btnStyle: "standard",
   theme: "cta",
   type: "button",
   block: false

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, Fragment } from 'react';
+import React, { FunctionComponent } from 'react';
 import { FieldProps } from './shared'
 import HelpIcon from '../ui/HelpIcon';
 

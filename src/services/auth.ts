@@ -124,10 +124,14 @@ export function useLocalStorage<ValueType>(key:string, initialValue:ValueType) {
   return [storedValue, setValue];
 }
 
+export const currentUserInfo = async () => {
+  return await Auth.currentUserInfo();
+}
+
 export default {
   signIn,
   confirmMFA: confirmMFASignIn,
   newPassword: completeNewPassword,
   forgotPass: completeForgotPassword,
-  passwordChecker
+  passwordChecker, currentUserInfo
 }

@@ -1,13 +1,11 @@
 import React, { FC, useState, useEffect } from 'react';
 import { RouteComponentProps } from '@reach/router';
-import { CognitoUser } from '@aws-amplify/auth';
 import isEmail from 'validator/lib/isEmail';
-import { Button, Box, Text } from '../components/ui';
+import { Button } from '../components/ui';
 import { ErrorBox, ForgotPassChallenge, NewPassChallenge, MfaChallenge } from '../components';
 import StringField from '../components/fields/StringField';
-import Auth, { passwordChecker } from '../services/auth';
+import Auth from '../services/auth';
 
-import Navigation from '../components/froala/Navigation';
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
 
@@ -18,7 +16,7 @@ export interface LoginProps extends RouteComponentProps {
 }
 
 export const Login:FC<LoginProps> = (props) => {
-  const { user, setUser } = props;
+  const { user, setUser, navigate } = props;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -57,10 +55,10 @@ export const Login:FC<LoginProps> = (props) => {
   // can match with an empty object.  Need to determine a good
   // property to check for.
   useEffect(()=>{
-    if (challenge === '' &&  user && user.signInUserSession && user.signInUserSession.accessToken){
-      props.navigate && props.navigate('/home');
+    if (challenge === '' && user.signInUserSession && user.signInUserSession.accessToken){
+      navigate && navigate('/home');
     }
-  }, [user.signInUserSession, challenge])
+  }, [user.signInUserSession, challenge, navigate])
   
   let loginFields = (
     <>
@@ -125,14 +123,12 @@ export const Login:FC<LoginProps> = (props) => {
       break;
     case ('forgotPassword'):
       loginFields = <ForgotPassChallenge email={email} {...challengeProps} />
-      break;  
+      break; 
+    default:
+      // Always have a default to keep TS quiet
+      break; 
   }
-  return (
-    <>
-      <Navigation hideLogin={true} />
-      { loginFields }  
-    </>
-  );
+  return loginFields;
 }
 
 export default Login;

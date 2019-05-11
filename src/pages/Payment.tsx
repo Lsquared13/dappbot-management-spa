@@ -7,12 +7,12 @@ import { CardElement, injectStripe, ReactStripeElements } from 'react-stripe-ele
 import request from 'request-promise-native';
 import validate from 'validator';
 
-import Navigation from '../components/froala/Navigation';
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
 
 interface PaymentProps extends RouteComponentProps, ReactStripeElements.InjectedStripeProps {
-
+  user?: any
+  setUser: (newUser:any)=>void
 }
 
 export const PLAN_PRICES = {
@@ -73,7 +73,6 @@ export const Payment:FC<PaymentProps> = (props) => {
     </div>
   ) : (
     <div>
-      <Navigation hideLogin={true} />
 
       <section className="fdb-block fp-active" data-block-type="forms">
         <div className="container">

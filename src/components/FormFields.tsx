@@ -38,6 +38,10 @@ export const FormFields:FunctionComponent<FormFieldProps> = (props)=>{
 
   const isDisabled = (name:DappArgNameStrs) => props.disabled && props.disabled.includes(name);
 
+  const noEdgeHyphens = (val:string) => {
+    return val.charAt(0) !== '-' && val.charAt(val.length - 1) !== '-'
+  }
+
   return (
     <section>
       {
@@ -47,8 +51,9 @@ export const FormFields:FunctionComponent<FormFieldProps> = (props)=>{
             displayName={'Dapp URL Subdomain'}
             name={'DappName'} 
             disabled={isDisabled('DappName')}
-            help={'This name will be lower-cased and have spaces replaced with dashes when used in the URL.  Only letters and numbers, please!'}
+            help={'This name will be lower-cased, and must begin and end with a letter or number.  Only letters, numbers, and hyphens please!'}
             clean={cleanDappName}
+            isValid={noEdgeHyphens}
             onChange={setDappName}/>
         )
       }
@@ -80,9 +85,10 @@ export const FormFields:FunctionComponent<FormFieldProps> = (props)=>{
             value={Web3URL} 
             name={'Web3URL'} 
             displayName={'Web3 URL'}
-            isValid={validate.isURL}
+            isValid={(val:string)=>{return validate.isURL(val) && val.indexOf('https://') === 0}}
             disabled={isDisabled('Web3URL')}
-            errorMsg={"Please enter a valid URL for a Web3 HTTP Provider on your network."}
+            help={"This is your dapp's Web3 HTTP Provider URL, determining which network it interacts with.  It must begin with https://."}
+            errorMsg={"Please enter a valid URL for a Web3 HTTP Provider on your network.  It must begin with https://"}
             onChange={setWeb3URL}/>
         )
       }
