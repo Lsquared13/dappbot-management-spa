@@ -102,7 +102,7 @@ export const DappList: FC<DappListProps> = ({ dappList, fetchList, ...props }) =
             <Button size='small'
               btnStyle='quietSecondary'
               theme='outlineNeutral'
-              onClick={() => { handleCopy(JSON.stringify(record.Abi, undefined, 2)) }}>
+              onClick={() => { handleCopy(record.Abi) }}>
               <Icon icon='copy' type='thick' />
             </Button>
           </Flyout>
