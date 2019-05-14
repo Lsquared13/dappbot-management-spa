@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { RouteComponentProps } from '@reach/router';
+import Alert from 'react-s-alert';
 import Modal from 'react-modal';
 import Navigation from './froala/Navigation';
 import Footer from './froala/Footer';
@@ -28,6 +29,7 @@ export interface PageBaseProps extends RouteComponentProps {
 export const PageBase: FC<PageBaseProps> = ({user, setUser, ...props}) => {
   return (
     <div className='App' id='appBase'>
+      <Alert stack={{limit: 3}} />
       <Navigation user={user} setUser={setUser} />
       {props.children}
       <Footer />
