@@ -31,6 +31,9 @@ export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
   } catch (e) {
     console.log('Error when trying to load from listResponse: ',e);
   }
+  if(user.id === undefined){
+    console.log('what')
+  }
   useEffect(()=>sendListRequest(), [sendListRequest]);
 
   const [formTarget, unsafeSetFormTarget] = useState('create');
