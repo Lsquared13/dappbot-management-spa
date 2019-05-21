@@ -27,7 +27,6 @@ export const FormFields:FunctionComponent<FormFieldProps> = (props)=>{
     return val.toLowerCase()
       .replace(/\s/g, '-') // Convert spaces to hyphens
       .replace(/[^A-Za-z0-9-]/g, '') // Remove non-alphanumerics
-      .replace(/-*$|^-*/g, '') // Trim hyphens off the front & back
   }
 
   const onlyVisible = (name:DappArgNameStrs, field:React.ReactNode) => {
