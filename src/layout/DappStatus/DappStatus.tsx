@@ -4,6 +4,7 @@ import { Container } from "./../Container";
 
 export interface DappStatusProps {
   onStatusCopy?: () => void;
+  status: string;
 }
 export const DappStatus: React.SFC<DappStatusProps> = props => {
   return (
@@ -24,7 +25,7 @@ export const DappStatus: React.SFC<DappStatusProps> = props => {
             mdSize="lg"
             lgSize="lg"
           >
-            Available
+            {props.status}
           </Text>
         </Text>
         <Box>

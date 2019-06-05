@@ -102,7 +102,7 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
       (props.navigate as NavigateFn)('/login');
       setUser(newUser);
     }
-    //PROP DRILL: props for DappDetailsContainer
+    //PROP DRILL: props for DappDetailsContainer && DashboardContainer
     try {
       if (listResponse.data){
         dappList.push(...(listResponse as any).data.data.items)
@@ -138,6 +138,7 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
               navigate(`/home/enigma`);
             }}
           />
+          
           {/* <GeneralSettingsDappContainer
             path="/:dappName/settings"
             dappName="crypto-kitty"
@@ -180,6 +181,8 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
             }}
             defaultTab="settings"
             settingOptions={SETTING_OPTIONS}
+            //TODO: EXPOSE DAPP NAME AS A PARAMETER TO THE FUNCTION
+            //TODO: Load the Dapp details again
             onTabChange={() => {
               navigate(`/home/new/building/` + "dapp");
             }}

@@ -1,10 +1,33 @@
-import * as React from "react";
+
 import { Box, Text, TextProps, Link, LinkProps, EXCAddressProps } from "../components/ui";
 import { ReactComponent as LinkIcon } from "../images/link.svg";
+import { RouteComponentProps, navigate } from "@reach/router";
+
+import * as React from "react";
 import copy from 'copy-to-clipboard';
 import Alert from 'react-s-alert';
 import EXCAddress from '../components/ui/EXCAddress/index';
-import { RouteComponentProps, navigate } from "@reach/router";
+
+
+export const EXCAddresLink: React.FC<EXCAddressProps> = props => {
+  let {address,short} = props
+ 
+  return  <Box display={"inlineBlock"}>
+            <Box display={"inlineBlock"} marginRight={1}> 
+              <EXCAddress  size="sm"  short={short} onClick={()=>{handleCopy2Clipboard(address)}} address={address}></EXCAddress>
+            </Box>
+            <LinkIcon />
+          </Box>
+}
+const handleCopy2Clipboard = (val: string) => {
+    copy(val)
+    Alert.success("Successfully copied to your clipboard!", {
+      timeout: 3800 , offset: -20, 
+    });
+    return
+}
+
+
 export const LayoutContainer: React.SFC = props => (
   <Box
     dangerouslySetInlineStyle={{
@@ -73,11 +96,7 @@ export const ReferenceLink: React.SFC<LinkProps> = props => {
     </Box>
   );
 };
-// onClick?: ({
-//   event
-// }: {
-//   ;
-// }) => void;
+
 
 const handleCopy = (val: React.SyntheticEvent<HTMLAnchorElement>) => {
   val.preventDefault()
@@ -87,15 +106,7 @@ const handleCopy = (val: React.SyntheticEvent<HTMLAnchorElement>) => {
 });
   return
 }
-const handleCopyVal = (val: string) => {
-  console.log("fasdfsdfa")
-    copy(val)
-    Alert.success("Successfully copied to your clipboard!", {
-      timeout: 3800 , offset: -20, 
-  });
-    return
-  
-}
+
 const Content: React.SFC<TextProps> = props => (
   <Text {...props} size="sm" smSize="sm" mdSize="sm" lgSize="sm">
     {props.children}
@@ -130,16 +141,7 @@ export const DappDetailLink: React.FC<DappDetailLinkProps> = ({dappName, ...prop
   )
   // return ;
 }
-export const EXCAddresLink: React.FC<EXCAddressProps> = props => {
-  let {address,short} = props
- 
-  return  <Box display={"inlineBlock"}>
-  <Box display={"inlineBlock"} marginRight={1}> 
-    <EXCAddress  size="sm"  short={short} onClick={()=>{handleCopyVal(address)}} address={address}></EXCAddress>
-  </Box>
-  <LinkIcon />
-</Box>
-}
+
 
 export const NetworkReferenceLink: React.SFC<LinkProps> = props => {
   let href = props.href
