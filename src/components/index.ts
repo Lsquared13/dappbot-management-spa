@@ -7,3 +7,5 @@ export * from './Header';
 export * from './MfaChallenge';
 export * from './NewPassChallenge';
 export * from './PageBase';
+export * from './DeployDapp';
+export * from './DeleteDapp';

@@ -2,12 +2,12 @@ import React, { FC, useState, useEffect } from 'react';
 import { RouteComponentProps } from '@reach/router';
 import isEmail from 'validator/lib/isEmail';
 import { Button } from '../components/ui';
-import { ErrorBox, ForgotPassChallenge, NewPassChallenge, MfaChallenge } from '../components';
 import StringField from '../components/fields/StringField';
 import Auth from '../services/auth';
 
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
+import { ErrorBox, NewPassChallenge, MfaChallenge, ForgotPassChallenge } from '../components';
 
 
 export interface LoginProps extends RouteComponentProps {

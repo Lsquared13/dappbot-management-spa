@@ -1,6 +1,6 @@
 import * as React from "react";
 import StyledBox from "./StyledBox";
-import { StringDictionary, FunctionDictionary } from '../shared';
+import { StringDictionary, FunctionDictionary, AnyDictionary } from '../shared';
 import {
   concat,
   fromClassName,
@@ -1654,7 +1654,6 @@ const omit = (keys: string[], obj: BoxProps) =>
     }
     return {
       ...acc,
-      // @ts-ignore
       [k]: obj[k]
     };
   }, {});
@@ -1692,7 +1691,6 @@ export const Box = React.forwardRef(
     for (const prop in props) {
       if (Object.prototype.hasOwnProperty.call(propToFn, prop)) {
         const fn = propToFn[prop];
-        // @ts-ignore
         const value = props[prop];
         blacklist = blacklist.concat(prop);
         s = concat([s, fn(value)]);

@@ -1,32 +1,51 @@
 {
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "compileOnSave": true,
   "compilerOptions": {
-    "baseUrl": "src",
-    "target": "es6",
+    "target": "es5",
     "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
+      "es5",
+      "es6",
+      "es7",
+      "es2017",
+      "dom"
     ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
+    "sourceMap": true,
     "jsx": "preserve",
-    "downlevelIteration": true,
-    "suppressImplicitAnyIndexErrors": true,
+    "strict": true,
+    "alwaysStrict": true,
     "typeRoots": [
       "./types",
       "./node_modules/@types"
-    ]
+    ],
+    "types": [
+      "node",
+      "react",
+      "jest"
+    ],
+    "outDir": "dist",
+    "sourceRoot": "src",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "downlevelIteration": true,
+    "isolatedModules": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "noEmit": true
   },
-  "include": [
-    "src"
-  ]
+  "files": [
+    "./src/custom.d.ts"
+]
 }
+
+

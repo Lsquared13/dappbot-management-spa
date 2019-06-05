@@ -12,7 +12,7 @@ export interface DividerProps {
   type?: "primary" | "secondary";
 }
 
-const Divider: React.SFC<DividerProps> = props => {
+export const Divider: React.SFC<DividerProps> = props => {
   const { type } = props;
   return <StyledDivider className={classnames("divider", type)} />;
 };

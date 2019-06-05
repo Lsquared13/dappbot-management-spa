@@ -11,6 +11,7 @@ const SIZE_SCALE: { [key: string]: number } = {
 };
 
 export interface TextProps {
+  className?:string;
   /**
    * string, Text align  - "left" | "right" | "center" | "justify"
    * @default left
@@ -48,7 +49,8 @@ export interface TextProps {
     | "lightGray"
     | "red"
     | "white"
-    | "inherit";
+    | "inherit"|
+    "--color-blue-9" | "--color-blue-14";
   /**
    * boolean, inline
    * @default false
@@ -61,7 +63,7 @@ export interface TextProps {
   italic?: boolean;
   /**
    * string, "normal" | "breakWord"
-   * @default breakWord
+   * @default normal
    **/
   overflow?: "normal" | "breakWord";
   /**
@@ -94,7 +96,7 @@ export const Text: React.SFC<TextProps> = props => {
     color = "darkGray",
     inline = false,
     italic = false,
-    overflow = "breakWord",
+    overflow = "normal",
     size = "md",
     smSize = "md",
     mdSize = "md",
@@ -102,6 +104,7 @@ export const Text: React.SFC<TextProps> = props => {
     leading = "md",
     truncate = false,
     textTransform,
+    className,
     __dangerouslyIncreaseLineHeight = false
   } = props;
 
@@ -110,7 +113,7 @@ export const Text: React.SFC<TextProps> = props => {
   const mdScale = SIZE_SCALE[mdSize];
   const lgScale = SIZE_SCALE[lgSize];
 
-  const cs = cx("Text", `fontSize${scale}`, color !== "inherit" ? color : "", {
+  const cs = cx("Text", className,`fontSize${scale}`, color !== "inherit" ? color : "", {
     [`lgFontSize${lgScale}`]: lgSize,
     [`mdFontSize${mdScale}`]: mdSize,
     [`smFontSize${smScale}`]: smSize,
@@ -148,9 +151,9 @@ Text.defaultProps = {
   align: "left",
   bold: false,
   color: "darkGray",
+  overflow: "normal",
   inline: false,
   italic: false,
-  overflow: "breakWord",
   size: "md",
   truncate: false,
   __dangerouslyIncreaseLineHeight: false

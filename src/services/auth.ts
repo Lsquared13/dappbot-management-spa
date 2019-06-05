@@ -88,7 +88,7 @@ passwordChecker
   .has().not().spaces();
 
 // Courtesy of https://usehooks.com/useLocalStorage/
-export function useLocalStorage<ValueType>(key:string, initialValue:ValueType) {
+export function useLocalStorage<ValueType>(key:string, initialValue:ValueType):any[] {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState(() => {
