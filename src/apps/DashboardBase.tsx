@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Router, navigate, RouteComponentProps, NavigateFn } from "@reach/router";
-
+import Alert from 'react-s-alert';
 
 
 import  { DashboardContainer, DappDetailsContainer,DeleteDappContainer} from "../pages/dashboard";
 import { useResource } from "react-request-hook";
 import ABIClerk from "../services/abiClerk";
 import { DeleteDappState } from "../components";
+import { DappArgs } from "../types";
 // import { DappArgs, DappArgNameStrs, SampleDappArgs } from '../types';
 
 // import DappDetailsContainer from "../pages/dappDetailsContainer";
@@ -94,8 +95,49 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
       }
     ];
     const [listResponse, sendListRequest] = useResource(ABIClerk.list(user),[]);
+    const [createResponse, sendCreateRequest] = useResource(ABIClerk.create(user));
+    const [editResponse, sendEditRequest] = useResource(ABIClerk.edit(user));
+    const [deleteResponse, sendDeleteRequest] = useResource(ABIClerk.delete(user));
+    
+    //DELETE HANDLER
+    const [deleteSent, markDeleteSent] = useState(false);
+    const handleDelete = (dappName: string) => {
+      markDeleteSent(true);
+      Alert.info(`Deleting ${dappName} now...`)
+      sendDeleteRequest(dappName);
+    }
+    useEffect(() => {
+      if (deleteSent) {
+        if (deleteResponse.error) {
+          Alert.error(`There was an error deleting your dapp: ${deleteResponse.error.message}`)
+        } else if (!deleteResponse.isLoading && deleteResponse.data) {
+          Alert.success(`Your dapp was successfully deleted!`);
+          markDeleteSent(false);
+        }
+      }
+    }, [deleteSent, deleteResponse])
+
+    //CREATE HANDLER
+    const [createSent, markCreateSent] = useState(false);
+    const handleCreate = (dappName: DappArgs) => {
+      markCreateSent(true);
+      Alert.info(`Creating ${dappName} now...`)
+      sendCreateRequest(dappName);
+    }
+    useEffect(() => {
+      if (createSent) {
+        if (createResponse.error) {
+          Alert.error(`There was an error deleting your dapp: ${createResponse.error.message}`)
+        } else if (!createResponse.isLoading && createResponse.data) {
+          Alert.success(`Your dapp is being built!`);
+          markCreateSent(false);
+        }
+      }
+    }, [createSent, createResponse])
+
 
     let dappList:DappDetail[] = [];
+    
     //AUTH CHECK: Check for valid session, log out if expired
     if (listResponse && listResponse.data && (['The incoming token has expired', 'Unauthorized'].includes((listResponse.data as any).message))){
       let newUser = Object.assign(user, { signInUserSession : null });
@@ -123,7 +165,7 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
       }  
       fetchMyAPI();
       return () => { didCancel = true;  console.log("Fetch complote:", didCancel)}; // Remember if we start fetching something else
-    }, [sendListRequest]);
+    }, [sendListRequest, deleteResponse]);
 
     return (
       <div>
@@ -164,17 +206,18 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
           /> */}
           <DeleteDappContainer
             path="/:dappName/delete"
-            dappName="crypto-kitty"
+            dappName="loading ... "
             onCancel={(e, inputs: DeleteDappState) => {
-              const dappName = inputs.dappName;
-              if(dappName){
-                console.log("delete and navigate")
-                navigate(`/home/new/building/` + "dapp");
-              }
+              navigate(`/home`);
+             
             }}
-            onDeleteDappBot={(e, inputs: DeleteDappState) => {
-              console.log(inputs);
-              navigate(`/home/`);
+            onDeleteDappBot={(e, inputs: string) => {
+              const dappName = inputs;
+              if(dappName){
+                handleDelete(dappName);
+                console.log("delete and navigate");
+                navigate(`/home`);
+              }
             }}
             onInputChange={inputs => {
               console.log("DeleteDappContainer Inputs", inputs);
@@ -183,8 +226,8 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
             settingOptions={SETTING_OPTIONS}
             //TODO: EXPOSE DAPP NAME AS A PARAMETER TO THE FUNCTION
             //TODO: Load the Dapp details again
-            onTabChange={() => {
-              navigate(`/home/new/building/` + "dapp");
+            onTabChange={(dappName:string) => {
+              navigate(`/home/${dappName}`);
             }}
           />
           <DappDetailsContainer
@@ -198,8 +241,8 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
             }}
             defaultTab="status"
             settingOptions={SETTING_OPTIONS}
-            onTabChange={() => {
-              navigate(`/home/new/building/` + "dapp");
+            onTabChange={(dappName:string) => {
+              navigate(`/home/${dappName}/delete`);
             }}
           />
         </Router>

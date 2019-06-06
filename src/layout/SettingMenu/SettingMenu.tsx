@@ -27,7 +27,7 @@ export interface SettingMenuProps {
     title: React.ReactNode;
     onClick: () => void;
   }[];
-  onTabChange?: (tab: SettingMenuTabs) => void;
+  onTabChange?: (dappName:string) => void;
 }
 
 export interface SettingMenuState {
@@ -62,12 +62,21 @@ export class SettingMenu extends React.Component<
               <StyledTab
                 selected={selectedTab === "status"}
                 onClick={() => {
-                  onTabChange && onTabChange("status");
+                  onTabChange && onTabChange(dappName);
                 }}
               >
                 Status
               </StyledTab>
-              <Dropdown>
+              <StyledTab
+                selected={selectedTab === "settings"}
+                onClick={() => {
+                  onTabChange && onTabChange(dappName);
+                }}
+              >
+                Settings
+              </StyledTab>
+              {/* TODO IMPLEMENT OTHER DROP DOWN OPTIONS */}
+              {/* <Dropdown>
                 <DropdownTrigger>
                   <StyledTab selected={selectedTab === "settings"}>
                     Settings
@@ -80,7 +89,7 @@ export class SettingMenu extends React.Component<
                     </DropdownItem>
                   ))}
                 </DropdownContent>
-              </Dropdown>
+              </Dropdown> */}
             </Box>
           </Box>
         </Container>

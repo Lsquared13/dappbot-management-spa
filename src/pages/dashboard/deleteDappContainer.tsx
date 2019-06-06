@@ -16,9 +16,10 @@ export interface DeleteDappContainerProps extends RouteComponentProps,DeleteDapp
 }
 
 
-export const DeleteDappContainer: React.SFC<
+export const DeleteDappContainer: React.FC<
 DeleteDappContainerProps
 > = props => {
+  
   return (
     <Box>
       {/* BREADCRUMBS */}

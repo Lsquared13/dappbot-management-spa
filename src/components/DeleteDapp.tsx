@@ -10,17 +10,18 @@ import {
 } from "../layout";
 
 export interface DeleteDappState {
-  dappName: string;
+  dappNameInput: string;
 }
 
 export interface DeleteDappProps {
+  dappName: string;
   onCancel: (
     event: React.MouseEvent<HTMLElement, MouseEvent>,
     inputs: DeleteDappState
   ) => void;
   onDeleteDappBot: (
     event: React.MouseEvent<HTMLElement, MouseEvent>,
-    inputs: DeleteDappState
+    inputs: string
   ) => void;
   onInputChange?: (inputs: DeleteDappState) => void;
 }
@@ -31,16 +32,18 @@ const cleanDappName = (val:string) => {
     .replace(/[^A-Za-z0-9-]/g, '') // Remove non-alphanumerics
 }
 
-const noEdgeHyphens = (val:string) => {
-  return val.charAt(0) !== '-' && val.charAt(val.length - 1) !== '-'
+const matchesDappName = (target:string) => {
+
+  return (value:string)=>{return value == target}
 }
 
 
 export class DeleteDapp extends Component<DeleteDappProps, DeleteDappState> {
   state = {
-    dappName: ""
+    dappNameInput: ""
   };
-
+  
+    
   broadcastInputs = () => {
     let { onInputChange } = this.props;
     onInputChange && onInputChange(Object.assign({}, this.state));
@@ -49,15 +52,17 @@ export class DeleteDapp extends Component<DeleteDappProps, DeleteDappState> {
   onDappNameChange = (input: string) => {
       this.setState(
         {
-          dappName: input
+          dappNameInput: input
         },
         this.broadcastInputs
       );
   };
 
   render() {
-    let { dappName } = this.state;
+    let { dappName} = this.props;
+    let { dappNameInput } = this.state;
     let { onCancel, onDeleteDappBot } = this.props;
+    let disableDelete = dappName == dappNameInput;
     return (
       <LayoutContainer>
         <Box display="flex" direction="column">
@@ -78,12 +83,14 @@ export class DeleteDapp extends Component<DeleteDappProps, DeleteDappState> {
               <Input 
               id={"1"}
               type={"text"}
-            value={this.state.dappName} 
+            value={dappNameInput} 
             name={'DappName'} 
             clean={cleanDappName}
-            isValid={noEdgeHyphens}
+            isValid={matchesDappName(dappName)}
             stateHook={this.onDappNameChange}
-            placeholder= {"eg. Dapp Name"}/>
+            errorMessage={"confirm dapp name to continue"}
+            placeholder= {dappName}/>
+
                 
              
               <Description>
@@ -108,7 +115,8 @@ export class DeleteDapp extends Component<DeleteDappProps, DeleteDappState> {
               <Button
                 block
                 size="small"
-                onClick={e => onDeleteDappBot(e, this.state)}
+                onClick={e => onDeleteDappBot(e, dappName)}
+                disabled={!disableDelete}
               >
                 <ButtonText>Delete from DappBot</ButtonText>
               </Button>

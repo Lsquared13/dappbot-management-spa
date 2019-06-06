@@ -8,7 +8,7 @@ import {
   NetworkReferenceLink,
   EXCAddresLink,
 } from "../layout";
-
+import {StaticConsole} from "./ui/Console/StaticConsole"
 import { ReactComponent as LinkIcon } from "../images/link.svg";
 import { ReactComponent as CheckIcon } from "../images/check.svg";
 
@@ -70,15 +70,18 @@ export const DeployDapp: React.SFC<DeployDappProps> = props => {
             <CheckIcon />
           </Box>
           <Text size="xs" smSize="xs" mdSize="xs" lgSize="xs">
-            <Console />
+            <StaticConsole />
           </Text>
         </Base>
       </Box>
-      <Box marginTop={12}>
-        <Button size="small" onClick={onDeployDapp}>
-          <ButtonText>Deploy Dapp</ButtonText>
-        </Button>
+      <Box display="flex" justifyContent="end">
+        <Box  marginTop={12} >
+          <Button theme={"outlineBlue"} disabled size="small" onClick={onDeployDapp}>
+            <ButtonText>Deploy To IPFS</ButtonText>
+          </Button>
+        </Box>
       </Box>
+      
     </LayoutContainer>
   );
 };
