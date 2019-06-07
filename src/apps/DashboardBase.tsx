@@ -9,6 +9,7 @@ import  { DashboardContainer, DappDetailsContainer,DeleteDappContainer} from "..
 import ABIClerk from "../services/abiClerk";
 
 import { DeleteDappState } from "../components";
+import { NotFound } from "../pages/notFound";
 
 export interface Props extends RouteComponentProps {
   user? : any
@@ -146,6 +147,7 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
               navigate(`/home/${dappName}`);
             }}
           />
+          <NotFound path="/:dappName/denied" />
           <DappDetailsContainer
             path="/:dappName/*"
             dappName="loading"
@@ -159,6 +161,7 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
               navigate(`/home/${dappName}/delete`);
             }}
           />
+          <NotFound default />
           
         </Router>
       </div>
