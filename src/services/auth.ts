@@ -62,6 +62,10 @@ const signIn = async (email: string, password: string) => {
   }
 }
 
+const forgotPassword = async (username: string) => {
+  return await Auth.forgotPassword(username);
+}
+
 const confirmMFASignIn = async (user: CognitoUser, code: string) => {
   return await Auth.confirmSignIn(
     user,   // Return object from Auth.signIn()
@@ -133,5 +137,6 @@ export default {
   confirmMFA: confirmMFASignIn,
   newPassword: completeNewPassword,
   forgotPass: completeForgotPassword,
-  passwordChecker, currentUserInfo
+  passwordChecker, currentUserInfo,
+  forgotPassword: forgotPassword
 }
