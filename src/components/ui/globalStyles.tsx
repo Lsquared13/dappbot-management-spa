@@ -7,6 +7,12 @@ export const breakpoints = {
   lg: "min-width: 1312px"
 };
 
+export const maxBreakpoints = {
+  sm: "max-width: 576px",
+  md: "max-width: 768px",
+  lg: "max-width: 1312px"
+};
+
 export default () => injectGlobal`
 :root {
    /*  ----- colors ----- */

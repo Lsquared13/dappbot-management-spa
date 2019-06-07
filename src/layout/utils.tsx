@@ -97,6 +97,22 @@ export const ReferenceLink: React.SFC<LinkProps> = props => {
   );
 };
 
+export const FancyLink: React.SFC<LinkProps> = props => {
+  return (
+    
+    <Box marginTop={1}>
+      <Text  color="blue" size="xs" smSize="xs" mdSize="xs" lgSize="xs">
+        <Link target="blank" {...props} >
+          <Box display={"inlineBlock"}>
+              <Box display={"inlineBlock"} marginRight={1}>  {props.children}</Box>
+              <LinkIcon />
+            </Box>
+        </Link>
+      </Text>
+    </Box>
+  );
+};
+
 
 const handleCopy = (val: React.SyntheticEvent<HTMLAnchorElement>) => {
   val.preventDefault()

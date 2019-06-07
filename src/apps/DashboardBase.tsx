@@ -95,7 +95,6 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
       }
     ];
     const [listResponse, sendListRequest] = useResource(ABIClerk.list(user),[]);
-    const [createResponse, sendCreateRequest] = useResource(ABIClerk.create(user));
     const [editResponse, sendEditRequest] = useResource(ABIClerk.edit(user));
     const [deleteResponse, sendDeleteRequest] = useResource(ABIClerk.delete(user));
     
@@ -116,24 +115,6 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
         }
       }
     }, [deleteSent, deleteResponse])
-
-    //CREATE HANDLER
-    const [createSent, markCreateSent] = useState(false);
-    const handleCreate = (dappName: DappArgs) => {
-      markCreateSent(true);
-      Alert.info(`Creating ${dappName} now...`)
-      sendCreateRequest(dappName);
-    }
-    useEffect(() => {
-      if (createSent) {
-        if (createResponse.error) {
-          Alert.error(`There was an error deleting your dapp: ${createResponse.error.message}`)
-        } else if (!createResponse.isLoading && createResponse.data) {
-          Alert.success(`Your dapp is being built!`);
-          markCreateSent(false);
-        }
-      }
-    }, [createSent, createResponse])
 
 
     let dappList:DappDetail[] = [];
@@ -174,36 +155,12 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
             path="/"
             dapps={dappList}
             onRefresh={() => {
-              alert("onRefresh is called");
+              navigate(`/home`);
             }}
             onCreateNewApp={() => {
-              navigate(`/home/enigma`);
+              navigate(`/home/new/step-1`);
             }}
           />
-          
-          {/* <GeneralSettingsDappContainer
-            path="/:dappName/settings"
-            dappName="crypto-kitty"
-            selectedNetwork="eth"
-            contractAddress="0x92EB17BE1573e82e6E5DAa17C12Adba00279CEA1"
-            contractABI={JSON.stringify(CONTRACT_ABI)}
-            providerURL="crypto-kitty.dapp.bot"
-            onCancel={(e, inputs: DappSettingsState) => {
-              navigate(`/home/new/building/` + "dapp");
-            }}
-            onSaveChanges={(e, inputs: DappSettingsState) => {
-              console.log(inputs);
-              navigate(`/home/new/building/` + "dapp");
-            }}
-            onInputChange={inputs => {
-              console.log("GeneralSettingsDappContainer Inputs", inputs);
-            }}
-            defaultTab="settings"
-            settingOptions={SETTING_OPTIONS}
-            onTabChange={() => {
-              navigate(`/home/new/building/` + "dapp");
-            }}
-          /> */}
           <DeleteDappContainer
             path="/:dappName/delete"
             dappName="loading ... "
@@ -245,6 +202,30 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
               navigate(`/home/${dappName}/delete`);
             }}
           />
+          {/* TODO: IMPLEMENT EDIT */}
+          {/* <GeneralSettingsDappContainer
+            path="/:dappName/settings"
+            dappName="crypto-kitty"
+            selectedNetwork="eth"
+            contractAddress="0x92EB17BE1573e82e6E5DAa17C12Adba00279CEA1"
+            contractABI={JSON.stringify(CONTRACT_ABI)}
+            providerURL="crypto-kitty.dapp.bot"
+            onCancel={(e, inputs: DappSettingsState) => {
+              navigate(`/home/new/building/` + "dapp");
+            }}
+            onSaveChanges={(e, inputs: DappSettingsState) => {
+              console.log(inputs);
+              navigate(`/home/new/building/` + "dapp");
+            }}
+            onInputChange={inputs => {
+              console.log("GeneralSettingsDappContainer Inputs", inputs);
+            }}
+            defaultTab="settings"
+            settingOptions={SETTING_OPTIONS}
+            onTabChange={() => {
+              navigate(`/home/new/building/` + "dapp");
+            }}
+          /> */}
         </Router>
       </div>
     );

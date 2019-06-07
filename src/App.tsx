@@ -10,6 +10,7 @@ import { HomeBase } from "./layout/HomeBase";
 import { useLocalStorage, currentUserInfo } from './services/auth';
 import { Home, Welcome, Login, Privacy, DappDetails } from './pages';
 import { DashboardBase } from './apps/DashboardBase';
+import { NewDappFormBase } from './apps';
 
 
 // user: {
@@ -52,6 +53,7 @@ const App: FC = () => {
           <HomeBase path="/home" {...userData}>
             {/* SUB-APPLICATION: Dapp Dashboard */}
             <DashboardBase path="/*"  {...userData}/>
+            <NewDappFormBase path="new/*" {...userData} />
           </HomeBase>
         </Router>
       </Elements>

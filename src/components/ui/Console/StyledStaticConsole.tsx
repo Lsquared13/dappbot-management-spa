@@ -14,7 +14,7 @@ export const StyledConsole = styled.div`
     left: 5%;
     height: 0;
     text-align: left;
-    font-size: 1.25em;
+    font-size: 1em;
     font-family: monospace;
     white-space: normal;
     overflow: hidden;

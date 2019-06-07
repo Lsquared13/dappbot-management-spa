@@ -232,10 +232,10 @@ fieldset[disabled] .form-control {
 `;
 
 export const StyledErrorMessage = styled.span`
-  &.textField &.errorMsg {
+  &.errorMsg {
     color: red;
     font-weight: 200 !important;
-    font-size: 0.5rem !important;
+    font-size: 0.8rem !important;
   }
 
   &.hide {

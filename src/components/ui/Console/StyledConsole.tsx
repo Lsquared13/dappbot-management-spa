@@ -309,6 +309,7 @@ export const StyledConsole = styled.div`
       height: 40px;
     }
   }
+  
 `;
 
 export default StyledConsole;

@@ -82,7 +82,7 @@ export const DappDetailsContainer : React.SFC < DappDetailsContainerProps > = pr
     let notFound = (
         <Box>
             <Breadcrumb title={"404 - not found"}/>
-            <DappStatus onStatusCopy={props.onStatusCopy} status={"404 - DAPP NOT FOUND "}/>
+            <DappStatus onStatusCopy={props.onStatusCopy} status={"404 Access Denied: this demo account has insufficient permissions "}/>
         </Box>
     )
     let foundDapp = (

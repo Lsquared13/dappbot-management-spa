@@ -202,7 +202,7 @@ export const Input: FunctionComponent<Props> = (
           innerRef={textfieldRef}
           type={type}
           value={value}
-        />
+        /> 
       <StyledErrorMessage className={classnames('textField','errorMsg', (errMsg !== "")  ? '' : 'hide')}>
         { (errMsg !== "") && errorMessage ? errorMessage : ''}
       </StyledErrorMessage>
