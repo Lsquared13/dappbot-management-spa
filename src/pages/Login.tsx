@@ -37,11 +37,13 @@ export const Login:FC<LoginProps> = (props) => {
         throw Error("Invalid Email")
       }
       const result: any = await Auth.forgotPassword(email)
-      console.log(result)
-      Alert.info(`We sent an email to reset your password at this email: ${email}`)
-      setChallenge('forgotPassword')
-      console.log(setChallenge)
-    } catch (e){
+      if (result.errMsg) {
+        setErr(result.errMsg);
+        } else{
+          Alert.info(`We sent an email to reset your password at this email: ${email}`)
+          setChallenge('forgotPassword')
+        }    
+      } catch (e){
 
       console.log(`Failed to reset password ${e.name}: ${e.message}`)
     }
@@ -115,7 +117,7 @@ export const Login:FC<LoginProps> = (props) => {
         <div className="col">
           <div style={{textAlign: "left"}}>
             <Button disabled={loading} onClick={sendLogin}>Submit</Button>
-            <Button onClick={handleForgotPass}>Forgot Password?</Button>
+            {/* <Button onClick={handleForgotPass}>Forgot Password?</Button> */}
             <ErrorBox errMsg={err}></ErrorBox>
           </div>
           {/* <button className="btn btn-primary" type="button">Submit</button> */}
