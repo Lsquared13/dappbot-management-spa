@@ -46,7 +46,6 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
 
   handleChange = ({ activeTabIndex, event }: any) => {
     event.preventDefault();
-    console.log(this.state.activeIndex);
     this.setState(
       {
         activeIndex: activeTabIndex

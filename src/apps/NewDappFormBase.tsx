@@ -1,21 +1,17 @@
 import React, {useState, useEffect } from 'react';
+import { useResource } from 'react-request-hook';
 import { Router, navigate, RouteComponentProps } from "@reach/router";
 import Alert from 'react-s-alert';
 
 import { NotFound } from "../pages/notFound";
-import NewDappContainer from "../pages/newDappForm/newDappContainer";
-import DappDetailsContainer from "../pages/dashboard/dappDetailsContainer";
-import ConfigureDappContainer from "../pages/newDappForm/configureDappContainer";
+import {NewDappContainer, BuildDetailsContainer, ConfigureDappContainer} from "../pages/newDappForm"
 
-import { CreateDappState, ConfigureDappState, DappDetail } from "../components";
-import { useResource } from 'react-request-hook';
 import ABIClerk from '../services/abiClerk';
+
 import { DappArgs } from '../types';
-import ConfigureDapp from '../components/ConfigureDapp';
-import BuildDetailsContainer from '../pages/newDappForm/buildDetailsContainer';
+import { CreateDappState, ConfigureDappState, DappDetail } from "../components";
 
 
-const dappList:DappDetail[] = [];
 export interface NewDappFormBaseProps extends RouteComponentProps {
   user? : any
   setUser : (user:any)=>void
@@ -28,34 +24,35 @@ export interface DappArgs {
   GuardianURL: string
   ContractAddr: string
 }
-let LOADING_DAPP = {
+
+const SETTING_OPTIONS = [
+  {
+    title: "Building ...",
+    onClick: () => {
+      return 
+    }
+  },
+  {
+    title: "Home",
+    onClick: () => {
+      navigate(`/home`);
+    }
+  },
+
+];
+const LOADING_DAPP = {
   DappName: "Loading ... ",
   Web3URL: "Loading ... ",
   ContractAddr: "Loading ... ",
   DnsName: "Loading ... "
-}as DappDetail
+} as DappDetail
+
+
 export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser, ...props}) => {
     const [DappName, setDappName] = useState("")
-    const [email, setEmail] = useState("");
-    console.log("DAPP STATE LOG:"+DappName)
-    const SETTING_OPTIONS = [
-      {
-        title: "Building ...",
-        onClick: () => {
-          return 
-        }
-      },
-      {
-        title: "Home",
-        onClick: () => {
-          navigate(`/home`);
-        }
-      },
-
-    ];
-
-    //CREATE HANDLER
     const [createResponse, sendCreateRequest] = useResource(ABIClerk.create(user));
+    
+    // ----- CREATE RESPONSE HANDLER ----- 
     const [createSent, markCreateSent] = useState(false);
     const handleCreate = (dappArgs: DappArgs) => {
       markCreateSent(true);
@@ -79,7 +76,6 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
         <NewDappContainer
           path="/step-1"
           onCancel={(e, inputs: CreateDappState) => {
-            console.log(inputs);
             navigate(`/home/`);
           }}
           onConfigDapp={(e, inputs: CreateDappState) => {
@@ -88,28 +84,21 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
             navigate(`/home/new/step-2`);
           }}
           onGithubLink={(e, inputs: CreateDappState) => {
-            console.log(inputs);
             alert("Enteprise Features Disabled");
           }}
           onNoneLink={(e, inputs: CreateDappState) => {
-            console.log(inputs);
             alert("Enteprise Features Disabled");
           }}
           onInputChange={inputs => {
-
-            console.log("NewDappContainer Inputs", inputs);
           }}
         />
         <ConfigureDappContainer
           path="/step-2"
           onCancel={(e, inputs: ConfigureDappState) => {
-            console.log(inputs);
-            // alert("onCancel is called");
             navigate(`/home/`);
           }}
           onCreateDapp={(e, inputs: ConfigureDappState) => {
-            let {selectedNetwork, contractAddress, contractABI,web3URL} = inputs
-            console.log("ONCREATEDAPPCALLED",DappName);
+            let {contractAddress, contractABI,web3URL} = inputs
             if ( DappName == "" ){ 
               navigate(`/home/new/step-1`);
               Alert.error("dapp name required, do not refresh the page when creating a new dapp");
@@ -123,31 +112,20 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
                 ContractAddr: contractAddress
               }
               handleCreate(args)
-              
-              console.log(args);
-              
             }
-            
-            //alert("onCreateDapp is called");
           }}
           onInputChange={inputs => {
             if(DappName==""){ 
               navigate(`/home/new/step-1`);
               Alert.error("dapp name required, do not refresh the page when creating a new dapp");
-            
             }
-            console.log("ConfigureDappContainer Inputs", inputs);
           }}
         />
          <BuildDetailsContainer
+            path="/:dappName/*"
             dappName="loading"
             dapp={LOADING_DAPP}
-           
-            path="/:dappName/*"
-            
-            onStatusCopy={() => {
-              alert("onStatusCopy is called");
-            }}
+            onStatusCopy={() => {}}
             defaultTab="status"
             settingOptions={SETTING_OPTIONS}
             onTabChange={(dappName:string) => {
@@ -155,8 +133,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
             }}
             redirect={() => {
               if(DappName==""){ 
-                navigate(`/home`);
-                
+                navigate(`/home`);   
               }
             }}
         />

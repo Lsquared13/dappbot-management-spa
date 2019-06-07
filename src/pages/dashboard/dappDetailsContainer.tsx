@@ -35,9 +35,6 @@ let DAPP_NOT_FOUND = {
 }as DappDetail
 
 export const DappDetailsContainer : React.SFC < DappDetailsContainerProps > = props => {
-    console.log('--- 2 DappDetailsContainer redendered ---');
-    console.log(props.dapps)
-
     let [dappNotFound,
         setDappNotFound] = useState(false)
     // SET DEFAULT: set dapp loading state, update it when ever the dapp changes and
@@ -68,10 +65,7 @@ export const DappDetailsContainer : React.SFC < DappDetailsContainerProps > = pr
                     // DISPLAY DAPP DATA
                     setDappDetailProps(dapps.pop()as DappDetail)
                 }
-                console.log(dapps)
-
             }
-
         }
         getDappByName(props.dapps, props.dappName);
         return () => {

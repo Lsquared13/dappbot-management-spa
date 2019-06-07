@@ -51,7 +51,7 @@ export const Payment:FC<PaymentProps> = (props) => {
         json: true,
         body: { token, email, name, coupon }
       })
-      console.log('Response from lambda fxn: ',lambdaRes);
+      // console.log('Response from lambda fxn: ',lambdaRes);
       if (lambdaRes.customerId) {
         // Tell the user that they'll be receiving a
         // temporary password in just a moment

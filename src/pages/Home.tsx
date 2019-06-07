@@ -45,7 +45,6 @@ export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
     if (listResponse.data){
       dappList.push(...(listResponse as any).data.data.items)
     }
-    console.log(listResponse)
   } catch (e) {
     console.log('Error when trying to load from listResponse: ',e);
   }

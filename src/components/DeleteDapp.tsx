@@ -41,9 +41,7 @@ const matchesDappName = (target:string) => {
 export class DeleteDapp extends Component<DeleteDappProps, DeleteDappState> {
   state = {
     dappNameInput: ""
-  };
-  
-    
+  }; 
   broadcastInputs = () => {
     let { onInputChange } = this.props;
     onInputChange && onInputChange(Object.assign({}, this.state));

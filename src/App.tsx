@@ -30,11 +30,9 @@ const App: FC = () => {
     async function fetchMyAPI() {
       if (!didCancel) { // Ignore if we started fetching something else
         const user = await currentUserInfo();
-        console.log('Found user: ',user)     
       }
     }  
     fetchMyAPI();
-    console.log('--- 0 User object changed, fetching fresh info ---');
     return () => { didCancel = true; }; // Remember if we start fetching something else
   }, []);
   

@@ -13,9 +13,6 @@ export interface HomeBaseProps extends RouteComponentProps {
 }
 
 export const HomeBase: FC<HomeBaseProps> = ({user, setUser,uri, ...props}) => {
-  
-  console.log()
-  
   return (
     <div className="App" id="appBase">
       <Alert stack={{ limit: 3 }} />

@@ -45,7 +45,6 @@ export class SettingMenu extends React.Component<
   render() {
     let { dappName, onTabChange, settingOptions = [] } = this.props;
     let { selectedTab } = this.state;
-    // console.log(settingOptions);
     return (
       <Box>
         <Container>

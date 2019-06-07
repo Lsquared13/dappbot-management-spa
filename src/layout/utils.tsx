@@ -136,8 +136,6 @@ export interface DappDetailLinkProps {
 
 export const DappDetailLink: React.FC<DappDetailLinkProps> = ({dappName, ...props}) =>{
   const handleDappDetailTransition = (val: string) => {
-  
-    console.log(val)
     navigate(`/home/${val}`)
     return
   }

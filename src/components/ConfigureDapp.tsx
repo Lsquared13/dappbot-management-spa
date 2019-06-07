@@ -149,7 +149,6 @@ export class ConfigureDapp extends Component<
       showProviderInput
     } = this.state;
     let disableSubmit = !(isValidWeb3Url(web3URL)&& isValidABI(contractABI)&&isValidAddress(contractAddress))
-    console.log("showsubmit", disableSubmit)
     let { onCancel, onCreateDapp } = this.props;
     return (
       <LayoutContainer>
