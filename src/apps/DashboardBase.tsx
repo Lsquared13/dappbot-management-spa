@@ -33,19 +33,19 @@ const SETTING_OPTIONS = [
   {
     title: "Customizations",
     onClick: () => {
-      alert("Pro Features Disabled");
+      Alert.info("Pro Features Disabled");
     }
   },
   {
     title: "Version Control",
     onClick: () => {
-      alert("Pro Features Disabled");
+      Alert.info("Pro Features Disabled");
     }
   },
   {
     title: "Team Access",
     onClick: () => {
-      alert("Pro Features Disabled");
+      Alert.info("Pro Features Disabled");
     }
   },
   {
@@ -153,7 +153,7 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
             dappName="loading"
             dapps={dappList}
             onStatusCopy={() => {
-              alert("onStatusCopy is called");
+              Alert.success("Value copied to clipboard");
             }}
             defaultTab="status"
             settingOptions={SETTING_OPTIONS}

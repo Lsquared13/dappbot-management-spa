@@ -1,17 +1,8 @@
 import * as React from "react";
-import { Box, Table, Text, TextProps, EXCAddress } from "../../components/ui";
-import { ReferenceLink, NetworkReferenceLink, EXCAddresLink, DappDetailLink, FancyLink } from "../utils";
+import { Box, Table, Text, TextProps } from "../../components/ui";
+import { NetworkReferenceLink, EXCAddresLink, DappDetailLink, FancyLink } from "../utils";
 import { ReactComponent as CheckIcon } from "../../images/check.svg";
-import { ReactComponent as LoadingIcon } from "../../images/loading.svg";
-import { ReactComponent as LinkIcon } from "../../images/link.svg";
 
-// export interface DappDetail {
-//   name: string;
-//   status: "available" | "building" | "creating";
-//   network: string;
-//   address: string;
-//   url: string;
-// }
 export interface DappDetail {
   DappName: string;
   DnsName: string;

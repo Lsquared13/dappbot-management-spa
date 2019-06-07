@@ -26,14 +26,11 @@ const App: FC = () => {
   let userData = { user, setUser };
   
   useEffect(() => {
-    let didCancel = false;
     async function fetchMyAPI() {
-      if (!didCancel) { // Ignore if we started fetching something else
-        const user = await currentUserInfo();
-      }
+         user = await currentUserInfo();
     }  
     fetchMyAPI();
-    return () => { didCancel = true; }; // Remember if we start fetching something else
+   
   }, []);
   
   return (

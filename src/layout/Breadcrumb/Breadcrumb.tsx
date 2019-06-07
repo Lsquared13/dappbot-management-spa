@@ -35,15 +35,7 @@ const Breadcrumbs: React.SFC<BreadcrumbProps> = props => (
         /  
       </span>
     </NavLink>
-    {" "}
-    <NavLink to="/home/1/user-settings">
       {" "}
-      USER SETTINGS{" "}
-      <span style={{ color: "black", textDecoration: "none !important" }}>
-        /
-      </span>
-    </NavLink>
-
     <NavLink to="/home/new/step-1">
       {" "}
       NEW DAPP{" "}
