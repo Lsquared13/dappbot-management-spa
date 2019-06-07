@@ -156,7 +156,7 @@ export class ConfigureDapp extends Component<
           <InputGroup>
             <InputTitle>Contract Deployed Address</InputTitle>
             <InputContainer>
-              <Box smColumn={12} mdColumn={8}>
+              <Box column={12} smColumn={12} mdColumn={8}>
               <Input 
                 id={"1"}
                 type={"text"}
@@ -182,7 +182,7 @@ export class ConfigureDapp extends Component<
           <InputGroup>
             <InputTitle>Contract ABI</InputTitle>
             <InputContainer>
-              <Box smColumn={12} mdColumn={8}>
+              <Box column={12} smColumn={12} mdColumn={8}>
               <Input 
                 id={"ContractABI"}
                 type={"text"}

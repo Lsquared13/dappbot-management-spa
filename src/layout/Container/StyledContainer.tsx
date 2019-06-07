@@ -12,7 +12,7 @@ export const StyledConsole = styled.div`
   }
 
   @media (${breakpoints.lg}) {
-    padding: 0px  18%
+    padding: 0px  12%
   }
 `;
 

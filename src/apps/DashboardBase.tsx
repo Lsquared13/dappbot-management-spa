@@ -76,7 +76,7 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
           }
       }  
       fetchMyAPI();
-      return () => { didCancel = true;  console.log("Fetch complete:", didCancel)}; // Remember if we start fetching something else
+      return () => { didCancel = true;}; // Remember if we start fetching something else
     }, [sendListRequest, deleteResponse]);
     
     //----- DELETE RESPONSE HANDLER ----- 

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Box, Table, Text, TextProps, EXCAddress } from "../../components/ui";
-import { ReferenceLink, NetworkReferenceLink, EXCAddresLink, DappDetailLink } from "../utils";
+import { ReferenceLink, NetworkReferenceLink, EXCAddresLink, DappDetailLink, FancyLink } from "../utils";
 import { ReactComponent as CheckIcon } from "../../images/check.svg";
 import { ReactComponent as LoadingIcon } from "../../images/loading.svg";
 import { ReactComponent as LinkIcon } from "../../images/link.svg";
@@ -58,7 +58,7 @@ export const DappTable: React.SFC<DappTableProps> = props => {
     name: <DappDetailLink dappName={dapp.DappName}/>,
     network: <NetworkReferenceLink href={dapp.Web3URL}></NetworkReferenceLink>,
     address: <EXCAddresLink short address={dapp.ContractAddr} /> ,
-    url: <ReferenceLink href={dapp.DnsName}/>,
+    url: <FancyLink href={`https://${dapp.DnsName}`}>{`https://${dapp.DnsName}`}</FancyLink>,
     status: (
       //TODO: FACTOR OUT ONCE WE HAVE STATUS API
       <Box marginLeft={-5}display="flex" alignItems="start" >

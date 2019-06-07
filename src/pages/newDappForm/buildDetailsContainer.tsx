@@ -56,7 +56,7 @@ export const BuildDetailsContainer : React.SFC < buildDetailsContainerProps > = 
         </Box>
     )
     setTimeout(function() {
-        Alert.success("Build complete.")
+        Alert.success("Build complete!")
         navigate(`/home`);
         
     }, 1000*60*5);

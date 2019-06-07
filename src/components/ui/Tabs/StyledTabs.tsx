@@ -29,7 +29,7 @@ export const StyledTab: StyledComponentClass<
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    padding: 8px 16px;
+    padding: 8px 25px 0px 8px;
     text-decoration: none;
     height: 70px;
     border: 0;
@@ -63,7 +63,7 @@ export const StyledTab: StyledComponentClass<
   }
 
   &.tabIsActive {
-    border-bottom: 4px solid #0064ff;
+    border-bottom: 2px solid #0064ff;
   }
 
   &.tabIsActive .icon {

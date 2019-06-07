@@ -11,6 +11,7 @@ import {
 import {StaticConsole} from "./ui/Console/StaticConsole"
 import { ReactComponent as LinkIcon } from "../images/link.svg";
 import { ReactComponent as CheckIcon } from "../images/check.svg";
+import { FancyLink } from '../layout/utils';
 
 export interface DappDetail {
   DappName: string;
@@ -34,9 +35,9 @@ export const DeployDapp: React.SFC<DeployDappProps> = props => {
         <Box>
           <InputTitle>Dapp URL</InputTitle>
           <Box marginTop={2}>
-            <ReferenceLink href={dappDetail.DnsName}>
-              {dappDetail.DnsName} <LinkIcon />
-            </ReferenceLink>
+            <FancyLink href={`https://${dappDetail.DnsName}`}>
+              {`https://${dappDetail.DnsName}`}
+            </FancyLink>
           </Box>
         </Box>
         <Box>
