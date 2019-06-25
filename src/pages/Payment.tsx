@@ -32,23 +32,48 @@ export const CheckoutBox:FC<{numDapps:string}> = ({numDapps}) => {
   )
 }
 
+
 export const Payment:FC<PaymentProps> = (props) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [coupon, setCoupon] = useState('');
   const [numDapps, setNumDapps] = useState('0');
+  const [addon1, setAddon1] = useState(false)
+  const [addon2, setAddon2] = useState(false)
+  const [addon3, setAddon3] = useState(false)
   
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
   const [successful, setSuccessful] = useState(false);
   const createSubscription = async () => {
+    let planType = "plan"
+    if(addon1){
+      planType = planType.concat("_Bra_1")
+    }else{
+      planType = planType.concat("_Bra_0")
+    }
+    if(addon2){
+      planType = planType.concat("_Url_1")
+    }else{
+      planType = planType.concat("_Url_0")
+    }
+    if(addon3){
+      planType = planType.concat("_Wat_1")
+    }else{
+      planType = planType.concat("_Wat_0")
+    }
     if (props.stripe && process.env.REACT_APP_PAYMENT_ENDPOINT){
       setLoading(true);
       setErr('');
+      console.log('name: ',name)
       const token = await props.stripe.createToken({name});
-      const lambdaRes = await request.post(process.env.REACT_APP_PAYMENT_ENDPOINT, {
+      console.log(token.token)
+      console.log(planType)
+      const lambdaRes = await request.post(process.env.REACT_APP_PAYMENT_ENDPOINT.concat("/create-stripe"), {
         json: true,
-        body: { token, email, name, coupon }
+        body: { "token":token.token,"plans":[{
+          [planType] : numDapps
+        }], "email":email, "name":name, "coupon":coupon}
       })
       console.log('Response from lambda fxn: ',lambdaRes);
       if (lambdaRes.customerId) {
@@ -56,7 +81,8 @@ export const Payment:FC<PaymentProps> = (props) => {
         // temporary password in just a moment
         setSuccessful(true);
       } else {
-        setErr(lambdaRes.err);
+        console.log(lambdaRes.err)
+        // setErr(lambdaRes.err);
       }
       setLoading(false);
     }
@@ -116,14 +142,11 @@ export const Payment:FC<PaymentProps> = (props) => {
                   </div>
                 </div>
 
-                <div className="row mt-4">
+                <div className="row-mt-4">
                   <div className="col">
-                    <NumberField name='numDapps' 
-                    value={numDapps}
-                    disabled={loading}
-                    size={Uints.size32}
-                    displayName='Number of Dapps'
-                    onChange={setNumDapps} />
+                  <input type={"checkbox"} className="Addon 1" onChange={e=>setAddon1(!addon1)}></input>
+                  <input type={"checkbox"} className="Addon 2" onChange={e=>setAddon2(!addon2)}></input>
+                  <input type={"checkbox"} className="Addon 3" onChange={e=>setAddon3(!addon3)}></input>
                   </div>
                 </div>
 

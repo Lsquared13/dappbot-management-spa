@@ -6,7 +6,7 @@ import './variable.css';
 import './custom.css'
 import PageBase from './components/PageBase';
 import { useLocalStorage, currentUserInfo } from './services/auth';
-import { Home, Welcome, Login, Privacy, DappDetails } from './pages';
+import { Home, Welcome, Login, Privacy, DappDetails,PaymentPage } from './pages';
 
 
 // user: {
@@ -35,8 +35,8 @@ const App: FC = () => {
             <Home path='home' {...userData} />
             <DappDetails path="home/:id" {...userData} />
             <Login path='login' {...userData} />
-            {/* <PaymentPage path='signup' /> */}
-            <Privacy path='privacy' />
+            <PaymentPage path='signup' {...userData}/>
+            <Privacy path='privacy'  />
           </PageBase>
         </Router>
       </Elements>
