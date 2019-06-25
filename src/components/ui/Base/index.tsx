@@ -1,3 +1,4 @@
 import Base from "./Base";
-import StyledBase from "./StyledBase";
-export { Base as default, StyledBase };
+export * from "./Base";
+export * from "./StyledBase";
+export default Base;

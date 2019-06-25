@@ -23,10 +23,10 @@ export const FormFields:FunctionComponent<FormFieldProps> = (props)=>{
     setDappName, setAbi, setWeb3URL, setGuardianURL, setContractAddr
   ] = setValFactory('DappName', 'Abi', 'Web3URL', 'GuardianURL', 'ContractAddr')
 
-  // Spaces to hyphens, eliminate non-alphanumerics
   const cleanDappName = (val:string) => {
-    let spaceToHyphen = val.replace(/\s/g, '-');
-    return spaceToHyphen.replace(/[^A-Za-z0-9-]/g, '').toLowerCase();
+    return val.toLowerCase()
+      .replace(/\s/g, '-') // Convert spaces to hyphens
+      .replace(/[^A-Za-z0-9-]/g, '') // Remove non-alphanumerics
   }
 
   const onlyVisible = (name:DappArgNameStrs, field:React.ReactNode) => {

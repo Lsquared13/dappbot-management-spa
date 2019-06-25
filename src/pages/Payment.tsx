@@ -2,13 +2,14 @@ import React, { FC, useState } from 'react';
 import { RouteComponentProps, Link } from '@reach/router';
 import { StringField, NumberField, Uints } from '../components/fields';
 import { Button, Box, Text } from '../components/ui';
-import { ErrorBox } from '../components';
+
 import { CardElement, injectStripe, ReactStripeElements } from 'react-stripe-elements';
 import request from 'request-promise-native';
 import validate from 'validator';
 
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
+import { ErrorBox } from '../components';
 
 interface PaymentProps extends RouteComponentProps, ReactStripeElements.InjectedStripeProps {
   user?: any
@@ -75,7 +76,7 @@ export const Payment:FC<PaymentProps> = (props) => {
           [planType] : numDapps
         }], "email":email, "name":name, "coupon":coupon}
       })
-      console.log('Response from lambda fxn: ',lambdaRes);
+      // console.log('Response from lambda fxn: ',lambdaRes);
       if (lambdaRes.customerId) {
         // Tell the user that they'll be receiving a
         // temporary password in just a moment

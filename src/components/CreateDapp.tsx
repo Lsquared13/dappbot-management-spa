@@ -1,0 +1,222 @@
+import * as React from "react";
+import { Box, Button, Text, Input} from "../components/ui";
+import {
+  LayoutContainer,
+  ButtonText,
+  Description,
+  InputContainer,
+  InputGroup,
+  InputTitle
+} from "../layout";
+import { isValidDappName, cleanDappName, isValidUrl} from "./ui/Input/utils";
+
+import { ReactComponent as GithubIcon } from "../images/Github.svg";
+
+
+export type InputEvent =
+  | React.ChangeEvent<HTMLInputElement>
+  | React.ChangeEvent<HTMLSelectElement>
+  | React.ChangeEvent<HTMLTextAreaElement>
+  | undefined;
+
+export interface CreateDappProps {
+  onCancel: (
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
+    inputs: CreateDappState
+  ) => void;
+  onConfigDapp: (
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
+    inputs: CreateDappState
+  ) => void;
+  onGithubLink: (
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
+    inputs: CreateDappState
+  ) => void;
+  onNoneLink: (
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
+    inputs: CreateDappState
+  ) => void;
+  onInputChange?: (inputs: CreateDappState) => void;
+}
+
+export interface CreateDappState {
+  buildDestination: string;
+  dappName: string;
+}
+
+export class CreateDapp extends React.Component<
+  CreateDappProps,
+  CreateDappState
+> {
+  state: CreateDappState = {
+    dappName: "",
+    buildDestination: ""
+  };
+
+  broadcastInputs = () => {
+    let { onInputChange } = this.props;
+    onInputChange && onInputChange(Object.assign({}, this.state));
+  };
+
+  onBuildDestinationChange =  (inputEventValue: string)=> {
+
+      this.setState(
+        {
+          buildDestination: inputEventValue
+        },
+        this.broadcastInputs
+      );
+  
+  };
+
+  onDappNameChange = (inputEventValue: string) => {
+  
+      this.setState(
+        {
+          dappName: inputEventValue
+        },
+        this.broadcastInputs
+      );
+  
+  };
+
+  render() {
+    let { onConfigDapp, onCancel, onGithubLink, onNoneLink } = this.props;
+    let { dappName, buildDestination } = this.state;
+    let disableSubmit = !(dappName!=="" && isValidDappName(dappName))
+    return (
+      <LayoutContainer>
+        <Box display="flex" marginBottom={12}>
+          <Box smColumn={12} mdColumn={10} lgColumn={8}> 
+            <InputGroup>
+              <InputTitle>Dapp Name</InputTitle>
+              <InputContainer>
+              <Box column={12} >
+              <Input 
+                  id={"1"}
+                  type={"text"}
+                  value={dappName} 
+                  name={'dappName'} 
+                  clean={cleanDappName}
+                  isValid={isValidDappName}
+                  stateHook={this.onDappNameChange}
+                  errorMessage={"This name will be lower-cased, and must begin and end with a letter or number.  Only letters, numbers, and hyphens please!"}
+                  placeholder= {"Dapp Name"}/>
+              </Box>
+               
+              </InputContainer>
+              <Description>
+                This Dapp name will be created to create the Dapp URL and can
+                not be changed after creation.
+              </Description>
+            </InputGroup>
+
+            <InputGroup>
+              <InputTitle>Build Desitination</InputTitle>
+              <InputContainer>
+                  <Box column={12}>
+                    <Input 
+                      id={"1"}
+                      type={"text"}
+                      value={buildDestination} 
+                      name={'buildDestination'} 
+                      disabled
+                      isValid={isValidUrl}
+                      stateHook={this.onBuildDestinationChange}
+                      errorMessage={"This name will be lower-cased, and must begin and end with a letter or number.  Only letters, numbers, and hyphens please!"}
+                      placeholder= {"🔐 Requires Enteprise License"}/>
+                  </Box>
+                
+                  
+              </InputContainer>
+              <Description>
+                The repositiory identifier in the format username/respositorty.
+                Only public Github repositiories can be used at this time.
+                Dapp source code will be placed here.
+              </Description>
+            </InputGroup>
+          </Box>
+
+          <Box
+            display="flex"
+            direction="column"
+            justifyContent="center"
+            mdMarginLeft={12}
+            marginLeft={6}
+            mdColumn={2}
+            lgColumn={4}
+            smDisplay={"none"}
+          >
+            <Text
+              bold
+              color="gray"
+              size="sm"
+              smSize="sm"
+              mdSize="sm"
+              lgSize="sm"
+            >
+              Repository
+            </Text>
+            <Box display="flex" wrap={true} marginBottom={3} marginTop={2}>
+              <Box width={100}>
+                <Button
+                  block
+                  size="small"
+                  theme="outlineBlue"
+                  onClick={e => onNoneLink(e, this.state)}
+                  disabled
+                >
+                  <ButtonText>None</ButtonText>
+                </Button>
+              </Box>
+              <Box display="inlineBlock" margin={2} />
+              <Box width={100}>
+                <Button
+                  block
+                  size="small"
+                  theme="outlineBlue"
+                  onClick={e => onGithubLink(e, this.state)}
+                  disabled
+                >
+                  <Box display="inlineBlock" marginRight={2}>
+                    <GithubIcon />
+                  </Box>
+                  <ButtonText>Github</ButtonText>
+                </Button>
+              </Box>
+            </Box>
+            <Description>*requires dapp license</Description>
+     
+    
+          </Box>
+        </Box>
+
+        <Box display="flex">
+          <Box width={125}>
+            <Button
+              block
+              size="small"
+              onClick={e => onConfigDapp(e, this.state)}
+              disabled={disableSubmit}
+            >
+              <ButtonText>Configure Dapp</ButtonText>
+            </Button>
+          </Box>
+          <Box display="inlineBlock" margin={2} />
+          <Box width={125}>
+            <Button
+              block
+              size="small"
+              theme="outlineBlue"
+              onClick={e => onCancel(e, this.state)}
+            >
+              <ButtonText>Cancel</ButtonText>
+            </Button>
+          </Box>
+        </Box>
+      </LayoutContainer>
+    );
+  }
+}
+
+export default CreateDapp;

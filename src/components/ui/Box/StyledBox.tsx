@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { breakpoints } from "./../globalStyles";
+import { breakpoints, maxBreakpoints } from "./../globalStyles";
 export const StyledBox = styled.div`
   &.box {
     box-sizing: border-box;
@@ -42,11 +42,23 @@ export const StyledBox = styled.div`
     white-space: nowrap;
     width: 1px;
   }
-
-  @media (${breakpoints.sm}) {
+  @media (${maxBreakpoints.sm}) {
     &.smDisplayNone {
       display: none;
     }
+  }
+  @media (${maxBreakpoints.md}) {
+    &.mdDisplayNone {
+      display: none;
+    }
+  }
+  @media (${maxBreakpoints.lg}) {
+    &.lgDisplayNone {
+      display: none;
+    }
+  }
+  @media (${breakpoints.sm}) {
+   
 
     &.smDisplayFlex {
       display: flex;
@@ -74,9 +86,6 @@ export const StyledBox = styled.div`
   }
 
   @media (${breakpoints.md}) {
-    &.mdDisplayNone {
-      display: none;
-    }
 
     &.mdDisplayFlex {
       display: flex;
@@ -104,10 +113,7 @@ export const StyledBox = styled.div`
   }
 
   @media (${breakpoints.lg}) {
-    &.lgDisplayNone {
-      display: none;
-    }
-
+  
     &.lgDisplayFlex {
       display: flex;
       flex-direction: row;
