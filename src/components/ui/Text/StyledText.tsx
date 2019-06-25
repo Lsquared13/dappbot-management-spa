@@ -7,7 +7,7 @@ export const StyledText = styled.div`
     --font-size-3: 16px;
     --font-size-4: 18px;
     --font-size-5: 21px;
-    font-family: 'DINRoundPro';
+    font-family: 'DINRoundPro',"Inter UI";
   }
 
   &.inline {

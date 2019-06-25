@@ -2,6 +2,8 @@ import React, { FC, useState } from 'react';
 import { Button } from '../components/ui';
 import { StringField } from '../components/fields';
 import Auth, { passwordChecker } from '../services/auth';
+import Alert from 'react-s-alert';
+
 
 interface MfaChallengeProps {
   email: string
@@ -25,6 +27,7 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
     setLoading(true);
     try {
       await Auth.forgotPass(email, code, newPass);
+      Alert.info(`Successfully changed your password!`)
       setChallenge('');
     } catch (e){
       setErr(e.toString());

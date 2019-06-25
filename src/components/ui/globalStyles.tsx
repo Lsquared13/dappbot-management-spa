@@ -1,9 +1,16 @@
 import { injectGlobal } from "styled-components";
+// import "./font.css";
 
 export const breakpoints = {
   sm: "min-width: 576px",
   md: "min-width: 768px",
-  lg: "min-width: 1312p"
+  lg: "min-width: 1312px"
+};
+
+export const maxBreakpoints = {
+  sm: "max-width: 576px",
+  md: "max-width: 768px",
+  lg: "max-width: 1312px"
 };
 
 export default () => injectGlobal`
@@ -37,6 +44,7 @@ export default () => injectGlobal`
   --color-blue-11: #0f2952;
   --color-blue-12: #162b4d;
   --color-blue-13: #052244;
+  --color-blue-14: #005ABB;
   /* green */
   --color-green-1: #f2fff9;
   --color-green-2: #e7fff3;
@@ -634,8 +642,7 @@ html[dir="rtl"] .roundedLeft {
 }
 
 .selfCenter {
-  max-width: 60%;
-  margin: auto;
+  align-self: center;
 }
 
 .selfBaseline {

@@ -62,6 +62,10 @@ const signIn = async (email: string, password: string) => {
   }
 }
 
+const forgotPassword = async (username: string) => {
+  return await Auth.forgotPassword(username);
+}
+
 const confirmMFASignIn = async (user: CognitoUser, code: string) => {
   return await Auth.confirmSignIn(
     user,   // Return object from Auth.signIn()
@@ -88,7 +92,7 @@ passwordChecker
   .has().not().spaces();
 
 // Courtesy of https://usehooks.com/useLocalStorage/
-export function useLocalStorage<ValueType>(key:string, initialValue:ValueType) {
+export function useLocalStorage<ValueType>(key:string, initialValue:ValueType):any[] {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState(() => {
@@ -133,5 +137,6 @@ export default {
   confirmMFA: confirmMFASignIn,
   newPassword: completeNewPassword,
   forgotPass: completeForgotPassword,
-  passwordChecker, currentUserInfo
+  passwordChecker, currentUserInfo,
+  forgotPassword: forgotPassword
 }
