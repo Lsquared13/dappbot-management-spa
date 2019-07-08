@@ -9,6 +9,8 @@ import PageBase from './layout/PageBase';
 import { HomeBase } from "./layout/HomeBase";
 import { useLocalStorage, currentUserInfo } from './services/auth';
 
+import { SettingsContainerBase } from "./apps/SettingsContainerBase";
+
 import { Home, Welcome, Login, Privacy, DappDetails, PaymentPage } from './pages';
 import { DashboardBase } from './apps/DashboardBase';
 import { NewDappFormBase } from './apps';
@@ -25,6 +27,7 @@ const App: FC = () => {
   let user,setUser;
   [user, setUser] = useLocalStorage('user', {});
   let userData = { user, setUser };
+  console.log("USER: ",user)
   
   useEffect(() => {
     async function fetchMyAPI() {
@@ -50,6 +53,7 @@ const App: FC = () => {
             {/* SUB-APPLICATION: Dapp Dashboard */}
             <DashboardBase path="/*"  {...userData}/>
             <NewDappFormBase path="new/*" {...userData} />
+            <SettingsContainerBase path="user-settings/*" />
           </HomeBase>
         </Router>
       </Elements>

@@ -1,0 +1,2308 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Checkbox 1`] = `
+.c0.box {
+  box-sizing: border-box;
+}
+
+.c0.box:focus {
+  box-shadow: 0 0 0 4px rgba(0,132,255,0&.5);
+  outline: 0;
+}
+
+.c0.xsDisplayNone {
+  display: none;
+}
+
+.c0.xsDisplayFlex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.c0.xsDisplayBlock {
+  display: block;
+}
+
+.c0.xsDisplayInlineBlock {
+  display: inline-block;
+}
+
+.c0.xsDisplayVisuallyHidden {
+  border: 0;
+  -webkit-clip: rect(0 0 0 0);
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.c0.xsDirectionRow {
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.c0.xsDirectionColumn {
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c0.xsCol0 {
+  width: 0;
+}
+
+.c1:root {
+  --red: #e60023;
+  --size-sm: 16px;
+  --size-md: 24px;
+}
+
+.c1.input {
+  position: absolute;
+  margin: calc(var(--vbt) * 0) calc(var(--hbt) * 0);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  opacity: 0;
+  outline: 0;
+}
+
+.c1.inputEnabled {
+  cursor: pointer;
+}
+
+.c1.inputSm {
+  height: var(--size-sm);
+  width: var(--size-sm);
+}
+
+.c1.inputMd {
+  height: var(--size-md);
+  width: var(--size-md);
+}
+
+.c2:root {
+  --red: #e60023;
+  --size-sm: 16px;
+  --size-md: 24px;
+}
+
+.c2.border {
+  border-color: #8e8e8e;
+}
+
+.c2.borderError {
+  border-color: #e3780c;
+}
+
+.c2.borderDark {
+  border-color: #333;
+}
+
+.c2.check {
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.c2.checkEnabled {
+  cursor: pointer;
+}
+
+.c2.checkFocused {
+  box-shadow: 0 0 0 4px rgba(0,132,255,0.5);
+  outline: 0;
+}
+
+.c2.checkSm {
+  border-radius: 3px;
+  height: var(--size-sm);
+  width: var(--size-sm);
+}
+
+.c2.checkMd {
+  border-radius: 4px;
+  height: var(--size-md);
+  width: var(--size-md);
+}
+
+@media (min-width:576px) {
+  .c0.smDisplayNone {
+    display: none;
+  }
+
+  .c0.smDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.smDisplayBlock {
+    display: block;
+  }
+
+  .c0.smDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.smDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdDisplayNone {
+    display: none;
+  }
+
+  .c0.mdDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.mdDisplayBlock {
+    display: block;
+  }
+
+  .c0.mdDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.mdDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgDisplayNone {
+    display: none;
+  }
+
+  .c0.lgDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.lgDisplayBlock {
+    display: block;
+  }
+
+  .c0.lgDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.lgDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:576px) {
+  .c0.smDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.smDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.mdDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.lgDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:576px) {
+  .c0.smCol0 {
+    width: 0;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdCol0 {
+    width: 0;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgCol0 {
+    width: 0;
+  }
+}
+
+<div
+  class="box relative c0"
+>
+  <input
+    class="input disabled size c1"
+    id="id"
+    type="checkbox"
+  />
+  <div
+    class="border check whiteBg enabled size c2"
+  />
+</div>
+`;
+
+exports[`Checkbox checked 1`] = `
+.c0.box {
+  box-sizing: border-box;
+}
+
+.c0.box:focus {
+  box-shadow: 0 0 0 4px rgba(0,132,255,0&.5);
+  outline: 0;
+}
+
+.c0.xsDisplayNone {
+  display: none;
+}
+
+.c0.xsDisplayFlex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.c0.xsDisplayBlock {
+  display: block;
+}
+
+.c0.xsDisplayInlineBlock {
+  display: inline-block;
+}
+
+.c0.xsDisplayVisuallyHidden {
+  border: 0;
+  -webkit-clip: rect(0 0 0 0);
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.c0.xsDirectionRow {
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.c0.xsDirectionColumn {
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c0.xsCol0 {
+  width: 0;
+}
+
+.c1:root {
+  --red: #e60023;
+  --size-sm: 16px;
+  --size-md: 24px;
+}
+
+.c1.input {
+  position: absolute;
+  margin: calc(var(--vbt) * 0) calc(var(--hbt) * 0);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  opacity: 0;
+  outline: 0;
+}
+
+.c1.inputEnabled {
+  cursor: pointer;
+}
+
+.c1.inputSm {
+  height: var(--size-sm);
+  width: var(--size-sm);
+}
+
+.c1.inputMd {
+  height: var(--size-md);
+  width: var(--size-md);
+}
+
+.c2:root {
+  --red: #e60023;
+  --size-sm: 16px;
+  --size-md: 24px;
+}
+
+.c2.border {
+  border-color: #8e8e8e;
+}
+
+.c2.borderError {
+  border-color: #e3780c;
+}
+
+.c2.borderDark {
+  border-color: #333;
+}
+
+.c2.check {
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.c2.checkEnabled {
+  cursor: pointer;
+}
+
+.c2.checkFocused {
+  box-shadow: 0 0 0 4px rgba(0,132,255,0.5);
+  outline: 0;
+}
+
+.c2.checkSm {
+  border-radius: 3px;
+  height: var(--size-sm);
+  width: var(--size-sm);
+}
+
+.c2.checkMd {
+  border-radius: 4px;
+  height: var(--size-md);
+  width: var(--size-md);
+}
+
+@media (min-width:576px) {
+  .c0.smDisplayNone {
+    display: none;
+  }
+
+  .c0.smDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.smDisplayBlock {
+    display: block;
+  }
+
+  .c0.smDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.smDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdDisplayNone {
+    display: none;
+  }
+
+  .c0.mdDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.mdDisplayBlock {
+    display: block;
+  }
+
+  .c0.mdDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.mdDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgDisplayNone {
+    display: none;
+  }
+
+  .c0.lgDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.lgDisplayBlock {
+    display: block;
+  }
+
+  .c0.lgDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.lgDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:576px) {
+  .c0.smDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.smDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.mdDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.lgDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:576px) {
+  .c0.smCol0 {
+    width: 0;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdCol0 {
+    width: 0;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgCol0 {
+    width: 0;
+  }
+}
+
+<div
+  class="box relative c0"
+>
+  <input
+    checked=""
+    class="input disabled size c1"
+    id="id"
+    type="checkbox"
+  />
+  <div
+    class="borderDark check darkGrayBg enabled size c2"
+  />
+</div>
+`;
+
+exports[`Checkbox disabled & checked 1`] = `
+.c0.box {
+  box-sizing: border-box;
+}
+
+.c0.box:focus {
+  box-shadow: 0 0 0 4px rgba(0,132,255,0&.5);
+  outline: 0;
+}
+
+.c0.xsDisplayNone {
+  display: none;
+}
+
+.c0.xsDisplayFlex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.c0.xsDisplayBlock {
+  display: block;
+}
+
+.c0.xsDisplayInlineBlock {
+  display: inline-block;
+}
+
+.c0.xsDisplayVisuallyHidden {
+  border: 0;
+  -webkit-clip: rect(0 0 0 0);
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.c0.xsDirectionRow {
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.c0.xsDirectionColumn {
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c0.xsCol0 {
+  width: 0;
+}
+
+.c1:root {
+  --red: #e60023;
+  --size-sm: 16px;
+  --size-md: 24px;
+}
+
+.c1.input {
+  position: absolute;
+  margin: calc(var(--vbt) * 0) calc(var(--hbt) * 0);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  opacity: 0;
+  outline: 0;
+}
+
+.c1.inputEnabled {
+  cursor: pointer;
+}
+
+.c1.inputSm {
+  height: var(--size-sm);
+  width: var(--size-sm);
+}
+
+.c1.inputMd {
+  height: var(--size-md);
+  width: var(--size-md);
+}
+
+.c2:root {
+  --red: #e60023;
+  --size-sm: 16px;
+  --size-md: 24px;
+}
+
+.c2.border {
+  border-color: #8e8e8e;
+}
+
+.c2.borderError {
+  border-color: #e3780c;
+}
+
+.c2.borderDark {
+  border-color: #333;
+}
+
+.c2.check {
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.c2.checkEnabled {
+  cursor: pointer;
+}
+
+.c2.checkFocused {
+  box-shadow: 0 0 0 4px rgba(0,132,255,0.5);
+  outline: 0;
+}
+
+.c2.checkSm {
+  border-radius: 3px;
+  height: var(--size-sm);
+  width: var(--size-sm);
+}
+
+.c2.checkMd {
+  border-radius: 4px;
+  height: var(--size-md);
+  width: var(--size-md);
+}
+
+@media (min-width:576px) {
+  .c0.smDisplayNone {
+    display: none;
+  }
+
+  .c0.smDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.smDisplayBlock {
+    display: block;
+  }
+
+  .c0.smDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.smDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdDisplayNone {
+    display: none;
+  }
+
+  .c0.mdDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.mdDisplayBlock {
+    display: block;
+  }
+
+  .c0.mdDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.mdDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgDisplayNone {
+    display: none;
+  }
+
+  .c0.lgDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.lgDisplayBlock {
+    display: block;
+  }
+
+  .c0.lgDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.lgDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:576px) {
+  .c0.smDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.smDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.mdDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.lgDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:576px) {
+  .c0.smCol0 {
+    width: 0;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdCol0 {
+    width: 0;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgCol0 {
+    width: 0;
+  }
+}
+
+<div
+  class="box relative c0"
+>
+  <input
+    checked=""
+    class="input size c1"
+    disabled=""
+    id="id"
+    type="checkbox"
+  />
+  <div
+    class="border check grayBg size c2"
+  />
+</div>
+`;
+
+exports[`Checkbox disabled 1`] = `
+.c0.box {
+  box-sizing: border-box;
+}
+
+.c0.box:focus {
+  box-shadow: 0 0 0 4px rgba(0,132,255,0&.5);
+  outline: 0;
+}
+
+.c0.xsDisplayNone {
+  display: none;
+}
+
+.c0.xsDisplayFlex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.c0.xsDisplayBlock {
+  display: block;
+}
+
+.c0.xsDisplayInlineBlock {
+  display: inline-block;
+}
+
+.c0.xsDisplayVisuallyHidden {
+  border: 0;
+  -webkit-clip: rect(0 0 0 0);
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.c0.xsDirectionRow {
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.c0.xsDirectionColumn {
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c0.xsCol0 {
+  width: 0;
+}
+
+.c1:root {
+  --red: #e60023;
+  --size-sm: 16px;
+  --size-md: 24px;
+}
+
+.c1.input {
+  position: absolute;
+  margin: calc(var(--vbt) * 0) calc(var(--hbt) * 0);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  opacity: 0;
+  outline: 0;
+}
+
+.c1.inputEnabled {
+  cursor: pointer;
+}
+
+.c1.inputSm {
+  height: var(--size-sm);
+  width: var(--size-sm);
+}
+
+.c1.inputMd {
+  height: var(--size-md);
+  width: var(--size-md);
+}
+
+.c2:root {
+  --red: #e60023;
+  --size-sm: 16px;
+  --size-md: 24px;
+}
+
+.c2.border {
+  border-color: #8e8e8e;
+}
+
+.c2.borderError {
+  border-color: #e3780c;
+}
+
+.c2.borderDark {
+  border-color: #333;
+}
+
+.c2.check {
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.c2.checkEnabled {
+  cursor: pointer;
+}
+
+.c2.checkFocused {
+  box-shadow: 0 0 0 4px rgba(0,132,255,0.5);
+  outline: 0;
+}
+
+.c2.checkSm {
+  border-radius: 3px;
+  height: var(--size-sm);
+  width: var(--size-sm);
+}
+
+.c2.checkMd {
+  border-radius: 4px;
+  height: var(--size-md);
+  width: var(--size-md);
+}
+
+@media (min-width:576px) {
+  .c0.smDisplayNone {
+    display: none;
+  }
+
+  .c0.smDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.smDisplayBlock {
+    display: block;
+  }
+
+  .c0.smDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.smDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdDisplayNone {
+    display: none;
+  }
+
+  .c0.mdDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.mdDisplayBlock {
+    display: block;
+  }
+
+  .c0.mdDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.mdDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgDisplayNone {
+    display: none;
+  }
+
+  .c0.lgDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.lgDisplayBlock {
+    display: block;
+  }
+
+  .c0.lgDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.lgDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:576px) {
+  .c0.smDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.smDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.mdDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.lgDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:576px) {
+  .c0.smCol0 {
+    width: 0;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdCol0 {
+    width: 0;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgCol0 {
+    width: 0;
+  }
+}
+
+<div
+  class="box relative c0"
+>
+  <input
+    class="input size c1"
+    disabled=""
+    id="id"
+    type="checkbox"
+  />
+  <div
+    class="border check lightGrayBg size c2"
+  />
+</div>
+`;
+
+exports[`Checkbox indeterminate 1`] = `
+.c0.box {
+  box-sizing: border-box;
+}
+
+.c0.box:focus {
+  box-shadow: 0 0 0 4px rgba(0,132,255,0&.5);
+  outline: 0;
+}
+
+.c0.xsDisplayNone {
+  display: none;
+}
+
+.c0.xsDisplayFlex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.c0.xsDisplayBlock {
+  display: block;
+}
+
+.c0.xsDisplayInlineBlock {
+  display: inline-block;
+}
+
+.c0.xsDisplayVisuallyHidden {
+  border: 0;
+  -webkit-clip: rect(0 0 0 0);
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.c0.xsDirectionRow {
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.c0.xsDirectionColumn {
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c0.xsCol0 {
+  width: 0;
+}
+
+.c1:root {
+  --red: #e60023;
+  --size-sm: 16px;
+  --size-md: 24px;
+}
+
+.c1.input {
+  position: absolute;
+  margin: calc(var(--vbt) * 0) calc(var(--hbt) * 0);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  opacity: 0;
+  outline: 0;
+}
+
+.c1.inputEnabled {
+  cursor: pointer;
+}
+
+.c1.inputSm {
+  height: var(--size-sm);
+  width: var(--size-sm);
+}
+
+.c1.inputMd {
+  height: var(--size-md);
+  width: var(--size-md);
+}
+
+.c2:root {
+  --red: #e60023;
+  --size-sm: 16px;
+  --size-md: 24px;
+}
+
+.c2.border {
+  border-color: #8e8e8e;
+}
+
+.c2.borderError {
+  border-color: #e3780c;
+}
+
+.c2.borderDark {
+  border-color: #333;
+}
+
+.c2.check {
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.c2.checkEnabled {
+  cursor: pointer;
+}
+
+.c2.checkFocused {
+  box-shadow: 0 0 0 4px rgba(0,132,255,0.5);
+  outline: 0;
+}
+
+.c2.checkSm {
+  border-radius: 3px;
+  height: var(--size-sm);
+  width: var(--size-sm);
+}
+
+.c2.checkMd {
+  border-radius: 4px;
+  height: var(--size-md);
+  width: var(--size-md);
+}
+
+@media (min-width:576px) {
+  .c0.smDisplayNone {
+    display: none;
+  }
+
+  .c0.smDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.smDisplayBlock {
+    display: block;
+  }
+
+  .c0.smDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.smDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdDisplayNone {
+    display: none;
+  }
+
+  .c0.mdDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.mdDisplayBlock {
+    display: block;
+  }
+
+  .c0.mdDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.mdDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgDisplayNone {
+    display: none;
+  }
+
+  .c0.lgDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.lgDisplayBlock {
+    display: block;
+  }
+
+  .c0.lgDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.lgDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:576px) {
+  .c0.smDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.smDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.mdDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.lgDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:576px) {
+  .c0.smCol0 {
+    width: 0;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdCol0 {
+    width: 0;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgCol0 {
+    width: 0;
+  }
+}
+
+<div
+  class="box relative c0"
+>
+  <input
+    class="input disabled indeterminate size c1"
+    id="id"
+    type="checkbox"
+  />
+  <div
+    class="borderDark check darkGrayBg enabled size c2"
+  />
+</div>
+`;
+
+exports[`Checkbox small 1`] = `
+.c0.box {
+  box-sizing: border-box;
+}
+
+.c0.box:focus {
+  box-shadow: 0 0 0 4px rgba(0,132,255,0&.5);
+  outline: 0;
+}
+
+.c0.xsDisplayNone {
+  display: none;
+}
+
+.c0.xsDisplayFlex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.c0.xsDisplayBlock {
+  display: block;
+}
+
+.c0.xsDisplayInlineBlock {
+  display: inline-block;
+}
+
+.c0.xsDisplayVisuallyHidden {
+  border: 0;
+  -webkit-clip: rect(0 0 0 0);
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.c0.xsDirectionRow {
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.c0.xsDirectionColumn {
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c0.xsCol0 {
+  width: 0;
+}
+
+.c1:root {
+  --red: #e60023;
+  --size-sm: 16px;
+  --size-md: 24px;
+}
+
+.c1.input {
+  position: absolute;
+  margin: calc(var(--vbt) * 0) calc(var(--hbt) * 0);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  opacity: 0;
+  outline: 0;
+}
+
+.c1.inputEnabled {
+  cursor: pointer;
+}
+
+.c1.inputSm {
+  height: var(--size-sm);
+  width: var(--size-sm);
+}
+
+.c1.inputMd {
+  height: var(--size-md);
+  width: var(--size-md);
+}
+
+.c2:root {
+  --red: #e60023;
+  --size-sm: 16px;
+  --size-md: 24px;
+}
+
+.c2.border {
+  border-color: #8e8e8e;
+}
+
+.c2.borderError {
+  border-color: #e3780c;
+}
+
+.c2.borderDark {
+  border-color: #333;
+}
+
+.c2.check {
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.c2.checkEnabled {
+  cursor: pointer;
+}
+
+.c2.checkFocused {
+  box-shadow: 0 0 0 4px rgba(0,132,255,0.5);
+  outline: 0;
+}
+
+.c2.checkSm {
+  border-radius: 3px;
+  height: var(--size-sm);
+  width: var(--size-sm);
+}
+
+.c2.checkMd {
+  border-radius: 4px;
+  height: var(--size-md);
+  width: var(--size-md);
+}
+
+@media (min-width:576px) {
+  .c0.smDisplayNone {
+    display: none;
+  }
+
+  .c0.smDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.smDisplayBlock {
+    display: block;
+  }
+
+  .c0.smDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.smDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdDisplayNone {
+    display: none;
+  }
+
+  .c0.mdDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.mdDisplayBlock {
+    display: block;
+  }
+
+  .c0.mdDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.mdDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgDisplayNone {
+    display: none;
+  }
+
+  .c0.lgDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.lgDisplayBlock {
+    display: block;
+  }
+
+  .c0.lgDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.lgDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:576px) {
+  .c0.smDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.smDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.mdDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.lgDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:576px) {
+  .c0.smCol0 {
+    width: 0;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdCol0 {
+    width: 0;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgCol0 {
+    width: 0;
+  }
+}
+
+<div
+  class="box relative c0"
+>
+  <input
+    class="input disabled size c1"
+    id="id"
+    type="checkbox"
+  />
+  <div
+    class="border check whiteBg enabled size c2"
+  />
+</div>
+`;
+
+exports[`Checkbox with error 1`] = `
+.c0.box {
+  box-sizing: border-box;
+}
+
+.c0.box:focus {
+  box-shadow: 0 0 0 4px rgba(0,132,255,0&.5);
+  outline: 0;
+}
+
+.c0.xsDisplayNone {
+  display: none;
+}
+
+.c0.xsDisplayFlex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.c0.xsDisplayBlock {
+  display: block;
+}
+
+.c0.xsDisplayInlineBlock {
+  display: inline-block;
+}
+
+.c0.xsDisplayVisuallyHidden {
+  border: 0;
+  -webkit-clip: rect(0 0 0 0);
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.c0.xsDirectionRow {
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.c0.xsDirectionColumn {
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c0.xsCol0 {
+  width: 0;
+}
+
+.c1:root {
+  --red: #e60023;
+  --size-sm: 16px;
+  --size-md: 24px;
+}
+
+.c1.input {
+  position: absolute;
+  margin: calc(var(--vbt) * 0) calc(var(--hbt) * 0);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  opacity: 0;
+  outline: 0;
+}
+
+.c1.inputEnabled {
+  cursor: pointer;
+}
+
+.c1.inputSm {
+  height: var(--size-sm);
+  width: var(--size-sm);
+}
+
+.c1.inputMd {
+  height: var(--size-md);
+  width: var(--size-md);
+}
+
+.c2:root {
+  --red: #e60023;
+  --size-sm: 16px;
+  --size-md: 24px;
+}
+
+.c2.border {
+  border-color: #8e8e8e;
+}
+
+.c2.borderError {
+  border-color: #e3780c;
+}
+
+.c2.borderDark {
+  border-color: #333;
+}
+
+.c2.check {
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.c2.checkEnabled {
+  cursor: pointer;
+}
+
+.c2.checkFocused {
+  box-shadow: 0 0 0 4px rgba(0,132,255,0.5);
+  outline: 0;
+}
+
+.c2.checkSm {
+  border-radius: 3px;
+  height: var(--size-sm);
+  width: var(--size-sm);
+}
+
+.c2.checkMd {
+  border-radius: 4px;
+  height: var(--size-md);
+  width: var(--size-md);
+}
+
+@media (min-width:576px) {
+  .c0.smDisplayNone {
+    display: none;
+  }
+
+  .c0.smDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.smDisplayBlock {
+    display: block;
+  }
+
+  .c0.smDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.smDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdDisplayNone {
+    display: none;
+  }
+
+  .c0.mdDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.mdDisplayBlock {
+    display: block;
+  }
+
+  .c0.mdDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.mdDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgDisplayNone {
+    display: none;
+  }
+
+  .c0.lgDisplayFlex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.lgDisplayBlock {
+    display: block;
+  }
+
+  .c0.lgDisplayInlineBlock {
+    display: inline-block;
+  }
+
+  .c0.lgDisplayVisuallyHidden {
+    border: 0;
+    -webkit-clip: rect(0 0 0 0);
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+}
+
+@media (min-width:576px) {
+  .c0.smDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.smDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.mdDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgDirectionRow {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .c0.lgDirectionColumn {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+@media (min-width:576px) {
+  .c0.smCol0 {
+    width: 0;
+  }
+}
+
+@media (min-width:768px) {
+  .c0.mdCol0 {
+    width: 0;
+  }
+}
+
+@media (min-width:1312p) {
+  .c0.lgCol0 {
+    width: 0;
+  }
+}
+
+<div
+  class="box relative c0"
+>
+  <input
+    class="input disabled size c1"
+    id="id"
+    type="checkbox"
+  />
+  <div
+    class="borderError check whiteBg enabled size c2"
+  />
+</div>
+`;

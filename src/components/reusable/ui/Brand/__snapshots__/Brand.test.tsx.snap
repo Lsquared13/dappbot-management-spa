@@ -1,0 +1,1897 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Brand Brand lettermark - blue 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<Brand
+  theme="blue"
+  type="lettermark"
+>
+  <styled.a
+    className="brand lettermark blue"
+  >
+    <a
+      className="brand lettermark blue c0"
+    />
+  </styled.a>
+</Brand>
+`;
+
+exports[`Brand Brand lettermark - blue-on-white 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<a
+  class="brand lettermark blue-on-white c0"
+/>
+`;
+
+exports[`Brand Brand lettermark - dark 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<a
+  class="brand lettermark dark c0"
+/>
+`;
+
+exports[`Brand Brand lettermark - dark-on-white 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<a
+  class="brand lettermark dark-on-white c0"
+/>
+`;
+
+exports[`Brand Brand lettermark - white 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<a
+  class="brand lettermark white c0"
+/>
+`;
+
+exports[`Brand Brand lettermark - white-on-blue 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<a
+  class="brand lettermark white-on-blue c0"
+/>
+`;
+
+exports[`Brand Brand lettermark - white-on-dark 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<a
+  class="brand lettermark white-on-dark c0"
+/>
+`;
+
+exports[`Brand Brand token - blue 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<Brand
+  theme="blue"
+  type="token"
+>
+  <styled.a
+    className="brand token blue"
+  >
+    <a
+      className="brand token blue c0"
+    />
+  </styled.a>
+</Brand>
+`;
+
+exports[`Brand Brand token - blue-on-white 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<a
+  class="brand token blue-on-white c0"
+/>
+`;
+
+exports[`Brand Brand token - dark 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<a
+  class="brand token dark c0"
+/>
+`;
+
+exports[`Brand Brand token - dark-on-white 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<a
+  class="brand token dark-on-white c0"
+/>
+`;
+
+exports[`Brand Brand token - white 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<a
+  class="brand token white c0"
+/>
+`;
+
+exports[`Brand Brand token - white-on-blue 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<a
+  class="brand token white-on-blue c0"
+/>
+`;
+
+exports[`Brand Brand token - white-on-dark 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<a
+  class="brand token white-on-dark c0"
+/>
+`;
+
+exports[`Brand Brand wordmark - blue 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<Brand
+  theme="blue"
+  type="wordmark"
+>
+  <styled.a
+    className="brand wordmark blue"
+  >
+    <a
+      className="brand wordmark blue c0"
+    />
+  </styled.a>
+</Brand>
+`;
+
+exports[`Brand Brand wordmark - blue-on-white 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<a
+  class="brand wordmark blue-on-white c0"
+/>
+`;
+
+exports[`Brand Brand wordmark - dark 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<a
+  class="brand wordmark dark c0"
+/>
+`;
+
+exports[`Brand Brand wordmark - dark-on-white 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<a
+  class="brand wordmark dark-on-white c0"
+/>
+`;
+
+exports[`Brand Brand wordmark - white 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<a
+  class="brand wordmark white c0"
+/>
+`;
+
+exports[`Brand Brand wordmark - white-on-blue 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<a
+  class="brand wordmark white-on-blue c0"
+/>
+`;
+
+exports[`Brand Brand wordmark - white-on-dark 1`] = `
+.c0.brand {
+  display: inline-block;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.c0:focus,
+.c0:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.c0.brand.wordmark {
+  min-height: 26px;
+  min-width: 200px;
+}
+
+.c0.brand.wordmark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.wordmark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark {
+  min-height: 21px;
+  min-width: 73px;
+}
+
+.c0.brand.lettermark.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.lettermark.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token {
+  min-height: 28px;
+  min-width: 28px;
+}
+
+.c0.brand.token.blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.blue-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.dark-on-white {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-blue {
+  background-image: url(test-file-stub);
+}
+
+.c0.brand.token.white-on-dark {
+  background-image: url(test-file-stub);
+}
+
+<a
+  class="brand wordmark white-on-dark c0"
+/>
+`;

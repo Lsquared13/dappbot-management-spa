@@ -13,7 +13,7 @@ interface AuthorizedRequest extends RequestArgs {
 }
 
 function abiClerkEndpoint(method: string) {
-  return `${process.env.REACT_APP_DAPPSMITH_ENDPOINT}/test/${method}`
+  return `${process.env.REACT_APP_DAPPBOT_API_ENDPOINT}/test/${method}`
 }
 
 // The <Data> declares a generic type, which represents the request

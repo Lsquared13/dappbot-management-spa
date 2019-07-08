@@ -104,6 +104,8 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
     //PROP DRILL: props for DappDetailsContainer && DashboardContainer
     let dappList:DappDetail[] = [];
     try {
+      console.log("list response data")
+      console.log(listResponse)
       if (listResponse.data){
         dappList.push(...(listResponse as any).data.data.items)
       }
