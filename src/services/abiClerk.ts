@@ -13,19 +13,45 @@ interface AuthorizedRequest extends RequestArgs {
 }
 
 function abiClerkEndpoint(method: string) {
-  return `${process.env.REACT_APP_DAPPBOT_API_ENDPOINT}/test/${method}`
+  let apiCall = `${process.env.REACT_APP_DAPPBOT_API_ENDPOINT}/v1/private/`
+  return apiCall
 }
 
+function httpMethod(method: string) {
+  let httpMethodType: string;
+  switch(method) {
+    case 'create':
+      httpMethodType = 'POST'
+      break
+    case 'delete':
+      httpMethodType = 'DELETE'
+      break
+    case 'edit':
+      httpMethodType = 'PUT'
+      break
+    case 'list':
+      httpMethodType = 'GET'
+      break
+    case 'read':
+      httpMethodType = 'GET'
+      break
+    default:
+      httpMethodType = 'GET'
+  }
+  return httpMethodType
+}
 // The <Data> declares a generic type, which represents the request
 // data.  The returned function takes an argument of the same type
 // as <Data>, so calls to `authorizedRequestFactory` simply need to
 // provide a sample `data` in order to get a properly typed request fxn.
-function authorizedRequestFactory<Data>(user: any, method: string, data: Data) {
+function authorizedRequestFactory<Data>(user: any, method: string) {
+  let abiApiEndpoint = `${process.env.REACT_APP_DAPPBOT_API_ENDPOINT}/v1/private`
+
   return (args: Data) => {
     let request = {
       url: abiClerkEndpoint(method),
       data: args,
-      method: 'POST',
+      method: httpMethod(method),
       headers: {
         Authorization: `Bearer ${user.signInUserSession && user.signInUserSession.idToken.jwtToken}`,
         'Content-Type': 'application/json'
@@ -36,25 +62,25 @@ function authorizedRequestFactory<Data>(user: any, method: string, data: Data) {
 }
 
 function createRequest(user: any): (args: DappArgs) => AuthorizedRequest {
-  return authorizedRequestFactory(user, 'create', SampleDappArgs())
+  return authorizedRequestFactory(user, 'create')
 }
 
 function deleteRequest(user: any): (dappName: string) => AuthorizedRequest {
-  const deleteFunc = authorizedRequestFactory(user, 'delete', { DappName: 'DappName' })
+  const deleteFunc = authorizedRequestFactory(user, 'delete')
   return (dappName: string) => deleteFunc({ DappName: dappName });
 }
 
 function editRequest(user: any): (args: DappArgs) => AuthorizedRequest {
-  return authorizedRequestFactory(user, 'edit', SampleDappArgs());
+  return authorizedRequestFactory(user, 'edit');
 }
 
 function listRequest(user: any): () => AuthorizedRequest {
-  const listFunc = authorizedRequestFactory(user, 'list', {});
+  const listFunc = authorizedRequestFactory(user, 'list');
   return () => listFunc({});
 }
 
 function readRequest(user: any): (dappName: string) => AuthorizedRequest {
-  const readFunc = authorizedRequestFactory(user, 'read', { DappName: 'DappName' });
+  const readFunc = authorizedRequestFactory(user, 'read');
   return (dappName: string) => readFunc({ DappName: dappName })
 }
 

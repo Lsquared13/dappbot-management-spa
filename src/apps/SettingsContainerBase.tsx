@@ -4,6 +4,8 @@ import { Router, RouteComponentProps } from "@reach/router";
 import SettingContianer from "../pages/settingContainer";
 import { ProfileState } from "../layout/Profile";
 import { PasswordState } from "../layout/Password";
+import { useResource } from 'react-request-hook';
+
 
 
 
@@ -31,6 +33,7 @@ export const SettingsContainerBase: React.SFC<Props> = props => {
           onProfileSave={(e, inputs: ProfileState) => {
             console.log("onProfileSave", inputs);
           }}
+
           /* Billing tab props */
           subscriptionPlan={{
             totalApps: 4,
