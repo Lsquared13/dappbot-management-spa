@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from 'react';
 import validate from 'validator';
-import { DappArgs, DappArgNameStrs } from '../types';
+import { DappCreateArgs, DappArgNameStrs } from '../types';
 import StringField from './fields/StringField';
 import AddressField from './fields/AddressField';
 
-interface FormFieldProps extends DappArgs {
+interface FormFieldProps extends DappCreateArgs {
   setVal: (name:DappArgNameStrs,val:string)=>void
   disabled?: DappArgNameStrs[]
   hidden?: DappArgNameStrs[]

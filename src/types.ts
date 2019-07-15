@@ -8,15 +8,17 @@ export enum DappArgNames {
 
 export type DappArgNameStrs = keyof typeof DappArgNames;
 
-export interface DappArgs {
+export interface DappCreateArgs extends DappData {
   DappName: string
+}
+export interface DappData {
   Abi: string
   Web3URL: string
   GuardianURL: string
   ContractAddr: string
 }
 
-export function SampleDappArgs():DappArgs{
+export function SampleDappArgs():DappCreateArgs{
   return {
     DappName: '',
     Abi : '',
@@ -26,7 +28,7 @@ export function SampleDappArgs():DappArgs{
   }
 }
 
-export interface DappDbItem extends DappArgs {
+export interface DappDbItem extends DappCreateArgs {
   OwnerEmail : string,
   CreationTime : string,
   DnsName : string

@@ -2,13 +2,13 @@ import React, { FC, useState, useEffect } from 'react';
 import { Table, TableColumn, Text, Button, Flyout, Icon } from './ui';
 import copy from 'copy-to-clipboard';
 import Alert from 'react-s-alert';
-import { DappArgNames, DappArgs } from '../types';
+import { DappArgNames, DappCreateArgs } from '../types';
 
 interface DappListProps {
   user: any
   dappsLoading?: boolean
   dappLoadErr?: any
-  dappList: DappArgs[]
+  dappList: DappCreateArgs[]
   fetchList: () => any
   setFormTarget: (dappName: string) => void
   delete: (dappName: string) => void
@@ -74,7 +74,7 @@ export const DappList: FC<DappListProps> = ({ dappList, fetchList, ...props }) =
     }
   }
 
-  const renderCell = (record: DappArgs, field: string) => {
+  const renderCell = (record: DappCreateArgs, field: string) => {
     if (field === 'Actions') {
       let abiLabel = `Copy ${record.DappName} ABI to your clipboard`;
       let deleteLabel = `Delete ${record.DappName}`;

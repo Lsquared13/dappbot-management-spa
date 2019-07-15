@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect } from 'react';
 import Alert from 'react-s-alert';
 import { RouteComponentProps, NavigateFn } from '@reach/router';
 import { useResource } from 'react-request-hook';
-import { DappArgs, DappArgNameStrs, SampleDappArgs } from '../types';
+import { DappCreateArgs, DappArgNameStrs, SampleDappArgs } from '../types';
 
 import ABIClerk from '../services/abiClerk';
 import { DappList, DappForm } from '../components';
@@ -35,7 +35,7 @@ export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
   // Note that adding an empty dependency array means this hook
   // will run on mount, then never again (unless called)
   const [listResponse, sendListRequest] = useResource(ABIClerk.list(user));
-  let dappList:DappArgs[] = [];
+  let dappList:DappCreateArgs[] = [];
   if (listResponse && listResponse.data && (['The incoming token has expired', 'Unauthorized'].includes((listResponse.data as any).message))){
     let newUser = Object.assign(user, { signInUserSession : null });
     (props.navigate as NavigateFn)('/login');
@@ -73,7 +73,7 @@ export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
   }
 
   const setArgVal = (name:DappArgNameStrs,val:string) => {
-    const newArgs:DappArgs = Object.assign({}, formArgs);
+    const newArgs:DappCreateArgs = Object.assign({}, formArgs);
     newArgs[name] = val;
     setFormTouched(true);
     setArgs(newArgs)
@@ -83,7 +83,7 @@ export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
   const [editResponse, sendEditRequest] = useResource(ABIClerk.edit(user));
   const [deleteResponse, sendDeleteRequest] = useResource(ABIClerk.delete(user));
   
-  let request = sendCreateRequest;
+  let request:any = sendCreateRequest;
   let response = createResponse;
   if (formTarget !== 'create') {
     request = sendEditRequest;
