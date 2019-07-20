@@ -1,6 +1,23 @@
 import { useState } from 'react';
 import Amplify, { Auth } from 'aws-amplify';
 import { CognitoUser } from '@aws-amplify/auth';
+import {requestFactory} from './abiClerk';
+
+
+interface RequestArgs {
+  url: string,
+  data: any
+}
+
+interface AuthorizedRequest extends RequestArgs {
+  headers: any,
+  method: string
+}
+
+interface AuthorizedRequest extends RequestArgs {
+  headers: any,
+  method: string
+}
 const passwordValidator = require('password-validator');
 
 Amplify.configure({
@@ -11,11 +28,19 @@ Amplify.configure({
   }
 })
 
+
+function signInRequest(): (args: any, target: string) => AuthorizedRequest {
+  return requestFactory('login', "auth")
+}
+
+
+
 const MFA_TYPE = 'SMS_MFA';
 
 const signIn = async (email: string, password: string) => {
   try {
     const user = await Auth.signIn(email, password);
+
     if (user.challengeName === 'SMS_MFA' ||
       user.challengeName === 'SOFTWARE_TOKEN_MFA') {
       return { challenge: 'MFA', user }
@@ -133,10 +158,10 @@ export const currentUserInfo = async () => {
 }
 
 export default {
-  signIn,
+  signIn: signInRequest,
   confirmMFA: confirmMFASignIn,
   newPassword: completeNewPassword,
   forgotPass: completeForgotPassword,
   passwordChecker, currentUserInfo,
-  forgotPassword: forgotPassword
+  forgotPassword: forgotPassword,
 }

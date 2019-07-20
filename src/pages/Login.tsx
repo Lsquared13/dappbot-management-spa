@@ -4,6 +4,8 @@ import isEmail from 'validator/lib/isEmail';
 import { Button } from '../components/ui';
 import StringField from '../components/fields/StringField';
 import Alert from 'react-s-alert';
+import { useResource } from 'react-request-hook';
+
 
 import Auth from '../services/auth';
 
@@ -26,6 +28,19 @@ export const Login:FC<LoginProps> = (props) => {
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
   const [challenge, setChallenge] = useState('');
+  const [signInResponse, requestSignIn] = useResource(Auth.signIn())
+  //Response Handler
+  const [signInSent, markSignInSent] = useState(false)
+  const handleSignIn = (email: string, password: string) => {
+    const loginDetails= {
+      'username': email,
+      'password': password
+    }
+    markSignInSent(true)
+    console.log('sending sign in request', requestSignIn(loginDetails, 'login'))
+    console.log(signInResponse.data)
+  }
+
 
 
 
@@ -49,37 +64,52 @@ export const Login:FC<LoginProps> = (props) => {
     }
     setLoading(false)
   }
-  const sendLogin = async () => {
-    setLoading(true);
-    setChallenge('');
-    setErr('');
-    setUser({});
-    try {
-      const result:any = await Auth.signIn(email, password);    
-      if (result.challenge) {
-        setChallenge(result.challenge)
-      }
-      if (result.errMsg) {
-        setErr(result.errMsg);
-      }
-      if (result.user) {
-        setUser(result.user)
-      }
-      setLoading(false);
-    } catch (e) {
-      console.log('Send login failed: ',e);
-    }
-  }
+  // const sendLogin = async () => {
+
+
+  //   setLoading(true);
+  //   setChallenge('');
+  //   setErr('');
+  //   setUser({});
+  //   try {
+  //     const result:any = await Auth.signIn(email, password);
+  //     if (result.challenge) {
+  //       setChallenge(result.challenge)
+  //     }
+  //     if (result.errMsg) {
+  //       setErr(result.errMsg);
+  //     }
+  //     if (result.user) {
+  //       setUser(result.user)
+  //     }
+  //     setLoading(false);
+  //   } catch (e) {
+  //     console.log('Send login failed: ',e);
+  //   }
+  // }
 
   // If we now have a Cognito user and no challenge
   // TODO: This probably won't behave right, as CognitoUser
   // can match with an empty object.  Need to determine a good
   // property to check for.
   useEffect(()=>{
+    console.log('hello')
+    console.log(signInResponse.data)
+    if(markSignInSent) {
+      if (signInResponse.error) {
+        Alert.error(`There was an error signing in: ${signInResponse.error.message}`)
+      } else if(!signInResponse.isLoading && signInResponse.data) {
+        markSignInSent(false);
+        if(signInResponse.data){
+          Alert.success(`${signInResponse.data}`)
+        }
+      }
+    }
     if (challenge === '' && user.signInUserSession && user.signInUserSession.accessToken){
       navigate && navigate('/home');
     }
-  }, [user.signInUserSession, challenge, navigate])
+
+  }, [user.signInUserSession, challenge, navigate, markSignInSent, signInResponse ])
  
   let loginFields = (
     <div className="fdb-box fdb-touch">
@@ -116,7 +146,7 @@ export const Login:FC<LoginProps> = (props) => {
       <div className="row mt-4">
         <div className="col">
           <div style={{textAlign: "left"}}>
-            <Button disabled={loading} onClick={sendLogin}>Submit</Button>
+            <Button disabled={loading} onClick={()=>handleSignIn(email, password)}>Submit</Button>
             {/* <Button onClick={handleForgotPass}>Forgot Password?</Button> */}
             <ErrorBox errMsg={err}></ErrorBox>
           </div>
