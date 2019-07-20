@@ -12,6 +12,7 @@ import Auth from '../services/auth';
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
 import { ErrorBox, NewPassChallenge, MfaChallenge, ForgotPassChallenge } from '../components';
+import { CognitoUser } from '@aws-amplify/auth';
 
 
 export interface LoginProps extends RouteComponentProps {
@@ -38,7 +39,6 @@ export const Login:FC<LoginProps> = (props) => {
     }
     markSignInSent(true)
     console.log('sending sign in request', requestSignIn(loginDetails, 'login'))
-    console.log(signInResponse.data)
   }
 
 
@@ -97,20 +97,27 @@ export const Login:FC<LoginProps> = (props) => {
     console.log()
     if(signInSent) {
       if (signInResponse.error) {
+        setErr(signInResponse.error.message)
         Alert.error(`There was an error signing in: ${signInResponse.error.message}`)
       } else if(!signInResponse.isLoading && signInResponse.data) {
         markSignInSent(false);
         if(signInResponse.data){
-          let data:any = signInResponse.data
-          if(data.ChallengeName !== undefined){
-            setChallenge(data.ChallengeName)
+          let response:any = signInResponse.data
+          if(response.data.ChallengeName){
+            setChallenge(response.data.ChallengeName)
           }
-          if (data.errMsg) {
-            setErr(data.errMsg);
+          if (response.data.Session) {
+            setUser({user:{
+              username: email,
+              signInUserSession:{
+                idToken:{
+                  jwtToken:`${response.data.Session}`
+                }
+              }
+
+            }})
           }
-          if (data.user) {
-            setUser(data.user)
-          }
+          console.log(signInResponse.data)
           Alert.success(`${signInResponse.data}`)
         }
       }
@@ -167,7 +174,7 @@ export const Login:FC<LoginProps> = (props) => {
   )
   let challengeProps = {setChallenge, setErr}
   switch(challenge){
-    case ('newPassword'):
+    case ('NEW_PASSWORD_REQUIRED'):
       loginFields = <NewPassChallenge setUser={setUser} user={user} {...challengeProps} />
       break;
     case ('MFA'):

@@ -33,6 +33,10 @@ function signInRequest(): (args: any, target: string) => AuthorizedRequest {
   return requestFactory('login', "auth")
 }
 
+function newPasswordRequest(): (args: any, target: string) => AuthorizedRequest {
+  return requestFactory('login', "auth")
+}
+
 
 
 const MFA_TYPE = 'SMS_MFA';
@@ -160,7 +164,7 @@ export const currentUserInfo = async () => {
 export default {
   signIn: signInRequest,
   confirmMFA: confirmMFASignIn,
-  newPassword: completeNewPassword,
+  newPassword: newPasswordRequest,
   forgotPass: completeForgotPassword,
   passwordChecker, currentUserInfo,
   forgotPassword: forgotPassword,

@@ -1,13 +1,15 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { Button } from '../components/ui';
 
 import { StringField } from '../components/fields';
 import Auth, {passwordChecker} from '../services/auth';
 import { CognitoUser } from '@aws-amplify/auth';
 import { ErrorBox } from '.';
+import { useResource } from 'react-request-hook';
+
 
 interface NewPassChallengeProps {
-  user : CognitoUser
+  user : any
   setChallenge : (challenge:string)=>void
   setErr: (err:string)=>void
   setUser: (user:any)=>void
@@ -18,21 +20,53 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({setChallenge, user, 
   const [confirmPass, setConfirmPass] = useState('');
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
-  const sendNewPass = async () => {
-    if (newPass !== confirmPass){
-      setErr('The confirmation password does not match.');
-      return false;
+  const [newPassResponse, requestNewPass] = useResource(Auth.newPassword())
+  //Response Handler
+  const [newPassSent, markNewPassSent] = useState(false)
+  const handleNewPassword = (email: string, newPassword: string, session: string) => {
+    const newPassDetails = {
+      'username': email,
+      'password': newPassword,
+      'session': session
     }
-    setLoading(true);
-    try {
-      const fullUser = await Auth.newPassword(user, newPass);
-      setUser(fullUser);
-      setChallenge('');
-    } catch (e) {
-      setErr(e.toString())
-    }
-    setLoading(false);
+    markNewPassSent(true)
+    console.log('sending sign in request', requestNewPass(newPassDetails, 'login'))
   }
+  useEffect(()=>{
+    if( newPassSent){
+      if(newPassResponse.data){
+        let response: any = newPassResponse.data
+        if(response.data.AuthToken){
+          let currentSessionUser = {
+            user:{
+              signInUserSession:{
+                AuthToken:response.data.AuthToken
+              }
+            }
+          }
+          setUser(currentSessionUser)
+          setChallenge('')
+        }
+      }
+    }
+
+
+  }, [newPassSent, newPassResponse])
+  // const sendNewPass = async () => {
+  //   if (newPass !== confirmPass){
+  //     setErr('The confirmation password does not match.');
+  //     return false;
+  //   }
+  //   setLoading(true);
+  //   try {
+  //     const fullUser = await Auth.newPassword(user, newPass);
+  //     setUser(fullUser);
+  //     setChallenge('');
+  //   } catch (e) {
+  //     setErr(e.toString())
+  //   }
+  //   setLoading(false);
+  // }
   return (
     <>
       <section className="fdb-block fp-active" data-block-type="forms">
@@ -78,7 +112,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({setChallenge, user, 
                 <div className="row mt-4">
                   <div className="col">
                     <div style={{textAlign: "left"}}>
-                      <Button onClick={sendNewPass} disabled={loading}>Submit</Button>
+                      <Button onClick={handleNewPassword=>(user.getSignInUserSession.idToken.jwtToken, user.username, confirmPass )} disabled={loading}>Submit</Button>
                       <ErrorBox errMsg={err}></ErrorBox>
                     </div>
                     {/* <button className="btn btn-primary" type="button">Submit</button> */}
