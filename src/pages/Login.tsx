@@ -94,13 +94,23 @@ export const Login:FC<LoginProps> = (props) => {
   // property to check for.
   useEffect(()=>{
     console.log('hello')
-    console.log(signInResponse.data)
-    if(markSignInSent) {
+    console.log()
+    if(signInSent) {
       if (signInResponse.error) {
         Alert.error(`There was an error signing in: ${signInResponse.error.message}`)
       } else if(!signInResponse.isLoading && signInResponse.data) {
         markSignInSent(false);
         if(signInResponse.data){
+          let data:any = signInResponse.data
+          if(data.ChallengeName !== undefined){
+            setChallenge(data.ChallengeName)
+          }
+          if (data.errMsg) {
+            setErr(data.errMsg);
+          }
+          if (data.user) {
+            setUser(data.user)
+          }
           Alert.success(`${signInResponse.data}`)
         }
       }
