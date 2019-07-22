@@ -77,7 +77,7 @@ export const Login: FC<LoginProps> = (props) => {
     }
     if (
       !resetResponse.isLoading &&
-      (resetResponse.data &&
+      resetResponse.data &&
       signInSent
     ) {
 

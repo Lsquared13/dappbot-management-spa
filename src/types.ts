@@ -33,3 +33,46 @@ export interface DappDbItem extends DappCreateArgs {
   CreationTime : string,
   DnsName : string
 }
+
+export interface AuthRefreshData {
+  Token: string,
+  ExpiresAt: string
+}
+
+export type AttributeListType = AttributeType[];
+
+export type AttributeNameType = string;
+
+export type AttributeValueType = string;
+
+export interface AttributeType {
+    Name: AttributeNameType;
+    Value?: AttributeValueType;
+}
+
+export type MFAOptionListType = MFAOptionType[];
+
+export type DeliveryMediumType = "SMS"|"EMAIL"|string;
+
+export interface MFAOptionType {
+
+  DeliveryMedium?: DeliveryMediumType;
+
+  AttributeName?: AttributeNameType;
+}
+export type UserMFASettingListType = string[];
+
+
+export interface User {
+  Username: string,
+  UserAttributes: AttributeListType,
+  MFAOptions?: MFAOptionListType,
+  PreferredMfaSetting?: string,
+  UserMFASettingList?: UserMFASettingListType
+}
+
+export interface UserResponse {
+  User: User,
+  Authorization: string,
+  Refresh: AuthRefreshData
+}
