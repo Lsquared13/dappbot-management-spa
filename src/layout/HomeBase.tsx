@@ -13,6 +13,8 @@ export interface HomeBaseProps extends RouteComponentProps {
 }
 
 export const HomeBase: FC<HomeBaseProps> = ({user, setUser,uri, ...props}) => {
+
+  // TODO: Kick people out if they don't have a user object
   return (
     <div className="App" id="appBase">
       <Alert stack={{ limit: 3 }} />

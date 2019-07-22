@@ -16,11 +16,11 @@ import { CognitoUser } from '@aws-amplify/auth';
 
 
 export interface LoginProps extends RouteComponentProps {
-  setUser : (user:any)=>void
-  user : any
+  setUser: (user: any) => void
+  user: any
 }
 
-export const Login:FC<LoginProps> = (props) => {
+export const Login: FC<LoginProps> = (props) => {
   const { user, setUser, navigate } = props;
 
   const [email, setEmail] = useState("");
@@ -30,104 +30,102 @@ export const Login:FC<LoginProps> = (props) => {
   const [loading, setLoading] = useState(false);
   const [challenge, setChallenge] = useState('');
   const [signInResponse, requestSignIn] = useResource(Auth.signIn())
+  const [resetResponse, requestReset] = useResource(Auth.newPassword())
   //Response Handler
   const [signInSent, markSignInSent] = useState(false)
+  const [resetSent, markResetSent] = useState(false);
+
   const handleSignIn = (email: string, password: string) => {
-    const loginDetails= {
+    const loginDetails = {
       'username': email,
       'password': password
     }
     markSignInSent(true)
-    console.log('sending sign in request', requestSignIn(loginDetails, 'login'))
+    requestSignIn(loginDetails, 'login')
   }
 
 
 
 
   const handleForgotPass = async () => {
+    markResetSent(true);
+    setErr('')
+    requestReset({
+      'username': email
+    }, 'password-reset')
+    if (email === "") return;
+
     setLoading(true)
-
-    try {
-      if(email === ""){
-        throw Error("Invalid Email")
-      }
-      const result: any = await Auth.forgotPassword(email)
-      if (result.errMsg) {
-        setErr(result.errMsg);
-        } else{
-          Alert.info(`We sent an email to reset your password at this email: ${email}`)
-          setChallenge('forgotPassword')
-        }    
-      } catch (e){
-
-      console.log(`Failed to reset password ${e.name}: ${e.message}`)
+    if (email === "") {
+      throw Error("Invalid Email")
+    }
+    const result: any = await Auth.forgotPassword(email)
+    if (result.errMsg) {
+      setErr(result.errMsg);
+    } else {
+      Alert.info(`We sent an email to reset your password at this email: ${email}`)
+      setChallenge('forgotPassword')
     }
     setLoading(false)
   }
-  // const sendLogin = async () => {
 
+  useEffect(function handleResetResult(){
+    if (resetResponse.error){
+      setErr(resetResponse.error.message);
+      markResetSent(false);
+      return;
+    }
+    if (
+      !resetResponse.isLoading &&
+      (resetResponse.data &&
+      signInSent
+    ) {
 
-  //   setLoading(true);
-  //   setChallenge('');
-  //   setErr('');
-  //   setUser({});
-  //   try {
-  //     const result:any = await Auth.signIn(email, password);
-  //     if (result.challenge) {
-  //       setChallenge(result.challenge)
-  //     }
-  //     if (result.errMsg) {
-  //       setErr(result.errMsg);
-  //     }
-  //     if (result.user) {
-  //       setUser(result.user)
-  //     }
-  //     setLoading(false);
-  //   } catch (e) {
-  //     console.log('Send login failed: ',e);
-  //   }
-  // }
+    }
+  }, [resetResponse, markResetSent])
+
+  useEffect(() => {
+    if (challenge === '' && user.Authorization) {
+      navigate && navigate('/home');
+    }
+  }, [challenge, user, navigate])
 
   // If we now have a Cognito user and no challenge
   // TODO: This probably won't behave right, as CognitoUser
   // can match with an empty object.  Need to determine a good
   // property to check for.
-  useEffect(()=>{
+  useEffect(() => {
     console.log('hello')
     console.log()
-    if(signInSent) {
-      if (signInResponse.error) {
-        setErr(signInResponse.error.message)
-        Alert.error(`There was an error signing in: ${signInResponse.error.message}`)
-      } else if(!signInResponse.isLoading && signInResponse.data) {
-        markSignInSent(false);
-        if(signInResponse.data){
-          let response:any = signInResponse.data
-          if(response.data.ChallengeName){
-            setChallenge(response.data.ChallengeName)
-          }
-          if (response.data.Session) {
-            setUser({user:{
-              username: email,
-              signInUserSession:{
-                idToken:{
-                  jwtToken:`${response.data.Session}`
-                }
-              }
-
-            }})
-          }
-          console.log(signInResponse.data)
-          Alert.success(`${signInResponse.data}`)
-        }
+    if (!signInSent || signInResponse.isLoading) {
+      return;
+    }
+    if (signInResponse.error) {
+      setErr(signInResponse.error.message)
+      markSignInSent(false);
+      Alert.error(`There was an error signing in: ${signInResponse.error.message}`)
+      return;
+    } else if (signInResponse.data) {
+      markSignInSent(false);
+      let response: any = signInResponse.data
+      if (response.Authorization) {
+        const { Authorization, User, Refresh } = response;
+        setUser({
+          user: User,
+          Authorization, Refresh
+        })
       }
-    }
-    if (challenge === '' && user.signInUserSession && user.signInUserSession.accessToken){
-      navigate && navigate('/home');
+      if (response.ChallengeName) {
+        setChallenge(response.data.ChallengeName)
+        // TODO: Follow challenge param
+      }
+      // @ts-ignore
+      Alert.success(`${signInResponse.data.message}`)
     }
 
-  }, [user.signInUserSession, challenge, navigate, markSignInSent, signInResponse ])
- 
+  }, [user, challenge, signInSent, markSignInSent, signInResponse])
+
+
   let loginFields = (
     <div className="fdb-box fdb-touch">
       <div className="row">
@@ -138,32 +136,32 @@ export const Login:FC<LoginProps> = (props) => {
       <div className="row mt-4">
         <div className="col">
           {/* <input type="text" className="form-control" placeholder="Email" /> */}
-          <StringField 
-          value={email} 
-          onChange={setEmail} 
-          displayName='Email'
-          disabled={loading}
-          isValid={isEmail}
-          name='email' />
+          <StringField
+            value={email}
+            onChange={setEmail}
+            displayName='Email'
+            disabled={loading}
+            isValid={isEmail}
+            name='email' />
         </div>
       </div>
       <div className="row mt-4">
         <div className="col">
           {/* <input type="password" className="form-control mb-1" placeholder="Password" /> */}
-          <StringField 
-          fieldType='password' 
-          name='password'
-          displayName='Password'
-          disabled={loading}
-          onChange={setPassword}
-          value={password}/>
+          <StringField
+            fieldType='password'
+            name='password'
+            displayName='Password'
+            disabled={loading}
+            onChange={setPassword}
+            value={password} />
           <p className="text-right">Don't have an account yet? <a href="/signup">Sign Up</a></p>
         </div>
       </div>
       <div className="row mt-4">
         <div className="col">
-          <div style={{textAlign: "left"}}>
-            <Button disabled={loading} onClick={()=>handleSignIn(email, password)}>Submit</Button>
+          <div style={{ textAlign: "left" }}>
+            <Button disabled={loading} onClick={() => handleSignIn(email, password)}>Submit</Button>
             {/* <Button onClick={handleForgotPass}>Forgot Password?</Button> */}
             <ErrorBox errMsg={err}></ErrorBox>
           </div>
@@ -172,8 +170,8 @@ export const Login:FC<LoginProps> = (props) => {
       </div>
     </div>
   )
-  let challengeProps = {setChallenge, setErr}
-  switch(challenge){
+  let challengeProps = { setChallenge, setErr }
+  switch (challenge) {
     case ('NEW_PASSWORD_REQUIRED'):
       loginFields = <NewPassChallenge setUser={setUser} user={user} {...challengeProps} />
       break;
@@ -181,34 +179,34 @@ export const Login:FC<LoginProps> = (props) => {
       loginFields = <MfaChallenge setUser={setUser} user={user} {...challengeProps} />
       break;
     case ('forgotPassword'):
-      loginFields = 
-      <React.Fragment>
-        <div className="row">
-          <div className="col">
-            <h2>Set New Password</h2>
+      loginFields =
+        <React.Fragment>
+          <div className="row">
+            <div className="col">
+              <h2>Set New Password</h2>
+            </div>
           </div>
-        </div>
-        <ForgotPassChallenge email={email} {...challengeProps} />
-      </React.Fragment>
-      
-      break; 
+          <ForgotPassChallenge email={email} {...challengeProps} />
+        </React.Fragment>
+
+      break;
     default:
       // Always have a default to keep TS quiet
-      break; 
+      break;
   }
   return (
     <section className="fdb-block fp-active" data-block-type="forms">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-12 col-md-8 col-lg-7 col-md-5 text-center">
-              {loginFields}
-            </div>
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col-12 col-md-8 col-lg-7 col-md-5 text-center">
+            {loginFields}
           </div>
         </div>
-      </section>
+      </div>
+    </section>
   )
-  
-  ;
+
+    ;
 }
 
 export default Login;

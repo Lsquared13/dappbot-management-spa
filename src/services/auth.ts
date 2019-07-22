@@ -30,6 +30,7 @@ Amplify.configure({
 
 
 function signInRequest(): (args: any, target: string) => AuthorizedRequest {
+
   return requestFactory('login', "auth")
 }
 
