@@ -3,10 +3,11 @@ import { Button } from '../components/ui';
 import { StringField } from '../components/fields';
 import Auth from '../services/auth';
 import { CognitoUser } from '@aws-amplify/auth';
+import {UserResponse} from '../types'
 
 interface MfaChallengeProps {
-  user: CognitoUser
-  setUser: (user:any)=>void
+  user: UserResponse
+  setUser: (user:UserResponse)=>void
   setErr: (err:string)=>void
   setChallenge: (challenge:string)=>void
 }
@@ -19,8 +20,8 @@ export const MfaChallenge:FC<MfaChallengeProps> = ({user, setUser, setErr, setCh
     setErr('');
     setLoading(true);
     try {
-      const fullUser = await Auth.confirmMFA(user, mfa)
-      setUser(fullUser);
+      // const fullUser = await Auth.confirmMFA(user, mfa)
+      // setUser(fullUser);
       setChallenge('');
     } catch (e) {
       setErr(e.toString())

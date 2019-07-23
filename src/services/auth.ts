@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Amplify, { Auth } from 'aws-amplify';
 import { CognitoUser } from '@aws-amplify/auth';
 import {requestFactory} from './abiClerk';
+import { request } from 'https';
 
 
 interface RequestArgs {
@@ -38,6 +39,13 @@ function newPasswordRequest(): (args: any, target: string) => AuthorizedRequest 
   return requestFactory('login', "auth")
 }
 
+function forgottenPasswordResetRequest(): (args: any, target: string) => AuthorizedRequest {
+  return requestFactory('reset-password',"auth")
+}
+
+function setForgottenNewPasswordRequest(): (args: any, target: string) => AuthorizedRequest {
+  return requestFactory('reset-password', 'auth')
+}
 
 
 const MFA_TYPE = 'SMS_MFA';
@@ -122,7 +130,7 @@ passwordChecker
   .has().not().spaces();
 
 // Courtesy of https://usehooks.com/useLocalStorage/
-export function useLocalStorage<ValueType>(key:string, initialValue:ValueType):any[] {
+export function useLocalStorage<ValueType>(key:string, initialValue:ValueType):[ValueType, React.Dispatch<ValueType>] {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState(() => {
@@ -166,7 +174,8 @@ export default {
   signIn: signInRequest,
   confirmMFA: confirmMFASignIn,
   newPassword: newPasswordRequest,
-  forgotPass: completeForgotPassword,
   passwordChecker, currentUserInfo,
-  forgotPassword: forgotPassword,
+  setForgottenNewPassword: setForgottenNewPasswordRequest,
+  resetForgottenPassword: forgottenPasswordResetRequest
+
 }

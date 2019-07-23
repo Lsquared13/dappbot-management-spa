@@ -9,7 +9,7 @@ import {NewDappContainer, BuildDetailsContainer, ConfigureDappContainer} from ".
 
 import ABIClerk from '../services/abiClerk';
 
-import { DappCreateArgs,DappData } from '../types';
+import { DappCreateArgs,DappData, Tiers } from '../types';
 import { CreateDappState, ConfigureDappState, DappDetail } from "../components";
 
 
@@ -112,7 +112,8 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
                 Abi: contractABI,
                 Web3URL: web3URL,
                 GuardianURL: "https://guardian.dapp.bot",
-                ContractAddr: contractAddress
+                ContractAddr: contractAddress,
+                Tier: Tiers.Standard
               }
               handleCreate(args)
             }

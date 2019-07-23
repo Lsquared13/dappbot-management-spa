@@ -12,10 +12,11 @@ export interface DappCreateArgs extends DappData {
   DappName: string
 }
 export interface DappData {
-  Abi: string
-  Web3URL: string
-  GuardianURL: string
-  ContractAddr: string
+  Abi: string,
+  Web3URL: string,
+  GuardianURL: string,
+  ContractAddr: string,
+  Tier: Tiers
 }
 
 export function SampleDappArgs():DappCreateArgs{
@@ -24,7 +25,8 @@ export function SampleDappArgs():DappCreateArgs{
     Abi : '',
     Web3URL : '',
     GuardianURL : 'https://guardian.dapp.bot',
-    ContractAddr : ''
+    ContractAddr : '',
+    Tier:Tiers.Standard
   }
 }
 
@@ -32,11 +34,6 @@ export interface DappDbItem extends DappCreateArgs {
   OwnerEmail : string,
   CreationTime : string,
   DnsName : string
-}
-
-export interface AuthRefreshData {
-  Token: string,
-  ExpiresAt: string
 }
 
 export type AttributeListType = AttributeType[];
@@ -63,6 +60,47 @@ export interface MFAOptionType {
 export type UserMFASettingListType = string[];
 
 
+export interface ChallengeData {
+  ChallengeName: string,
+  ChallengeParameters:{
+    [key:string]: string
+  },
+  Session: string
+}
+
+export interface ChallengeResponse {
+  Data: ChallengeData,
+  Error: string,
+}
+
+export const defaultChallengeData: ChallengeData = {
+  ChallengeName:'',
+  ChallengeParameters:{},
+  Session:''
+}
+
+export enum ChallengeType{
+  Mfa = "MFA",
+  ForgotPassword = "FORGOT_PASSWORD",
+  NewPasswordRequired = "NEW_PASSWORD_REQUIRED"
+}
+
+export const forgotPasswordChallengeData: ChallengeData = {
+  ChallengeName:ChallengeType.ForgotPassword,
+  ChallengeParameters:{},
+  Session:''
+}
+
+export const defaultChallengeResponse:ChallengeResponse = {
+  Data:defaultChallengeData,
+  Error:''
+}
+
+export interface AuthRefreshData {
+  Token: string,
+  ExpiresAt: string
+}
+
 export interface User {
   Username: string,
   UserAttributes: AttributeListType,
@@ -75,4 +113,25 @@ export interface UserResponse {
   User: User,
   Authorization: string,
   Refresh: AuthRefreshData
+}
+
+export const defaultUser = {
+  Username:'',
+  UserAttributes:[]
+}
+
+export const defaultAuthRefreshData = {
+  Token:'',
+  ExpiresAt:''
+}
+export const defaultUserResponse = {
+  User: defaultUser,
+  Authorization:'',
+  Refresh: defaultAuthRefreshData
+}
+
+export enum Tiers{
+  Standard = 'STANDARD',
+  Professional = 'PROFESSIONAL',
+  Enterprise = 'ENTERPRISE'
 }

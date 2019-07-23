@@ -1,13 +1,15 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { Button } from '../components/ui';
 import { StringField } from '../components/fields';
 import Auth, { passwordChecker } from '../services/auth';
-import Alert from 'react-s-alert';
+import { useResource } from 'react-request-hook';
 
+import Alert from 'react-s-alert';
+import {ChallengeData,defaultChallengeData} from '../types'
 
 interface MfaChallengeProps {
   email: string
-  setChallenge: (challenge:string)=>void
+  setChallenge: (challenge:ChallengeData)=>void
   setErr: (err:string)=>void
 }
 
@@ -17,23 +19,55 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
   const [confirmPass, setConfirmPass] = useState('');
   const [code, setCode] = useState('');
   const [loading, setLoading] = useState(false);
+  const [newPasswordResponse, requestNewPassword] = useResource(Auth.setForgottenNewPassword())
+  const [newPassSent, markNewPassSent] = useState(false)
 
-  const sendForgotPass = async () => {
-    if (newPass !== confirmPass){
-      setErr('Your confirmation password does not match.')
-      return false;
+  const handleNewPassword = (email: string, passwordResetCode:string, newPassword: string) => {
+    const newPassDetails = {
+      'username': email,
+      'newPassword': newPassword,
+      'passwordResetCode': passwordResetCode
+
     }
-    setErr('');
-    setLoading(true);
-    try {
-      await Auth.forgotPass(email, code, newPass);
-      Alert.info(`Successfully changed your password!`)
-      setChallenge('');
-    } catch (e){
-      setErr(e.toString());
-    }
-    setLoading(false);
+    markNewPassSent(true)
+    requestNewPassword(newPassDetails,'password-reset')
   }
+  useEffect(()=>{
+    if(!newPassSent || newPasswordResponse.isLoading){
+      return;
+    }
+    if(newPasswordResponse.error) {
+      setErr(newPasswordResponse.error.message)
+      markNewPassSent(false)
+      Alert.error(`There was an error processing your new password: ${newPasswordResponse.error.message}`)
+      return
+    }else if(newPasswordResponse.data) {
+      markNewPassSent(false);
+      let response: any = newPasswordResponse.data
+      console.log("response.data: ", response.data)
+      if(response.data) {
+        Alert.success(`${response.data.message}`)
+      }
+      setChallenge(defaultChallengeData)
+      return
+    }
+  }, [markNewPassSent,newPasswordResponse, newPassSent,  setChallenge])
+  // const sendForgotPass = async () => {
+  //   if (newPass !== confirmPass){
+  //     setErr('Your confirmation password does not match.')
+  //     return false;
+  //   }
+  //   setErr('');
+  //   setLoading(true);
+  //   try {
+  //     // await Auth.forgotPass(email, code, newPass);
+  //     Alert.info(`Successfully changed your password!`)
+  //     setChallenge(defaultChallengeData);
+  //   } catch (e){
+  //     setErr(e.toString());
+  //   }
+  //   setLoading(false);
+  // }
 
   return (
     <>
@@ -58,7 +92,7 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
         help="Must match the field above."
         onChange={setConfirmPass}
         name='confirmPassword' />
-      <Button disabled={loading} block onClick={sendForgotPass}>Submit</Button>
+      <Button disabled={loading} block onClick={()=>handleNewPassword(email, code, confirmPass)}>Submit</Button>
     </>
   )
 }

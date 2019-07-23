@@ -1,21 +1,24 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Button } from '../components/ui';
-
+import { UserResponse, ChallengeData, defaultChallengeData } from '../types'
 import { StringField } from '../components/fields';
 import Auth, {passwordChecker} from '../services/auth';
-import { CognitoUser } from '@aws-amplify/auth';
+// import { CognitoUser } from '@aws-amplify/auth';
+import Alert from 'react-s-alert';
+
 import { ErrorBox } from '.';
 import { useResource } from 'react-request-hook';
 
 
 interface NewPassChallengeProps {
-  user : any
-  setChallenge : (challenge:string)=>void
+  user : UserResponse,
+  challenge: ChallengeData,
+  setChallenge : (challenge: ChallengeData)=>void
   setErr: (err:string)=>void
-  setUser: (user:any)=>void
+  setUser: (user:UserResponse)=>void
 }
 
-export const NewPassChallenge:FC<NewPassChallengeProps> = ({setChallenge, user, setUser})=>{
+export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChallenge, user, setUser})=>{
   const [newPass, setNewPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
   const [err, setErr] = useState('');
@@ -23,32 +26,37 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({setChallenge, user, 
   const [newPassResponse, requestNewPass] = useResource(Auth.newPassword())
   //Response Handler
   const [newPassSent, markNewPassSent] = useState(false)
-  const handleNewPassword = (email: string, newPassword: string, session: string) => {
+  const handleNewPassword = (email: string, newPassword: string) => {
     const newPassDetails = {
       'username': email,
-      'password': newPassword,
-      'session': session
+      'newPassword': newPassword,
+      'session': challenge.Session
     }
     markNewPassSent(true)
+
     console.log('sending sign in request', requestNewPass(newPassDetails, 'login'))
   }
+  const User =  user.User
   useEffect(()=>{
-    if( newPassSent){
-      if(newPassResponse.data){
-        let response: any = newPassResponse.data
-        if(response.data.AuthToken){
-          let currentSessionUser = {
-            user:{
-              signInUserSession:{
-                AuthToken:response.data.AuthToken
-              }
-            }
-          }
-          setUser(currentSessionUser)
-          setChallenge('')
-        }
-      }
+    if (!newPassSent || newPassResponse.isLoading){
+      return;
     }
+    if(newPassResponse.error){
+      setErr(newPassResponse.error.message)
+      Alert.error(`There was an error setting a password: ${newPassResponse.error.message}`)
+    }
+    let response: any = newPassResponse.data
+    console.log(response.data)
+    if(response.data.Authorization){
+      const { Authorization, User, Refresh } = response.data;
+      setUser({
+        User: User,
+        Authorization, Refresh
+      })
+      setChallenge(defaultChallengeData)
+    }
+
+
 
 
   }, [newPassSent, newPassResponse])
@@ -112,7 +120,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({setChallenge, user, 
                 <div className="row mt-4">
                   <div className="col">
                     <div style={{textAlign: "left"}}>
-                      <Button onClick={handleNewPassword=>(user.getSignInUserSession.idToken.jwtToken, user.username, confirmPass )} disabled={loading}>Submit</Button>
+                      <Button onClick={() => handleNewPassword( User.Username, confirmPass )} disabled={loading}>Submit</Button>
                       <ErrorBox errMsg={err}></ErrorBox>
                     </div>
                     {/* <button className="btn btn-primary" type="button">Submit</button> */}

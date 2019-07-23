@@ -2,13 +2,13 @@ import React, { FC, useState, useEffect } from 'react';
 import Alert from 'react-s-alert';
 import { RouteComponentProps, NavigateFn } from '@reach/router';
 import { useResource } from 'react-request-hook';
-import { DappCreateArgs, DappArgNameStrs, SampleDappArgs } from '../types';
+import { DappCreateArgs, DappArgNameStrs, SampleDappArgs, UserResponse } from '../types';
 
 import ABIClerk from '../services/abiClerk';
 import { DappList, DappForm } from '../components';
 
 interface HomeProps extends RouteComponentProps {
-  user? : any
+  user : UserResponse
   setUser : (user:any)=>void
 }
 // data:{

@@ -4,13 +4,13 @@ import StyledHeader from "./StyledHeader";
 
 import { ReactComponent as Logo } from "../../images/Dapp_Logo.svg";
 import { ReactComponent as MoreIcon } from "../../images/more.svg";
-
+import {UserResponse, defaultUserResponse} from '../../types'
 import { navigate } from "@reach/router";
 
 export interface HeaderProps {
   uri: any;
   user?: any
-  setUser: (newUser:any)=>void
+  setUser: (newUser:UserResponse)=>void
 }
 
 export interface HeaderState {
@@ -37,8 +37,7 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
   //   this.props.setUser(newUser);
   // }
   logOut = () => {
-    let newUser = Object.assign(this.props.user, { signInUserSession : null })
-    this.props.setUser(newUser);
+    this.props.setUser(defaultUserResponse)
   }
 
 

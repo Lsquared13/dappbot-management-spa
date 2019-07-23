@@ -5,6 +5,7 @@ import { Button } from '../components/ui';
 import StringField from '../components/fields/StringField';
 import Alert from 'react-s-alert';
 import { useResource } from 'react-request-hook';
+import { UserResponse, ChallengeData, ChallengeResponse, defaultChallengeData,forgotPasswordChallengeData, defaultUserResponse, ChallengeType } from '../types';
 
 
 import Auth from '../services/auth';
@@ -16,7 +17,7 @@ import { CognitoUser } from '@aws-amplify/auth';
 
 
 export interface LoginProps extends RouteComponentProps {
-  setUser: (user: any) => void
+  setUser: (user: UserResponse) => void
   user: any
 }
 
@@ -28,12 +29,13 @@ export const Login: FC<LoginProps> = (props) => {
 
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
-  const [challenge, setChallenge] = useState('');
+  const [challenge, setChallenge] = useState(defaultChallengeData);
   const [signInResponse, requestSignIn] = useResource(Auth.signIn())
-  const [resetResponse, requestReset] = useResource(Auth.newPassword())
+  const [forgottenPassResponse, requestForgottenPass] = useResource(Auth.resetForgottenPassword())
   //Response Handler
   const [signInSent, markSignInSent] = useState(false)
-  const [resetSent, markResetSent] = useState(false);
+  const [passwordResetSent, markPasswordResetSent] = useState(false);
+
 
   const handleSignIn = (email: string, password: string) => {
     const loginDetails = {
@@ -44,62 +46,72 @@ export const Login: FC<LoginProps> = (props) => {
     requestSignIn(loginDetails, 'login')
   }
 
-
-
-
-  const handleForgotPass = async () => {
-    markResetSent(true);
-    setErr('')
-    requestReset({
+  const handleForgottenPass = (email: string) => {
+    const forgottenPassDetails = {
       'username': email
-    }, 'password-reset')
-    if (email === "") return;
+    }
+    markPasswordResetSent(true)
+    requestForgottenPass(forgottenPassDetails, 'password-reset')
 
-    setLoading(true)
-    if (email === "") {
-      throw Error("Invalid Email")
-    }
-    const result: any = await Auth.forgotPassword(email)
-    if (result.errMsg) {
-      setErr(result.errMsg);
-    } else {
-      Alert.info(`We sent an email to reset your password at this email: ${email}`)
-      setChallenge('forgotPassword')
-    }
-    setLoading(false)
   }
+  // const handleForgotPass = async () => {
+  //   markResetSent(true);
+  //   setErr('')
+  //   requestReset({
+  //     'username': email
+  //   }, 'password-reset')
+  //   if (email === "") return;
 
-  useEffect(function handleResetResult(){
-    if (resetResponse.error){
-      setErr(resetResponse.error.message);
-      markResetSent(false);
+  //   setLoading(true)
+  //   if (email === "") {
+  //     throw Error("Invalid Email")
+  //   }
+  //   const result: any = await Auth.forgotPassword(email)
+  //   if (result.errMsg) {
+  //     setErr(result.errMsg);
+  //   } else {
+  //     Alert.info(`We sent an email to reset your password at this email: ${email}`)
+
+  //     setChallenge(forgotPasswordChallengeData)
+  //   }
+  //   setLoading(false)
+  // }
+
+  useEffect(function handlePassResetResult(){
+    if(!passwordResetSent || forgottenPassResponse.isLoading){
+      return
+    }
+    if (forgottenPassResponse.error){
+      setErr(forgottenPassResponse.error.message);
+      markPasswordResetSent(false);
       return;
-    }
-    if (
-      !resetResponse.isLoading &&
-      resetResponse.data &&
-      signInSent
+    }else if (
+      forgottenPassResponse.data
     ) {
-
+      const result: any = forgottenPassResponse.data
+      console.log(result)
+      markPasswordResetSent(false)
+      setChallenge(forgotPasswordChallengeData)
+      return
     }
-  }, [resetResponse, markResetSent])
+  }, [forgottenPassResponse, markPasswordResetSent, passwordResetSent])
 
-  useEffect(() => {
-    if (challenge === '' && user.Authorization) {
+  useEffect(function handleChallengeResult() {
+    if (challenge.ChallengeName === '' && user.Authorization) {
       navigate && navigate('/home');
     }
-  }, [challenge, user, navigate])
+  }, [challenge, setChallenge, user, navigate])
 
   // If we now have a Cognito user and no challenge
   // TODO: This probably won't behave right, as CognitoUser
   // can match with an empty object.  Need to determine a good
   // property to check for.
-  useEffect(() => {
-    console.log('hello')
-    console.log()
+  useEffect(function handleLoginResult() {
+
     if (!signInSent || signInResponse.isLoading) {
       return;
     }
+
     if (signInResponse.error) {
       setErr(signInResponse.error.message)
       markSignInSent(false);
@@ -107,20 +119,32 @@ export const Login: FC<LoginProps> = (props) => {
       return;
     } else if (signInResponse.data) {
       markSignInSent(false);
+
       let response: any = signInResponse.data
-      if (response.Authorization) {
-        const { Authorization, User, Refresh } = response;
+
+      console.log("response.data: ", response.data)
+      if (response.data) {
+        let tempUser = defaultUserResponse
+        tempUser.User.Username = email
+        console.log(tempUser)
+        setUser(tempUser)
+        setChallenge(response.data)
+      }
+
+      if (response.data.Authorization) {
+        const { Authorization, User, Refresh } = response.data;
+
         setUser({
-          user: User,
+          User: User,
           Authorization, Refresh
         })
+        setChallenge(defaultChallengeData)
       }
-      if (response.ChallengeName) {
-        setChallenge(response.data.ChallengeName)
-        // TODO: Follow challenge param
-      }
+      //TODO: Define the type for the message response
       // @ts-ignore
       Alert.success(`${signInResponse.data.message}`)
+
+      return;
     }
 
   }, [user, challenge, signInSent, markSignInSent, signInResponse])
@@ -162,7 +186,7 @@ export const Login: FC<LoginProps> = (props) => {
         <div className="col">
           <div style={{ textAlign: "left" }}>
             <Button disabled={loading} onClick={() => handleSignIn(email, password)}>Submit</Button>
-            {/* <Button onClick={handleForgotPass}>Forgot Password?</Button> */}
+            <Button onClick={()=>handleForgottenPass(email)}>Forgot Password?</Button>
             <ErrorBox errMsg={err}></ErrorBox>
           </div>
           {/* <button className="btn btn-primary" type="button">Submit</button> */}
@@ -171,14 +195,14 @@ export const Login: FC<LoginProps> = (props) => {
     </div>
   )
   let challengeProps = { setChallenge, setErr }
-  switch (challenge) {
-    case ('NEW_PASSWORD_REQUIRED'):
-      loginFields = <NewPassChallenge setUser={setUser} user={user} {...challengeProps} />
+  switch (challenge.ChallengeName) {
+    case (ChallengeType.NewPasswordRequired):
+      loginFields = <NewPassChallenge setUser={setUser} user={user} challenge = {challenge} {...challengeProps} />
       break;
-    case ('MFA'):
-      loginFields = <MfaChallenge setUser={setUser} user={user} {...challengeProps} />
+    case (ChallengeType.Mfa):
+      // loginFields = <MfaChallenge setUser={setUser} user={user} {...challengeProps} />
       break;
-    case ('forgotPassword'):
+    case (ChallengeType.ForgotPassword):
       loginFields =
         <React.Fragment>
           <div className="row">

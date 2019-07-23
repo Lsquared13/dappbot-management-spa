@@ -11,9 +11,10 @@ import { useLocalStorage, currentUserInfo } from './services/auth';
 
 import { SettingsContainerBase } from "./apps/SettingsContainerBase";
 
-import { Home, Welcome, Login, Privacy, DappDetails, PaymentPage } from './pages';
+import {  Welcome, Login, Privacy, DappDetails, PaymentPage } from './pages';
 import { DashboardBase } from './apps/DashboardBase';
 import { NewDappFormBase } from './apps';
+import { UserResponse } from './types';
 
 
 // user: {
@@ -24,8 +25,7 @@ import { NewDappFormBase } from './apps';
 //   }
 // }
 const App: FC = () => {
-  let user,setUser;
-  [user, setUser] = useLocalStorage('user', {});
+  let [user, setUser] = useLocalStorage('user', {} as UserResponse);
   let userData = { user, setUser };
   console.log("USER: ",user)
   
@@ -43,7 +43,8 @@ const App: FC = () => {
         <Router>
           <PageBase path='/' {...userData} >
             <Welcome default {...userData} />
-            <Home path='other' {...userData} />
+            {/* No longer being used anymore. */}
+            {/* <Home path='other' {...userData} /> */}
             <DappDetails path="home/:id" {...userData} />
             <Login path='login' {...userData} />
             <PaymentPage path='signup' {...userData}/>
