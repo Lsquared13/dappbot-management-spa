@@ -113,6 +113,7 @@ export const Login: FC<LoginProps> = (props) => {
     }
 
     if (signInResponse.error) {
+      console.log("SignIn Error: ",signInResponse.error);
       setErr(signInResponse.error.message)
       markSignInSent(false);
       Alert.error(`There was an error signing in: ${signInResponse.error.message}`)
