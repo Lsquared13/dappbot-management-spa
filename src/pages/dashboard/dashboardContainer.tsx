@@ -57,9 +57,60 @@ export const DashboardContainer: React.SFC<DashboardContainerProps> = props => {
       </Container>
       <Divider type="secondary" />
       <Container>
+
+      {props.dapps.length ? (
         <Box marginTop={9}>
           <DappTable dapps={props.dapps} />
         </Box>
+      ) : (
+        <Box marginTop={9} marginBottom={12}>
+          <Container>
+            <div className="mb-5 mt-5 text-center">
+              <div className="row text-center mb-3">
+                <div className="col-sm-6 m-auto col-lg-4">
+                  <img alt="Development SDK" className="img-fluid" src="SDK.svg" />
+                </div>
+              </div>
+              <Text
+                bold
+                size="lg"
+                smSize="lg"
+                mdSize="lg"
+                lgSize="lg"
+                align="center"
+                className="mb-3"
+                color="blue"
+                >
+                No Dapps
+              </Text>
+              <div className="row text-center">
+                <div className="col-sm-6 col-md-6 m-auto">
+                  <Text
+                  size="sm"
+                  smSize="sm"
+                  mdSize="sm"
+                  lgSize="sm"
+                  color="gray"
+                  align="center"
+                  className="mb-5">
+                    Start building on blockchain by clicking on “New Dapp” button above or below. When you create a Dapp it will appear here.
+                  </Text>
+                </div>
+              </div>
+              <Button
+                size="small"
+                theme="cta"
+                onClick={props.onCreateNewApp}
+                className="mb-5"
+              >
+                <ButtonText>New Dapp</ButtonText>
+              </Button>
+
+            </div>
+          </Container>
+        </Box>
+      )}
+
       </Container>
     </Box>
   );
