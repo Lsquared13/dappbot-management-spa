@@ -35,6 +35,9 @@ export const Navigation:FC<NavProps> = ({hideLogin, user, setUser}) => {
           <div className="collapse navbar-collapse" id="navbarNav3">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
+                  <a className="nav-link" target="_blank" href="https://dappbot.drift.help/category/getting-started/">Support</a>
+              </li>
+              <li className="nav-item">
                 { loginLogoutLink }
               </li>
             </ul>
