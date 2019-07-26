@@ -5,6 +5,11 @@ interface RequestArgs {
   data: any
 }
 
+interface Headers {
+  'Content-Type': string,
+  Authorization?:string
+}
+
 interface AuthorizedRequest extends RequestArgs {
   headers: any,
   method: string
@@ -14,27 +19,36 @@ export function abiClerkEndpoint(method: string, rootResource:string='private') 
   let apiCall = `${process.env.REACT_APP_DAPPBOT_API_ENDPOINT}/v1/${rootResource}`
   return apiCall
 }
+export enum Operations {
+  create = "create",
+  login = "login",
+  resetPassword = "reset-password",
+  delete = "delete",
+  edit = "edit",
+  list = "list",
+  read = "read"
+}
 
-function httpMethod(method: string) {
+function operationToHttpMethod(operation: Operations) {
   let httpMethodType: string;
-  switch(method) {
-    case 'create':
+  switch(operation) {
+    case Operations.create:
       httpMethodType = 'POST'
       break
-    case 'login':
+    case Operations.login:
       httpMethodType = 'POST'
       break
-    case 'reset-password':
+    case Operations.resetPassword:
       httpMethodType = 'POST'
       break
-    case 'delete':
+    case Operations.delete:
       httpMethodType = 'DELETE'
       break
-    case 'edit':
+    case Operations.edit:
       httpMethodType = 'PUT'
       break
-    case 'list':
-    case 'read':
+    case Operations.list:
+    case Operations.read:
     default:
       httpMethodType = 'GET'
   }
@@ -44,15 +58,15 @@ function httpMethod(method: string) {
 // data.  The returned function takes an argument of the same type
 // as <Data>, so calls to `authorizedRequestFactory` simply need to
 // provide a sample `data` in order to get a properly typed request fxn.
-export function requestFactory<Data>(method: string, rootResource: string="private", user?: UserResponse) {
+export function requestFactory<Data>(operation: Operations, rootResource: string="private", user?: UserResponse) {
   return (args: Data, target?:string) => {
-    let url = abiClerkEndpoint(method, rootResource)
+    let url = abiClerkEndpoint(operation, rootResource)
     let urlextension = ""
     console.log(target)
     if(target !== undefined){
       urlextension = `/${target}`
     }
-    let headers:any = {'Content-Type': 'application/json'}
+    let headers:Headers = {'Content-Type': 'application/json'}
     if(rootResource === 'private'&& user){
       headers = {
         Authorization: `${user.Authorization}`,
@@ -62,7 +76,7 @@ export function requestFactory<Data>(method: string, rootResource: string="priva
     let request = {
       url: `${url}${urlextension}`,
       data: args,
-      method: httpMethod(method),
+      method: operationToHttpMethod(operation),
       headers: headers,
     };
     console.log(request)
@@ -70,26 +84,28 @@ export function requestFactory<Data>(method: string, rootResource: string="priva
   }
 }
 
+
+
 function createRequest(user: UserResponse): (args: DappData, target: string) => AuthorizedRequest {
-  return requestFactory( 'create','private', user)
+  return requestFactory( Operations.create,'private', user)
 }
 
 function deleteRequest(user: UserResponse): (dappName: string) => AuthorizedRequest {
-  const deleteFunc = requestFactory('delete','private', user)
+  const deleteFunc = requestFactory(Operations.delete,'private', user)
   return (dappName: string) => deleteFunc({}, dappName);
 }
 
 function editRequest(user: UserResponse): (args: DappCreateArgs) => AuthorizedRequest {
-  return requestFactory('edit','private', user);
+  return requestFactory(Operations.edit,'private', user);
 }
 
 function listRequest(user: UserResponse): () => AuthorizedRequest {
-  const listFunc = requestFactory('list','private', user);
+  const listFunc = requestFactory(Operations.list,'private', user);
   return () => listFunc({});
 }
 
 function readRequest(user: UserResponse): (dappName: string) => AuthorizedRequest {
-  const readFunc = requestFactory('read', 'private', user);
+  const readFunc = requestFactory(Operations.read, 'private', user);
   return (dappName: string) => readFunc({ DappName: dappName })
 }
 

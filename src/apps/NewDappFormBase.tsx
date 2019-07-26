@@ -60,7 +60,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
       const dappData:DappData = omit(dappArgs, ['DappName'])
       markCreateSent(true);
       Alert.info(`Starting build...`)
-      console.log("sendCreateRequest", sendCreateRequest(dappData,dappArgs.DappName ));
+      sendCreateRequest(dappData,dappArgs.DappName)
     }
     useEffect(() => {
       if (createSent) {

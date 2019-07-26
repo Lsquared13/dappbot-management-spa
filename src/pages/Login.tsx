@@ -5,10 +5,13 @@ import { Button } from '../components/ui';
 import StringField from '../components/fields/StringField';
 import Alert from 'react-s-alert';
 import { useResource } from 'react-request-hook';
-import { UserResponse, ChallengeData, ChallengeResponse, defaultChallengeData,forgotPasswordChallengeData, defaultUserResponse, ChallengeType } from '../types';
+import { UserResponse,
+         challengeDataFactory,
+         defaultUserResponse,
+         ChallengeType } from '../types';
 
 
-import Auth from '../services/auth';
+import Auth,{BeginPasswordResetArgs, SignInArgs} from '../services/auth';
 
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
@@ -29,16 +32,16 @@ export const Login: FC<LoginProps> = (props) => {
 
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
-  const [challenge, setChallenge] = useState(defaultChallengeData);
+  const [challenge, setChallenge] = useState(challengeDataFactory(ChallengeType.Default));
   const [signInResponse, requestSignIn] = useResource(Auth.signIn())
-  const [forgottenPassResponse, requestForgottenPass] = useResource(Auth.resetForgottenPassword())
+  const [beginPasswordResetResponse, beginPasswordReset] = useResource(Auth.beginPasswordResetRequest())
   //Response Handler
   const [signInSent, markSignInSent] = useState(false)
   const [passwordResetSent, markPasswordResetSent] = useState(false);
 
 
   const handleSignIn = (email: string, password: string) => {
-    const loginDetails = {
+    const loginDetails:SignInArgs = {
       'username': email,
       'password': password
     }
@@ -47,11 +50,11 @@ export const Login: FC<LoginProps> = (props) => {
   }
 
   const handleForgottenPass = (email: string) => {
-    const forgottenPassDetails = {
+    const forgottenPassDetails:BeginPasswordResetArgs = {
       'username': email
     }
     markPasswordResetSent(true)
-    requestForgottenPass(forgottenPassDetails, 'password-reset')
+    beginPasswordReset(forgottenPassDetails, 'password-reset')
 
   }
   // const handleForgotPass = async () => {
@@ -78,26 +81,26 @@ export const Login: FC<LoginProps> = (props) => {
   // }
 
   useEffect(function handlePassResetResult(){
-    if(!passwordResetSent || forgottenPassResponse.isLoading){
+    if(!passwordResetSent || beginPasswordResetResponse.isLoading){
       return
     }
-    if (forgottenPassResponse.error){
-      setErr(forgottenPassResponse.error.message);
+    if (beginPasswordResetResponse.error){
+      setErr(beginPasswordResetResponse.error.message);
       markPasswordResetSent(false);
       return;
     }else if (
-      forgottenPassResponse.data
+      beginPasswordResetResponse.data
     ) {
-      const result: any = forgottenPassResponse.data
-      console.log(result)
+      const result: any = beginPasswordResetResponse.data
       markPasswordResetSent(false)
-      setChallenge(forgotPasswordChallengeData)
+      setChallenge(challengeDataFactory(ChallengeType.ForgotPassword))
       return
     }
-  }, [forgottenPassResponse, markPasswordResetSent, passwordResetSent])
+  }, [beginPasswordResetResponse, markPasswordResetSent, passwordResetSent])
 
   useEffect(function handleChallengeResult() {
-    if (challenge.ChallengeName === '' && user.Authorization) {
+    console.log("handling the result", challenge)
+    if (challenge.ChallengeName === ChallengeType.Default  && user.Authorization) {
       navigate && navigate('/home');
     }
   }, [challenge, setChallenge, user, navigate])
@@ -123,11 +126,9 @@ export const Login: FC<LoginProps> = (props) => {
 
       let response: any = signInResponse.data
 
-      console.log("response.data: ", response.data)
       if (response.data) {
         let tempUser = defaultUserResponse
         tempUser.User.Username = email
-        console.log(tempUser)
         setUser(tempUser)
         setChallenge(response.data)
       }
@@ -139,7 +140,7 @@ export const Login: FC<LoginProps> = (props) => {
           User: User,
           Authorization, Refresh
         })
-        setChallenge(defaultChallengeData)
+        setChallenge(challengeDataFactory(ChallengeType.Default))
       }
       //TODO: Define the type for the message response
       // @ts-ignore

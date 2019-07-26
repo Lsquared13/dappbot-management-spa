@@ -1,11 +1,11 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Button } from '../components/ui';
 import { StringField } from '../components/fields';
-import Auth, { passwordChecker } from '../services/auth';
+import Auth, { passwordChecker, ConfirmPasswordResetArgs } from '../services/auth';
 import { useResource } from 'react-request-hook';
 
 import Alert from 'react-s-alert';
-import {ChallengeData,defaultChallengeData} from '../types'
+import {ChallengeData,ChallengeType, challengeDataFactory} from '../types'
 
 interface MfaChallengeProps {
   email: string
@@ -19,11 +19,11 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
   const [confirmPass, setConfirmPass] = useState('');
   const [code, setCode] = useState('');
   const [loading, setLoading] = useState(false);
-  const [newPasswordResponse, requestNewPassword] = useResource(Auth.setForgottenNewPassword())
+  const [newPasswordResponse, requestNewPassword] = useResource(Auth.confirmPasswordResetRequest())
   const [newPassSent, markNewPassSent] = useState(false)
 
   const handleNewPassword = (email: string, passwordResetCode:string, newPassword: string) => {
-    const newPassDetails = {
+    const newPassDetails:ConfirmPasswordResetArgs = {
       'username': email,
       'newPassword': newPassword,
       'passwordResetCode': passwordResetCode
@@ -48,7 +48,7 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
       if(response.data) {
         Alert.success(`${response.data.message}`)
       }
-      setChallenge(defaultChallengeData)
+      setChallenge(challengeDataFactory(ChallengeType.Default))
       return
     }
   }, [markNewPassSent,newPasswordResponse, newPassSent,  setChallenge])

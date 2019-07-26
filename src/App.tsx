@@ -43,15 +43,13 @@ const App: FC = () => {
         <Router>
           <PageBase path='/' {...userData} >
             <Welcome default {...userData} />
-            {/* No longer being used anymore. */}
-            {/* <Home path='other' {...userData} /> */}
-            <DappDetails path="home/:id" {...userData} />
             <Login path='login' {...userData} />
             <PaymentPage path='signup' {...userData}/>
             <Privacy path='privacy'  />
           </PageBase>
           <HomeBase path="/home" {...userData}>
             {/* SUB-APPLICATION: Dapp Dashboard */}
+            <DappDetails path="home/:id" {...userData} />
             <DashboardBase path="/*"  {...userData}/>
             <NewDappFormBase path="new/*" {...userData} />
             <SettingsContainerBase path="user-settings/*" />

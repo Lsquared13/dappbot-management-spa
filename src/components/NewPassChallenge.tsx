@@ -1,8 +1,8 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Button } from '../components/ui';
-import { UserResponse, ChallengeData, defaultChallengeData } from '../types'
+import { UserResponse, ChallengeData, challengeDataFactory, ChallengeType } from '../types'
 import { StringField } from '../components/fields';
-import Auth, {passwordChecker} from '../services/auth';
+import Auth, {passwordChecker, NewPasswordArgs} from '../services/auth';
 // import { CognitoUser } from '@aws-amplify/auth';
 import Alert from 'react-s-alert';
 
@@ -27,7 +27,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
   //Response Handler
   const [newPassSent, markNewPassSent] = useState(false)
   const handleNewPassword = (email: string, newPassword: string) => {
-    const newPassDetails = {
+    const newPassDetails:NewPasswordArgs = {
       'username': email,
       'newPassword': newPassword,
       'session': challenge.Session
@@ -53,7 +53,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
         User: User,
         Authorization, Refresh
       })
-      setChallenge(defaultChallengeData)
+      setChallenge(challengeDataFactory(ChallengeType.Default))
     }
 
 

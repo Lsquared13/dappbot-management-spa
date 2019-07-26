@@ -73,26 +73,24 @@ export interface ChallengeResponse {
   Error: string,
 }
 
-export const defaultChallengeData: ChallengeData = {
-  ChallengeName:'',
-  ChallengeParameters:{},
-  Session:''
-}
-
 export enum ChallengeType{
   Mfa = "MFA",
   ForgotPassword = "FORGOT_PASSWORD",
-  NewPasswordRequired = "NEW_PASSWORD_REQUIRED"
+  NewPasswordRequired = "NEW_PASSWORD_REQUIRED",
+  Default = "DEFAULT"
 }
 
-export const forgotPasswordChallengeData: ChallengeData = {
-  ChallengeName:ChallengeType.ForgotPassword,
-  ChallengeParameters:{},
-  Session:''
+export function challengeDataFactory(typeOfChallenge:ChallengeType) {
+  let data: ChallengeData = {
+    ChallengeName:typeOfChallenge,
+    ChallengeParameters:{},
+    Session:''
+  }
+  return data
 }
 
 export const defaultChallengeResponse:ChallengeResponse = {
-  Data:defaultChallengeData,
+  Data:challengeDataFactory(ChallengeType.Default),
   Error:''
 }
 
