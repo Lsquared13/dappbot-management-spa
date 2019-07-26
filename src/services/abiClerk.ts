@@ -11,7 +11,7 @@ interface Headers {
 }
 
 interface AuthorizedRequest extends RequestArgs {
-  headers: any,
+  headers: Headers,
   method: string
 }
 
