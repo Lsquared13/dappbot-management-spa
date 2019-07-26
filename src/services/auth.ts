@@ -65,7 +65,7 @@ function confirmPasswordResetRequest(): (args: ConfirmPasswordResetArgs, target:
 }
 
 
-const MFA_TYPE = 'SMS_MFA';
+// const MFA_TYPE = 'SMS_MFA';
 
 // const signIn = async (email: string, password: string) => {
 //   try {
