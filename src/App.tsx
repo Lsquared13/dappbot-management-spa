@@ -49,7 +49,7 @@ const App: FC = () => {
           </PageBase>
           <HomeBase path="/home" {...userData}>
             {/* SUB-APPLICATION: Dapp Dashboard */}
-            <DappDetails path="home/:id" {...userData} />
+            <DappDetails path="dapp/:id" {...userData} />
             <DashboardBase path="/*"  {...userData}/>
             <NewDappFormBase path="new/*" {...userData} />
             <SettingsContainerBase path="user-settings/*" />
