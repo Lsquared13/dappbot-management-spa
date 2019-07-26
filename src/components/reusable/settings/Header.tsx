@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import { Box, Tabs, Text } from "../ui";
-import { Container } from "../dapp";
+import { Box, Tabs, Text } from "../../../components/ui";
+import { Container } from "../../../layout";
 
 const Title: FC = props => (
   <Text

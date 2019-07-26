@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { Box, Text, Button, TextProps } from "../components/reusable/ui";
+import { Box, Text, Button, TextProps } from "../components/ui";
 import {
   ButtonText,
   LayoutContainer,
@@ -7,9 +7,9 @@ import {
   SubscriptionChanges,
   SubscriptionDetail,
   SubscriptionTable
-} from "../components/reusable/dapp";
+} from "../layout";
 
-export * from "../components/reusable/dapp/SubscriptionTable";
+export * from "../layout/SubscriptionTable";
 
 export interface SubscriptionPlan {
   apps: SubscriptionDetail[];
@@ -72,7 +72,7 @@ export const Billing: FC<BillingProps> = props => {
           <States>{subscriptionPlan.totalApps} Dapps</States>
           <ReferenceLink
             href="#"
-            onClick={({ event }) => {
+            onClick={( event ) => {
               event.preventDefault();
               onPurchaseDapps && onPurchaseDapps();
             }}
@@ -85,7 +85,7 @@ export const Billing: FC<BillingProps> = props => {
           <States>$ {subscriptionPlan.pastInvoice}</States>
           <ReferenceLink
             href="#"
-            onClick={({ event }) => {
+            onClick={(event) => {
               event.preventDefault();
               onViewPastInvoice && onViewPastInvoice();
             }}
@@ -143,7 +143,7 @@ export const Billing: FC<BillingProps> = props => {
       <Box display="flex" justifyContent="end">
         <ReferenceLink
           href="#"
-          onClick={({ event }) => {
+          onClick={(event) => {
             event.preventDefault();
             onPurchaseDapps && onPurchaseDapps();
           }}

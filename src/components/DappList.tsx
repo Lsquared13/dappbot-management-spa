@@ -21,7 +21,7 @@ export const DappList: FC<DappListProps> = ({ dappList, fetchList, ...props }) =
   const refreshButton = (
     <Flyout label={refreshLabel} ariaLabel={refreshLabel}>
       <Button size='small'
-        btnStyle='quietSecondary'
+        style='quietSecondary'
         theme='outlineNeutral'
         onClick={fetchList}>
         <Icon icon='cycle' type='thick' />
@@ -61,7 +61,7 @@ export const DappList: FC<DappListProps> = ({ dappList, fetchList, ...props }) =
           {refreshButton}
           <Flyout label={createLabel} ariaLabel={createLabel}>
             <Button size='small'
-              btnStyle='quietSecondary'
+              style='quietSecondary'
               theme='outlineNeutral'
               onClick={() => props.setFormTarget('create')}>
               <Icon icon='add' type='thick' />
@@ -90,7 +90,7 @@ export const DappList: FC<DappListProps> = ({ dappList, fetchList, ...props }) =
           <Flyout label={viewLabel} ariaLabel={viewLabel}>
             <a target='_blank' rel="noopener noreferrer" href={`https://${record.DappName}.${baseDomain}`}>
               <Button size='small'
-                btnStyle='quietSecondary'
+                style='quietSecondary'
                 theme='outlineNeutral'>
                 <Icon icon='world' type='thick' />
               </Button>
@@ -98,7 +98,7 @@ export const DappList: FC<DappListProps> = ({ dappList, fetchList, ...props }) =
           </Flyout>
           <Flyout label={abiLabel} ariaLabel={abiLabel}>
             <Button size='small'
-              btnStyle='quietSecondary'
+              style='quietSecondary'
               theme='outlineNeutral'
               onClick={() => { handleCopy(record.Abi) }}>
               <Icon icon='copy' type='thick' />
@@ -106,7 +106,7 @@ export const DappList: FC<DappListProps> = ({ dappList, fetchList, ...props }) =
           </Flyout>
           <Flyout label={editLabel} ariaLabel={editLabel}>
             <Button size='small'
-              btnStyle='quietSecondary'
+              style='quietSecondary'
               onClick={() => { props.setFormTarget(record.DappName) }}
               theme='outlineNeutral'>
               <Icon icon='edit' type='thick' />
@@ -114,7 +114,7 @@ export const DappList: FC<DappListProps> = ({ dappList, fetchList, ...props }) =
           </Flyout>
           <Flyout label={deleteLabel} ariaLabel={deleteLabel}>
             <Button size='small'
-              btnStyle='quietSecondary'
+              style='quietSecondary'
               onClick={() => { handleDelete(record.DappName) }}
               theme='outlineNeutral'>
               <Icon icon='trash' type='thick' />

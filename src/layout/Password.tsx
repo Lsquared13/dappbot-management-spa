@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import { Box, Text, Button } from "../components/reusable/ui";
-import { Input } from "../components/reusable/ui/NavLeft/Input";
+import { Box, Text, Button } from "../components/ui";
+import { Input } from "../components/ui/NavLeft/Input";
 import {
   LayoutContainer,
   ButtonText,
   InputContainer,
   InputGroup,
   InputTitle
-} from "../components/reusable/dapp";
+} from "../layout";
 
 export interface PasswordProps {
   onPasswordInputChange?: (inputs: PasswordState) => void;

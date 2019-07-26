@@ -1,7 +1,7 @@
 import React from "react";
 import { RouteComponentProps } from "@reach/router";
-import { Container, Breadcrumb, Title } from "../components/reusable/dapp";
-import { Box } from "../components/reusable/ui";
+import { Container, Breadcrumb, Title } from "../layout";
+import { Box } from "../components/ui";
 import SettingHeader from "../components/reusable/settings/Header";
 import Profile, { ProfileState } from "../layout/Profile";
 import Password, { PasswordState } from "../layout/Password";

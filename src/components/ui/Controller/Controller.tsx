@@ -1,6 +1,6 @@
 import * as React from "react";
-import Contents from "./../Contents";
-import OutsideEventBehavior from "./../utils/OutsideEventBehavior";
+import Contents from "../Contents";
+import OutsideEventBehavior from "../utils/OutsideEventBehavior";
 
 export interface ControllerProps {
   anchor: HTMLElement | null;
