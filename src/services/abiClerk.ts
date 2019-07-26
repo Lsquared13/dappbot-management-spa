@@ -62,7 +62,7 @@ export function requestFactory<Data>(operation: Operations, rootResource: string
   return (args: Data, target?:string) => {
     let url = abiClerkEndpoint(operation, rootResource)
     let urlextension = ""
-    console.log(target)
+    // console.log(target)
     if(target !== undefined){
       urlextension = `/${target}`
     }
@@ -79,7 +79,7 @@ export function requestFactory<Data>(operation: Operations, rootResource: string
       method: operationToHttpMethod(operation),
       headers: headers,
     };
-    console.log(request)
+    // console.log(request)
     return request;
   }
 }

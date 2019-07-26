@@ -27,7 +27,7 @@ import { UserResponse } from './types';
 const App: FC = () => {
   let [user, setUser] = useLocalStorage('user', {} as UserResponse);
   let userData = { user, setUser };
-  console.log("USER: ",user)
+  // console.log("USER: ",user)
   
   useEffect(() => {
     async function fetchMyAPI() {

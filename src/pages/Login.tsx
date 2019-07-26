@@ -99,7 +99,7 @@ export const Login: FC<LoginProps> = (props) => {
   }, [beginPasswordResetResponse, markPasswordResetSent, passwordResetSent])
 
   useEffect(function handleChallengeResult() {
-    console.log("handling the result", challenge)
+    // console.log("handling the result", challenge)
     if (challenge.ChallengeName === ChallengeType.Default  && user.Authorization) {
       navigate && navigate('/home');
     }
@@ -116,7 +116,7 @@ export const Login: FC<LoginProps> = (props) => {
     }
 
     if (signInResponse.error) {
-      console.log("SignIn Error: ",signInResponse.error);
+      // console.log("SignIn Error: ",signInResponse.error);
       setErr(signInResponse.error.message)
       markSignInSent(false);
       Alert.error(`There was an error signing in: ${signInResponse.error.message}`)

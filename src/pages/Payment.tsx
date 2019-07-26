@@ -66,10 +66,10 @@ export const Payment:FC<PaymentProps> = (props) => {
     if (props.stripe && process.env.REACT_APP_PAYMENT_ENDPOINT){
       setLoading(true);
       setErr('');
-      console.log('name: ',name)
+      // console.log('name: ',name)
       const token = await props.stripe.createToken({name});
-      console.log(token.token)
-      console.log(planType)
+      // console.log(token.token)
+      // console.log(planType)
       const lambdaRes = await request.post(process.env.REACT_APP_PAYMENT_ENDPOINT.concat("/create-stripe"), {
         json: true,
         body: { "token":token.token,"plans":[{
@@ -82,7 +82,7 @@ export const Payment:FC<PaymentProps> = (props) => {
         // temporary password in just a moment
         setSuccessful(true);
       } else {
-        console.log(lambdaRes.err)
+        // console.log(lambdaRes.err)
         // setErr(lambdaRes.err);
       }
       setLoading(false);
