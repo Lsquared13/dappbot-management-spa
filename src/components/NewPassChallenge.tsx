@@ -26,10 +26,10 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
   const [newPassResponse, requestNewPass] = useResource(Auth.newPassword())
   //Response Handler
   const [newPassSent, markNewPassSent] = useState(false)
-  const handleNewPassword = (email: string, newPassword: string) => {
+  const handleNewPassword = () => {
     const newPassDetails:NewPasswordArgs = {
-      'username': email,
-      'newPassword': newPassword,
+      'username': user.User.Username,
+      'newPassword': newPass,
       'session': challenge.Session
     }
     markNewPassSent(true)
@@ -59,21 +59,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
 
 
   }, [newPassSent, newPassResponse])
-  // const sendNewPass = async () => {
-  //   if (newPass !== confirmPass){
-  //     setErr('The confirmation password does not match.');
-  //     return false;
-  //   }
-  //   setLoading(true);
-  //   try {
-  //     const fullUser = await Auth.newPassword(user, newPass);
-  //     setUser(fullUser);
-  //     setChallenge('');
-  //   } catch (e) {
-  //     setErr(e.toString())
-  //   }
-  //   setLoading(false);
-  // }
+
   return (
     <>
       <section className="fdb-block fp-active" data-block-type="forms">
@@ -119,7 +105,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
                 <div className="row mt-4">
                   <div className="col">
                     <div style={{textAlign: "left"}}>
-                      <Button onClick={() => handleNewPassword( User.Username, confirmPass )} disabled={loading}>Submit</Button>
+                      <Button onClick={handleNewPassword} disabled={loading}>Submit</Button>
                       <ErrorBox errMsg={err}></ErrorBox>
                     </div>
                     {/* <button className="btn btn-primary" type="button">Submit</button> */}

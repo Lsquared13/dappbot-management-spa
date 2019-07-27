@@ -94,7 +94,7 @@ export class CartItem extends React.Component<CartItemProps, CartItemState> {
   };
 
   onCartItemIncrement = () => {
-    console.log("sss");
+    // console.log("sss");
     this.setState(
       prevState => ({
         count: prevState.count + 1,

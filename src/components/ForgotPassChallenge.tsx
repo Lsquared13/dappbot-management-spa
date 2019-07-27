@@ -52,22 +52,6 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
       return
     }
   }, [markNewPassSent,newPasswordResponse, newPassSent,  setChallenge])
-  // const sendForgotPass = async () => {
-  //   if (newPass !== confirmPass){
-  //     setErr('Your confirmation password does not match.')
-  //     return false;
-  //   }
-  //   setErr('');
-  //   setLoading(true);
-  //   try {
-  //     // await Auth.forgotPass(email, code, newPass);
-  //     Alert.info(`Successfully changed your password!`)
-  //     setChallenge(defaultChallengeData);
-  //   } catch (e){
-  //     setErr(e.toString());
-  //   }
-  //   setLoading(false);
-  // }
 
   return (
     <>

@@ -89,9 +89,9 @@ export function challengeDataFactory(typeOfChallenge:ChallengeType) {
   return data
 }
 
-export const defaultChallengeResponse:ChallengeResponse = {
-  Data:challengeDataFactory(ChallengeType.Default),
-  Error:''
+
+export function defaultChallengeResponse():ChallengeResponse{
+  return {Data:challengeDataFactory(ChallengeType.Default),Error:''}
 }
 
 export interface AuthRefreshData {
@@ -113,19 +113,20 @@ export interface UserResponse {
   Refresh: AuthRefreshData
 }
 
-export const defaultUser = {
-  Username:'',
-  UserAttributes:[]
+export function defaultUser():User {
+  return {Username:"", UserAttributes: []}
 }
 
-export const defaultAuthRefreshData = {
-  Token:'',
-  ExpiresAt:''
+export function defaultAuthRefreshData():AuthRefreshData{
+  return {Token:'', ExpiresAt:''}
 }
-export const defaultUserResponse = {
-  User: defaultUser,
-  Authorization:'',
-  Refresh: defaultAuthRefreshData
+
+export function defaultUserResponse():UserResponse {
+  return {
+    User: defaultUser(),
+    Authorization:'',
+    Refresh: defaultAuthRefreshData()
+  }
 }
 
 export enum Tiers{

@@ -11,22 +11,6 @@ interface HomeProps extends RouteComponentProps {
   user : UserResponse
   setUser : (user:any)=>void
 }
-// data:{
-//   data:{
-//       items:{
-//           0:{
-//               Abi: ""
-//               ContractAddr: "0x6D47c9bE6E60744c9A5bD2Ea51a603e80f018ac1"
-//               CreationTime: "2019-05-23T04:03:59.051Z"
-//               DappName: "enigma-data-marketplace"
-//               DnsName: "enigma-data-marketplace.dapp.bot"
-//               GuardianURL: "https://guardian.dapp.bot"
-//               OwnerEmail: "huertasjuan23@gmail.com"
-//               Web3URL: "https://mainnet.infura.io/v3/fc6533b42279480299a402a8059bcc90"
-//           }
-//       }
-//   }
-// }
 
 export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
 

@@ -37,7 +37,8 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
   //   this.props.setUser(newUser);
   // }
   logOut = () => {
-    this.props.setUser(defaultUserResponse)
+    const newUser = defaultUserResponse()
+    this.props.setUser(newUser)
   }
 
 

@@ -20,8 +20,7 @@ export const MfaChallenge:FC<MfaChallengeProps> = ({user, setUser, setErr, setCh
     setErr('');
     setLoading(true);
     try {
-      // const fullUser = await Auth.confirmMFA(user, mfa)
-      // setUser(fullUser);
+      //TODO: implement the new version of MFA api
       setChallenge('');
     } catch (e) {
       setErr(e.toString())

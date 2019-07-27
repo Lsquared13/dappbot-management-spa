@@ -57,28 +57,6 @@ export const Login: FC<LoginProps> = (props) => {
     beginPasswordReset(forgottenPassDetails, 'password-reset')
 
   }
-  // const handleForgotPass = async () => {
-  //   markResetSent(true);
-  //   setErr('')
-  //   requestReset({
-  //     'username': email
-  //   }, 'password-reset')
-  //   if (email === "") return;
-
-  //   setLoading(true)
-  //   if (email === "") {
-  //     throw Error("Invalid Email")
-  //   }
-  //   const result: any = await Auth.forgotPassword(email)
-  //   if (result.errMsg) {
-  //     setErr(result.errMsg);
-  //   } else {
-  //     Alert.info(`We sent an email to reset your password at this email: ${email}`)
-
-  //     setChallenge(forgotPasswordChallengeData)
-  //   }
-  //   setLoading(false)
-  // }
 
   useEffect(function handlePassResetResult(){
     if(!passwordResetSent || beginPasswordResetResponse.isLoading){
@@ -127,7 +105,7 @@ export const Login: FC<LoginProps> = (props) => {
       let response: any = signInResponse.data
 
       if (response.data) {
-        let tempUser = defaultUserResponse
+        let tempUser = defaultUserResponse()
         tempUser.User.Username = email
         setUser(tempUser)
         setChallenge(response.data)
