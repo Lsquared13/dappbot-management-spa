@@ -22,11 +22,11 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
   const [newPasswordResponse, requestNewPassword] = useResource(Auth.confirmPasswordResetRequest())
   const [newPassSent, markNewPassSent] = useState(false)
 
-  const handleNewPassword = (email: string, passwordResetCode:string, newPassword: string) => {
+  const handleNewPassword = () => {
     const newPassDetails:ConfirmPasswordResetArgs = {
       'username': email,
-      'newPassword': newPassword,
-      'passwordResetCode': passwordResetCode
+      'newPassword': confirmPass,
+      'passwordResetCode': code
 
     }
     markNewPassSent(true)
@@ -76,7 +76,7 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
         help="Must match the field above."
         onChange={setConfirmPass}
         name='confirmPassword' />
-      <Button disabled={loading} block onClick={()=>handleNewPassword(email, code, confirmPass)}>Submit</Button>
+      <Button disabled={loading} block onClick={handleNewPassword}>Submit</Button>
     </>
   )
 }
