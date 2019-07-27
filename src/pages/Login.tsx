@@ -40,7 +40,7 @@ export const Login: FC<LoginProps> = (props) => {
   const [passwordResetSent, markPasswordResetSent] = useState(false);
 
 
-  const handleSignIn = (email: string, password: string) => {
+  const handleSignIn = () => {
     const loginDetails:SignInArgs = {
       'username': email,
       'password': password
@@ -49,7 +49,7 @@ export const Login: FC<LoginProps> = (props) => {
     requestSignIn(loginDetails, 'login')
   }
 
-  const handleForgottenPass = (email: string) => {
+  const handleForgottenPass = () => {
     const forgottenPassDetails:BeginPasswordResetArgs = {
       'username': email
     }
@@ -103,8 +103,9 @@ export const Login: FC<LoginProps> = (props) => {
       markSignInSent(false);
 
       let response: any = signInResponse.data
-
-      if (response.data) {
+      //Ensure that the response has a session, and if so create a tempUser
+      if (response.data.Session) {
+        //This tempUser refers to when the password needs to be reset for the first login.
         let tempUser = defaultUserResponse()
         tempUser.User.Username = email
         setUser(tempUser)
@@ -165,8 +166,8 @@ export const Login: FC<LoginProps> = (props) => {
       <div className="row mt-4">
         <div className="col">
           <div style={{ textAlign: "left" }}>
-            <Button disabled={loading} onClick={() => handleSignIn(email, password)}>Submit</Button>
-            <Button onClick={()=>handleForgottenPass(email)}>Forgot Password?</Button>
+            <Button disabled={loading} onClick={handleSignIn}>Submit</Button>
+            <Button onClick={handleForgottenPass}>Forgot Password?</Button>
             <ErrorBox errMsg={err}></ErrorBox>
           </div>
           {/* <button className="btn btn-primary" type="button">Submit</button> */}
