@@ -10,10 +10,11 @@ import ABIClerk from "../services/abiClerk";
 
 import { DeleteDappState } from "../components";
 import { NotFound } from "../pages/notFound";
+import { defaultUser, defaultUserResponse, UserResponse } from "../types";
 
 export interface Props extends RouteComponentProps {
-  user? : any
-  setUser : (user:any)=>void
+  user : UserResponse
+  setUser : (user:UserResponse)=>void
 }
 export interface DappDetail {
   DappName: string;
@@ -64,7 +65,7 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
     //----- LIST RESPONSE HANDLER -----
     // AUTH CHECK: Check for valid session, log out if expired
     if (listResponse && listResponse.data && (['The incoming token has expired', 'Unauthorized'].includes((listResponse.data as any).message))){
-      let newUser = Object.assign(user, { signInUserSession : null });
+      let newUser = defaultUserResponse();
       (props.navigate as NavigateFn)('/login');
       setUser(newUser);
     }

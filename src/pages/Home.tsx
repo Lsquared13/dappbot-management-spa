@@ -2,14 +2,14 @@ import React, { FC, useState, useEffect } from 'react';
 import Alert from 'react-s-alert';
 import { RouteComponentProps, NavigateFn } from '@reach/router';
 import { useResource } from 'react-request-hook';
-import { DappCreateArgs, DappArgNameStrs, SampleDappArgs, UserResponse } from '../types';
+import { DappCreateArgs, DappArgNameStrs, SampleDappArgs, UserResponse, defaultUserResponse } from '../types';
 
 import ABIClerk from '../services/abiClerk';
 import { DappList, DappForm } from '../components';
 
 interface HomeProps extends RouteComponentProps {
   user : UserResponse
-  setUser : (user:any)=>void
+  setUser : (user:UserResponse)=>void
 }
 
 export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
@@ -21,7 +21,7 @@ export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
   const [listResponse, sendListRequest] = useResource(ABIClerk.list(user));
   let dappList:DappCreateArgs[] = [];
   if (listResponse && listResponse.data && (['The incoming token has expired', 'Unauthorized'].includes((listResponse.data as any).message))){
-    let newUser = Object.assign(user, { signInUserSession : null });
+    let newUser = defaultUserResponse();
     (props.navigate as NavigateFn)('/login');
     setUser(newUser);
   }
@@ -67,12 +67,7 @@ export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
   const [editResponse, sendEditRequest] = useResource(ABIClerk.edit(user));
   const [deleteResponse, sendDeleteRequest] = useResource(ABIClerk.delete(user));
   
-  let request:any = sendCreateRequest;
-  let response = createResponse;
-  if (formTarget !== 'create') {
-    request = sendEditRequest;
-    response = editResponse;
-  }
+  const isCreateForm = formTarget === 'create';
   return (
     <div className="container">
 
@@ -95,9 +90,9 @@ export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
         <div className="card-body">
           <DappForm args={formArgs} 
             setArgVal={setArgVal}
-            response={response} 
+            response={isCreateForm ? createResponse : editResponse}
             formTarget={formTarget}
-            sendRequest={request} />
+            sendRequest={isCreateForm ? sendCreateRequest : sendEditRequest} />
           </div>
         </div>
     </div>

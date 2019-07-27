@@ -49,8 +49,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
     if(response.data.Authorization){
       const { Authorization, User, Refresh } = response.data;
       setUser({
-        User: User,
-        Authorization, Refresh
+        Authorization, User, Refresh
       })
       setChallenge(challengeDataFactory(ChallengeType.Default))
     }
