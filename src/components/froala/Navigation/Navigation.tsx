@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import './../bootstrap.min.css';
 import './../froala_blocks.min.css';
 import { Link } from '@reach/router';
+import { defaultUserResponse } from '../../../types';
 
 export interface NavProps {
   hideLogin?: boolean
@@ -12,7 +13,7 @@ export interface NavProps {
 export const Navigation:FC<NavProps> = ({hideLogin, user, setUser}) => {
   
   const logOut = () => {
-    let newUser = Object.assign(user, { signInUserSession : null })
+    let newUser = defaultUserResponse();
     setUser(newUser);
   }
 

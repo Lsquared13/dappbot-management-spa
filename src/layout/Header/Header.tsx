@@ -32,10 +32,7 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
   }
   
 
-  // logOut() {
-  //   let newUser = Object.assign(this.props.user, { signInUserSession : null })
-  //   this.props.setUser(newUser);
-  // }
+
   logOut = () => {
     const newUser = defaultUserResponse()
     this.props.setUser(newUser)
