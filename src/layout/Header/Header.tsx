@@ -108,7 +108,8 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
                   <AvatarImage/>
                 </DropdownTrigger>
                 <DropdownContent>
-                  <DropdownItem link="home/user-settings">Account Settings</DropdownItem>
+                  <Text align="center" color="blue" className="pt-2 pb-2 ml-3 mr-3">user@email.com</Text>
+                  <DropdownItem link="/home/user-settings">Settings</DropdownItem>
                   <DropdownItem link="https://dappbot.drift.help/category/getting-started/">Support</DropdownItem>
                   <DropdownItem onClick={this.logOut} link='/login'>Sign Out</DropdownItem>
                 </DropdownContent>
