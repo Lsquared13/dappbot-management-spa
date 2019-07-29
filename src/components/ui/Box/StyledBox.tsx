@@ -202,6 +202,13 @@ export const StyledBox = styled.div`
       width: 0;
     }
   }
+
+  /* Flex - Alignment */
+
+  &.itemsFlexEnd {
+    align-self: flex-end;
+  }
+
 `;
 
 export default StyledBox;

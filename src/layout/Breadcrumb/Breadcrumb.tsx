@@ -90,7 +90,7 @@ export const Breadcrumb: React.SFC<BreadcrumbProps> = props => {
         display="flex"
         justifyContent="between"
         alignItems="center"
-        paddingY={5}
+        paddingY={4}
       >
         <Text
           size="xs"

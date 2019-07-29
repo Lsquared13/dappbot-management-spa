@@ -28,7 +28,8 @@ export const DashboardContainer: React.SFC<DashboardContainerProps> = props => {
           display="flex"
           justifyContent="between"
           alignItems="center"
-          padding={5}
+          marginTop={4}
+          marginBottom={4}
         >
           <Text
             bold

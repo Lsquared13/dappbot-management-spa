@@ -53,12 +53,13 @@ export class SettingMenu extends React.Component<
             display="flex"
             justifyContent="between"
             alignItems="center"
-            padding={5}
           >
-            <Text bold size="xl" smSize="xl" mdSize="xl" lgSize="xl">
-              {dappName}
-            </Text>
-            <Box>
+            <Box marginBottom={5} marginTop={5}>
+              <Text bold size="xl" smSize="xl" mdSize="xl" lgSize="xl">
+                {dappName}
+              </Text>
+            </Box>
+            <Box display="flex" alignItems="flexend">
               <StyledTab
                 selected={selectedTab === "status"}
                 onClick={() => {
