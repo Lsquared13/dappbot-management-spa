@@ -6,7 +6,7 @@ import {
 } from "../../layout";
 import {  Box, Button,Text,Divider} from "../../components/ui";
 import { DappTable, DappTableProps } from "../../layout/DashboardLayout";
-import { ReactComponent as RefreshIcon } from "../../images/refresh.svg";
+import { ReactComponent as RefreshIcon } from "../../assets/images/refresh.svg";
 import { RouteComponentProps } from '@reach/router';
 
 

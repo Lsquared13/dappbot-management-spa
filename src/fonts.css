@@ -20,11 +20,11 @@ html {
 
 @font-face {
   font-family: "exim";
-  src: url("./fonts/exim.eot?5iasl4");
-  src: url("./fonts/exim.eot?5iasl4#iefix") format("embedded-opentype"),
-    url("./fonts/exim.ttf?5iasl4") format("truetype"),
-    url("./fonts/exim.woff?5iasl4") format("woff"),
-    url("./fonts/exim.svg?5iasl4#exim") format("svg");
+  src: url("./assets/fonts/exim.eot?5iasl4");
+  src: url("./assets/fonts/exim.eot?5iasl4#iefix") format("embedded-opentype"),
+    url("./assets/fonts/exim.ttf?5iasl4") format("truetype"),
+    url("./assets/fonts/exim.woff?5iasl4") format("woff"),
+    url("./assets/fonts/exim.svg?5iasl4#exim") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -120,59 +120,59 @@ html {
 
 @font-face {
   font-family: "IBMPlexMono";
-  src: url("./fonts/IBMPlexMono.eot?#iefix") format("embedded-opentype"),
-    url("./fonts/IBMPlexMono.woff") format("woff"),
-    url("./fonts/IBMPlexMono.ttf") format("truetype"),
-    url("./fonts/IBMPlexMono.svg#IBMPlexMono") format("svg");
+  src: url("./assets/fonts/IBMPlexMono.eot?#iefix") format("embedded-opentype"),
+    url("./assets/fonts/IBMPlexMono.woff") format("woff"),
+    url("./assets/fonts/IBMPlexMono.ttf") format("truetype"),
+    url("./assets/fonts/IBMPlexMono.svg#IBMPlexMono") format("svg");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: "IBMPlexMono-Medium";
-  src: url("./fonts/IBMPlexMono-Medium.eot?#iefix") format("embedded-opentype"),
-    url("./fonts/IBMPlexMono-Medium.woff") format("woff"),
-    url("./fonts/IBMPlexMono-Medium.ttf") format("truetype"),
-    url("./fonts/IBMPlexMono-Medium.svg#IBMPlexMono-Medium") format("svg");
+  src: url("./assets/fonts/IBMPlexMono-Medium.eot?#iefix") format("embedded-opentype"),
+    url("./assets/fonts/IBMPlexMono-Medium.woff") format("woff"),
+    url("./assets/fonts/IBMPlexMono-Medium.ttf") format("truetype"),
+    url("./assets/fonts/IBMPlexMono-Medium.svg#IBMPlexMono-Medium") format("svg");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: "ReplicaStd-Regular";
-  src: url("./fonts/ReplicaStd-Regular.eot?#iefix") format("embedded-opentype"),
-    url("./fonts/ReplicaStd-Regular.otf") format("opentype"),
-    url("./fonts/ReplicaStd-Regular.woff") format("woff"),
-    url("./fonts/ReplicaStd-Regular.ttf") format("truetype"),
-    url("./fonts/ReplicaStd-Regular.svg#ReplicaStd-Regular") format("svg");
+  src: url("./assets/fonts/ReplicaStd-Regular.eot?#iefix") format("embedded-opentype"),
+    url("./assets/fonts/ReplicaStd-Regular.otf") format("opentype"),
+    url("./assets/fonts/ReplicaStd-Regular.woff") format("woff"),
+    url("./assets/fonts/ReplicaStd-Regular.ttf") format("truetype"),
+    url("./assets/fonts/ReplicaStd-Regular.svg#ReplicaStd-Regular") format("svg");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: "ReplicaStd-Bold";
-  src: url("./fonts/ReplicaStd-Bold.eot?#iefix") format("embedded-opentype"),
-    url("./fonts/ReplicaStd-Bold.otf") format("opentype"),
-    url("./fonts/ReplicaStd-Bold.woff") format("woff"),
-    url("./fonts/ReplicaStd-Bold.ttf") format("truetype"),
-    url("./fonts/ReplicaStd-Bold.svg#ReplicaStd-Bold") format("svg");
+  src: url("./assets/fonts/ReplicaStd-Bold.eot?#iefix") format("embedded-opentype"),
+    url("./assets/fonts/ReplicaStd-Bold.otf") format("opentype"),
+    url("./assets/fonts/ReplicaStd-Bold.woff") format("woff"),
+    url("./assets/fonts/ReplicaStd-Bold.ttf") format("truetype"),
+    url("./assets/fonts/ReplicaStd-Bold.svg#ReplicaStd-Bold") format("svg");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: "DINRoundPro-Medi";
-  src: url("./fonts/DINRoundPro-Medi.eot?#iefix") format("embedded-opentype"),
-    url("./fonts/DINRoundPro-Medi.otf") format("opentype"),
-    url("./fonts/DINRoundPro-Medi.woff") format("woff"),
-    url("./fonts/DINRoundPro-Medi.ttf") format("truetype"),
-    url("./fonts/DINRoundPro-Medi.svg#DINRoundPro-Medi") format("svg");
+  src: url("./assets/fonts/DINRoundPro-Medi.eot?#iefix") format("embedded-opentype"),
+    url("./assets/fonts/DINRoundPro-Medi.otf") format("opentype"),
+    url("./assets/fonts/DINRoundPro-Medi.woff") format("woff"),
+    url("./assets/fonts/DINRoundPro-Medi.ttf") format("truetype"),
+    url("./assets/fonts/DINRoundPro-Medi.svg#DINRoundPro-Medi") format("svg");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: "DINRoundPro";
-  src: url("./fonts/DINRoundPro.eot?#iefix") format("embedded-opentype"),
-    url("./fonts/DINRoundPro.otf") format("opentype"),
-    url("./fonts/DINRoundPro.woff") format("woff"),
-    url("./fonts/DINRoundPro.ttf") format("truetype"),
-    url("./fonts/DINRoundPro.svg#DINRoundPro") format("svg");
+  src: url("./assets/fonts/DINRoundPro.eot?#iefix") format("embedded-opentype"),
+    url("./assets/fonts/DINRoundPro.otf") format("opentype"),
+    url("./assets/fonts/DINRoundPro.woff") format("woff"),
+    url("./assets/fonts/DINRoundPro.ttf") format("truetype"),
+    url("./assets/fonts/DINRoundPro.svg#DINRoundPro") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -183,13 +183,13 @@ html {
  */
 @font-face {
   font-family: "FontAwesome";
-  src: url("./fonts/fontawesome-webfont.eot?v=4.7.0");
-  src: url("./fonts/fontawesome-webfont.eot?#iefix&v=4.7.0")
+  src: url("./assets/fonts/fontawesome-webfont.eot?v=4.7.0");
+  src: url("./assets/fonts/fontawesome-webfont.eot?#iefix&v=4.7.0")
       format("embedded-opentype"),
-    url("./fonts/fontawesome-webfont.woff2?v=4.7.0") format("woff2"),
-    url("./fonts/fontawesome-webfont.woff?v=4.7.0") format("woff"),
-    url("./fonts/fontawesome-webfont.ttf?v=4.7.0") format("truetype"),
-    url("./fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular")
+    url("./assets/fonts/fontawesome-webfont.woff2?v=4.7.0") format("woff2"),
+    url("./assets/fonts/fontawesome-webfont.woff?v=4.7.0") format("woff"),
+    url("./assets/fonts/fontawesome-webfont.ttf?v=4.7.0") format("truetype"),
+    url("./assets/fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular")
       format("svg");
   font-weight: normal;
   font-style: normal;

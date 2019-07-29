@@ -6,9 +6,9 @@ export const StyledDropdownContent: StyledComponentClass<
   React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 > = styled.div`
   position: absolute;
-  float: left;
+  float: right;
   top: 100%;
-  left: 0;
+  right: 0;
   z-index: 1000;
   min-width: 110px;
   margin: 5px 0 0;

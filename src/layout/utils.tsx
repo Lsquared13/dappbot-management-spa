@@ -1,6 +1,6 @@
 
 import { Box, Text, TextProps, Link, LinkProps, EXCAddressProps } from "../components/ui";
-import { ReactComponent as LinkIcon } from "../images/link.svg";
+import { ReactComponent as LinkIcon } from "../assets/images/link.svg";
 import { RouteComponentProps, navigate } from "@reach/router";
 
 import * as React from "react";
