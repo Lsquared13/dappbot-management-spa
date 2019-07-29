@@ -1,9 +1,9 @@
 import * as React from "react";
 import classnames from "classnames";
-import Mask from "./../Mask";
-import Image from "./../Image";
-import Box, { BoxProps } from "./../Box";
-import Icon, { IconProps } from "./../Icon";
+import Mask from "../Mask";
+import Image from "../Image";
+import Box, { BoxProps } from "../Box";
+import Icon, { IconProps } from "../Icon";
 
 const Square = (props: BoxProps) => (
   <Box {...props} position="relative">
@@ -85,8 +85,8 @@ export type AvatarProps = {
 };
 
 const sizes = {
-  sm: 21,
-  md: 31,
+  sm: 24,
+  md: 40,
   lg: 72
 };
 

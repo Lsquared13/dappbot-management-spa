@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from 'react';
-import { DappArgs, DappArgNameStrs } from '../types';
+import { DappCreateArgs, DappArgNameStrs } from '../types';
 import FormFields from './FormFields';
 import Alert from 'react-s-alert';
 import { Button } from './ui';
@@ -7,7 +7,7 @@ import { Button } from './ui';
 export interface DappFormProps {
   sendRequest : any
   response : any
-  args : DappArgs
+  args : DappCreateArgs
   setArgVal : (name:DappArgNameStrs,val:string)=>void
   formTarget: string
 }

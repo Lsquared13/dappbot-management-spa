@@ -97,6 +97,16 @@ export const ReferenceLink: React.SFC<LinkProps> = props => {
   );
 };
 
+export const ReferenceLinkOLD: React.SFC<LinkProps> = props => {
+  return (
+    <Box marginTop={1}>
+      <Text color="blue" size="xs" smSize="xs" mdSize="xs" lgSize="xs">
+        <Link {...props} />
+      </Text>
+    </Box>
+  );
+};
+
 export const FancyLink: React.SFC<LinkProps> = props => {
   return (
     

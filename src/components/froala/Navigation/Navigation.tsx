@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import './../bootstrap.min.css';
 import './../froala_blocks.min.css';
 import { Link } from '@reach/router';
+import { defaultUserResponse } from '../../../types';
 
 export interface NavProps {
   hideLogin?: boolean
@@ -12,7 +13,7 @@ export interface NavProps {
 export const Navigation:FC<NavProps> = ({hideLogin, user, setUser}) => {
   
   const logOut = () => {
-    let newUser = Object.assign(user, { signInUserSession : null })
+    let newUser = defaultUserResponse();
     setUser(newUser);
   }
 
@@ -34,6 +35,9 @@ export const Navigation:FC<NavProps> = ({hideLogin, user, setUser}) => {
           </button>
           <div className="collapse navbar-collapse" id="navbarNav3">
             <ul className="navbar-nav ml-auto">
+              <li className="nav-item">
+                  <a className="nav-link" target="_blank" href="https://dappbot.drift.help/category/getting-started/">Support</a>
+              </li>
               <li className="nav-item">
                 { loginLogoutLink }
               </li>

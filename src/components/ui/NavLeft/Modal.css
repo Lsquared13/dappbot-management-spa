@@ -1,0 +1,204 @@
+/****** css only for testing purpose *****/
+.modal_cnt_demo {
+  font-family: 'DINRoundPro' ,sans-serif;
+  height: 200px; }
+
+/****** css only for testing purpose *****/
+@media (min-width: 768px) {
+  .modal.modal-small {
+    width: 420px; }
+  .modal.modal-medium {
+    width: 500px; }
+  .modal.modal-large {
+    width: 740px; } }
+
+.modal {
+  width: 95%;
+  display: none;
+  position: relative;
+  margin: 0 auto; }
+  .modal .modal-backdrop {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9; }
+
+.modal-content {
+  position: relative;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  border: 1px solid #999;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  outline: 0;
+  border: 0;
+  z-index: 99;
+  margin: 30px auto;
+  -webkit-box-shadow: 0 3px 9px rgba(44, 55, 72, 0.11);
+  box-shadow: 0 3px 9px rgba(44, 55, 72, 0.11);
+  width: 100%;
+  float: left; }
+  .modal-content .signup_modal {
+    position: relative;
+    width: 100%;
+    padding: 35px 0 45px;
+    float: left; }
+    .modal-content .signup_modal .signup_modal_left {
+      position: relative;
+      width: 70%;
+      padding-left: 40px;
+      float: left; }
+      .modal-content .signup_modal .signup_modal_left h5 {
+        margin: 0 0 15px; }
+      .modal-content .signup_modal .signup_modal_left .input-group {
+        position: relative;
+        margin-bottom: 20px;
+        width: 100%;
+        float: left; }
+        .modal-content .signup_modal .signup_modal_left .input-group p a {
+          color: #0667D0;
+          text-decoration: none; }
+      .modal-content .signup_modal .signup_modal_left .input-group-left {
+        width: 50%;
+        padding-right: 10px;
+        float: left; }
+      .modal-content .signup_modal .signup_modal_left .input-group-right {
+        width: 50%;
+        padding-left: 10px;
+        float: left; }
+      .modal-content .signup_modal .signup_modal_left .input-group-btn-left {
+        width: 50%;
+        float: left;
+        text-align: left;
+        margin-top: 20px; }
+        .modal-content .signup_modal .signup_modal_left .input-group-btn-left a {
+          margin-top: 10px;
+          display: inline-block; }
+      .modal-content .signup_modal .signup_modal_left .input-group-btn-right {
+        width: 50%;
+        float: left;
+        text-align: right;
+        margin-top: 20px; }
+        .modal-content .signup_modal .signup_modal_left .input-group-btn-right .btn {
+          padding: 10px 27px; }
+          @media (max-width: 600px){
+            .modal-content .signup_modal .signup_modal_right {
+           
+              padding-right: 10px !important;
+              padding-left: 10px !important;
+              padding-top:25px;
+               }
+
+          }
+    .modal-content .signup_modal .signup_modal_right {
+      position: relative;
+      text-align: center;
+      padding-right: 30px;
+      padding-left: 30px;
+      width: 30%;
+      float: left; }
+      .modal-content .signup_modal .signup_modal_right img {
+        width: auto;
+        height: auto;
+        display: block;
+        max-width: 100%;
+        border-radius: 0; }
+  .modal-content .signin_header {
+    padding: 40px 50px;
+    background: #162B4D;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px; }
+    .modal-content .signin_header .brand-exim-short {
+      background-repeat: no-repeat;
+      background-size: contain;
+      width: 95px;
+      height: 27px; }
+    .modal-content .signin_header p {
+      margin: 10px 0 0;
+      color: #fff; }
+  .modal-content .modal-header {
+    padding: 15px;
+    position: relative;
+    border-bottom: 1px solid #F0F2F4; }
+    .modal-content .modal-header h6 {
+      font-family: 'DINRoundPro' ,sans-serif;
+      font-size: 16px;
+      text-align: center;
+      margin: 0; }
+    .modal-content .modal-header .btn-close {
+      position: absolute;
+      top: 13px;
+      right: 15px; }
+  .modal-content .modal-body {
+    padding: 35px 40px; }
+    .modal-content .modal-body .modal-signin h5 {
+      margin: 0 0 15px; }
+    .modal-content .modal-body .modal-signin .input-group {
+      position: relative;
+      margin-bottom: 20px; }
+    .modal-content .modal-body .modal-single-option-body {
+      position: relative;
+      padding-top: 20px;
+      text-align: center; }
+      .modal-content .modal-body .modal-single-option-body img {
+        width: auto;
+        height: auto;
+        display: block;
+        max-width: 100%;
+        border-radius: 0; }
+      .modal-content .modal-body .modal-single-option-body h6 {
+        margin: 10px 0; }
+      .modal-content .modal-body .modal-single-option-body p {
+        margin: 0; }
+  .modal-content .modal-footer {
+    position: relative;
+    text-align: center;
+    border-top: 0;
+    padding: 30px 40px; }
+    .modal-content .modal-footer .modal-single-option-footer {
+      text-align: center; }
+      .modal-content .modal-footer .modal-single-option-footer .btn {
+        display: block;
+        width: 100%; }
+    .modal-content .modal-footer .signin_footer {
+      padding-top: 50px;
+      position: relative; }
+      .modal-content .modal-footer .signin_footer .signin_footer_left {
+        position: relative;
+        width: 50%;
+        text-align: left;
+        display: inline-block; }
+      .modal-content .modal-footer .signin_footer .signin_footer_right {
+        position: relative;
+        width: 50%;
+        text-align: right;
+        display: inline-block; }
+        .modal-content .modal-footer .signin_footer .signin_footer_right .btn {
+          padding: 10px 27px; }
+  .modal-content .terms_ul {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    left: 0;
+    bottom: -25px;
+    width: 100%;
+    text-align: right; }
+    .modal-content .terms_ul li {
+      list-style: none;
+      display: inline-block; }
+      .modal-content .terms_ul li a {
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 12px;
+        font-family: 'DINRoundPro' ,sans-serif; }
+        .modal-content .terms_ul li a:focus, .modal-content .terms_ul li a:hover {
+          text-decoration: none;
+          outline: none; }
+      .modal-content .terms_ul li:nth-child(1) {
+        float: left; }
+      .modal-content .terms_ul li:last-child {
+        margin-left: 30px; }

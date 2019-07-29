@@ -2,13 +2,14 @@ import React, {useState, useEffect } from 'react';
 import { useResource } from 'react-request-hook';
 import { Router, navigate, RouteComponentProps } from "@reach/router";
 import Alert from 'react-s-alert';
+import omit from 'lodash.omit';
 
 import { NotFound } from "../pages/notFound";
 import {NewDappContainer, BuildDetailsContainer, ConfigureDappContainer} from "../pages/newDappForm"
 
 import ABIClerk from '../services/abiClerk';
 
-import { DappArgs } from '../types';
+import { DappCreateArgs,DappData, Tiers } from '../types';
 import { CreateDappState, ConfigureDappState, DappDetail } from "../components";
 
 
@@ -54,10 +55,12 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
     
     // ----- CREATE RESPONSE HANDLER ----- 
     const [createSent, markCreateSent] = useState(false);
-    const handleCreate = (dappArgs: DappArgs) => {
+    const handleCreate = (dappArgs: DappCreateArgs) => {
+
+      const dappData:DappData = omit(dappArgs, ['DappName'])
       markCreateSent(true);
       Alert.info(`Starting build...`)
-      sendCreateRequest(dappArgs);
+      sendCreateRequest(dappData,dappArgs.DappName)
     }
     useEffect(() => {
       if (createSent) {
@@ -104,12 +107,13 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
               Alert.error("dapp name required, do not refresh the page when creating a new dapp");
             }
             else{
-              let args:DappArgs = {
+              let args:DappCreateArgs = {
                 DappName: DappName,
                 Abi: contractABI,
                 Web3URL: web3URL,
                 GuardianURL: "https://guardian.dapp.bot",
-                ContractAddr: contractAddress
+                ContractAddr: contractAddress,
+                Tier: Tiers.Standard
               }
               handleCreate(args)
             }

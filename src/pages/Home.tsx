@@ -2,31 +2,15 @@ import React, { FC, useState, useEffect } from 'react';
 import Alert from 'react-s-alert';
 import { RouteComponentProps, NavigateFn } from '@reach/router';
 import { useResource } from 'react-request-hook';
-import { DappArgs, DappArgNameStrs, SampleDappArgs } from '../types';
+import { DappCreateArgs, DappArgNameStrs, SampleDappArgs, UserResponse, defaultUserResponse } from '../types';
 
 import ABIClerk from '../services/abiClerk';
 import { DappList, DappForm } from '../components';
 
 interface HomeProps extends RouteComponentProps {
-  user? : any
-  setUser : (user:any)=>void
+  user : UserResponse
+  setUser : (user:UserResponse)=>void
 }
-// data:{
-//   data:{
-//       items:{
-//           0:{
-//               Abi: ""
-//               ContractAddr: "0x6D47c9bE6E60744c9A5bD2Ea51a603e80f018ac1"
-//               CreationTime: "2019-05-23T04:03:59.051Z"
-//               DappName: "enigma-data-marketplace"
-//               DnsName: "enigma-data-marketplace.dapp.bot"
-//               GuardianURL: "https://guardian.dapp.bot"
-//               OwnerEmail: "huertasjuan23@gmail.com"
-//               Web3URL: "https://mainnet.infura.io/v3/fc6533b42279480299a402a8059bcc90"
-//           }
-//       }
-//   }
-// }
 
 export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
 
@@ -35,9 +19,9 @@ export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
   // Note that adding an empty dependency array means this hook
   // will run on mount, then never again (unless called)
   const [listResponse, sendListRequest] = useResource(ABIClerk.list(user));
-  let dappList:DappArgs[] = [];
+  let dappList:DappCreateArgs[] = [];
   if (listResponse && listResponse.data && (['The incoming token has expired', 'Unauthorized'].includes((listResponse.data as any).message))){
-    let newUser = Object.assign(user, { signInUserSession : null });
+    let newUser = defaultUserResponse();
     (props.navigate as NavigateFn)('/login');
     setUser(newUser);
   }
@@ -73,7 +57,7 @@ export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
   }
 
   const setArgVal = (name:DappArgNameStrs,val:string) => {
-    const newArgs:DappArgs = Object.assign({}, formArgs);
+    const newArgs:DappCreateArgs = Object.assign({}, formArgs);
     newArgs[name] = val;
     setFormTouched(true);
     setArgs(newArgs)
@@ -83,12 +67,7 @@ export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
   const [editResponse, sendEditRequest] = useResource(ABIClerk.edit(user));
   const [deleteResponse, sendDeleteRequest] = useResource(ABIClerk.delete(user));
   
-  let request = sendCreateRequest;
-  let response = createResponse;
-  if (formTarget !== 'create') {
-    request = sendEditRequest;
-    response = editResponse;
-  }
+  const isCreateForm = formTarget === 'create';
   return (
     <div className="container">
 
@@ -111,9 +90,9 @@ export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
         <div className="card-body">
           <DappForm args={formArgs} 
             setArgVal={setArgVal}
-            response={response} 
+            response={isCreateForm ? createResponse : editResponse}
             formTarget={formTarget}
-            sendRequest={request} />
+            sendRequest={isCreateForm ? sendCreateRequest : sendEditRequest} />
           </div>
         </div>
     </div>

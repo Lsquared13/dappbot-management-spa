@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { RouteComponentProps } from '@reach/router';
 import { useResource } from 'react-request-hook';
-import { DappArgs, DappArgNameStrs } from '../types';
+import { DappCreateArgs, DappArgNameStrs, Tiers} from '../types';
 
 import ABIClerk from '../services/abiClerk';
 
@@ -24,11 +24,12 @@ export const DappDetails:FC<DappDetailsProps> = ({user, id, setUser}) => {
     Abi: '',
     Web3URL: '',
     GuardianURL: '',
-    ContractAddr: ''
+    ContractAddr: '',
+    Tier:Tiers.Standard
   })
 
   const setArgVal = (name:DappArgNameStrs,val:string) => {
-    const newArgs:DappArgs = Object.assign({}, args);
+    const newArgs:DappCreateArgs = Object.assign({}, args);
     newArgs[name] = val;
     setArgs(newArgs)
   }

@@ -1,6 +1,24 @@
 import { useState } from 'react';
 import Amplify, { Auth } from 'aws-amplify';
-import { CognitoUser } from '@aws-amplify/auth';
+// import { CognitoUser } from '@aws-amplify/auth';
+import {requestFactory, Operations} from './abiClerk';
+import { request } from 'https';
+
+
+interface RequestArgs {
+  url: string,
+  data: any
+}
+
+interface AuthorizedRequest extends RequestArgs {
+  headers: any,
+  method: string
+}
+
+interface AuthorizedRequest extends RequestArgs {
+  headers: any,
+  method: string
+}
 const passwordValidator = require('password-validator');
 
 Amplify.configure({
@@ -11,76 +29,41 @@ Amplify.configure({
   }
 })
 
-const MFA_TYPE = 'SMS_MFA';
-
-const signIn = async (email: string, password: string) => {
-  try {
-    const user = await Auth.signIn(email, password);
-    if (user.challengeName === 'SMS_MFA' ||
-      user.challengeName === 'SOFTWARE_TOKEN_MFA') {
-      return { challenge: 'MFA', user }
-    } else if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
-      const { requiredAttributes } = user.challengeParam; // the array of required attributes, e.g ['email', 'phone_number']
-      return {
-        challenge: 'newPassword',
-        requiredAttributes,
-        user
-      }
-    } else if (user.challengeName === 'MFA_SETUP') {
-      // This happens when the MFA method is TOTP
-      // The user needs to setup the TOTP before using it
-      // More info please check the Enabling MFA part
-      Auth.setupTOTP(user);
-    } else {
-      // The user directly signs in
-      return {user};
-    }
-  } catch (err) {
-    if (err.code === 'UserNotConfirmedException') {
-      await Auth.resendSignUp(email);
-      return {
-        errMsg : "Please finish confirming your account, we've resent your confirmation code."
-      }
-      // The error happens if the user didn't finish the confirmation step when signing up
-      // In this case you need to resend the code and confirm the user
-      // About how to resend the code and confirm the user, please check the signUp part
-    } else if (err.code === 'PasswordResetRequiredException') {
-      await Auth.forgotPassword(email);
-      return {
-        errMsg: "Please reset your password, we've emailed you a confirmation code.",
-        challenge: 'forgotPassword'
-      }
-    } else if (['NotAuthorizedException','UserNotFoundException'].includes(err.code)) {
-      // Provide same message for incorrect password and missing account,
-      // do not reveal account existence to attackers.
-      return {
-        errMsg: "We could not log you in with these credentials."
-      }
-    } else {
-      return err;
-    }
-  }
+export interface BeginPasswordResetArgs {
+  username:string
+}
+export interface ConfirmPasswordResetArgs {
+  username:string
+  newPassword: string,
+  passwordResetCode: string
+}
+export interface NewPasswordArgs {
+  username: string,
+  newPassword: string,
+  session: string
+}
+export interface SignInArgs {
+  username: string,
+  password: string
 }
 
-const forgotPassword = async (username: string) => {
-  return await Auth.forgotPassword(username);
+function signInRequest(): (args: SignInArgs, target: string) => AuthorizedRequest {
+
+  return requestFactory(Operations.login, "auth")
 }
 
-const confirmMFASignIn = async (user: CognitoUser, code: string) => {
-  return await Auth.confirmSignIn(
-    user,   // Return object from Auth.signIn()
-    code,   // Confirmation code  
-    MFA_TYPE // MFA Type e.g. SMS_MFA, SOFTWARE_TOKEN_MFA
-  );
+function newPasswordRequest(): (args: NewPasswordArgs, target: string) => AuthorizedRequest {
+  return requestFactory(Operations.login, "auth")
 }
 
-const completeNewPassword = async (user: CognitoUser, newPassword: string) => {
-  return await Auth.completeNewPassword(user, newPassword, {});
+function beginPasswordResetRequest(): (args: BeginPasswordResetArgs, target: string) => AuthorizedRequest {
+  return requestFactory(Operations.resetPassword,"auth")
 }
 
-const completeForgotPassword = async (email:string, code:string, new_password:string) => {
-  return await Auth.forgotPasswordSubmit(email, code, new_password);
+function confirmPasswordResetRequest(): (args: ConfirmPasswordResetArgs, target: string) => AuthorizedRequest {
+  return requestFactory(Operations.resetPassword, 'auth')
 }
+
 
 export const passwordChecker = new passwordValidator();
 passwordChecker
@@ -92,7 +75,7 @@ passwordChecker
   .has().not().spaces();
 
 // Courtesy of https://usehooks.com/useLocalStorage/
-export function useLocalStorage<ValueType>(key:string, initialValue:ValueType):any[] {
+export function useLocalStorage<ValueType>(key:string, initialValue:ValueType):[ValueType, React.Dispatch<ValueType>] {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState(() => {
@@ -133,10 +116,12 @@ export const currentUserInfo = async () => {
 }
 
 export default {
-  signIn,
-  confirmMFA: confirmMFASignIn,
-  newPassword: completeNewPassword,
-  forgotPass: completeForgotPassword,
-  passwordChecker, currentUserInfo,
-  forgotPassword: forgotPassword
+  signIn: signInRequest,
+  // confirmMFA: confirmMFASignIn,
+  newPassword: newPasswordRequest,
+  passwordChecker,
+  currentUserInfo,
+  confirmPasswordResetRequest,
+  beginPasswordResetRequest
+
 }

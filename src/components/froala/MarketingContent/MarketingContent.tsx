@@ -6,48 +6,30 @@ import './../froala_blocks.min.css';
 const MarketingContent = () => {
   return (
     <div>
-      <section className="fdb-block" data-block-type="features" data-id={3}>
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-12 text-center">
-              <h1>DappBot Applications</h1>
-            </div>
-          </div>
-          <div className="row text-center mt-5">
-            <div className="col-12 col-sm-4">
-              <img alt="Hosted Infrastructure" className="fdb-icon" src="Hosted.svg" />
-              <h3><strong>Hosted MVP</strong></h3>
-              <p>
-                Many startups and individual developers are looking to build applications on top of distributed ledgers, but are not themselves blockchain experts. 
-                <br /><br />
-                DappBot provides a working MVP foundation and rock-solid deployment infrastructure.</p>
-            </div>
-            <div className="col-12 col-sm-4 pt-4 pt-sm-0">
-              <img alt="Rapid Prototyping" className="fdb-icon" src="Rapid.svg" />
-              <h3><strong>Rapid Prototyping</strong></h3>
-              <p>
-                Blockchain Solution Provider are constantly generating live demos for client pitches, and Enterprise Blockchain R&D teams are still exploring the best smart contract use-cases. 
-                <br /><br />
-                We help you dramatically cut iteration time and reduce DevOps effort to zero.
-              </p>
-            </div>
-            <div className="col-12 col-sm-4 pt-4 pt-sm-0">
-              <img alt="Educational Tool" className="fdb-icon" src="Edu.svg" />
-              <h3><strong>Education &amp; Training</strong></h3>
-              <p>
-                If your developers are learning about smart contracts or participating in Hackathons, they don’t want to waste time writing web app interfaces.
-                <br /><br />
-                We can get them a Dapp in five minutes flat.
-              </p>
-            </div>
-          </div>
-          <div className="row mt-5 justify-content-center">
-            <div className="col-8">
-              <img alt="Developers" className="img-fluid" src="Developer.svg" />
-            </div>
+
+
+<section className="fdb-block overflow-bg-lower">
+    <div className="container">
+      <div className="row justify-content-center pb-xl-5">
+        <div className="col-10 col-sm-10 col-md-8 text-center">
+          <div className="block-badge"></div>
+          <h1>Build on Blockchain</h1>
+          <p className="text-left">The WEF estimates that 10% of the Global GDP will be stored on blockchain by 2027. However, building blockchain applications requires a new set of technologies that creates a gap of thousand hours of learning and hundred hours of practicing between the first Decentralized Application (Dapp) and innovative builders, like you.</p>
+          <p className="text-left">Whether you are new to blockchain and keen to learn building Dapp to not left behind, experienced developers wanting to dramatically cut Dapp iteration time or business looking to generate a blockchain-based MVP instantly, with the help from DappBot, you can show your Blockchain Application to your clients, employers, and users today.</p>
+          <div className="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 overflow-image-lower">
+          {/* <img alt="image" className="img-fluid mt-5" src="/imgs/wallet/simple-tx-fee.png" /> */}
           </div>
         </div>
-      </section>
+      </div>
+      <div className="row mt-5 justify-content-center">
+        <div className="col-8">
+          <img alt="Developers" className="img-fluid" src="Developer.svg" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+
       <section className="fdb-block" data-block-type="contents" data-id={4}>
         <div className="container">
           <div className="row text-left">
@@ -56,23 +38,12 @@ const MarketingContent = () => {
             </div>
             <div className="col-12 col-lg-7 offset-lg-1 pt-4 pt-lg-0">
               <h1>DappBot Solutions</h1>
-              <p className="lead">DappBot empowers you to immediately make smart contracts usable by anybody with a browser.  We generate thousands of lines of boilerplate code so that you can focus your blockchain efforts on creating value for your business.</p>
+              <p className="lead">We generate thousands of lines of boilerplate code so that you can focus your blockchain efforts on creating value for your business:</p>
+
+
               <div className="row mt-5">
-                <div className="col-12 col-sm-6">
-                  <h3><strong>Speed</strong></h3>
-                  <p className="lead">Make a hypothesis about what your MVP smart contract needs and start testing it with end-users within 5 minutes.</p>
-                </div>
-                <div className="col-12 col-sm-6 pt-3 pt-sm-0">
-                  <h3><strong>Scalability</strong></h3>
-                  <p className="lead">Automatically configure scalable infrastructure which guarantees rapid responses by caching the application in 165 locations around the world.</p>
-                </div>
-              </div>
-              <div className="row mt-5">
-                <div className="col-12 col-sm-6">
-                  <h3><strong>Customization<small>{'  '}Coming Soon</small></strong></h3>
-                  <p className="lead">Pick a custom subdomain, and edit your Dapp by simply updating a GitHub branch – just like working with Pages.</p>
-                </div>
-                <div className="col-12 col-sm-6 pt-3 pt-sm-0">
+
+                {/*  <div className="col-12 col-sm-6 pt-3 pt-sm-0">
                   <h3><strong>
                       Multi-Dapp Organizations
                       <small>{'  '}<a target="_blank" rel="noreferrer noopener" href="mailto:sales@eximchain.com?subject=Inquiry%3A%20DappBot%20Organization%20Accounts&body=Hello%2C%0A%0AI%20am%20interested%20in%20learning%20more%20about%20a%20DappBot%20Organization%20Account.">
@@ -80,12 +51,110 @@ const MarketingContent = () => {
                       </a></small>
                   </strong></h3>
                   <p className="lead">Managed organization accounts and your own dapp.bot endpoint, where you can deploy multiple dapps.</p>
-                </div>
+                </div> */}
               </div>
+            </div>
+          </div>
+
+          <div className="row mt-5">
+                <div className="col-12 col-sm-4">
+                  <h3><strong>Speed</strong></h3>
+                  <p>Save thousands of hours in prototyping your first blockchain application and ongoing DevOps effort through three steps and five minutes.</p>
+                </div>
+                <div className="col-12 col-sm-4 pt-3 pt-sm-0">
+                  <h3><strong>Scalability</strong></h3>
+                  <p>Eliminate all scaling concerns by instantly deploying your blockchain application to 165 hosts around the world.</p>
+                </div>
+                <div className="col-12 col-sm-4">
+                  <h3><strong>Simple</strong></h3>
+                  <p>Simplify your ongoing development experience by deploying via GitHub branches, just like working with Pages.</p>
+                </div>
+          </div>
+
+
+        </div>
+      </section>
+
+
+
+      <section className="fdb-block" data-block-type="features" data-id={3}>
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-12 text-center">
+              <h1>DappBot Applications</h1>
+              <p className="lead">Instantly bootstrapping Dapps is attractive for a number of applications, including:</p>
+            </div>
+          </div>
+          <div className="row text-center mt-5">
+            <div className="col-12 col-sm-4">
+              <img alt="Hosted Infrastructure" className="fdb-icon" src="Hosted.svg" />
+              <h3><strong>Educational Tool</strong> for Blockchain Education / Hackathons</h3>
+              <p className="text-left">Whether you’re learning about smart contracts or participating a Hackathon want an interface, but don’t want to waste time writing web apps. We can get you a Dapp in five minutes flat.</p>
+            </div>
+            <div className="col-12 col-sm-4 pt-4 pt-sm-0">
+              <img alt="Rapid Prototyping" className="fdb-icon" src="Rapid.svg" />
+              <h3><strong>Hosted MVP</strong> for Blockchain Developers</h3>
+              <p className="text-left">For blockchain builders who are looking to build on distributed ledgers, DappBot provides a working MVP foundation and rock-solid deployment infrastructure.</p>
+            </div>
+            <div className="col-12 col-sm-4 pt-4 pt-sm-0">
+              <img alt="Educational Tool" className="fdb-icon" src="Edu.svg" />
+              <h3><strong>Rapid Prototyping</strong> for Enterprise Demos</h3>
+              <p className="text-left">If you need generate live demos for client pitch or would like to explore the best smart contract use-cases, we help you dramatically cut iteration time and reduce DevOps effort to zero.</p>
             </div>
           </div>
         </div>
       </section>
+
+      <section className="fdb-block fp-active" data-block-type="contents">
+        <div className="container">
+          <div className="row align-items-center mt-5 mb-5">
+            <div className="col-12 col-md-6 col-lg-5">
+              <h1>Create Dapp</h1>
+              <p className="lead">Quicky generate a Dapp by choosing a name and plugging in your ABI, contract address, and deployed network (Eximchain or Ethereum).</p>
+            </div>
+            <div className="col-12 col-md-6 ml-md-auto mt-4 mt-md-0">
+              <img alt="image" className="img-fluid" src="create.png" />
+            </div>
+          </div>
+
+          <div className="row align-items-center mt-5 mb-5">
+            <div className="col-12 col-md-6 mr-md-auto mt-4 mt-md-0">
+              <img alt="image" className="img-fluid" src="deploy.png" />
+            </div>
+            <div className="col-12 col-md-6 col-lg-5">
+              <h1>Deploy Dapp</h1>
+              <p className="lead">Deploy your Dapp with an automatically configured scalable infrastructure which guarantees rapid responses by caching your application in 165 locations around the world.</p>
+            </div>
+          </div>
+
+          <div className="row align-items-center mt-5 mb-5">
+            <div className="col-12 col-md-6 col-lg-5">
+              <h1>Manage Dapps</h1>
+              <p className="lead">Manage your Dapps from one dashboard. Launch new Dapps and see details about your existing ones, all in one place.</p>
+            </div>
+            <div className="col-12 col-md-6 ml-md-auto mt-4 mt-md-0">
+              <img alt="image" className="img-fluid" src="manage.png" />
+            </div>
+          </div>
+
+          <div className="row align-items-center mt-5 mb-5">
+            <div className="col-12 col-md-6 mr-md-auto mt-4 mt-md-0 text-center">
+              <img alt="image" className="img-fluid" src="launch.svg" />
+            </div>
+            <div className="col-12 col-md-6 col-lg-5">
+              <h1>Launch Dapp</h1>
+              <p className="lead">In five minutes you have deployed a decentralized application. Launch your new app to interact with your smart contract through a simple, elegant, and responsive web interface.</p>
+            </div>
+          </div>
+
+
+        </div>
+      </section>
+
+
+
+
+
       <section className="fdb-block fp-active" style={{ background: '#f0f6fd', display: "none", }} data-block-type="pricings" data-id={14}>
         <div className="container">
           <div className="row text-center">
@@ -133,6 +202,8 @@ const MarketingContent = () => {
           </div>
         </div>
       </section>
+
+
       <section className="fdb-block" style={{ background: '#257edc' }} data-block-type="forms" data-id={13}>
         <div className="container">
           <div className="fdb-box">

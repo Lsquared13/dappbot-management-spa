@@ -1,0 +1,47 @@
+img {
+  vertical-align: middle;
+  border: 0; }
+
+.avatar {
+  position: relative;
+  display: inline-block; }
+
+.avatar-default {
+  background-image: url("https://image.ibb.co/ckGDAe/default.png");
+  background-repeat: no-repeat;
+  width: 32px;
+  height: 32px; }
+
+.avatar-custom img {
+  width: 32px;
+  height: auto;
+  display: block;
+  border-radius: 50%; }
+
+.avatar-custom.avatar-badge img {
+  width: 60px;
+  height: auto;
+  display: block;
+  border-radius: 50%; }
+
+.avatar-custom.avatar-badge span i {
+  color: #2B333F;
+  font-size: 23px;
+  position: relative;
+  top: 0; }
+
+.avatar-custom.avatar-badge span {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 25px;
+  height: 25px;
+  background-color: #fff;
+  border-radius: 50%;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  font-size: 13px;
+  font-family: 'DINRoundPro-Medi',sans-serif;
+  color: #2B333F;
+  line-height: 24px; }
