@@ -26,6 +26,7 @@ DeleteDappContainerProps
       <Breadcrumb title={props.dappName} />
 
       <SettingMenu
+        building = {props.building}
         dappName={props.dappName}
         defaultTab={props.defaultTab}
         settingOptions={props.settingOptions}

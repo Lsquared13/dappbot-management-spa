@@ -127,6 +127,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
         />
          <BuildDetailsContainer
             path="/:dappName/*"
+            building={true}
             dappName="loading"
             dapp={LOADING_DAPP}
             onStatusCopy={() => {}}
