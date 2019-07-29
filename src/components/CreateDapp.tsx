@@ -10,7 +10,7 @@ import {
 } from "../layout";
 import { isValidDappName, cleanDappName, isValidUrl} from "./ui/Input/utils";
 
-import { ReactComponent as GithubIcon } from "../images/Github.svg";
+import { ReactComponent as GithubIcon } from "../assets/images/Github.svg";
 
 
 export type InputEvent =
