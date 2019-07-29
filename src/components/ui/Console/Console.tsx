@@ -77,6 +77,7 @@ export const Console: React.SFC = props => (
     <p className="line8">
       <span className="cursor8">...</span>
     </p>
+    <p className="line9"> DONE, RETURNING TO DASHBOARD PAGE</p>
   </StyledConsole>
 );
 export default Console;
