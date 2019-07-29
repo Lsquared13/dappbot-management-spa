@@ -12,6 +12,7 @@ import Billing, {
 } from "../layout/Billing";
 import { UserResponse } from "../types";
 
+
 export interface SettingsContainerProps extends RouteComponentProps {
   user : UserResponse;
   /* Profile tab props */
@@ -61,36 +62,22 @@ export default class SettingContianer extends React.Component<
     event.preventDefault();
     this.setState({
       activeIndex: activeTabIndex,
-      activeTab:
-        activeTabIndex === 0
-          ? "Profile"
-          : activeTabIndex === 2
-          ? "Billing"
-          : "Password"
+      activeTab:"Profile"
     });
   };
 
   render() {
+    console.log('user in tmpSettingContainer: ',this.props.user);
     return (
       <Box>
         <Breadcrumb title={"none"} />
 
-        <SettingHeader
-          activeIndex={this.state.activeIndex}
-          onHandle={this.handleChange}
-        />
 
         <Title title={this.state.activeTab} />
 
         <Container>
           <Box>
-            {this.state.activeIndex === 0 ? (
-              <Profile {...this.props} />
-            ) : this.state.activeIndex === 1 ? (
-              <Password {...this.props} />
-            ) : (
-              <Billing {...this.props} />
-            )}
+            <Profile {...this.props} />
           </Box>
         </Container>
       </Box>

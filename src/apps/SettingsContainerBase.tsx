@@ -1,21 +1,23 @@
-import React from "react";
+import React, { FC } from "react";
 import { Router, RouteComponentProps } from "@reach/router";
-
-import SettingContianer from "../pages/settingContainer";
+//TODO: add the full settings panel
+import SettingContainer from "../pages/tmpSettingContainer";
 import { ProfileState } from "../layout/Profile";
 import { PasswordState } from "../layout/Password";
 import { useResource } from 'react-request-hook';
+import { UserResponse } from '../types';
 
-
-
-
-export interface Props extends RouteComponentProps {}
-
+export interface Props extends RouteComponentProps {
+  user : UserResponse
+  setUser : (user:UserResponse)=>void
+}
 export const SettingsContainerBase: React.SFC<Props> = props => {
+  
     return (
       <Router>
-        <SettingContianer
+        <SettingContainer
           default
+          user = {props.user}
           /* Password tab props */
           onPasswordInputChange={inputs => {
             console.log("Password Inputs", inputs);
