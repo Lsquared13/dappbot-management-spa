@@ -31,14 +31,14 @@ export const StyledConsole = styled.div`
     -webkit-animation: type 300s 0s steps(20, end) forwards;
     -moz-animation: type 300s 0s steps(20, end) forwards;
     -o-animation: type 300s 0s steps(20, end) forwards;
-    animation: type 300s 0s steps(20, end) forwards;
+    animation: type 20s 0s steps(20, end) forwards;
   }
 
   & .cursor1 {
     -webkit-animation: blink 5s 0s 2 forwards;
     -moz-animation: blink 1s 0s 2 forwards;
     -o-animation: blink 1s 0s 2 forwards;
-    animation: blink 1s 0s 5 forwards;
+    animation: blink 1s 0s 11 forwards;
   }
   /* [<animation-name> || <animation-duration> || <animation-timing-function> || <animation-delay> || <animation-iteration-count> || <animation-direction>] [, [<animation-name> || <animation-duration> || <animation-timing-function> || <animation-delay> || <animation-iteration-count> || <animation-direction>] ]* */
   & .line2 {
@@ -46,29 +46,30 @@ export const StyledConsole = styled.div`
     -webkit-animation: typeLarge 0.1s 4.25s steps(20, end) forwards;
     -moz-animation: typeLarge 0.1s 4.25s steps(20, end) forwards;
     -o-animation: typeLarge 0.1s 4.25s steps(20, end) forwards;
-    animation: typeLarge 1s 5s steps(20, end) forwards;
+    animation: typeLarge 0.5s 2s steps(20, end) forwards;
   }
 
   & .cursor2 {
     -webkit-animation: blink 1s 5.25s 2 forwards;
     -moz-animation: blink 1s 5.25s 2 forwards;
     -o-animation: blink 1s 5.25s 2 forwards;
-    animation: blink 1s 5s 300 forwards;
+    animation: blink 1s 2s 2 forwards;
   }
 
   & .line3 {
     color: #e09690;
+    top:-15px;
     -webkit-animation: type 10s 7.5s steps(20, end) forwards;
     -moz-animation: type 0.5s 7.5s steps(20, end) forwards;
     -o-animation: type 0.5s 7.5s steps(20, end) forwards;
-    animation: type 10s 10s steps(20, end) forwards;
+    animation: type 3s 2s steps(20, end) forwards;
   }
 
   & .cursor3 {
     -webkit-animation: blink 1s 8.5s 7 forwards;
     -moz-animation: blink 1s 8.5s 7 forwards;
     -o-animation: blink 1s 8.5s 7 forwards;
-    animation: blink 1s 10s 10 forwards;
+    animation: blink 1s 2s 3 forwards;
   }
   /* BUILDING */
   & .line4-heading {
@@ -76,7 +77,7 @@ export const StyledConsole = styled.div`
     -webkit-animation: typeLarge 0.5s 20s steps(20, end) forwards;
     -moz-animation: typeLarge 0.5s 15.5s steps(20, end) forwards;
     -o-animation: typeLarge 0.5s 15.5s steps(20, end) forwards;
-    animation: type 30s 20s steps(20, end) forwards;
+    animation: type 3s 3s steps(20, end) forwards;
   }
 
   & .line4 {
@@ -84,33 +85,33 @@ export const StyledConsole = styled.div`
     -webkit-animation: type 0.5s 30s steps(20, end) forwards;
     -moz-animation: type 0.5s 15.5s steps(20, end) forwards;
     -o-animation: type 0.5s 15.5s steps(20, end) forwards;
-    animation: type 25s 25s steps(20, end) forwards;
+    animation: type 3s 3s steps(20, end) forwards;
   }
   & .cursor4 {
     -webkit-animation: blink 1s 16.5s 14 forwards;
     -moz-animation: blink 1s 16.5s 14 forwards;
     -o-animation: blink 1s 16.5s 14 forwards;
-    animation: blink 1s 20s 30 forwards;
+    animation: blink 3s 3s 3 forwards;
   }
   & .line5-heading {
     color: #fff;
     -webkit-animation: type 0.5s 30.5s steps(20, end) forwards;
     -moz-animation: type 0.5s 30.5s steps(20, end) forwards;
     -o-animation: type 0.5s 30.5s steps(20, end) forwards;
-    animation: type 70s 50s steps(20, end) forwards;
+    animation: type 3s 4s steps(20, end) forwards;
   }
   & .line5 {
     color: #e09690;
     -webkit-animation: type 0.5s 30.5s steps(20, end) forwards;
     -moz-animation: type 0.5s 30.5s steps(20, end) forwards;
     -o-animation: type 0.5s 30.5s steps(20, end) forwards;
-    animation: type 35s 55s steps(20, end) forwards;
+    animation: type 3s 4s steps(20, end) forwards;
   }
   & .cursor5 {
     -webkit-animation: blink 1s 30.5s 10 forwards;
     -moz-animation: blink 1s 30.5s 10 forwards;
     -o-animation: blink 1s 30.5s 10 forwards;
-    animation: blink 1s 50s 70 forwards;
+    animation: blink 1s 4s 3 forwards;
   }
 
   & .line6 {
@@ -118,33 +119,33 @@ export const StyledConsole = styled.div`
     -webkit-animation: type 0.5s 40.5s steps(20, end) forwards;
     -moz-animation: type 0.5s 40.5s steps(20, end) forwards;
     -o-animation: type 0.5s 40.5s steps(20, end) forwards;
-    animation: type 35s 65s steps(20, end) forwards;
+    animation: type 3s 5s steps(20, end) forwards;
   }
   & .cursor6 {
     -webkit-animation: blink 1s 40.5s 15 forwards;
     -moz-animation: blink 1s 40.5s 15 forwards;
     -o-animation: blink 1s 40.5s 15 forwards;
-    animation: blink 1s 65s 35 forwards;
+    animation: blink 3s 5s 35 forwards;
   }
   & .line7-heading {
     color: #fff;
     -webkit-animation: type 0.5s 55.5s steps(20, end) forwards;
     -moz-animation: type 0.5s 55.5s steps(20, end) forwards;
     -o-animation: type 0.5s 55.5s steps(20, end) forwards;
-    animation: type 90s 90s steps(20, end) forwards;
+    animation: type 3s 6s steps(20, end) forwards;
   }
   & .line7 {
     color: #e09690;
     -webkit-animation: type 0.5s 55.5s steps(20, end) forwards;
     -moz-animation: type 0.5s 55.5s steps(20, end) forwards;
     -o-animation: type 0.5s 55.5s steps(20, end) forwards;
-    animation: type 75s 100s steps(20, end) forwards;
+    animation: type 3s 6s steps(20, end) forwards;
   }
   & .cursor7 {
     -webkit-animation: blink 1s 55.5s 15 forwards;
     -moz-animation: blink 1s 55.5s 15 forwards;
     -o-animation: blink 1s 55.5s 15 forwards;
-    animation: blink 1s 90s 90 forwards;
+    animation: blink 1s 3s 3 forwards;
   }
 
   & .line8-heading {
@@ -152,20 +153,27 @@ export const StyledConsole = styled.div`
     -webkit-animation: type 0.5s 70.5s steps(20, end) forwards;
     -moz-animation: type 0.5s 70.5s steps(20, end) forwards;
     -o-animation: type 0.5s 70.5s steps(20, end) forwards;
-    animation: type 120s 150s steps(20, end) forwards;
+    animation: type 3s 7s steps(20, end) forwards;
   }
   & .line8 {
     color: #e09690;
     -webkit-animation: type 0.5s 70.5s steps(20, end) forwards;
     -moz-animation: type 0.5s 70.5s steps(20, end) forwards;
     -o-animation: type 0.5s 70.5s steps(20, end) forwards;
-    animation: type 115s 150s steps(20, end) forwards;
+    animation: type 3s 7s steps(20, end) forwards;
   }
   & .cursor8 {
     -webkit-animation: blink 1s 70.5s 180 forwards;
     -moz-animation: blink 1s 70.5s 180 forwards;
     -o-animation: blink 1s 70.5s 180 forwards;
-    animation: blink 1s 150s 180 forwards;
+    animation: blink 1s 7s 10 forwards;
+  }
+  & .line9 {
+    color: #e09690;
+    -webkit-animation: type 0.5s 70.5s steps(20, end) forwards;
+    -moz-animation: type 0.5s 70.5s steps(20, end) forwards;
+    -o-animation: type 0.5s 70.5s steps(20, end) forwards;
+    animation: type 10s 10s steps(20, end) forwards;
   }
 
   @-webkit-keyframes blink {

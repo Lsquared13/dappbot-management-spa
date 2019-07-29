@@ -59,7 +59,7 @@ export const BuildDetailsContainer : React.SFC < buildDetailsContainerProps > = 
         Alert.success("Build complete!")
         navigate(`/home`);
         
-    }, 1000*60*5);
+    }, 1000*11);
       
     
     return dapp;
