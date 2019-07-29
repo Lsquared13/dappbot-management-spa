@@ -19,6 +19,7 @@ export interface DappDetailsContainerProps extends RouteComponentProps,
 SettingMenuProps {
     onStatusCopy?: () => void;
     dapps: DappTableProps["dapps"];
+    building:boolean;
 }
 
 let LOADING_DAPP = {
@@ -84,6 +85,7 @@ export const DappDetailsContainer : React.SFC < DappDetailsContainerProps > = pr
             <Breadcrumb title={props.dappName}/>
 
             <SettingMenu
+                building ={props.building}
                 dappName={props.dappName}
                 defaultTab={props.defaultTab}
                 settingOptions={props.settingOptions}

@@ -131,6 +131,7 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
           <DeleteDappContainer
             path="/:dappName/delete"
             dappName="loading ... "
+            building={false}
             onCancel={(e, inputs: DeleteDappState) => {
               navigate(`/home`);
             }}
@@ -154,6 +155,7 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
           <DappDetailsContainer
             path="/:dappName/*"
             dappName="loading"
+            building={false}
             dapps={dappList}
             onStatusCopy={() => {
               Alert.success("Value copied to clipboard");

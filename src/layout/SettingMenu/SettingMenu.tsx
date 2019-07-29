@@ -28,6 +28,7 @@ export interface SettingMenuProps {
     onClick: () => void;
   }[];
   onTabChange?: (dappName:string) => void;
+  building:boolean;
 }
 
 export interface SettingMenuState {
@@ -43,7 +44,7 @@ export class SettingMenu extends React.Component<
   };
   _onTabChange = () => {};
   render() {
-    let { dappName, onTabChange, settingOptions = [] } = this.props;
+    let { dappName, onTabChange, settingOptions = [], building } = this.props;
     let { selectedTab } = this.state;
     return (
       <Box>
@@ -71,6 +72,7 @@ export class SettingMenu extends React.Component<
                 onClick={() => {
                   onTabChange && onTabChange(dappName);
                 }}
+                hide={building}
               >
                 Settings
               </StyledTab>

@@ -21,6 +21,7 @@ SettingMenuProps {
     onStatusCopy?: () => void;
     dapp: DappDetail;
     redirect: ()=>void;
+    
 }
 
 let LOADING_DAPP = {
@@ -40,6 +41,7 @@ export const BuildDetailsContainer : React.SFC < buildDetailsContainerProps > = 
             <Breadcrumb title={props.dappName}/>
 
             <SettingMenu
+                building={props.building}
                 dappName={props.dappName}
                 defaultTab={props.defaultTab}
                 settingOptions={props.settingOptions}
