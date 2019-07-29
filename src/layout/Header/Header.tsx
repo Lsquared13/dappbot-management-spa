@@ -1,9 +1,10 @@
 import * as React from "react";
-import { Avatar, Box, Icon, Tabs,Text, Link } from "../../components/ui";
+import { Avatar, Box, Icon, Tabs,Text, Link, Dropdown, DropdownItem, DropdownTrigger, DropdownContent } from "../../components/ui";
 import StyledHeader from "./StyledHeader";
+import { ReactComponent as AvatarImage } from "../../assets/images/avatar.svg";
 
-import { ReactComponent as Logo } from "../../images/Dapp_Logo.svg";
-import { ReactComponent as MoreIcon } from "../../images/more.svg";
+import { ReactComponent as Logo } from "../../assets/images/Dapp_Logo.svg";
+import { ReactComponent as MoreIcon } from "../../assets/images/more.svg";
 import {UserResponse, defaultUserResponse} from '../../types'
 import { navigate } from "@reach/router";
 
@@ -97,19 +98,25 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
             onChange={this.handleChange}
           />
         </Box>
+
         {/* LOGOUT  */}
         <Box display="flex" alignItems="center">
           <Box display="inlineBlock">
             <Box display="inlineBlock" paddingX={5}>
-            <Link  onClick={this.logOut} href='/login'>
-              <Avatar src="https://img.icons8.com/flat_round/384/shutdown.png" name="Juan" size="md" />
-        
-            </Link>
-              
+              <Dropdown>
+                <DropdownTrigger>
+                  <AvatarImage/>
+                </DropdownTrigger>
+                <DropdownContent>
+                  <DropdownItem link="home/user-settings">Account Settings</DropdownItem>
+                  <DropdownItem link="https://dappbot.drift.help/category/getting-started/">Support</DropdownItem>
+                  <DropdownItem onClick={this.logOut} link='/login'>Sign Out</DropdownItem>
+                </DropdownContent>
+              </Dropdown>
             </Box>
           </Box>
-          
         </Box>
+
       </StyledHeader>
     );
   }

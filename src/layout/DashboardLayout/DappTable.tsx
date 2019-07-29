@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Box, Table, Text, TextProps } from "../../components/ui";
 import { NetworkReferenceLink, EXCAddresLink, DappDetailLink, FancyLink } from "../utils";
-import { ReactComponent as CheckIcon } from "../../images/check.svg";
+import { ReactComponent as CheckIcon } from "../../assets/images/check.svg";
 
 export interface DappDetail {
   DappName: string;

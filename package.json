@@ -22,7 +22,7 @@
     "@types/styled-components": "^4.1.12",
     "@types/validator": "^10.11.0",
     "aws-amplify": "^1.1.26",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "bignumber.js": "^8.1.1",
     "classnames": "^2.2.6",
     "copy-to-clipboard": "^3.2.0",

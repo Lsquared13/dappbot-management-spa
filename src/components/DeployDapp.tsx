@@ -9,8 +9,8 @@ import {
   EXCAddresLink,
 } from "../layout";
 import {StaticConsole} from "./ui/Console/StaticConsole"
-import { ReactComponent as LinkIcon } from "../images/link.svg";
-import { ReactComponent as CheckIcon } from "../images/check.svg";
+import { ReactComponent as LinkIcon } from "../assets/images/link.svg";
+import { ReactComponent as CheckIcon } from "../assets/images/check.svg";
 import { FancyLink } from '../layout/utils';
 
 export interface DappDetail {
