@@ -150,7 +150,7 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
               navigate(`/home/${dappName}`);
             }}
           />
-          <NotFound path="/:dappName/denied" />
+          <NotFound path="/denied" />
           <DappDetailsContainer
             path="/:dappName/*"
             dappName="loading"

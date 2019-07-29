@@ -7,14 +7,14 @@ import './custom.css'
 import "./fonts.css";
 import PageBase from './layout/PageBase';
 import { HomeBase } from "./layout/HomeBase";
-import { useLocalStorage, currentUserInfo } from './services/auth';
+import { useLocalStorage } from './services/auth';
 
 import { SettingsContainerBase } from "./apps/SettingsContainerBase";
 
 import {  Welcome, Login, Privacy, DappDetails, PaymentPage } from './pages';
 import { DashboardBase } from './apps/DashboardBase';
 import { NewDappFormBase } from './apps';
-import { UserResponse } from './types';
+import { UserResponse, defaultUser } from './types';
 
 
 // user: {
@@ -29,13 +29,13 @@ const App: FC = () => {
   let userData = { user, setUser };
   // console.log("USER: ",user)
   
-  useEffect(() => {
-    async function fetchMyAPI() {
-         user = await currentUserInfo();
-    }  
-    fetchMyAPI();
+  // useEffect(() => {
+  //   async function fetchMyAPI() {
+  //        user = await currentUserInfo();
+  //   }  
+  //   fetchMyAPI();
    
-  }, []);
+  // }, []);
   
   return (
     <StripeProvider apiKey={process.env.REACT_APP_STRIPE_PUBLISHABLE_API_KEY as string}>
@@ -52,7 +52,7 @@ const App: FC = () => {
             <DappDetails path="dapp/:id" {...userData} />
             <DashboardBase path="/*"  {...userData}/>
             <NewDappFormBase path="new/*" {...userData} />
-            <SettingsContainerBase path="user-settings/*" />
+            <SettingsContainerBase path="user-settings/*" {...userData}/>
           </HomeBase>
         </Router>
       </Elements>

@@ -8,8 +8,10 @@ import {
   InputGroup,
   InputTitle
 } from "../layout";
+import { UserResponse } from "../types";
 
 export interface ProfileProps {
+  user: UserResponse;
   onProfileInputChange?: (inputs: ProfileState) => void;
   onProfileSave: (
     event: React.MouseEvent<HTMLElement, MouseEvent>,
@@ -31,8 +33,9 @@ export interface ProfileState {
 }
 
 export default class Profile extends Component<ProfileProps, ProfileState> {
+  //TODO: change API response server side to have clean access to user attributes
   state: ProfileState = {
-    email: ""
+    email: this.props.user.User.UserAttributes[5]["Value"]
   };
 
   broadcastInputs = () => {
@@ -54,7 +57,7 @@ export default class Profile extends Component<ProfileProps, ProfileState> {
   render() {
     let { onProfileDelete, onProfileSave } = this.props;
     let { email } = this.state;
-
+    console.log()
     return (
       <LayoutContainer>
         <InputGroup>
@@ -72,7 +75,7 @@ export default class Profile extends Component<ProfileProps, ProfileState> {
           </InputContainer>
         </InputGroup>
 
-        <Box display="flex" justifyContent="between" alignItems="center">
+        {/* <Box display="flex" justifyContent="between" alignItems="center">
           <Box>
             <Button size="small" onClick={e => onProfileSave(e, this.state)}>
               <ButtonText>Save</ButtonText>
@@ -87,7 +90,7 @@ export default class Profile extends Component<ProfileProps, ProfileState> {
               <ButtonText>Delete Account</ButtonText>
             </Button>
           </Box>
-        </Box>
+        </Box> */}
       </LayoutContainer>
     );
   }

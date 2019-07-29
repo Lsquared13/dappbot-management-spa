@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Amplify, { Auth } from 'aws-amplify';
 // import { CognitoUser } from '@aws-amplify/auth';
 import {requestFactory, Operations} from './abiClerk';
 import { request } from 'https';
@@ -20,14 +19,6 @@ interface AuthorizedRequest extends RequestArgs {
   method: string
 }
 const passwordValidator = require('password-validator');
-
-Amplify.configure({
-  Auth: {
-    userPoolId: process.env.REACT_APP_USER_POOL_ID,
-    userPoolWebClientId: process.env.REACT_APP_USER_POOL_CLIENT_ID,
-    region: process.env.REACT_APP_AWS_REGION
-  }
-})
 
 export interface BeginPasswordResetArgs {
   username:string
@@ -111,16 +102,11 @@ export function useLocalStorage<ValueType>(key:string, initialValue:ValueType):[
   return [storedValue, setValue];
 }
 
-export const currentUserInfo = async () => {
-  return await Auth.currentUserInfo();
-}
-
 export default {
   signIn: signInRequest,
   // confirmMFA: confirmMFASignIn,
   newPassword: newPasswordRequest,
   passwordChecker,
-  currentUserInfo,
   confirmPasswordResetRequest,
   beginPasswordResetRequest
 

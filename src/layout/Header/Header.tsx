@@ -51,7 +51,7 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
         if (this.state.activeIndex === 0) {
           return navigate(`/home`);
         } else {
-          return navigate(`/home/denied`);
+          return navigate(`/home/user-settings`);
         }
       }
     );
