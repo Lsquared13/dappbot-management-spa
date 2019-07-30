@@ -58,63 +58,76 @@ const SETTING_OPTIONS = [
 ];
 
 export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
-    
-    const [deleteResponse, sendDeleteRequest] = useResource(ABIClerk.delete(user));
-    const [listResponse, sendListRequest] = useResource(ABIClerk.list(user),[]);
-     
-    //----- LIST RESPONSE HANDLER -----
-    // AUTH CHECK: Check for valid session, log out if expired
-    if (listResponse && listResponse.data && (['The incoming token has expired', 'Unauthorized'].includes((listResponse.data as any).message))){
-      let newUser = defaultUserResponse();
-      (props.navigate as NavigateFn)('/login');
-      setUser(newUser);
-    }
-    // FETCH DATA: fetch dapp list
-    useEffect(() => {
-      let didCancel = false;
-      async function fetchMyAPI() {
-        if (!didCancel && user) { // Ignore if we started fetching something else
-          await sendListRequest();
-          }
-      }  
-      fetchMyAPI();
-      return () => { didCancel = true;}; // Remember if we start fetching something else
-    }, [sendListRequest, deleteResponse]);
-    
-    //----- DELETE RESPONSE HANDLER ----- 
-    const [deleteSent, markDeleteSent] = useState(false);
-    const handleDelete = (dappName: string) => {
-      markDeleteSent(true);
-      Alert.info(`Deleting ${dappName} now...`)
-      sendDeleteRequest(dappName);
-    }
-    useEffect(() => {
-      if (deleteSent) {
-        if (deleteResponse.error) {
-          Alert.error(`There was an error deleting your dapp: ${deleteResponse.error.message}`)
-        } else if (!deleteResponse.isLoading && deleteResponse.data) {
-          Alert.success(`Your dapp was successfully deleted!`);
-          markDeleteSent(false);
-        }
+ 
+  const [deleteResponse, sendDeleteRequest] = useResource(ABIClerk.delete(user));
+  const [listResponse, sendListRequest] = useResource(ABIClerk.list(user),[]);
+   
+  //----- LIST RESPONSE HANDLER -----
+  // AUTH CHECK: Check for valid session, log out if expired
+  if (listResponse && listResponse.data && (['The incoming token has expired', 'Unauthorized'].includes((listResponse.data as any).message))){
+    let newUser = defaultUserResponse();
+    (props.navigate as NavigateFn)('/login');
+    setUser(newUser);
+  }
+  
+  //----- DELETE RESPONSE HANDLER ----- 
+  const [deleteSent, markDeleteSent] = useState(false);
+  const handleDelete = (dappName: string) => {
+    markDeleteSent(true);
+    Alert.info(`Deleting ${dappName} now...`)
+    sendDeleteRequest(dappName);
+  }
+  useEffect(() => {
+    if (deleteSent) {
+      if (deleteResponse.error) {
+        Alert.error(`There was an error deleting your dapp: ${deleteResponse.error.message}`)
+        markDeleteSent(false)
+      } else if (!deleteResponse.isLoading && deleteResponse.data) {
+        Alert.success(`Your dapp was successfully deleted!`);
+        markDeleteSent(false);
+        navigate(`/home`);
       }
-    }, [deleteSent, deleteResponse])
-
-    //EDIT RESPONSE HANDLER
-    const [editResponse, sendEditRequest] = useResource(ABIClerk.edit(user));
-    
-    //PROP DRILL: props for DappDetailsContainer && DashboardContainer
-    let dappList:DappDetail[] = [];
-    try {
-      // console.log("list response data")
-      // console.log(listResponse)
-      if (listResponse.data){
-        dappList.push(...(listResponse as any).data.data.items)
-      }
-    } 
-    catch (e) {
-      console.log('Error when trying to load from listResponse: ',e);
     }
+  }, [deleteSent, deleteResponse])
 
+  // ----- FETCH LIST HANDLER ----- 
+  const [fetchListSent, markFetchListSent] = useState(false);
+  const handleFetchList= async() => {
+    markFetchListSent(true);
+    Alert.info(`Fetching dapp list ...`)
+    sendListRequest();
+  }
+  useEffect(() => {
+    if (fetchListSent){
+      if (listResponse.error) {
+        console.log("encountered the following error", listResponse.error)
+        markFetchListSent(false)
+      } else if(listResponse.isLoading && listResponse.data){
+        markFetchListSent(false);
+      }
+    }
+  }, [ fetchListSent, listResponse]);
+  useEffect(() => {
+    console.log("fetch dapp list")
+    handleFetchList()
+  }, [ sendListRequest, deleteSent]);
+  
+  //EDIT RESPONSE HANDLER
+  const [editResponse, sendEditRequest] = useResource(ABIClerk.edit(user));
+  
+  //PROP DRILL: props for DappDetailsContainer && DashboardContainer
+  let dappList:DappDetail[] = [];
+  try {
+    // console.log("list response data")
+    // console.log(listResponse)
+    if (listResponse.data){
+      dappList.push(...(listResponse as any).data.data.items)
+    }
+  } 
+  catch (e) {
+    console.log('Error when trying to load from listResponse: ',e);
+  }
+ 
     return (
       <div>
         <Router>    
