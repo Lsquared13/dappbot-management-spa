@@ -39,7 +39,6 @@ export const Login: FC<LoginProps> = (props) => {
   const [signInSent, markSignInSent] = useState(false)
   const [passwordResetSent, markPasswordResetSent] = useState(false);
 
-
   const handleSignIn = () => {
     const loginDetails:SignInArgs = {
       'username': email,
@@ -48,6 +47,56 @@ export const Login: FC<LoginProps> = (props) => {
     markSignInSent(true)
     requestSignIn(loginDetails, 'login')
   }
+
+  // If we now have a Cognito user and no challenge
+  // TODO: This probably won't behave right, as CognitoUser
+  // can match with an empty object.  Need to determine a good
+  // property to check for.
+  useEffect(function handleLoginResult() {
+    if (signInSent) {
+      if (signInResponse.isLoading) {
+        Alert.info("Authenticating ...", { timeout: 750});
+
+      }
+      else if (signInResponse.error) {
+        markSignInSent(false)
+        console.log(signInResponse.error)
+        switch(signInResponse.error.code){
+
+          default:{
+            Alert.error(signInResponse.error.data.err.message);
+          }
+        }
+
+      } 
+      else if (signInResponse.data) {
+        markSignInSent(false)
+        
+        let response: any = signInResponse.data
+        
+        //Ensure that the response has a session, and if so create a tempUser
+        if (response.data.Session) {
+          //This tempUser refers to when the password needs to be reset for the first login.
+          let tempUser = defaultUserResponse()
+          tempUser.User.Username = email
+
+          setUser(tempUser)
+          setChallenge(response.data)
+
+        }
+        if (response.data.Authorization && response.data.User) {
+          const { Authorization, User, Refresh } = response.data;
+          let userAttribute = User.UserAttributes.find((attribute:any)=>{ return attribute["Name"] == "email"})
+          const userEmail = userAttribute["Value"];
+
+          setUser({ User: User, Authorization, Refresh })
+          setChallenge(challengeDataFactory(ChallengeType.Default))
+          Alert.success("Authenticated with credentials for: " + userEmail)
+        }
+      
+      }
+    }
+  }, [signInResponse])
 
   const handleForgottenPass = () => {
     const forgottenPassDetails:BeginPasswordResetArgs = {
@@ -59,77 +108,40 @@ export const Login: FC<LoginProps> = (props) => {
   }
 
   useEffect(function handlePassResetResult(){
-    if(!passwordResetSent || beginPasswordResetResponse.isLoading){
-      return
+    if (passwordResetSent) {
+      if (beginPasswordResetResponse.isLoading) {
+        Alert.info("Attempting password reset", { timeout: 1750});
+
+      }
+      else if (beginPasswordResetResponse.error) {
+        markPasswordResetSent(false);
+
+        console.log(beginPasswordResetResponse.error)
+        switch(beginPasswordResetResponse.error.code){
+          case 401: {
+            Alert.error("Unauthorized");
+            break;
+          }
+          default:{
+            Alert.error("Failed to reset password, check the username field and make sure it is a valid email address");
+          }
+        }
+
+      } 
+      else if (beginPasswordResetResponse.data) {
+        markPasswordResetSent(false)
+        setChallenge(challengeDataFactory(ChallengeType.ForgotPassword))
+
+      }
     }
-    if (beginPasswordResetResponse.error){
-      setErr(beginPasswordResetResponse.error.message);
-      markPasswordResetSent(false);
-      return;
-    }else if (
-      beginPasswordResetResponse.data
-    ) {
-      const result: any = beginPasswordResetResponse.data
-      markPasswordResetSent(false)
-      setChallenge(challengeDataFactory(ChallengeType.ForgotPassword))
-      return
-    }
-  }, [beginPasswordResetResponse, markPasswordResetSent, passwordResetSent])
+  }, [beginPasswordResetResponse])
 
   useEffect(function handleChallengeResult() {
-    // console.log("handling the result", challenge)
     if (challenge.ChallengeName === ChallengeType.Default  && user.Authorization) {
       navigate && navigate('/home');
-    }
+
+    }  
   }, [challenge, setChallenge, user, navigate])
-
-  // If we now have a Cognito user and no challenge
-  // TODO: This probably won't behave right, as CognitoUser
-  // can match with an empty object.  Need to determine a good
-  // property to check for.
-  useEffect(function handleLoginResult() {
-
-    if (!signInSent || signInResponse.isLoading) {
-      return;
-    }
-
-    if (signInResponse.error) {
-      // console.log("SignIn Error: ",signInResponse.error);
-      setErr(signInResponse.error.message)
-      markSignInSent(false);
-      Alert.error(`There was an error signing in: ${signInResponse.error.message}`)
-      return;
-    } else if (signInResponse.data) {
-      markSignInSent(false);
-
-      let response: any = signInResponse.data
-      //Ensure that the response has a session, and if so create a tempUser
-      if (response.data.Session) {
-        //This tempUser refers to when the password needs to be reset for the first login.
-        let tempUser = defaultUserResponse()
-        tempUser.User.Username = email
-        setUser(tempUser)
-        setChallenge(response.data)
-      }
-
-      if (response.data.Authorization) {
-        const { Authorization, User, Refresh } = response.data;
-
-        setUser({
-          User: User,
-          Authorization, Refresh
-        })
-        setChallenge(challengeDataFactory(ChallengeType.Default))
-      }
-      //TODO: Define the type for the message response
-      // @ts-ignore
-      Alert.success(`${signInResponse.data.message}`)
-
-      return;
-    }
-
-  }, [user, challenge, signInSent, markSignInSent, signInResponse])
-
 
   let loginFields = (
     <div className="fdb-box fdb-touch">
@@ -175,14 +187,19 @@ export const Login: FC<LoginProps> = (props) => {
       </div>
     </div>
   )
+  
   let challengeProps = { setChallenge, setErr }
+
   switch (challenge.ChallengeName) {
+
     case (ChallengeType.NewPasswordRequired):
       loginFields = <NewPassChallenge setUser={setUser} user={user} challenge = {challenge} {...challengeProps} />
       break;
+
     case (ChallengeType.Mfa):
       // loginFields = <MfaChallenge setUser={setUser} user={user} {...challengeProps} />
       break;
+
     case (ChallengeType.ForgotPassword):
       loginFields =
         <React.Fragment>
@@ -195,6 +212,7 @@ export const Login: FC<LoginProps> = (props) => {
         </React.Fragment>
 
       break;
+
     default:
       // Always have a default to keep TS quiet
       break;

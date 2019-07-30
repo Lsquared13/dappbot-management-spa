@@ -90,6 +90,7 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
         switch(deleteResponse.error.code){
           case 401: {
             Alert.error("Unauthorized resource, please sign in");
+            break;
           }
           default:{
             Alert.error("Error Details:"+deleteResponse.error.message);
@@ -127,6 +128,7 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
         switch(listResponse.error.code){
           case 401: {
             Alert.error("Unauthorized resource, please sign in");
+            break;
           }
           default:{
             Alert.error("Error Details:"+listResponse.error.message);
