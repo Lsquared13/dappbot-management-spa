@@ -88,7 +88,7 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
         markFetchListSent(false)
 
         switch(deleteResponse.error.code){
-          case 401: {
+          case '401': {
             Alert.error("Unauthorized resource, please sign in");
             break;
           }
@@ -126,7 +126,7 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
         markFetchListSent(false)
 
         switch(listResponse.error.code){
-          case 401: {
+          case '401': {
             Alert.error("Unauthorized resource, please sign in");
             break;
           }

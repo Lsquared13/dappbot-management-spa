@@ -118,7 +118,7 @@ export const Login: FC<LoginProps> = (props) => {
 
         console.log(beginPasswordResetResponse.error)
         switch(beginPasswordResetResponse.error.code){
-          case 401: {
+          case '401': {
             Alert.error("Unauthorized");
             break;
           }
