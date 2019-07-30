@@ -74,43 +74,77 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
   const [deleteSent, markDeleteSent] = useState(false);
   const handleDelete = (dappName: string) => {
     markDeleteSent(true);
-    Alert.info(`Deleting ${dappName} now...`)
     sendDeleteRequest(dappName);
   }
   useEffect(() => {
     if (deleteSent) {
-      if (deleteResponse.error) {
-        Alert.error(`There was an error deleting your dapp: ${deleteResponse.error.message}`)
+
+      if (deleteResponse.isLoading){
+        Alert.info(`Deleting dapp ...`, {timeout: 500 });
+
+      } 
+      else if (deleteResponse.error) {
         markDeleteSent(false)
-      } else if (!deleteResponse.isLoading && deleteResponse.data) {
-        Alert.success(`Your dapp was successfully deleted!`);
+        markFetchListSent(false)
+
+        switch(deleteResponse.error.code){
+          case 401: {
+            Alert.error("Unauthorized resource, please sign in");
+          }
+          default:{
+            Alert.error("Error Details:"+deleteResponse.error.message);
+          }
+        }
+
+      } 
+      else if (deleteResponse.data) {
         markDeleteSent(false);
+        Alert.success(`Your dapp was successfully deleted!`, {timeout: 500 });
+
+        handleFetchList()
         navigate(`/home`);
+
       }
     }
-  }, [deleteSent, deleteResponse])
+  }, [deleteResponse])
 
   // ----- FETCH LIST HANDLER ----- 
   const [fetchListSent, markFetchListSent] = useState(false);
   const handleFetchList= async() => {
     markFetchListSent(true);
-    Alert.info(`Fetching dapp list ...`)
     sendListRequest();
   }
   useEffect(() => {
     if (fetchListSent){
-      if (listResponse.error) {
-        console.log("encountered the following error", listResponse.error)
+      
+      if (listResponse.isLoading){
+        Alert.info("Fetching Dapp List", { timeout: 750});
+        
+      } 
+      else if (listResponse.error) {
         markFetchListSent(false)
-      } else if(listResponse.isLoading && listResponse.data){
+
+        switch(listResponse.error.code){
+          case 401: {
+            Alert.error("Unauthorized resource, please sign in");
+          }
+          default:{
+            Alert.error("Error Details:"+listResponse.error.message);
+          }
+        }
+
+      } 
+      else if(listResponse.data){
         markFetchListSent(false);
+        Alert.success("Access Granted", { timeout: 750 });
+        
       }
     }
-  }, [ fetchListSent, listResponse]);
+  }, [listResponse]);
+
   useEffect(() => {
-    console.log("fetch dapp list")
     handleFetchList()
-  }, [ sendListRequest, deleteSent]);
+  }, []);
   
   //EDIT RESPONSE HANDLER
   const [editResponse, sendEditRequest] = useResource(ABIClerk.edit(user));
@@ -118,8 +152,6 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
   //PROP DRILL: props for DappDetailsContainer && DashboardContainer
   let dappList:DappDetail[] = [];
   try {
-    // console.log("list response data")
-    // console.log(listResponse)
     if (listResponse.data){
       dappList.push(...(listResponse as any).data.data.items)
     }
@@ -127,7 +159,8 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
   catch (e) {
     console.log('Error when trying to load from listResponse: ',e);
   }
- 
+  
+
     return (
       <div>
         <Router>    
@@ -135,7 +168,7 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
             path="/"
             dapps={dappList}
             onRefresh={() => {
-              navigate(`/home`);
+              handleFetchList()
             }}
             onCreateNewApp={() => {
               navigate(`/home/new/step-1`);
