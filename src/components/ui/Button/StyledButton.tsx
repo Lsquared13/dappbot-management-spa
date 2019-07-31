@@ -72,7 +72,6 @@ export const StyledButton = styled.button`
     height: calc(100% - 6px);
     left: 2px;
     top: 2px;
-    border: 1px solid var(--color-neutral-1, #ffffff);
   }
 
   /***** styleOption - quiet & quietSecondary  *****/

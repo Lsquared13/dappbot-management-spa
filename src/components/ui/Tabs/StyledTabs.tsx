@@ -49,6 +49,7 @@ export const StyledTab: StyledComponentClass<
 
   &.tabIsNotActive {
     color: #002257;
+    border-bottom: 2px solid transparent;
   }
 
   &.tab:focus,
@@ -68,6 +69,11 @@ export const StyledTab: StyledComponentClass<
 
   &.tabIsActive .icon {
     color: #0064ff;
+  }
+
+  &.tabIsActive div {
+    color: #0064ff;
+    font-weight: bold;
   }
 `;
 

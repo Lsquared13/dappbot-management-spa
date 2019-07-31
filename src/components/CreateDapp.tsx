@@ -106,8 +106,7 @@ export class CreateDapp extends React.Component<
                
               </InputContainer>
               <Description>
-                This Dapp name will be created to create the Dapp URL and can
-                not be changed after creation.
+                This Dapp name will be used to create your Dapp's URL and cannot be changed after creation.
               </Description>
             </InputGroup>
 

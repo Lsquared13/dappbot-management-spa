@@ -240,6 +240,7 @@ let layout:StringDictionary = {
   itemsCenter: "itemsCenter",
   itemsBaseline: "itemsBaseline",
   itemsStretch: "itemsStretch",
+  itemsFlexEnd: "itemsFlexEnd",
   selfStart: "selfStart",
   selfEnd: "selfEnd",
   selfCenter: "selfCenter",
@@ -1082,9 +1083,9 @@ export type BoxProps = {
    * Defines the default behaviour for how flex items are laid out along the cross-axis on the current line. Think of it as the justify-content version for the cross-axis (perpendicular to the main-axis).
    * @default "stretch"
    **/
-  alignItems?: "start" | "end" | "center" | "baseline" | "stretch";
+  alignItems?: "start" | "end" | "center" | "baseline" | "stretch" | "flexend";
   /**
-   * string, "auto" | "start" | "end" | "center" | "baseline" | "stretch"
+   * string, "auto" | "start" | "end" | "center" | "baseline" | "stretch" | "flexend"
    * Allows the default alignment (or the one specified by align-items) to be overridden for individual flex items.
    * @default "stretch"
    **/
@@ -1465,7 +1466,8 @@ const propToFn:FunctionDictionary = {
     start: layout.itemsStart,
     end: layout.itemsEnd,
     center: layout.itemsCenter,
-    baseline: layout.itemsBaseline
+    baseline: layout.itemsBaseline,
+    flexend: layout.itemsFlexEnd
     // default: stretch
   }),
   alignSelf: mapping({

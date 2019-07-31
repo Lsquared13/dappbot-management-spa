@@ -4,6 +4,7 @@ import {
   Container,
   ButtonText,
 } from "../../layout";
+import EmptyState from "../../assets/images/SDK.svg";
 import {  Box, Button,Text,Divider} from "../../components/ui";
 import { DappTable, DappTableProps } from "../../layout/DashboardLayout";
 import { ReactComponent as RefreshIcon } from "../../assets/images/refresh.svg";
@@ -27,7 +28,8 @@ export const DashboardContainer: React.SFC<DashboardContainerProps> = props => {
           display="flex"
           justifyContent="between"
           alignItems="center"
-          padding={5}
+          marginTop={4}
+          marginBottom={4}
         >
           <Text
             bold
@@ -68,7 +70,7 @@ export const DashboardContainer: React.SFC<DashboardContainerProps> = props => {
             <div className="mb-5 mt-5 text-center">
               <div className="row text-center mb-3">
                 <div className="col-sm-6 m-auto col-lg-4">
-                  <img alt="Development SDK" className="img-fluid" src="SDK.svg" />
+                  <img alt="Dapp Empty State" className="img-fluid" src={EmptyState} />
                 </div>
               </div>
               <Text
