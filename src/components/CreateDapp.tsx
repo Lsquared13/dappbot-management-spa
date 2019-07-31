@@ -190,29 +190,25 @@ export class CreateDapp extends React.Component<
           </Box>
         </Box>
 
-        <Box display="flex">
-          <Box width={125}>
-            <Button
-              block
-              size="small"
-              onClick={e => onConfigDapp(e, this.state)}
-              disabled={disableSubmit}
-            >
-              <ButtonText>Configure Dapp</ButtonText>
-            </Button>
-          </Box>
-          <Box display="inlineBlock" margin={2} />
-          <Box width={125}>
-            <Button
-              block
-              size="small"
-              theme="outlineBlue"
-              onClick={e => onCancel(e, this.state)}
-            >
-              <ButtonText>Cancel</ButtonText>
-            </Button>
-          </Box>
-        </Box>
+        <div style={{ display: "flex", justifyContent: "space-between"  }} >
+          <Button
+            size="small"
+            style="standard"
+            theme="cta"
+            onClick={e => onConfigDapp(e, this.state)}
+            disabled={disableSubmit}
+          >
+            <ButtonText>Configure Dapp</ButtonText>
+          </Button>
+          <Button
+            size="small"
+            style="standard"
+            theme="outlineBlue"
+            onClick={e => onCancel(e, this.state)}
+          >
+            <ButtonText>Cancel</ButtonText>
+          </Button>
+        </div>
       </LayoutContainer>
     );
   }

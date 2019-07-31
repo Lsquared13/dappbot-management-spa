@@ -250,29 +250,22 @@ export class ConfigureDapp extends Component<
           </InputGroup>
         </Box>
 
-        <Box display="flex">
-          <Box width={125}>
-            <Button
-              block
-              size="small"
-              onClick={e => onCreateDapp(e, this.state)}
-              disabled={disableSubmit}
-            >
-              <ButtonText>Create Dapp</ButtonText>
-            </Button>
-          </Box>
-          <Box display="inlineBlock" margin={2} />
-          <Box width={125}>
-            <Button
-              block
-              size="small"
-              theme="outlineBlue"
-              onClick={e => onCancel(e, this.state)}
-            >
-              <ButtonText>Cancel</ButtonText>
-            </Button>
-          </Box>
-        </Box>
+        <div style={{ display: "flex", justifyContent: "space-between"  }} >
+          <Button
+            size="small"
+            onClick={e => onCreateDapp(e, this.state)}
+            disabled={disableSubmit}
+          >
+            <ButtonText>Create Dapp</ButtonText>
+          </Button>
+          <Button
+            size="small"
+            theme="outlineBlue"
+            onClick={e => onCancel(e, this.state)}
+          >
+            <ButtonText>Cancel</ButtonText>
+          </Button>
+        </div>
       </LayoutContainer>
     );
   }
