@@ -14,28 +14,11 @@ import { SettingsContainerBase } from "./apps/SettingsContainerBase";
 import {  Welcome, Login, Privacy, DappDetails, PaymentPage } from './pages';
 import { DashboardBase } from './apps/DashboardBase';
 import { NewDappFormBase } from './apps';
-import { UserResponse, defaultUser } from './types';
+import { UserResponse } from './types';
 
-
-// user: {
-//   signInUserSession: {
-//     idToken: {
-//       jwtToken: "eyJra...6iJnw"
-//     }
-//   }
-// }
 const App: FC = () => {
   let [user, setUser] = useLocalStorage('user', {} as UserResponse);
   let userData = { user, setUser };
-  // console.log("USER: ",user)
-  
-  // useEffect(() => {
-  //   async function fetchMyAPI() {
-  //        user = await currentUserInfo();
-  //   }  
-  //   fetchMyAPI();
-   
-  // }, []);
   
   return (
     <StripeProvider apiKey={process.env.REACT_APP_STRIPE_PUBLISHABLE_API_KEY as string}>
