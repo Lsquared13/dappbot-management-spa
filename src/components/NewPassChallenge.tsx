@@ -26,6 +26,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
   const [newPassResponse, requestNewPass] = useResource(Auth.newPassword())
   //Response Handler
   const [newPassSent, markNewPassSent] = useState(false)
+
   const handleNewPassword = () => {
     const newPassDetails:NewPasswordArgs = {
       'username': user.User.Username,
@@ -35,6 +36,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
     markNewPassSent(true)
     requestNewPass(newPassDetails, 'login')
   }
+  
   useEffect(()=>{
     if (!newPassSent || newPassResponse.isLoading){
       return;
@@ -47,16 +49,9 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
     // console.log(response.data)
     if(response.data.Authorization){
       const newPassData:UserResponse = response.data;
-      const { Authorization, User, RefreshToken, ExpiresAt } = newPassData;
-      setUser({
-        Authorization, User, RefreshToken, ExpiresAt
-      })
+      setUser(newPassData);
       setChallenge(challengeDataFactory(ChallengeType.Default))
     }
-
-
-
-
   }, [newPassSent, newPassResponse])
 
   return (
