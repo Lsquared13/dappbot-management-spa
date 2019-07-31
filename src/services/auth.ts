@@ -1,8 +1,5 @@
 import { useState } from 'react';
-// import { CognitoUser } from '@aws-amplify/auth';
 import {requestFactory, Operations} from './abiClerk';
-import { request } from 'https';
-
 
 interface RequestArgs {
   url: string,
@@ -38,12 +35,20 @@ export interface SignInArgs {
   password: string
 }
 
+export interface RefreshArgs {
+  refreshToken: string
+}
+
 function signInRequest(): (args: SignInArgs, target: string) => AuthorizedRequest {
 
   return requestFactory(Operations.login, "auth")
 }
 
 function newPasswordRequest(): (args: NewPasswordArgs, target: string) => AuthorizedRequest {
+  return requestFactory(Operations.login, "auth")
+}
+
+function refreshRequest(): (args:RefreshArgs, target:string) => AuthorizedRequest {
   return requestFactory(Operations.login, "auth")
 }
 
@@ -104,6 +109,7 @@ export function useLocalStorage<ValueType>(key:string, initialValue:ValueType):[
 
 export default {
   signIn: signInRequest,
+  refresh: refreshRequest,
   // confirmMFA: confirmMFASignIn,
   newPassword: newPasswordRequest,
   passwordChecker,
