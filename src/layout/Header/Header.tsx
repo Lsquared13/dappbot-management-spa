@@ -10,7 +10,7 @@ import { navigate } from "@reach/router";
 
 export interface HeaderProps {
   uri: any;
-  user?: any
+  user?: UserResponse
   setUser: (newUser:UserResponse)=>void
 }
 
@@ -28,19 +28,12 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
         this.props.uri === "/home/" || this.props.uri === "/home" ? 0 : 1
     };
     
-
-  
   }
-  
-
 
   logOut = () => {
     const newUser = defaultUserResponse()
     this.props.setUser(newUser)
   }
-
-
-
 
   handleChange = ({ activeTabIndex, event }: any) => {
     event.preventDefault();
@@ -61,6 +54,9 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
   };
 
   render() {
+    let user = this.props.user;
+    let emailAttribute = user && user.User.UserAttributes.find(({Name}) => Name === 'email')
+    let email = (emailAttribute && emailAttribute.Value) || 'placeholder@example.com';
     return (
       <StyledHeader>
         <Box paddingX={12}>
@@ -108,9 +104,18 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
                   <AvatarImage/>
                 </DropdownTrigger>
                 <DropdownContent>
-                  <DropdownItem link="home/user-settings">Account Settings</DropdownItem>
-                  <DropdownItem link="https://dappbot.drift.help/category/getting-started/">Support</DropdownItem>
-                  <DropdownItem onClick={this.logOut} link='/login'>Sign Out</DropdownItem>
+                  <Text align="center" color="blue" className="pt-2 pb-2 ml-3 mr-3">
+                    {email}
+                  </Text>
+                  <DropdownItem link="/home/user-settings">
+                    Settings
+                  </DropdownItem>
+                  <DropdownItem link="https://dappbot.drift.help/category/getting-started/">
+                    Support
+                  </DropdownItem>
+                  <DropdownItem onClick={this.logOut} link='/login'>
+                    Sign Out
+                  </DropdownItem>
                 </DropdownContent>
               </Dropdown>
             </Box>
