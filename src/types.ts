@@ -38,6 +38,8 @@ export interface DappDbItem extends DappCreateArgs {
 
 export type AttributeListType = AttributeType[];
 
+export type AttributeMapType  = { [Name:string] : AttributeValueType }
+
 export type AttributeNameType = string;
 
 export type AttributeValueType = string;
@@ -101,7 +103,8 @@ export interface AuthRefreshData {
 
 export interface User {
   Username: string,
-  UserAttributes: AttributeListType,
+  Email: string
+  UserAttributes: AttributeMapType,
   MFAOptions?: MFAOptionListType,
   PreferredMfaSetting?: string,
   UserMFASettingList?: UserMFASettingListType
@@ -110,11 +113,16 @@ export interface User {
 export interface UserResponse {
   User: User,
   Authorization: string,
-  Refresh: AuthRefreshData
+  RefreshToken: string,
+  ExpiresAt: string
 }
 
 export function defaultUser():User {
-  return {Username:"", UserAttributes: []}
+  return {
+    Username:"", 
+    Email: "",
+    UserAttributes: {}
+  }
 }
 
 export function defaultAuthRefreshData():AuthRefreshData{
@@ -125,7 +133,8 @@ export function defaultUserResponse():UserResponse {
   return {
     User: defaultUser(),
     Authorization:'',
-    Refresh: defaultAuthRefreshData()
+    RefreshToken: '',
+    ExpiresAt: new Date().toISOString()
   }
 }
 

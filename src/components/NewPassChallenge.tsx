@@ -35,7 +35,6 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
     markNewPassSent(true)
     requestNewPass(newPassDetails, 'login')
   }
-  const User =  user.User
   useEffect(()=>{
     if (!newPassSent || newPassResponse.isLoading){
       return;
@@ -44,12 +43,13 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
       setErr(newPassResponse.error.message)
       Alert.error(`There was an error setting a password: ${newPassResponse.error.message}`)
     }
-    let response: any = newPassResponse.data
+    let response:any = newPassResponse.data
     // console.log(response.data)
     if(response.data.Authorization){
-      const { Authorization, User, Refresh } = response.data;
+      const newPassData:UserResponse = response.data;
+      const { Authorization, User, RefreshToken, ExpiresAt } = newPassData;
       setUser({
-        Authorization, User, Refresh
+        Authorization, User, RefreshToken, ExpiresAt
       })
       setChallenge(challengeDataFactory(ChallengeType.Default))
     }

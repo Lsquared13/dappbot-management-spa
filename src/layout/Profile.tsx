@@ -35,7 +35,7 @@ export interface ProfileState {
 export default class Profile extends Component<ProfileProps, ProfileState> {
   //TODO: change API response server side to have clean access to user attributes
   state: ProfileState = {
-    email: this.props.user.User.UserAttributes[5]["Value"]
+    email: this.props.user.User.Email
   };
 
   broadcastInputs = () => {

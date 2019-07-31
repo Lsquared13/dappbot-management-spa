@@ -5,18 +5,17 @@ import { Button } from '../components/ui';
 import StringField from '../components/fields/StringField';
 import Alert from 'react-s-alert';
 import { useResource } from 'react-request-hook';
-import { UserResponse,
-         challengeDataFactory,
-         defaultUserResponse,
-         ChallengeType } from '../types';
+import { 
+  UserResponse, challengeDataFactory, defaultUserResponse,
+  ChallengeType, ChallengeData
+} from '../types';
 
 
 import Auth,{BeginPasswordResetArgs, SignInArgs} from '../services/auth';
 
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
-import { ErrorBox, NewPassChallenge, MfaChallenge, ForgotPassChallenge } from '../components';
-import { CognitoUser } from '@aws-amplify/auth';
+import { ErrorBox, NewPassChallenge, ForgotPassChallenge } from '../components';
 
 
 export interface LoginProps extends RouteComponentProps {
@@ -73,25 +72,22 @@ export const Login: FC<LoginProps> = (props) => {
         markSignInSent(false)
         
         let response: any = signInResponse.data
-        
         //Ensure that the response has a session, and if so create a tempUser
         if (response.data.Session) {
+          let challengeResp:ChallengeData = response.data;
           //This tempUser refers to when the password needs to be reset for the first login.
           let tempUser = defaultUserResponse()
           tempUser.User.Username = email
 
           setUser(tempUser)
-          setChallenge(response.data)
+          setChallenge(challengeResp)
 
         }
         if (response.data.Authorization && response.data.User) {
-          const { Authorization, User, Refresh } = response.data;
-          let userAttribute = User.UserAttributes.find((attribute:any)=>{ return attribute["Name"] == "email"})
-          const userEmail = userAttribute["Value"];
-
-          setUser({ User: User, Authorization, Refresh })
+          let authResp:UserResponse = response.data;
+          setUser(authResp)
           setChallenge(challengeDataFactory(ChallengeType.Default))
-          Alert.success("Authenticated with credentials for: " + userEmail)
+          Alert.success("Authenticated with credentials for: " + authResp.User.Email)
         }
       
       }
