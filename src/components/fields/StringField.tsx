@@ -37,7 +37,7 @@ const StringField: FunctionComponent<Props> = ({value, onChange, name, displayNa
                 <div className=" input-group-wrapper">
                     <label className=" input-group">
                         <div>
-                            <div className="input-group">
+                            <div className="input-group text-left">
                                 <div className="input-group-header">
                                     {displayName}
                                     {props.help ? '  ' : ''}

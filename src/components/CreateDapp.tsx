@@ -157,7 +157,7 @@ export class CreateDapp extends React.Component<
               Repository
             </Text>
             <Box display="flex" wrap={true} marginBottom={3} marginTop={2}>
-              <Box width={100}>
+              <Box width={100} marginTop={1}>
                 <Button
                   block
                   size="small"
@@ -169,7 +169,7 @@ export class CreateDapp extends React.Component<
                 </Button>
               </Box>
               <Box display="inlineBlock" margin={2} />
-              <Box width={100}>
+              <Box width={100} marginTop={1}>
                 <Button
                   block
                   size="small"
