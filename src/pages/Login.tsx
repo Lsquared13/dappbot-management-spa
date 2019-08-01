@@ -9,10 +9,8 @@ import {
   UserResponse, challengeDataFactory, defaultUserResponse,
   ChallengeType, ChallengeData
 } from '../types';
-
-
-import Auth,{BeginPasswordResetArgs, SignInArgs} from '../services/auth';
-
+import API from '../services/api';
+import Auth,{BeginPasswordResetArgs, SignInArgs} from '../services/api/auth';
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
 import { ErrorBox, NewPassChallenge, ForgotPassChallenge } from '../components';
@@ -20,20 +18,20 @@ import { ErrorBox, NewPassChallenge, ForgotPassChallenge } from '../components';
 
 export interface LoginProps extends RouteComponentProps {
   setUser: (user: UserResponse) => void
-  user: any
+  user: any,
+  API: API
 }
 
 export const Login: FC<LoginProps> = (props) => {
-  const { user, setUser, navigate } = props;
-
+  const { user, setUser, navigate, API } = props;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
   const [challenge, setChallenge] = useState(challengeDataFactory(ChallengeType.Default));
-  const [signInResponse, requestSignIn] = useResource(Auth.signIn())
-  const [beginPasswordResetResponse, beginPasswordReset] = useResource(Auth.beginPasswordResetRequest())
+  const [signInResponse, requestSignIn] = useResource(API.auth.signIn())
+  const [beginPasswordResetResponse, beginPasswordReset] = useResource(API.auth.beginPasswordReset())
   //Response Handler
   const [signInSent, markSignInSent] = useState(false)
   const [passwordResetSent, markPasswordResetSent] = useState(false);
@@ -189,7 +187,12 @@ export const Login: FC<LoginProps> = (props) => {
   switch (challenge.ChallengeName) {
 
     case (ChallengeType.NewPasswordRequired):
-      loginFields = <NewPassChallenge setUser={setUser} user={user} challenge = {challenge} {...challengeProps} />
+      loginFields = (
+        <NewPassChallenge setUser={setUser} 
+          user={user} 
+          API={API}
+          challenge={challenge} 
+          {...challengeProps} />)
       break;
 
     case (ChallengeType.Mfa):
@@ -204,7 +207,7 @@ export const Login: FC<LoginProps> = (props) => {
               <h2>Set New Password</h2>
             </div>
           </div>
-          <ForgotPassChallenge email={email} {...challengeProps} />
+          <ForgotPassChallenge email={email} API={API} {...challengeProps} />
         </React.Fragment>
 
       break;

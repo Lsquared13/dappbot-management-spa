@@ -3,22 +3,22 @@ import Alert from 'react-s-alert';
 import { RouteComponentProps, NavigateFn } from '@reach/router';
 import { useResource } from 'react-request-hook';
 import { DappCreateArgs, DappArgNameStrs, SampleDappArgs, UserResponse, defaultUserResponse } from '../types';
-
-import ABIClerk from '../services/abiClerk';
+import API from '../services/api';
 import { DappList, DappForm } from '../components';
 
 interface HomeProps extends RouteComponentProps {
   user : UserResponse
   setUser : (user:UserResponse)=>void
+  API : API
 }
 
-export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
+export const Home:FC<HomeProps> = ({user, setUser, API, ...props}) => {
 
   const [formArgs, setArgs] = useState(SampleDappArgs())
 
   // Note that adding an empty dependency array means this hook
   // will run on mount, then never again (unless called)
-  const [listResponse, sendListRequest] = useResource(ABIClerk.list(user));
+  const [listResponse, sendListRequest] = useResource(API.private.list());
   let dappList:DappCreateArgs[] = [];
   if (listResponse && listResponse.data && (['The incoming token has expired', 'Unauthorized'].includes((listResponse.data as any).message))){
     let newUser = defaultUserResponse();
@@ -63,9 +63,9 @@ export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
     setArgs(newArgs)
   }
 
-  const [createResponse, sendCreateRequest] = useResource(ABIClerk.create(user));
-  const [editResponse, sendEditRequest] = useResource(ABIClerk.edit(user));
-  const [deleteResponse, sendDeleteRequest] = useResource(ABIClerk.delete(user));
+  const [createResponse, sendCreateRequest] = useResource(API.private.create());
+  const [editResponse, sendEditRequest] = useResource(API.private.edit());
+  const [deleteResponse, sendDeleteRequest] = useResource(API.private.delete());
   
   const isCreateForm = formTarget === 'create';
   return (

@@ -2,19 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useResource } from "react-request-hook";
 import { Router, navigate, RouteComponentProps, NavigateFn } from "@reach/router";
 import Alert from 'react-s-alert';
-
-
 import  { DashboardContainer, DappDetailsContainer,DeleteDappContainer} from "../pages/dashboard";
-
-import ABIClerk from "../services/abiClerk";
-
+import API from '../services/api';
 import { DeleteDappState } from "../components";
 import { NotFound } from "../pages/notFound";
-import { defaultUser, defaultUserResponse, UserResponse } from "../types";
+import { defaultUserResponse, UserResponse } from "../types";
 
 export interface Props extends RouteComponentProps {
-  user : UserResponse
   setUser : (user:UserResponse)=>void
+  API : API
 }
 export interface DappDetail {
   DappName: string;
@@ -57,10 +53,10 @@ const SETTING_OPTIONS = [
   }
 ];
 
-export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
+export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props}) => {
  
-  const [deleteResponse, sendDeleteRequest] = useResource(ABIClerk.delete(user));
-  const [listResponse, sendListRequest] = useResource(ABIClerk.list(user),[]);
+  const [deleteResponse, sendDeleteRequest] = useResource(API.private.delete());
+  const [listResponse, sendListRequest] = useResource(API.private.list(),[]);
    
   //----- LIST RESPONSE HANDLER -----
   // AUTH CHECK: Check for valid session, log out if expired
@@ -149,7 +145,7 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
   }, []);
   
   //EDIT RESPONSE HANDLER
-  const [editResponse, sendEditRequest] = useResource(ABIClerk.edit(user));
+  const [editResponse, sendEditRequest] = useResource(API.private.edit());
   
   //PROP DRILL: props for DappDetailsContainer && DashboardContainer
   let dappList:DappDetail[] = [];

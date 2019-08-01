@@ -2,8 +2,8 @@ import React, { FC, useState, useEffect } from 'react';
 import { Button } from '../components/ui';
 import { UserResponse, ChallengeData, challengeDataFactory, ChallengeType } from '../types'
 import { StringField } from '../components/fields';
-import Auth, {passwordChecker, NewPasswordArgs} from '../services/auth';
-// import { CognitoUser } from '@aws-amplify/auth';
+import API from '../services/api';
+import {passwordChecker, NewPasswordArgs} from '../services/api/auth';
 import Alert from 'react-s-alert';
 
 import { ErrorBox } from '.';
@@ -16,14 +16,15 @@ interface NewPassChallengeProps {
   setChallenge : (challenge: ChallengeData)=>void
   setErr: (err:string)=>void
   setUser: (user:UserResponse)=>void
+  API: API
 }
 
-export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChallenge, user, setUser})=>{
+export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChallenge, user, setUser, API})=>{
   const [newPass, setNewPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
-  const [newPassResponse, requestNewPass] = useResource(Auth.newPassword())
+  const [newPassResponse, requestNewPass] = useResource(API.auth.newPassword())
   //Response Handler
   const [newPassSent, markNewPassSent] = useState(false)
 

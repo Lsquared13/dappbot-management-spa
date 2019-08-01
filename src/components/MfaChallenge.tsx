@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Button } from '../components/ui';
 import { StringField } from '../components/fields';
-import Auth from '../services/auth';
+import Auth from '../services/api/auth';
 import { CognitoUser } from '@aws-amplify/auth';
 import {UserResponse} from '../types'
 

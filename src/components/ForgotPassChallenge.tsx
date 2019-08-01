@@ -1,25 +1,26 @@
 import React, { FC, useState, useEffect } from 'react';
+import { useResource } from 'react-request-hook';
+import Alert from 'react-s-alert';
 import { Button } from '../components/ui';
 import { StringField } from '../components/fields';
-import Auth, { passwordChecker, ConfirmPasswordResetArgs } from '../services/auth';
-import { useResource } from 'react-request-hook';
-
-import Alert from 'react-s-alert';
+import API from '../services/api';
+import { passwordChecker, ConfirmPasswordResetArgs } from '../services/api/auth';
 import {ChallengeData,ChallengeType, challengeDataFactory} from '../types'
 
 interface MfaChallengeProps {
   email: string
   setChallenge: (challenge:ChallengeData)=>void
   setErr: (err:string)=>void
+  API: API
 }
 
 
-export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, setErr})=>{
+export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, setErr, API})=>{
   const [newPass, setNewPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
   const [code, setCode] = useState('');
   const [loading, setLoading] = useState(false);
-  const [newPasswordResponse, requestNewPassword] = useResource(Auth.confirmPasswordResetRequest())
+  const [newPasswordResponse, requestNewPassword] = useResource(API.auth.confirmPasswordReset())
   const [newPassSent, markNewPassSent] = useState(false)
 
   const handleNewPassword = () => {

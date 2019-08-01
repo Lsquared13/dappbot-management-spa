@@ -5,13 +5,13 @@ import { ReactComponent as AvatarImage } from "../../assets/images/avatar.svg";
 
 import { ReactComponent as Logo } from "../../assets/images/Dapp_Logo.svg";
 import { ReactComponent as MoreIcon } from "../../assets/images/more.svg";
-import {UserResponse, defaultUserResponse} from '../../types'
+import {UserResponse, defaultUserResponse, UserSetter} from '../../types'
 import { navigate } from "@reach/router";
 
 export interface HeaderProps {
   uri: any;
   user?: UserResponse
-  setUser: (newUser:UserResponse)=>void
+  setUser: UserSetter
 }
 
 export interface HeaderState {

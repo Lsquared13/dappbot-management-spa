@@ -2,8 +2,7 @@ import React, { FC, useState } from 'react';
 import { RouteComponentProps } from '@reach/router';
 import { useResource } from 'react-request-hook';
 import { DappCreateArgs, DappArgNameStrs, Tiers} from '../types';
-
-import ABIClerk from '../services/abiClerk';
+import API from '../services/api';
 
 //eould have to fetch the list and filter by the path router.
 
@@ -12,12 +11,10 @@ import '../components/froala/froala_blocks.min.css';
 import { DappForm } from '../components';
 
 interface DappDetailsProps extends RouteComponentProps {
-  user? : any
-  id? : string
-  setUser: (newUser:any)=>void
+  API : API
 }
 
-export const DappDetails:FC<DappDetailsProps> = ({user, id, setUser}) => {
+export const DappDetails:FC<DappDetailsProps> = ({API}) => {
 
   const [args, setArgs] = useState({
     DappName: '',
@@ -34,7 +31,7 @@ export const DappDetails:FC<DappDetailsProps> = ({user, id, setUser}) => {
     setArgs(newArgs)
   }
 
-  const [createResponse, sendCreateRequest] = useResource(ABIClerk.create(user))
+  const [createResponse, sendCreateRequest] = useResource(API.private.create())
   
   return (
     <div className="container">

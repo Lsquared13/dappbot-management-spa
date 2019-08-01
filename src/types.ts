@@ -117,6 +117,8 @@ export interface UserResponse {
   ExpiresAt: string
 }
 
+export type UserSetter = (newUser:UserResponse)=>void
+
 export function defaultUser():User {
   return {
     Username:"", 

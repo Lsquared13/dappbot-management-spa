@@ -6,8 +6,7 @@ import omit from 'lodash.omit';
 
 import { NotFound } from "../pages/notFound";
 import {NewDappContainer, BuildDetailsContainer, ConfigureDappContainer} from "../pages/newDappForm"
-
-import ABIClerk from '../services/abiClerk';
+import API from '../services/api';
 
 import { DappCreateArgs,DappData, Tiers } from '../types';
 import { CreateDappState, ConfigureDappState, DappDetail } from "../components";
@@ -16,6 +15,7 @@ import { CreateDappState, ConfigureDappState, DappDetail } from "../components";
 export interface NewDappFormBaseProps extends RouteComponentProps {
   user? : any
   setUser : (user:any)=>void
+  API : API
 }
 
 export interface DappArgs {
@@ -49,9 +49,9 @@ const LOADING_DAPP = {
 } as DappDetail
 
 
-export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser, ...props}) => {
+export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser, API, ...props}) => {
     const [DappName, setDappName] = useState("")
-    const [createResponse, sendCreateRequest] = useResource(ABIClerk.create(user));
+    const [createResponse, sendCreateRequest] = useResource(API.private.create());
     
     // ----- CREATE RESPONSE HANDLER ----- 
     const [createSent, markCreateSent] = useState(false);
