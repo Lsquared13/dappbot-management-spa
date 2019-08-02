@@ -8,13 +8,13 @@ import { NotFound } from "../pages/notFound";
 import {NewDappContainer, BuildDetailsContainer, ConfigureDappContainer} from "../pages/newDappForm"
 import API from '../services/api';
 
-import { DappCreateArgs,DappData, Tiers, defaultUserResponse } from '../types';
+import { DappCreateArgs,DappData, Tiers, defaultUserResponse, UserResponseData } from '../types';
 import { CreateDappState, ConfigureDappState, DappDetail, CreateDapp } from "../components";
 
 
 export interface NewDappFormBaseProps extends RouteComponentProps {
-  user? : any
-  setUser : (user:any)=>void
+  user? : UserResponseData
+  setUser : (user:UserResponseData)=>void
   API : API
 }
 
@@ -69,10 +69,10 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
 
     useEffect(() => {
       if (fetchListSent){
+        // console.log(listResponse)
         
         if (listResponse.isLoading){
           Alert.info("Fetching Dapp List", { timeout: 750});
-          
         } 
         else if (listResponse.error) {
           markFetchListSent(false)
@@ -90,14 +90,10 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
         } 
         else if(listResponse.data){
           markFetchListSent(false);
-
-          //TODO: we need to change this const to grab its value from user attributes. this is just a placeholder
-          //so john can work on the user type refactor
-          const currentNumberOfDapps = 3;
-          console.log(listResponse.data)
           const responseData:any = listResponse.data
-          if(responseData.data.count){
-            markAvailableNumOfDapps(responseData.data.count - currentNumberOfDapps)
+          if(user){
+            const totalAvailableDapps = parseInt(user.User.UserAttributes['custom:standard_limit'])
+            markAvailableNumOfDapps(totalAvailableDapps - responseData.data.count)
           }
           Alert.success("Access Granted", { timeout: 750 });
           
@@ -106,6 +102,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
     }, [listResponse]);
 
     useEffect(() => {
+      console.log("handleFetchList")
       handleFetchList()
     }, []);
 
@@ -131,7 +128,8 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
       }
     }, [createSent, createResponse])
     
-    const handleStep1 = async(e:any, inputs: CreateDappState) => {
+    const handleStep1 = (e:any, inputs: CreateDappState) => {
+      console.log(availableNumOfDapps)
       if (availableNumOfDapps<=0){
         Alert.error(`Cannot create anymore dapps please buy additional dapp slots`, { timeout: 750})
         return
