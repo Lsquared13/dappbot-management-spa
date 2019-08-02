@@ -10,10 +10,10 @@ import Billing, {
   SubscriptionDetail,
   SubscriptionChanges
 } from "../layout/Billing";
-import { UserResponse } from "../types";
+import { UserResponseData } from "../types";
 
 export interface SettingsContainerProps extends RouteComponentProps {
-  user : UserResponse;
+  user : UserResponseData;
   /* Profile tab props */
   onProfileInputChange?: (inputs: ProfileState) => void;
   onProfileDelete: (

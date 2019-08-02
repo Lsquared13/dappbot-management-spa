@@ -70,11 +70,6 @@ export interface ChallengeData {
   Session: string
 }
 
-export interface ChallengeResponse {
-  Data: ChallengeData,
-  Error: string,
-}
-
 export enum ChallengeType{
   Mfa = "MFA",
   ForgotPassword = "FORGOT_PASSWORD",
@@ -82,19 +77,7 @@ export enum ChallengeType{
   Default = "DEFAULT"
 }
 
-export function challengeDataFactory(typeOfChallenge:ChallengeType) {
-  let data: ChallengeData = {
-    ChallengeName:typeOfChallenge,
-    ChallengeParameters:{},
-    Session:''
-  }
-  return data
-}
 
-
-export function defaultChallengeResponse():ChallengeResponse{
-  return {Data:challengeDataFactory(ChallengeType.Default),Error:''}
-}
 
 export interface AuthRefreshData {
   Token: string,
@@ -110,14 +93,14 @@ export interface User {
   UserMFASettingList?: UserMFASettingListType
 }
 
-export interface UserResponse {
+export interface UserResponseData {
   User: User,
   Authorization: string,
   RefreshToken: string,
   ExpiresAt: string
 }
 
-export type UserSetter = (newUser:UserResponse)=>void
+export type UserSetter = (newUser:UserResponseData)=>void
 
 export function defaultUser():User {
   return {
@@ -131,7 +114,7 @@ export function defaultAuthRefreshData():AuthRefreshData{
   return {Token:'', ExpiresAt:''}
 }
 
-export function defaultUserResponse():UserResponse {
+export function defaultUserResponse():UserResponseData {
   return {
     User: defaultUser(),
     Authorization:'',

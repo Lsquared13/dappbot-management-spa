@@ -6,18 +6,19 @@ import StringField from '../components/fields/StringField';
 import Alert from 'react-s-alert';
 import { useResource } from 'react-request-hook';
 import { 
-  UserResponse, challengeDataFactory, defaultUserResponse,
-  ChallengeType, ChallengeData
+  UserResponseData, defaultUserResponse,
+  ChallengeType
 } from '../types';
 import API from '../services/api';
-import Auth,{BeginPasswordResetArgs, SignInArgs} from '../services/api/auth';
+import { challengeDataFactory } from '../services/api/types';
+import {BeginPasswordResetArgs, SignInArgs} from '../services/api/auth';
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
 import { ErrorBox, NewPassChallenge, ForgotPassChallenge } from '../components';
 
 
 export interface LoginProps extends RouteComponentProps {
-  setUser: (user: UserResponse) => void
+  setUser: (user: UserResponseData) => void
   user: any,
   API: API
 }
@@ -69,23 +70,21 @@ export const Login: FC<LoginProps> = (props) => {
       else if (signInResponse.data) {
         markSignInSent(false)
         
-        let response: any = signInResponse.data
+        let response = signInResponse.data.data;
         //Ensure that the response has a session, and if so create a tempUser
-        if (response.data.Session) {
-          let challengeResp:ChallengeData = response.data;
+        if (response.Session) {
           //This tempUser refers to when the password needs to be reset for the first login.
           let tempUser = defaultUserResponse()
           tempUser.User.Username = email
 
           setUser(tempUser)
-          setChallenge(challengeResp)
+          setChallenge(response)
 
         }
-        if (response.data.Authorization && response.data.User) {
-          let authResp:UserResponse = response.data;
-          setUser(authResp)
+        if (response.Authorization) {
+          setUser(response)
           setChallenge(challengeDataFactory(ChallengeType.Default))
-          Alert.success("Authenticated with credentials for: " + authResp.User.Email)
+          Alert.success("Authenticated with credentials for: " + response.User.Email)
         }
       
       }

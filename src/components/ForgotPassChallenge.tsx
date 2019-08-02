@@ -3,9 +3,9 @@ import { useResource } from 'react-request-hook';
 import Alert from 'react-s-alert';
 import { Button } from '../components/ui';
 import { StringField } from '../components/fields';
-import API from '../services/api';
+import API, { challengeDataFactory } from '../services/api';
 import { passwordChecker, ConfirmPasswordResetArgs } from '../services/api/auth';
-import {ChallengeData,ChallengeType, challengeDataFactory} from '../types'
+import {ChallengeData,ChallengeType} from '../types'
 
 interface MfaChallengeProps {
   email: string

@@ -6,10 +6,10 @@ import  { DashboardContainer, DappDetailsContainer,DeleteDappContainer} from "..
 import API from '../services/api';
 import { DeleteDappState } from "../components";
 import { NotFound } from "../pages/notFound";
-import { defaultUserResponse, UserResponse } from "../types";
+import { defaultUserResponse, UserResponseData } from "../types";
 
 export interface Props extends RouteComponentProps {
-  setUser : (user:UserResponse)=>void
+  setUser : (user:UserResponseData)=>void
   API : API
 }
 export interface DappDetail {

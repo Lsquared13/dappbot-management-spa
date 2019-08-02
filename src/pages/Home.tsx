@@ -2,13 +2,13 @@ import React, { FC, useState, useEffect } from 'react';
 import Alert from 'react-s-alert';
 import { RouteComponentProps, NavigateFn } from '@reach/router';
 import { useResource } from 'react-request-hook';
-import { DappCreateArgs, DappArgNameStrs, SampleDappArgs, UserResponse, defaultUserResponse } from '../types';
+import { DappCreateArgs, DappArgNameStrs, SampleDappArgs, UserResponseData, defaultUserResponse } from '../types';
 import API from '../services/api';
 import { DappList, DappForm } from '../components';
 
 interface HomeProps extends RouteComponentProps {
-  user : UserResponse
-  setUser : (user:UserResponse)=>void
+  user : UserResponseData
+  setUser : (user:UserResponseData)=>void
   API : API
 }
 
@@ -19,6 +19,8 @@ export const Home:FC<HomeProps> = ({user, setUser, API, ...props}) => {
   // Note that adding an empty dependency array means this hook
   // will run on mount, then never again (unless called)
   const [listResponse, sendListRequest] = useResource(API.private.list());
+  useEffect(()=>sendListRequest(), [sendListRequest]);
+
   let dappList:DappCreateArgs[] = [];
   if (listResponse && listResponse.data && (['The incoming token has expired', 'Unauthorized'].includes((listResponse.data as any).message))){
     let newUser = defaultUserResponse();
@@ -27,12 +29,11 @@ export const Home:FC<HomeProps> = ({user, setUser, API, ...props}) => {
   }
   try {
     if (listResponse.data){
-      dappList.push(...(listResponse as any).data.data.items)
+      dappList.push(...listResponse.data.data.items)
     }
   } catch (e) {
     console.log('Error when trying to load from listResponse: ',e);
   }
-  useEffect(()=>sendListRequest(), [sendListRequest]);
 
   const [formTarget, unsafeSetFormTarget] = useState('create');
   const [formTouched, setFormTouched] = useState(false);

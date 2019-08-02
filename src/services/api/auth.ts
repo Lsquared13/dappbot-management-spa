@@ -1,6 +1,11 @@
-import { UserResponse, UserSetter } from '../../types';
+import { XOR } from 'ts-xor';
+import { UserResponseData, UserSetter } from '../../types';
 import { API } from '../api';
-import { Operations } from './types'
+import { 
+  Operations, MessageResponse, UserResponse, 
+  ChallengeResponse, SignInResponse
+} from './types'
+import { Resource } from 'react-request-hook';
 
 interface RequestArgs {
   url: string,
@@ -40,29 +45,43 @@ export interface RefreshArgs {
   refreshToken: string
 }
 
-export class AuthAPI extends API {
-  constructor(user:UserResponse, setUser:UserSetter){
-    super({user, setUser});
+export class AuthAPI {
+  constructor(
+    user:UserResponseData, 
+    setUser:UserSetter, 
+    resourceFactory:<Args, Returns>(operation: Operations, rootResource?: "private" | "public" | "auth") => (args: Args, subResource?: string | undefined) => Resource<Returns>, 
+    requestFactory:<Args>(operation: Operations, rootResource?: "private" | "public" | "auth") => (args: Args, subResource?: string | undefined) => AuthorizedRequest
+  ){
+    this.user = user;
+    this.setUser = setUser;
+    this.requestFactory = requestFactory;
+    this.resourceFactory = resourceFactory;
   }
+  user:UserResponseData
+  setUser:(newUser:UserResponseData) => void
+  resourceFactory:<Args, Returns>(operation: Operations, rootResource?: "private" | "public" | "auth") => (args: Args, subResource?: string | undefined) => Resource<Returns>
+  requestFactory:<Args>(operation: Operations, rootResource?: "private" | "public" | "auth") => (args: Args, subResource?: string | undefined) => AuthorizedRequest
 
-  signIn(): (args: SignInArgs, target?: string) => AuthorizedRequest {
-    return this.requestFactory(Operations.login, "auth")
+  signIn(){
+    return this.resourceFactory<SignInArgs, SignInResponse>(Operations.login, "auth")
   }
   
-  newPassword(): (args: NewPasswordArgs, target?: string) => AuthorizedRequest {
-    return this.requestFactory(Operations.login, "auth")
+  newPassword(){
+    return this.resourceFactory<NewPasswordArgs, UserResponseData>(Operations.login, "auth")
   }
   
-  refresh(): (args:RefreshArgs, target?:string) => AuthorizedRequest {
-    return this.requestFactory(Operations.login, "auth")
+  // This function is a *requestFactory* because we just want the config object,
+  // doing our request directly.
+  refresh(){
+    return this.requestFactory<RefreshArgs>(Operations.login, "auth")
   }
   
-  beginPasswordReset(): (args: BeginPasswordResetArgs, target?: string) => AuthorizedRequest {
-    return this.requestFactory(Operations.resetPassword,"auth")
+  beginPasswordReset() {
+    return this.resourceFactory<BeginPasswordResetArgs, MessageResponse>(Operations.resetPassword,"auth")
   }
   
-  confirmPasswordReset(): (args: ConfirmPasswordResetArgs, target?: string) => AuthorizedRequest {
-    return this.requestFactory(Operations.resetPassword, 'auth')
+  confirmPasswordReset() {
+    return this.resourceFactory<ConfirmPasswordResetArgs, MessageResponse>(Operations.resetPassword, 'auth')
   }
 }
 

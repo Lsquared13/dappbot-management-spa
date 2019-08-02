@@ -1,35 +1,48 @@
 import API from '../api';
 import { 
-  DappCreateArgs, DappData, UserResponse, UserSetter 
+  DappCreateArgs, DappData, UserResponseData, UserSetter 
 } from '../../types';
-import { Operations, AuthorizedRequest } from './types';
+import { Operations, ListResponse, MessageResponse, ReadResponse, AuthorizedRequest } from './types';
+import { Resource } from 'react-request-hook';
 
-export class PrivateAPI extends API {
-  constructor(user:UserResponse, setUser:UserSetter){
-    super({user, setUser});
+export class PrivateAPI {
+  constructor(
+    user:UserResponseData, 
+    setUser:UserSetter,
+    resourceFactory:<Args, Returns>(operation: Operations, rootResource?: "private" | "public" | "auth") => (args: Args, subResource?: string | undefined) => Resource<Returns>, 
+    requestFactory:<Args>(operation: Operations, rootResource?: "private" | "public" | "auth") => (args: Args, subResource?: string | undefined) => AuthorizedRequest
+  ){
+    this.user = user;
+    this.setUser = setUser;
+    this.resourceFactory = resourceFactory;
+    this.requestFactory = requestFactory;
   }
+  user:UserResponseData
+  setUser:(newUser:UserResponseData) => void
+  resourceFactory:<Args, Returns>(operation: Operations, rootResource?: "private" | "public" | "auth") => (args: Args, subResource?: string | undefined) => Resource<Returns>
+  requestFactory:<Args>(operation: Operations, rootResource?: "private" | "public" | "auth") => (args: Args, subResource?: string | undefined) => AuthorizedRequest
 
-  create(): (args: DappData, newDappName: string) => AuthorizedRequest {
-    return this.requestFactory( Operations.create,'private')
+  create() {
+    return this.resourceFactory<DappData, MessageResponse>(Operations.create, 'private');
   }
   
-  delete(): (dappName: string) => AuthorizedRequest {
-    const deleteFunc = this.requestFactory(Operations.delete,'private')
-    return (dappName: string) => deleteFunc({}, dappName);
+  delete() {
+    return (dappName:string) => 
+      this.resourceFactory<null, MessageResponse>(Operations.delete, 'private')(null, dappName);
   }
   
-  edit(): (args: DappCreateArgs) => AuthorizedRequest {
-    return this.requestFactory(Operations.edit,'private');
+  edit() {
+    return this.resourceFactory<DappCreateArgs, MessageResponse>(Operations.edit, 'private')
   }
   
-  list(): () => AuthorizedRequest {
-    const listFunc = this.requestFactory(Operations.list,'private');
-    return () => listFunc({});
+  list() {
+    return () => this.resourceFactory<null, ListResponse>(Operations.list, 'private')(null)
   }
   
-  read(): (dappName: string) => AuthorizedRequest {
-    const readFunc = this.requestFactory(Operations.read, 'private');
-    return (dappName: string) => readFunc({ DappName: dappName })
+  read() {
+    return (dappName:string) => {
+      return this.resourceFactory<null, ReadResponse>(Operations.read, 'private')(null, dappName)
+    }
   }
 }
 

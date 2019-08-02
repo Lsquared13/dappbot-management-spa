@@ -32,7 +32,7 @@ export const DappDetails:FC<DappDetailsProps> = ({API}) => {
   }
 
   const [createResponse, sendCreateRequest] = useResource(API.private.create())
-  
+
   return (
     <div className="container">
 

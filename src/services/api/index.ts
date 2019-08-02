@@ -1,15 +1,19 @@
-import { UserResponse, UserSetter } from "../../types";
+import { UserResponseData, UserSetter } from "../../types";
+import { request as resourceRequest } from 'react-request-hook';
 import moment from 'moment';
 import request from 'request-promise-native';
 import { NavigateFn } from '@reach/router';
 import AuthAPI from './auth';
 import PrivateAPI from './private';
 import {
-  Operations, RootStrings, Headers, RootResources
+  Operations, RootStrings, Headers, RootResources,
+  AuthorizedRequest
 } from './types';
 
+export * from './types';
+
 export interface APIConfig {
-  user: UserResponse
+  user: UserResponseData
   setUser: UserSetter
 }
 
@@ -18,21 +22,68 @@ export class API {
     const { user, setUser } = args;
     this.user = user;
     this.setUser = setUser;
-    this.auth = new AuthAPI(user, setUser);
-    this.private = new PrivateAPI(user, setUser);
+    this.auth = new AuthAPI(user, setUser, this.resourceFactory, this.requestFactory);
+    this.private = new PrivateAPI(user, setUser, this.resourceFactory, this.requestFactory);
   }
 
-  user:UserResponse
-  setUser:(newUser:UserResponse) => void
+  user:UserResponseData
+  setUser:(newUser:UserResponseData) => void
   auth:AuthAPI
   private:PrivateAPI
+
+  // Instruments the `requestFactory` to specifically return
+  // react-request-hook resources, specifically declaring
+  // the return value of the resource.  The generic args
+  // alow you to specify both the inputs and outputs of the
+  // request.
+  resourceFactory<Args, Returns>(operation: Operations, rootResource:RootStrings="private") {
+    return (args:Args, subResource?:string) => {
+      return resourceRequest<Returns>(this.requestFactory(operation, rootResource)(args, subResource))
+    }
+  }
 
   // The <Data> declares a generic type, which represents the request
   // data.  The returned function takes an argument of the same type
   // as <Data>, so calls to `authorizedRequestFactory` simply need to
   // provide a sample `data` in order to get a properly typed request fxn.
-  requestFactory<Data>(operation: Operations, rootResource:RootStrings="private") {
-    return (args: Data, subResource?:string) => {
+  // The objects returned by `requestFactory` can be given to any
+  // fetch library. Defining the helpers within this same function so
+  // that the fxns are still available when these methods get copied
+  // onto child API's `this` values.
+  requestFactory<Args>(operation: Operations, rootResource:RootStrings="private") {
+    
+    function dappbotUrl(rootResource:RootStrings=RootResources.private) {
+      let apiCall = `${process.env.REACT_APP_DAPPBOT_API_ENDPOINT}/v1/${rootResource}`
+      return apiCall
+    }
+
+    function operationToHttpMethod(operation: Operations) {
+      let httpMethodType: string;
+      switch(operation) {
+        case Operations.create:
+          httpMethodType = 'POST'
+          break
+        case Operations.login:
+          httpMethodType = 'POST'
+          break
+        case Operations.resetPassword:
+          httpMethodType = 'POST'
+          break
+        case Operations.delete:
+          httpMethodType = 'DELETE'
+          break
+        case Operations.edit:
+          httpMethodType = 'PUT'
+          break
+        case Operations.list:
+        case Operations.read:
+        default:
+          httpMethodType = 'GET'
+      }
+      return httpMethodType
+    }
+
+    return (args: Args, subResource?:string) => {
       let headers:Headers = {
         'Content-Type': 'application/json'
       }
@@ -40,44 +91,13 @@ export class API {
         headers.Authorization = this.user.Authorization
       }
       let request = {
-        url: this.dappbotUrl(rootResource).concat(subResource ? `/${subResource}` : ''),
+        url: dappbotUrl(rootResource).concat(subResource ? `/${subResource}` : ''),
         data: args,
-        method: this.operationToHttpMethod(operation),
+        method: operationToHttpMethod(operation),
         headers: headers,
-      };
+      } as AuthorizedRequest;
       return request;
     }
-  }
-
-  dappbotUrl(rootResource:RootStrings=RootResources.private) {
-    let apiCall = `${process.env.REACT_APP_DAPPBOT_API_ENDPOINT}/v1/${rootResource}`
-    return apiCall
-  }
-
-  operationToHttpMethod(operation: Operations) {
-    let httpMethodType: string;
-    switch(operation) {
-      case Operations.create:
-        httpMethodType = 'POST'
-        break
-      case Operations.login:
-        httpMethodType = 'POST'
-        break
-      case Operations.resetPassword:
-        httpMethodType = 'POST'
-        break
-      case Operations.delete:
-        httpMethodType = 'DELETE'
-        break
-      case Operations.edit:
-        httpMethodType = 'PUT'
-        break
-      case Operations.list:
-      case Operations.read:
-      default:
-        httpMethodType = 'GET'
-    }
-    return httpMethodType
   }
 
   /**
@@ -91,7 +111,7 @@ export class API {
    * @param setUser 
    */
   async refreshAuthorization(){
-    const user:UserResponse = this.user;
+    const user:UserResponseData = this.user;
     const setUser:UserSetter = this.setUser;
     if (user.RefreshToken === '' || user.ExpiresAt === ''){
       throw new Error('No current user object, need to fully log in again.')
@@ -103,7 +123,7 @@ export class API {
     const refreshResult = await request(refreshRequestBuilder({
       refreshToken : user.RefreshToken
     }));
-    const RefreshedUser:UserResponse = refreshResult.data;
+    const RefreshedUser:UserResponseData = refreshResult.data;
     // Note that we spread the original object *then* add
     // the updated keys. Later entries overwrite earlier ones.
     setUser({
@@ -113,5 +133,6 @@ export class API {
     return true;
   }
 }
+
 
 export default API;

@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { Router } from '@reach/router';
 import { StripeProvider, Elements } from 'react-stripe-elements';
 import './App.css';
@@ -14,10 +14,10 @@ import { SettingsContainerBase } from "./apps/SettingsContainerBase";
 import {  Welcome, Login, Privacy, DappDetails, PaymentPage } from './pages';
 import { DashboardBase } from './apps/DashboardBase';
 import { NewDappFormBase } from './apps';
-import { UserResponse } from './types';
+import { UserResponseData } from './types';
 
 const App: FC = () => {
-  let [user, setUser] = useLocalStorage('user', {} as UserResponse);
+  let [user, setUser] = useLocalStorage('user', {} as UserResponseData);
   const API = new APIFactory({user, setUser});
   let userData = { user, setUser, API };
   
