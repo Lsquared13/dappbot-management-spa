@@ -1,6 +1,6 @@
 import React, {useState, useEffect } from 'react';
 import { useResource } from 'react-request-hook';
-import { Router, navigate, RouteComponentProps } from "@reach/router";
+import { Router, navigate, RouteComponentProps, NavigateFn } from "@reach/router";
 import Alert from 'react-s-alert';
 import omit from 'lodash.omit';
 
@@ -9,8 +9,8 @@ import {NewDappContainer, BuildDetailsContainer, ConfigureDappContainer} from ".
 
 import ABIClerk from '../services/abiClerk';
 
-import { DappCreateArgs,DappData, Tiers } from '../types';
-import { CreateDappState, ConfigureDappState, DappDetail } from "../components";
+import { DappCreateArgs,DappData, Tiers, defaultUserResponse } from '../types';
+import { CreateDappState, ConfigureDappState, DappDetail, CreateDapp } from "../components";
 
 
 export interface NewDappFormBaseProps extends RouteComponentProps {
@@ -52,11 +52,65 @@ const LOADING_DAPP = {
 export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser, ...props}) => {
     const [DappName, setDappName] = useState("")
     const [createResponse, sendCreateRequest] = useResource(ABIClerk.create(user));
+    const [listResponse, sendListRequest] = useResource(ABIClerk.list(user),[]);
     
+    if (listResponse && listResponse.data && (['The incoming token has expired', 'Unauthorized'].includes((listResponse.data as any).message))){
+      let newUser = defaultUserResponse();
+      (props.navigate as NavigateFn)('/login');
+      setUser(newUser);
+    }
+    
+    const [availableNumOfDapps, markAvailableNumOfDapps ] = useState(-1)
+    const [fetchListSent, markFetchListSent] = useState(false);
+    const handleFetchList= async() => {
+      markFetchListSent(true);
+      sendListRequest();
+    }
+
+    useEffect(() => {
+      if (fetchListSent){
+        
+        if (listResponse.isLoading){
+          Alert.info("Fetching Dapp List", { timeout: 750});
+          
+        } 
+        else if (listResponse.error) {
+          markFetchListSent(false)
+  
+          switch(listResponse.error.code){
+            case '401': {
+              Alert.error("Unauthorized resource, please sign in");
+              break;
+            }
+            default:{
+              Alert.error("Error Details:"+listResponse.error.message);
+            }
+          }
+  
+        } 
+        else if(listResponse.data){
+          markFetchListSent(false);
+          const currentNumberOfDapps = 3;
+          console.log(listResponse.data)
+          const responseData:any = listResponse.data
+          if(responseData.data.count){
+            markAvailableNumOfDapps(responseData.data.count - currentNumberOfDapps)
+          }
+          Alert.success("Access Granted", { timeout: 750 });
+          
+        }
+      }
+    }, [listResponse]);
+
+    useEffect(() => {
+      handleFetchList()
+    }, []);
+
+
     // ----- CREATE RESPONSE HANDLER ----- 
     const [createSent, markCreateSent] = useState(false);
     const handleCreate = (dappArgs: DappCreateArgs) => {
-
+      
       const dappData:DappData = omit(dappArgs, ['DappName'])
       markCreateSent(true);
       Alert.info(`Starting build...`)
@@ -73,7 +127,16 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
         }
       }
     }, [createSent, createResponse])
-  
+    
+    const handleStep1 = async(e:any, inputs: CreateDappState) => {
+      if (availableNumOfDapps<=0){
+        Alert.error(`Cannot create anymore dapps please buy additional dapp slots`, { timeout: 750})
+        return
+      }
+      const { dappName } = inputs
+      setDappName(dappName)
+      navigate(`/home/new/step-2`);
+    }
     return (
       <Router>
         <NewDappContainer
@@ -81,11 +144,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
           onCancel={(e, inputs: CreateDappState) => {
             navigate(`/home/`);
           }}
-          onConfigDapp={(e, inputs: CreateDappState) => {
-            const { dappName } = inputs
-            setDappName(dappName)
-            navigate(`/home/new/step-2`);
-          }}
+          onConfigDapp={handleStep1}
           onGithubLink={(e, inputs: CreateDappState) => {
             alert("Enteprise Features Disabled");
           }}
