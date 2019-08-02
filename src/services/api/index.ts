@@ -123,7 +123,9 @@ export class API {
     const refreshRequest = refreshRequestFactory({
       refreshToken : user.RefreshToken
     });
+    console.log('refreshRequest: ',refreshRequest);
     const refreshResult = await request(refreshRequest);
+    console.log('result: ',refreshResult);
     const RefreshedUser:UserResponseData = refreshResult.data;
 
     // Note that we spread the original object *then* add
