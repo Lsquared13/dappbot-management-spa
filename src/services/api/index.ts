@@ -117,12 +117,13 @@ export class API {
       throw new Error("Please log in.")
     }
     if (moment(user.ExpiresAt).isAfter(moment.now())) {
-      return false;
+      return this;
     }
     const refreshRequestFactory = this.auth.refresh();
     const refreshRequest = refreshRequestFactory({
       refreshToken : user.RefreshToken
     });
+<<<<<<< HEAD
     console.log('refreshRequest: ',refreshRequest);
     const refreshResult = await request(refreshRequest);
     console.log('result: ',refreshResult);
@@ -136,6 +137,27 @@ export class API {
       ExpiresAt : RefreshedUser.ExpiresAt
     })
     return true;
+=======
+    try {
+      const refreshResult = await request(refreshRequest);
+      const RefreshedUser:UserResponseData = refreshResult.data;
+      // Note that we spread the original object *then* add
+      // the updated keys. Later entries overwrite earlier ones.
+      const NewUser = {
+        ...user,
+        Authorization : RefreshedUser.Authorization,
+        ExpiresAt : RefreshedUser.ExpiresAt
+      }
+      setUser(NewUser)
+      return new API({
+        user : NewUser,
+        setUser
+      })
+    } catch (err) {
+      setUser(defaultUserResponse());
+      throw new Error("Unable to refresh your session, please log in again.");
+    }
+>>>>>>> master
   }
 }
 
