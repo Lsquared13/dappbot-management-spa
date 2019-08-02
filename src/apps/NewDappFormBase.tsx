@@ -90,6 +90,9 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
         } 
         else if(listResponse.data){
           markFetchListSent(false);
+
+          //TODO: we need to change this const to grab its value from user attributes. this is just a placeholder
+          //so john can work on the user type refactor
           const currentNumberOfDapps = 3;
           console.log(listResponse.data)
           const responseData:any = listResponse.data
