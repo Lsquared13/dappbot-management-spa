@@ -77,8 +77,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
       if (!fetchListSent){
         return
       }
-        // console.log(listResponse)
-        
+
       if (listResponse.isLoading){
         Alert.info("Fetching Dapp List", { timeout: 750});
       } 
