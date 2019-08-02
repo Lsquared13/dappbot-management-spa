@@ -7,6 +7,7 @@ import omit from 'lodash.omit';
 import { NotFound } from "../pages/notFound";
 import {NewDappContainer, BuildDetailsContainer, ConfigureDappContainer} from "../pages/newDappForm"
 import API from '../services/api';
+import {ListResponse} from '../services/api/types'
 
 import { DappCreateArgs,DappData, Tiers, defaultUserResponse, UserResponseData } from '../types';
 import { CreateDappState, ConfigureDappState, DappDetail, CreateDapp } from "../components";
@@ -90,10 +91,10 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
         } 
         else if(listResponse.data){
           markFetchListSent(false);
-          const responseData:any = listResponse.data
+          const {count} = listResponse.data.data
           if(user){
             const totalAvailableDapps = parseInt(user.User.UserAttributes['custom:standard_limit'])
-            markAvailableNumOfDapps(totalAvailableDapps - responseData.data.count)
+            markAvailableNumOfDapps(totalAvailableDapps - count)
           }
           Alert.success("Access Granted", { timeout: 750 });
           
