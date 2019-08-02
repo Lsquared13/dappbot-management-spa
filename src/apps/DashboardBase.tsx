@@ -68,8 +68,9 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props}) => {
   
   //----- DELETE RESPONSE HANDLER ----- 
   const [deleteSent, markDeleteSent] = useState(false);
-  const handleDelete = (dappName: string) => {
+  const handleDelete = async (dappName: string) => {
     markDeleteSent(true);
+    await API.refreshAuthorization();
     sendDeleteRequest(dappName);
   }
   useEffect(() => {
@@ -107,8 +108,9 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props}) => {
 
   // ----- FETCH LIST HANDLER ----- 
   const [fetchListSent, markFetchListSent] = useState(false);
-  const handleFetchList= async() => {
+  const handleFetchList= async () => {
     markFetchListSent(true);
+    await API.refreshAuthorization();
     sendListRequest();
   }
   useEffect(() => {

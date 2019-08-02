@@ -28,7 +28,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
   //Response Handler
   const [newPassSent, markNewPassSent] = useState(false)
 
-  const handleNewPassword = () => {
+  const handleNewPassword = async () => {
     const newPassDetails:NewPasswordArgs = {
       'username': user.User.Username,
       'newPassword': newPass,

@@ -19,7 +19,6 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
   const [newPass, setNewPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
   const [code, setCode] = useState('');
-  const [loading, setLoading] = useState(false);
   const [newPasswordResponse, requestNewPassword] = useResource(API.auth.confirmPasswordReset())
   const [newPassSent, markNewPassSent] = useState(false)
 
@@ -33,6 +32,7 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
     markNewPassSent(true)
     requestNewPassword(newPassDetails,'password-reset')
   }
+
   useEffect(()=>{
     if(!newPassSent || newPasswordResponse.isLoading){
       return;
@@ -77,7 +77,7 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
         help="Must match the field above."
         onChange={setConfirmPass}
         name='confirmPassword' />
-      <Button disabled={loading} block onClick={handleNewPassword}>Submit</Button>
+      <Button disabled={newPassSent} block onClick={handleNewPassword}>Submit</Button>
     </>
   )
 }
