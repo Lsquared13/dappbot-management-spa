@@ -18,9 +18,6 @@ import { UserResponseData, defaultUserResponse } from './types';
 
 const App: FC = () => {
   let [user, setUser] = useLocalStorage('user', {} as UserResponseData);
-  useEffect(function(){
-    setUser(defaultUserResponse());
-  }, [])
   const API = new APIFactory({user, setUser});
   let userData = { user, setUser, API };
   
