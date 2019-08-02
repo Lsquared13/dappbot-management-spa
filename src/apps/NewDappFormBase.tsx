@@ -14,7 +14,7 @@ import { CreateDappState, ConfigureDappState, DappDetail, CreateDapp } from "../
 
 
 export interface NewDappFormBaseProps extends RouteComponentProps {
-  user? : UserResponseData
+  user : UserResponseData
   setUser : (user:UserResponseData)=>void
   API : API
 }
@@ -55,57 +55,43 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
     const [createResponse, sendCreateRequest] = useResource(API.private.create());
     const [listResponse, sendListRequest] = useResource(API.private.list(),[]);
     
-    if (listResponse && listResponse.data && (['The incoming token has expired', 'Unauthorized'].includes((listResponse.data as any).message))){
-      let newUser = defaultUserResponse();
-      (props.navigate as NavigateFn)('/login');
-      setUser(newUser);
-    }
-    
     const [availableNumOfDapps, markAvailableNumOfDapps ] = useState(-1)
     const [fetchListSent, markFetchListSent] = useState(false);
+    
     const handleFetchList= async() => {
+      await API.refreshAuthorization();
       markFetchListSent(true);
       sendListRequest();
     }
-
     useEffect(() => {
-      if (fetchListSent){
-        // console.log(listResponse)
-        
-        if (listResponse.isLoading){
-          Alert.info("Fetching Dapp List", { timeout: 750});
-        } 
-        else if (listResponse.error) {
-          markFetchListSent(false)
-  
-          switch(listResponse.error.code){
-            case '401': {
-              Alert.error("Unauthorized resource, please sign in");
-              break;
-            }
-            default:{
-              Alert.error("Error Details:"+listResponse.error.message);
-            }
-          }
-  
-        } 
-        else if(listResponse.data){
-          markFetchListSent(false);
-          const {count} = listResponse.data.data
-          if(user){
-            const totalAvailableDapps = parseInt(user.User.UserAttributes['custom:standard_limit'])
-            markAvailableNumOfDapps(totalAvailableDapps - count)
-          }
-          Alert.success("Access Granted", { timeout: 750 });
-          
-        }
-      }
-    }, [listResponse]);
-
-    useEffect(() => {
-      console.log("handleFetchList")
       handleFetchList()
     }, []);
+
+    useEffect(() => {
+      if (!fetchListSent){
+        return
+      }
+        // console.log(listResponse)
+        
+      if (listResponse.isLoading){
+        Alert.info("Fetching Dapp List", { timeout: 750});
+      } 
+      else if (listResponse.error) {
+        markFetchListSent(false)
+        Alert.error("Error fetching current dapp list");
+      } 
+      else if(listResponse.data){
+        markFetchListSent(false);
+        const {count} = listResponse.data.data
+        const totalAvailableDapps = parseInt(user.User.UserAttributes['custom:standard_limit'])
+        markAvailableNumOfDapps(totalAvailableDapps - count)
+        Alert.success("Access Granted", { timeout: 750 });
+        
+      }
+      
+    }, [listResponse]);
+
+    
 
 
     // ----- CREATE RESPONSE HANDLER ----- 
