@@ -132,7 +132,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
     const handleStep1 = (e:any, inputs: CreateDappState) => {
       console.log(availableNumOfDapps)
       if (availableNumOfDapps<=0){
-        Alert.error(`Cannot create anymore dapps please buy additional dapp slots`, { timeout: 750})
+        Alert.error(`Cannot create anymore dapps please buy additional dapp slots`, { timeout: 3000})
         return
       }
       const { dappName } = inputs
