@@ -63,6 +63,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
       markFetchListSent(true);
       sendListRequest();
     }
+
     useEffect(() => {
       handleFetchList()
     }, []);
@@ -116,7 +117,6 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
     }, [createSent, createResponse])
     
     const handleStep1 = (e:any, inputs: CreateDappState) => {
-      console.log(availableNumOfDapps)
       if (availableNumOfDapps<=0){
         Alert.error(`Cannot create anymore dapps please buy additional dapp slots`, { timeout: 3000})
         return
@@ -125,6 +125,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
       setDappName(dappName)
       navigate(`/home/new/step-2`);
     }
+    
     return (
       <Router>
         <NewDappContainer
