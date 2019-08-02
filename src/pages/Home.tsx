@@ -2,23 +2,25 @@ import React, { FC, useState, useEffect } from 'react';
 import Alert from 'react-s-alert';
 import { RouteComponentProps, NavigateFn } from '@reach/router';
 import { useResource } from 'react-request-hook';
-import { DappCreateArgs, DappArgNameStrs, SampleDappArgs, UserResponse, defaultUserResponse } from '../types';
-
-import ABIClerk from '../services/abiClerk';
+import { DappCreateArgs, DappArgNameStrs, SampleDappArgs, UserResponseData, defaultUserResponse } from '../types';
+import API from '../services/api';
 import { DappList, DappForm } from '../components';
 
 interface HomeProps extends RouteComponentProps {
-  user : UserResponse
-  setUser : (user:UserResponse)=>void
+  user : UserResponseData
+  setUser : (user:UserResponseData)=>void
+  API : API
 }
 
-export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
+export const Home:FC<HomeProps> = ({user, setUser, API, ...props}) => {
 
   const [formArgs, setArgs] = useState(SampleDappArgs())
 
   // Note that adding an empty dependency array means this hook
   // will run on mount, then never again (unless called)
-  const [listResponse, sendListRequest] = useResource(ABIClerk.list(user));
+  const [listResponse, sendListRequest] = useResource(API.private.list());
+  useEffect(()=>sendListRequest(), [sendListRequest]);
+
   let dappList:DappCreateArgs[] = [];
   if (listResponse && listResponse.data && (['The incoming token has expired', 'Unauthorized'].includes((listResponse.data as any).message))){
     let newUser = defaultUserResponse();
@@ -27,12 +29,11 @@ export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
   }
   try {
     if (listResponse.data){
-      dappList.push(...(listResponse as any).data.data.items)
+      dappList.push(...listResponse.data.data.items)
     }
   } catch (e) {
     console.log('Error when trying to load from listResponse: ',e);
   }
-  useEffect(()=>sendListRequest(), [sendListRequest]);
 
   const [formTarget, unsafeSetFormTarget] = useState('create');
   const [formTouched, setFormTouched] = useState(false);
@@ -63,9 +64,9 @@ export const Home:FC<HomeProps> = ({user, setUser, ...props}) => {
     setArgs(newArgs)
   }
 
-  const [createResponse, sendCreateRequest] = useResource(ABIClerk.create(user));
-  const [editResponse, sendEditRequest] = useResource(ABIClerk.edit(user));
-  const [deleteResponse, sendDeleteRequest] = useResource(ABIClerk.delete(user));
+  const [createResponse, sendCreateRequest] = useResource(API.private.create());
+  const [editResponse, sendEditRequest] = useResource(API.private.edit());
+  const [deleteResponse, sendDeleteRequest] = useResource(API.private.delete());
   
   const isCreateForm = formTarget === 'create';
   return (

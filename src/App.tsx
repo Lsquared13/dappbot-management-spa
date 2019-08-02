@@ -7,18 +7,22 @@ import './custom.css'
 import "./fonts.css";
 import PageBase from './layout/PageBase';
 import { HomeBase } from "./layout/HomeBase";
-import { useLocalStorage } from './services/auth';
-
+import { useLocalStorage } from './services/localStorage';
+import APIFactory from './services/api';
 import { SettingsContainerBase } from "./apps/SettingsContainerBase";
 
 import {  Welcome, Login, Privacy, DappDetails, PaymentPage } from './pages';
 import { DashboardBase } from './apps/DashboardBase';
 import { NewDappFormBase } from './apps';
-import { UserResponse } from './types';
+import { UserResponseData, defaultUserResponse } from './types';
 
 const App: FC = () => {
-  let [user, setUser] = useLocalStorage('user', {} as UserResponse);
-  let userData = { user, setUser };
+  let [user, setUser] = useLocalStorage('user', {} as UserResponseData);
+  useEffect(function(){
+    setUser(defaultUserResponse());
+  }, [])
+  const API = new APIFactory({user, setUser});
+  let userData = { user, setUser, API };
   
   return (
     <StripeProvider apiKey={process.env.REACT_APP_STRIPE_PUBLISHABLE_API_KEY as string}>

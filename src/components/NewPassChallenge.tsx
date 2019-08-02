@@ -1,9 +1,9 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Button } from '../components/ui';
-import { UserResponse, ChallengeData, challengeDataFactory, ChallengeType } from '../types'
+import { UserResponseData, ChallengeData, ChallengeType } from '../types'
 import { StringField } from '../components/fields';
-import Auth, {passwordChecker, NewPasswordArgs} from '../services/auth';
-// import { CognitoUser } from '@aws-amplify/auth';
+import API, { challengeDataFactory } from '../services/api';
+import {passwordChecker, NewPasswordArgs} from '../services/api/auth';
 import Alert from 'react-s-alert';
 
 import { ErrorBox } from '.';
@@ -11,30 +11,31 @@ import { useResource } from 'react-request-hook';
 
 
 interface NewPassChallengeProps {
-  user : UserResponse,
+  user : UserResponseData,
   challenge: ChallengeData,
   setChallenge : (challenge: ChallengeData)=>void
   setErr: (err:string)=>void
-  setUser: (user:UserResponse)=>void
+  setUser: (user:UserResponseData)=>void
+  API: API
 }
 
-export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChallenge, user, setUser})=>{
+export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChallenge, user, setUser, API})=>{
   const [newPass, setNewPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
-  const [newPassResponse, requestNewPass] = useResource(Auth.newPassword())
+  const [newPassResponse, requestNewPass] = useResource(API.auth.newPassword())
   //Response Handler
   const [newPassSent, markNewPassSent] = useState(false)
 
-  const handleNewPassword = () => {
+  const handleNewPassword = async () => {
     const newPassDetails:NewPasswordArgs = {
       'username': user.User.Username,
       'newPassword': newPass,
       'session': challenge.Session
     }
     markNewPassSent(true)
-    requestNewPass(newPassDetails, 'login')
+    requestNewPass(newPassDetails)
   }
   
   useEffect(()=>{
@@ -48,7 +49,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
     let response:any = newPassResponse.data
     // console.log(response.data)
     if(response.data.Authorization){
-      const newPassData:UserResponse = response.data;
+      const newPassData:UserResponseData = response.data;
       setUser(newPassData);
       setChallenge(challengeDataFactory(ChallengeType.Default))
     }
