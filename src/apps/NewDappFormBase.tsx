@@ -59,9 +59,14 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
     const [fetchListSent, markFetchListSent] = useState(false);
     
     const handleFetchList= async() => {
-      await API.refreshAuthorization();
+      
       markFetchListSent(true);
-      sendListRequest();
+      try {
+        await API.refreshAuthorization();
+        sendListRequest();
+      } catch (err) {
+        Alert.error(`Error fetching dapp list : ${err.toString()}`)
+      }
     }
 
     useEffect(() => {
