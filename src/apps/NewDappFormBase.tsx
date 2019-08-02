@@ -80,12 +80,10 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
 
       if (listResponse.isLoading){
         Alert.info("Fetching Dapp List", { timeout: 750});
-      } 
-      else if (listResponse.error) {
+      } else if (listResponse.error) {
         markFetchListSent(false)
         Alert.error("Error fetching current dapp list");
-      } 
-      else if(listResponse.data){
+      } else if(listResponse.data){
         markFetchListSent(false);
         const {count} = listResponse.data.data
         const totalAvailableDapps = parseInt(user.User.UserAttributes['custom:standard_limit'])
