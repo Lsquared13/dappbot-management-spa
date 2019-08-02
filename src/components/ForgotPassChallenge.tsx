@@ -30,7 +30,7 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
 
     }
     markNewPassSent(true)
-    requestNewPassword(newPassDetails,'password-reset')
+    requestNewPassword(newPassDetails)
   }
 
   useEffect(()=>{

@@ -5,13 +5,13 @@ import { Button } from '../components/ui';
 import StringField from '../components/fields/StringField';
 import Alert from 'react-s-alert';
 import { useResource } from 'react-request-hook';
-import { 
+import {
   UserResponseData, defaultUserResponse,
   ChallengeType
 } from '../types';
 import API from '../services/api';
 import { challengeDataFactory } from '../services/api/types';
-import {BeginPasswordResetArgs, SignInArgs} from '../services/api/auth';
+import { BeginPasswordResetArgs, SignInArgs } from '../services/api/auth';
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
 import { ErrorBox, NewPassChallenge, ForgotPassChallenge } from '../components';
@@ -19,7 +19,7 @@ import { ErrorBox, NewPassChallenge, ForgotPassChallenge } from '../components';
 
 export interface LoginProps extends RouteComponentProps {
   setUser: (user: UserResponseData) => void
-  user: any,
+  user: UserResponseData,
   API: API
 }
 
@@ -38,12 +38,12 @@ export const Login: FC<LoginProps> = (props) => {
   const [passwordResetSent, markPasswordResetSent] = useState(false);
 
   const handleSignIn = () => {
-    const loginDetails:SignInArgs = {
+    const loginDetails: SignInArgs = {
       'username': email,
       'password': password
     }
     markSignInSent(true)
-    requestSignIn(loginDetails, 'login')
+    requestSignIn(loginDetails)
   }
 
   // If we now have a Cognito user and no challenge
@@ -53,23 +53,23 @@ export const Login: FC<LoginProps> = (props) => {
   useEffect(function handleLoginResult() {
     if (signInSent) {
       if (signInResponse.isLoading) {
-        Alert.info("Authenticating ...", { timeout: 750});
+        Alert.info("Authenticating ...", { timeout: 750 });
 
       }
       else if (signInResponse.error) {
         markSignInSent(false)
         console.log(signInResponse.error)
-        switch(signInResponse.error.code){
+        switch (signInResponse.error.code) {
 
-          default:{
+          default: {
             Alert.error(signInResponse.error.data.err.message);
           }
         }
 
-      } 
+      }
       else if (signInResponse.data) {
         markSignInSent(false)
-        
+
         let response = signInResponse.data.data;
         //Ensure that the response has a session, and if so create a tempUser
         if (response.Session) {
@@ -86,41 +86,41 @@ export const Login: FC<LoginProps> = (props) => {
           setChallenge(challengeDataFactory(ChallengeType.Default))
           Alert.success("Authenticated with credentials for: " + response.User.Email)
         }
-      
+
       }
     }
   }, [signInResponse])
 
   const handleForgottenPass = () => {
-    const forgottenPassDetails:BeginPasswordResetArgs = {
+    const forgottenPassDetails: BeginPasswordResetArgs = {
       'username': email
     }
     markPasswordResetSent(true)
-    beginPasswordReset(forgottenPassDetails, 'password-reset')
+    beginPasswordReset(forgottenPassDetails)
 
   }
 
-  useEffect(function handlePassResetResult(){
+  useEffect(function handlePassResetResult() {
     if (passwordResetSent) {
       if (beginPasswordResetResponse.isLoading) {
-        Alert.info("Attempting password reset", { timeout: 1750});
+        Alert.info("Attempting password reset", { timeout: 1750 });
 
       }
       else if (beginPasswordResetResponse.error) {
         markPasswordResetSent(false);
 
         console.log(beginPasswordResetResponse.error)
-        switch(beginPasswordResetResponse.error.code){
+        switch (beginPasswordResetResponse.error.code) {
           case '401': {
             Alert.error("Unauthorized");
             break;
           }
-          default:{
+          default: {
             Alert.error("Failed to reset password, check the username field and make sure it is a valid email address");
           }
         }
 
-      } 
+      }
       else if (beginPasswordResetResponse.data) {
         markPasswordResetSent(false)
         setChallenge(challengeDataFactory(ChallengeType.ForgotPassword))
@@ -130,67 +130,70 @@ export const Login: FC<LoginProps> = (props) => {
   }, [beginPasswordResetResponse])
 
   useEffect(function handleChallengeResult() {
-    if (challenge.ChallengeName === ChallengeType.Default  && user.Authorization) {
+    if (challenge.ChallengeName === ChallengeType.Default && user.Authorization !== '') {
       navigate && navigate('/home');
 
-    }  
+    }
   }, [challenge, setChallenge, user, navigate])
 
-  let loginFields = (
-    <div className="fdb-box fdb-touch">
-      <div className="row">
-        <div className="col">
-          <h2>Log In to Your Account</h2>
-        </div>
-      </div>
-      <div className="row mt-4">
-        <div className="col">
-          {/* <input type="text" className="form-control" placeholder="Email" /> */}
-          <StringField
-            value={email}
-            onChange={setEmail}
-            displayName='Email'
-            disabled={loading}
-            isValid={isEmail}
-            name='email' />
-        </div>
-      </div>
-      <div className="row mt-4">
-        <div className="col">
-          {/* <input type="password" className="form-control mb-1" placeholder="Password" /> */}
-          <StringField
-            fieldType='password'
-            name='password'
-            displayName='Password'
-            disabled={loading}
-            onChange={setPassword}
-            value={password} />
-          <p className="text-right">Don't have an account yet? <a href="/signup">Sign Up</a></p>
-        </div>
-      </div>
-      <div className="row mt-4">
-        <div className="col">
-          <div style={{ textAlign: "left" }}>
-            <Button disabled={loading} onClick={handleSignIn}>Submit</Button>
-            <Button onClick={handleForgottenPass}>Forgot Password?</Button>
-            <ErrorBox errMsg={err}></ErrorBox>
-          </div>
-          {/* <button className="btn btn-primary" type="button">Submit</button> */}
-        </div>
-      </div>
-    </div>
-  )
-  
+  let loginFields;
+
   let challengeProps = { setChallenge, setErr }
 
   switch (challenge.ChallengeName) {
 
+    default:
+      loginFields = (
+        <div className="fdb-box fdb-touch">
+          <div className="row">
+            <div className="col">
+              <h2>Log In to Your Account</h2>
+            </div>
+          </div>
+          <div className="row mt-4">
+            <div className="col">
+              {/* <input type="text" className="form-control" placeholder="Email" /> */}
+              <StringField
+                value={email}
+                onChange={setEmail}
+                displayName='Email'
+                disabled={loading}
+                isValid={isEmail}
+                name='email' />
+            </div>
+          </div>
+          <div className="row mt-4">
+            <div className="col">
+              {/* <input type="password" className="form-control mb-1" placeholder="Password" /> */}
+              <StringField
+                fieldType='password'
+                name='password'
+                displayName='Password'
+                disabled={loading}
+                onChange={setPassword}
+                value={password} />
+              <p className="text-right">Don't have an account yet? <a href="/signup">Sign Up</a></p>
+            </div>
+          </div>
+          <div className="row mt-4">
+            <div className="col">
+              <div style={{ textAlign: "left" }}>
+                <Button disabled={loading} onClick={handleSignIn}>Submit</Button>
+                <Button onClick={handleForgottenPass}>Forgot Password?</Button>
+                <ErrorBox errMsg={err}></ErrorBox>
+              </div>
+              {/* <button className="btn btn-primary" type="button">Submit</button> */}
+            </div>
+          </div>
+        </div>
+      )
+      break;
     case (ChallengeType.NewPasswordRequired):
       loginFields = (
-        <NewPassChallenge setUser={setUser} 
-          user={user} 
+        <NewPassChallenge setUser={setUser}
+          user={user}
           API={API}
-          challenge={challenge} 
+          challenge={challenge}
           {...challengeProps} />)
       break;
 
@@ -211,9 +214,6 @@ export const Login: FC<LoginProps> = (props) => {
 
       break;
 
-    default:
-      // Always have a default to keep TS quiet
-      break;
   }
   return (
     <section className="fdb-block fp-active" data-block-type="forms">

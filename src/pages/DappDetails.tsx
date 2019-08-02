@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import Alert from 'react-s-alert';
 import { RouteComponentProps } from '@reach/router';
 import { useResource } from 'react-request-hook';
 import { DappCreateArgs, DappArgNameStrs, Tiers} from '../types';
@@ -34,8 +35,12 @@ export const DappDetails:FC<DappDetailsProps> = ({API}) => {
   const [createResponse, sendCreateRequest] = useResource(API.private.create())
 
   async function handleCreate(){
-    await API.refreshAuthorization();
-    await sendCreateRequest(args);
+    try {
+      await API.refreshAuthorization();
+      await sendCreateRequest(args);
+    } catch (err) {
+      Alert.error(`Error creating your dapp : ${err.toString()}`)
+    }
   }
 
   return (

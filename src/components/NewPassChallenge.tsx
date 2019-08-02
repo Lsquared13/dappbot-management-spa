@@ -35,7 +35,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
       'session': challenge.Session
     }
     markNewPassSent(true)
-    requestNewPass(newPassDetails, 'login')
+    requestNewPass(newPassDetails)
   }
   
   useEffect(()=>{

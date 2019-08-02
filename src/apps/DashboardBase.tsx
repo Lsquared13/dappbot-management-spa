@@ -70,8 +70,12 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props}) => {
   const [deleteSent, markDeleteSent] = useState(false);
   const handleDelete = async (dappName: string) => {
     markDeleteSent(true);
-    await API.refreshAuthorization();
-    sendDeleteRequest(dappName);
+    try {
+      await API.refreshAuthorization();
+      sendDeleteRequest(dappName);
+    } catch (err) {
+      Alert.error(`Error sending delete : ${err.toString()}`)
+    }
   }
   useEffect(() => {
     if (deleteSent) {
@@ -110,8 +114,12 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props}) => {
   const [fetchListSent, markFetchListSent] = useState(false);
   const handleFetchList= async () => {
     markFetchListSent(true);
-    await API.refreshAuthorization();
-    sendListRequest();
+    try {
+      await API.refreshAuthorization();
+      sendListRequest();
+    } catch (err) {
+      Alert.error(`Error fetching dapp list : ${err.toString()}`)
+    }
   }
   useEffect(() => {
     if (fetchListSent){
