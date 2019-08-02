@@ -1,4 +1,4 @@
-import { UserResponseData, UserSetter } from "../../types";
+import { UserResponseData, UserSetter, defaultUserResponse } from "../../types";
 import { request as resourceRequest } from 'react-request-hook';
 import moment from 'moment';
 import request from 'request-promise-native';
@@ -114,21 +114,24 @@ export class API {
     const user:UserResponseData = this.user;
     const setUser:UserSetter = this.setUser;
     if (user.RefreshToken === '' || user.ExpiresAt === ''){
-      throw new Error('No current user object, need to fully log in again.')
+      throw new Error("Please log in.")
     }
     if (moment(user.ExpiresAt).isAfter(moment.now())) {
       return false;
     }
-    const refreshRequestBuilder = this.auth.refresh();
-    const refreshResult = await request(refreshRequestBuilder({
+    const refreshRequestFactory = this.auth.refresh();
+    const refreshRequest = refreshRequestFactory({
       refreshToken : user.RefreshToken
-    }));
+    });
+    const refreshResult = await request(refreshRequest);
     const RefreshedUser:UserResponseData = refreshResult.data;
+
     // Note that we spread the original object *then* add
     // the updated keys. Later entries overwrite earlier ones.
     setUser({
       ...user,
       Authorization : RefreshedUser.Authorization,
+      ExpiresAt : RefreshedUser.ExpiresAt
     })
     return true;
   }
