@@ -63,25 +63,35 @@ export class AuthAPI {
   requestFactory:<Args>(operation: Operations, rootResource?: "private" | "public" | "auth") => (args: Args, subResource?: string | undefined) => AuthorizedRequest
 
   signIn(){
-    return this.resourceFactory<SignInArgs, SignInResponse>(Operations.login, "auth")
+    return (args:SignInArgs) => {
+      return this.resourceFactory<SignInArgs, SignInResponse>(Operations.login, "auth")(args, 'login');
+    }
   }
   
   newPassword(){
-    return this.resourceFactory<NewPasswordArgs, UserResponseData>(Operations.login, "auth")
+    return (args:NewPasswordArgs) => {
+      return this.resourceFactory<NewPasswordArgs, UserResponseData>(Operations.login, "auth")(args, 'login');
+    }
   }
   
-  // This function is a *requestFactory* because we just want the config object,
-  // doing our request directly.
   refresh(){
-    return this.requestFactory<RefreshArgs>(Operations.login, "auth")
+    return (args:RefreshArgs) => {
+      // This function is a *requestFactory* because we just want the config object,
+      // doing our request directly.
+      return this.requestFactory<RefreshArgs>(Operations.login, "auth")(args, 'login')
+    }
   }
   
   beginPasswordReset() {
-    return this.resourceFactory<BeginPasswordResetArgs, MessageResponse>(Operations.resetPassword,"auth")
+    return (args:BeginPasswordResetArgs) => {
+      return this.resourceFactory<BeginPasswordResetArgs, MessageResponse>(Operations.resetPassword,"auth")(args, 'password-reset');
+    }
   }
   
   confirmPasswordReset() {
-    return this.resourceFactory<ConfirmPasswordResetArgs, MessageResponse>(Operations.resetPassword, 'auth')
+    return (args:ConfirmPasswordResetArgs) => {
+      return this.resourceFactory<ConfirmPasswordResetArgs, MessageResponse>(Operations.resetPassword, 'auth')(args, 'password-reset');
+    }
   }
 }
 
