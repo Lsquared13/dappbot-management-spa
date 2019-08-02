@@ -46,7 +46,7 @@
     "react-request-hook": "^2.0.0",
     "react-router-dom": "^5.0.0",
     "react-s-alert": "^1.4.1",
-    "react-scripts": "3.0.0",
+    "react-scripts": "3.0.1",
     "react-stripe-elements": "^3.0.0",
     "react-test-renderer": "^16.8.6",
     "request": "^2.88.0",

@@ -33,6 +33,11 @@ export const DappDetails:FC<DappDetailsProps> = ({API}) => {
 
   const [createResponse, sendCreateRequest] = useResource(API.private.create())
 
+  async function handleCreate(){
+    await API.refreshAuthorization();
+    await sendCreateRequest(args);
+  }
+
   return (
     <div className="container">
 
@@ -68,7 +73,7 @@ export const DappDetails:FC<DappDetailsProps> = ({API}) => {
           setArgVal={setArgVal}
           response={createResponse} 
           formTarget='edit'
-          sendRequest={sendCreateRequest} />
+          sendRequest={handleCreate} />
         </div>
       </div>
 
