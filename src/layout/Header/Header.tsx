@@ -54,7 +54,7 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
 
   render() {
     let user = this.props.user;
-    let email = user && user.User.Email || 'placeholder@example.com';
+    let email = user && user.User && user.User.Email || 'placeholder@example.com';
     return (
       <StyledHeader>
         <Box paddingX={12}>
