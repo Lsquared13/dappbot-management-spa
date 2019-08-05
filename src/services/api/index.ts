@@ -123,21 +123,7 @@ export class API {
     const refreshRequest = refreshRequestFactory({
       refreshToken : user.RefreshToken
     });
-<<<<<<< HEAD
     console.log('refreshRequest: ',refreshRequest);
-    const refreshResult = await request(refreshRequest);
-    console.log('result: ',refreshResult);
-    const RefreshedUser:UserResponseData = refreshResult.data;
-
-    // Note that we spread the original object *then* add
-    // the updated keys. Later entries overwrite earlier ones.
-    setUser({
-      ...user,
-      Authorization : RefreshedUser.Authorization,
-      ExpiresAt : RefreshedUser.ExpiresAt
-    })
-    return true;
-=======
     try {
       const refreshResult = await request(refreshRequest);
       const RefreshedUser:UserResponseData = refreshResult.data;
@@ -157,7 +143,6 @@ export class API {
       setUser(defaultUserResponse());
       throw new Error("Unable to refresh your session, please log in again.");
     }
->>>>>>> master
   }
 }
 

@@ -21,13 +21,14 @@ export const HomeBase: FC<HomeBaseProps> = ({user, setUser,uri, ...props}) => {
     }
   }, [user])
   
+  // AppBase is responsible for providing outermost
+  // div & the Alert component
   return (
-    <div className="App" id="appBase">
-      <Alert stack={{ limit: 3 }} timeout={30000} />
+    <>
       <Header setUser={setUser} user={user} uri={uri} />
       {props.children}
       <Footer />
-    </div>
+    </>
   );
 };
 
