@@ -1,25 +1,13 @@
-import { XOR } from 'ts-xor';
 import { UserResponseData, UserSetter } from '../../types';
-import { API } from '../api';
 import { 
-  Operations, MessageResponse, UserResponse, 
-  ChallengeResponse, SignInResponse
+  Operations, MessageResponse, SignInResponse,
+  AuthorizedRequest, RootStrings
 } from './types'
 import { Resource } from 'react-request-hook';
 
 interface RequestArgs {
   url: string,
   data: any
-}
-
-interface AuthorizedRequest extends RequestArgs {
-  headers: any,
-  method: string
-}
-
-interface AuthorizedRequest extends RequestArgs {
-  headers: any,
-  method: string
 }
 const passwordValidator = require('password-validator');
 
@@ -49,7 +37,7 @@ export class AuthAPI {
   constructor(
     user:UserResponseData, 
     setUser:UserSetter, 
-    resourceFactory:<Args, Returns>(operation: Operations, rootResource?: "private" | "public" | "auth") => (args: Args, subResource?: string | undefined) => Resource<Returns>, 
+    resourceFactory:<Args, Returns>(operation: Operations, rootResource?: RootStrings) => (args: Args, subResource?: string | undefined) => Resource<Returns>, 
     requestFactory:<Args>(operation: Operations, rootResource?: "private" | "public" | "auth") => (args: Args, subResource?: string | undefined) => AuthorizedRequest
   ){
     this.user = user;

@@ -5,9 +5,10 @@ import request from 'request-promise-native';
 import { NavigateFn } from '@reach/router';
 import AuthAPI from './auth';
 import PrivateAPI from './private';
+import PaymentAPI from './payment';
 import {
   Operations, RootStrings, Headers, RootResources,
-  AuthorizedRequest
+  AuthorizedRequest, ResourceFactory, RequestFactory
 } from './types';
 
 export * from './types';
@@ -24,12 +25,14 @@ export class API {
     this.setUser = setUser;
     this.auth = new AuthAPI(user, setUser, this.resourceFactory, this.requestFactory);
     this.private = new PrivateAPI(user, setUser, this.resourceFactory, this.requestFactory);
+    this.payment = new PaymentAPI(user, setUser, this.resourceFactory, this.requestFactory);
   }
 
   user:UserResponseData
   setUser:(newUser:UserResponseData) => void
   auth:AuthAPI
   private:PrivateAPI
+  payment:PaymentAPI
 
   // Instruments the `requestFactory` to specifically return
   // react-request-hook resources, specifically declaring
@@ -61,24 +64,26 @@ export class API {
       let httpMethodType: string;
       switch(operation) {
         case Operations.create:
-          httpMethodType = 'POST'
-          break
+        case Operations.signup:
         case Operations.login:
-          httpMethodType = 'POST'
-          break
         case Operations.resetPassword:
           httpMethodType = 'POST'
           break
         case Operations.delete:
+        case Operations.cancelStripe:
           httpMethodType = 'DELETE'
           break
         case Operations.edit:
+        case Operations.updatePayment:
+        case Operations.updatePlanCount:
           httpMethodType = 'PUT'
           break
         case Operations.list:
         case Operations.read:
+        case Operations.readStripeData:
+          httpMethodType = 'GET';
         default:
-          httpMethodType = 'GET'
+          throw new Error(`Unrecognized operation : ${operation}`);
       }
       return httpMethodType
     }
