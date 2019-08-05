@@ -143,7 +143,7 @@ export const Login: FC<LoginProps> = (props) => {
   switch (challenge.ChallengeName) {
 
     default:
-      let loginFields = (
+      loginFields = (
         <div className="fdb-box fdb-touch">
           <div className="row">
             <div className="col">
