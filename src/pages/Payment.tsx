@@ -83,20 +83,21 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe}) => {
     }
   }, [createUserResponse]);
   
-  // export interface UserCreateArgs {
-  //   email : string
-  //   name : string
-  //   plans : StripePlans
-  //   coupon?: string
-  //   token?: string
-  // }
+
   const createSubscription = async () => {
-    if (stripe){
-      let {token} = await stripe.createToken({name: "Name"});
-      if (token) {
-        handleCreateUser({ token:token.id, "plans":{standard:1, professional:0, enterprise:0}, "email":email, "name":name, "coupon":coupon})
-      }
-    }
+    handleCreateUser({ "plans":{standard:1, professional:0, enterprise:0}, "email":email, "name":name, "coupon":coupon})
+        
+    // if (stripe){
+    //   try{
+    //     let {token} = await stripe.createToken({'name': name});
+    //     if (token) {
+    //       handleCreateUser({ token:token.id, "plans":{standard:1, professional:0, enterprise:0}, "email":email, "name":name, "coupon":coupon})
+    //     }
+    //   }catch(e){
+    //     console.log(e);
+    //   }
+      
+    // }
   }
 
   return successful ? (
@@ -141,8 +142,8 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe}) => {
                     onChange={setEmail}/>
                   </div>
                 </div>
-
-                <div className="row mt-4">
+                
+                {/*TODO: TOGGLE THESE INPUTS WITH TOKEN INPUT ON PROPS TO USE AS UPDATE SCREEN AS WELL <div className="row mt-4">
                   <div className="col">
                     <NumberField name='numDapps' 
                     value={numDapps}
@@ -168,7 +169,7 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe}) => {
                     displayName='Coupon'
                     help='If you were given a coupon code for discounted dapps, please enter it here.'
                     value={coupon} />
-                    {/* <p className="text-right">Already have an account? <a href="/login">Log In</a></p> */}
+                    <p className="text-right">Already have an account? <a href="/login">Log In</a></p>
                   </div>
                 </div>
 
@@ -181,7 +182,7 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe}) => {
                       <CardElement />
                     </div>
                   </div>
-                </div>
+                </div> */}
 
 
                 <div className="row mt-4 mb-4">
