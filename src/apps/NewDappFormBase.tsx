@@ -1,21 +1,22 @@
 import React, {useState, useEffect } from 'react';
 import { useResource } from 'react-request-hook';
-import { Router, navigate, RouteComponentProps } from "@reach/router";
+import { Router, navigate, RouteComponentProps, NavigateFn } from "@reach/router";
 import Alert from 'react-s-alert';
 import omit from 'lodash.omit';
 
 import { NotFound } from "../pages/notFound";
 import {NewDappContainer, BuildDetailsContainer, ConfigureDappContainer} from "../pages/newDappForm"
+import API from '../services/api';
+import {ListResponse} from '../services/api/types'
 
-import ABIClerk from '../services/abiClerk';
-
-import { DappCreateArgs,DappData, Tiers } from '../types';
-import { CreateDappState, ConfigureDappState, DappDetail } from "../components";
+import { DappCreateArgs,DappData, Tiers, defaultUserResponse, UserResponseData } from '../types';
+import { CreateDappState, ConfigureDappState, DappDetail, CreateDapp } from "../components";
 
 
 export interface NewDappFormBaseProps extends RouteComponentProps {
-  user? : any
-  setUser : (user:any)=>void
+  user : UserResponseData
+  setUser : (user:UserResponseData)=>void
+  API : API
 }
 
 export interface DappArgs {
@@ -49,14 +50,57 @@ const LOADING_DAPP = {
 } as DappDetail
 
 
-export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser, ...props}) => {
+export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser, API, ...props}) => {
     const [DappName, setDappName] = useState("")
-    const [createResponse, sendCreateRequest] = useResource(ABIClerk.create(user));
+    const [createResponse, sendCreateRequest] = useResource(API.private.create());
+    const [listResponse, sendListRequest] = useResource(API.private.list(),[]);
     
+    const [availableNumOfDapps, markAvailableNumOfDapps ] = useState(-1)
+    const [fetchListSent, markFetchListSent] = useState(false);
+    
+    const handleFetchList= async() => {
+      
+      markFetchListSent(true);
+      try {
+        await API.refreshAuthorization();
+        sendListRequest();
+      } catch (err) {
+        Alert.error(`Error fetching dapp list : ${err.toString()}`)
+      }
+    }
+
+    useEffect(() => {
+      handleFetchList()
+    }, []);
+
+    useEffect(() => {
+      if (!fetchListSent){
+        return
+      }
+
+      if (listResponse.isLoading){
+        Alert.info("Fetching Dapp List", { timeout: 750});
+      } else if (listResponse.error) {
+        markFetchListSent(false)
+        Alert.error("Error fetching current dapp list");
+      } else if(listResponse.data){
+        markFetchListSent(false);
+        const {count} = listResponse.data.data
+        const totalAvailableDapps = parseInt(user.User.UserAttributes['custom:standard_limit'])
+        markAvailableNumOfDapps(totalAvailableDapps - count)
+        Alert.success("Access Granted", { timeout: 750 });
+        
+      }
+      
+    }, [listResponse]);
+
+    
+
+
     // ----- CREATE RESPONSE HANDLER ----- 
     const [createSent, markCreateSent] = useState(false);
     const handleCreate = (dappArgs: DappCreateArgs) => {
-
+      
       const dappData:DappData = omit(dappArgs, ['DappName'])
       markCreateSent(true);
       Alert.info(`Starting build...`)
@@ -73,7 +117,17 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
         }
       }
     }, [createSent, createResponse])
-  
+    
+    const handleStep1 = (e:any, inputs: CreateDappState) => {
+      if (availableNumOfDapps<=0){
+        Alert.error(`Cannot create anymore dapps please buy additional dapp slots`, { timeout: 3000})
+        return
+      }
+      const { dappName } = inputs
+      setDappName(dappName)
+      navigate(`/home/new/step-2`);
+    }
+    
     return (
       <Router>
         <NewDappContainer
@@ -81,11 +135,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
           onCancel={(e, inputs: CreateDappState) => {
             navigate(`/home/`);
           }}
-          onConfigDapp={(e, inputs: CreateDappState) => {
-            const { dappName } = inputs
-            setDappName(dappName)
-            navigate(`/home/new/step-2`);
-          }}
+          onConfigDapp={handleStep1}
           onGithubLink={(e, inputs: CreateDappState) => {
             alert("Enteprise Features Disabled");
           }}

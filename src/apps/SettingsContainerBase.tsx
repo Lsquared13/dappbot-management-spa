@@ -5,11 +5,11 @@ import SettingContainer from "../pages/tmpSettingContainer";
 import { ProfileState } from "../layout/Profile";
 import { PasswordState } from "../layout/Password";
 import { useResource } from 'react-request-hook';
-import { UserResponse } from '../types';
+import { UserResponseData } from '../types';
 
 export interface Props extends RouteComponentProps {
-  user : UserResponse
-  setUser : (user:UserResponse)=>void
+  user : UserResponseData
+  setUser : (user:UserResponseData)=>void
 }
 export const SettingsContainerBase: React.SFC<Props> = props => {
   

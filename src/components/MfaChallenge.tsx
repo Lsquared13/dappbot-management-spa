@@ -1,13 +1,13 @@
 import React, { FC, useState } from 'react';
 import { Button } from '../components/ui';
 import { StringField } from '../components/fields';
-import Auth from '../services/auth';
+import Auth from '../services/api/auth';
 import { CognitoUser } from '@aws-amplify/auth';
-import {UserResponse} from '../types'
+import {UserResponseData} from '../types'
 
 interface MfaChallengeProps {
-  user: UserResponse
-  setUser: (user:UserResponse)=>void
+  user: UserResponseData
+  setUser: (user:UserResponseData)=>void
   setErr: (err:string)=>void
   setChallenge: (challenge:string)=>void
 }

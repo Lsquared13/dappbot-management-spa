@@ -1,17 +1,16 @@
 import * as React from "react";
-import { Avatar, Box, Icon, Tabs,Text, Link, Dropdown, DropdownItem, DropdownTrigger, DropdownContent } from "../../components/ui";
+import { Box, Icon, Tabs,Text, Dropdown, DropdownItem, DropdownTrigger, DropdownContent } from "../../components/ui";
 import StyledHeader from "./StyledHeader";
 import { ReactComponent as AvatarImage } from "../../assets/images/avatar.svg";
 
 import { ReactComponent as Logo } from "../../assets/images/Dapp_Logo.svg";
-import { ReactComponent as MoreIcon } from "../../assets/images/more.svg";
-import {UserResponse, defaultUserResponse} from '../../types'
+import {UserResponseData, defaultUserResponse, UserSetter} from '../../types'
 import { navigate } from "@reach/router";
 
 export interface HeaderProps {
   uri: any;
-  user?: UserResponse
-  setUser: (newUser:UserResponse)=>void
+  user?: UserResponseData
+  setUser: UserSetter
 }
 
 export interface HeaderState {

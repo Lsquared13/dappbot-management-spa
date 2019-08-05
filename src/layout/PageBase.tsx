@@ -1,22 +1,21 @@
 import React, { FC } from 'react';
 import { RouteComponentProps } from '@reach/router';
-import Alert from 'react-s-alert';
 import Navigation from '../components/froala/Navigation';
 import Footer from '../components/froala/Footer';
-
 
 export interface PageBaseProps extends RouteComponentProps {
 
 }
 
 export const PageBase: FC<PageBaseProps> = (props) => {
+  // AppBase is responsible for providing outermost
+  // div & the Alert component
   return (
-    <div className='App' id='appBase'>
-      <Alert stack={{limit: 3}} timeout={30000} />
+    <>
       <Navigation user={"fas"} setUser={()=>{return}} />
       {props.children}
       <Footer />
-    </div>
+    </>
   )
 }
 

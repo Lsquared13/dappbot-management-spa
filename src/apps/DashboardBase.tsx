@@ -2,19 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useResource } from "react-request-hook";
 import { Router, navigate, RouteComponentProps, NavigateFn } from "@reach/router";
 import Alert from 'react-s-alert';
-
-
 import  { DashboardContainer, DappDetailsContainer,DeleteDappContainer} from "../pages/dashboard";
-
-import ABIClerk from "../services/abiClerk";
-
+import API from '../services/api';
 import { DeleteDappState } from "../components";
 import { NotFound } from "../pages/notFound";
-import { defaultUser, defaultUserResponse, UserResponse } from "../types";
+import { defaultUserResponse, UserResponseData } from "../types";
 
 export interface Props extends RouteComponentProps {
-  user : UserResponse
-  setUser : (user:UserResponse)=>void
+  setUser : (user:UserResponseData)=>void
+  API : API
 }
 export interface DappDetail {
   DappName: string;
@@ -57,99 +53,72 @@ const SETTING_OPTIONS = [
   }
 ];
 
-export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
+export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props}) => {
  
-  const [deleteResponse, sendDeleteRequest] = useResource(ABIClerk.delete(user));
-  const [listResponse, sendListRequest] = useResource(ABIClerk.list(user),[]);
-   
-  //----- LIST RESPONSE HANDLER -----
-  // AUTH CHECK: Check for valid session, log out if expired
-  if (listResponse && listResponse.data && (['The incoming token has expired', 'Unauthorized'].includes((listResponse.data as any).message))){
-    let newUser = defaultUserResponse();
-    (props.navigate as NavigateFn)('/login');
-    setUser(newUser);
-  }
-  
-  //----- DELETE RESPONSE HANDLER ----- 
-  const [deleteSent, markDeleteSent] = useState(false);
-  const handleDelete = (dappName: string) => {
-    markDeleteSent(true);
-    sendDeleteRequest(dappName);
-  }
-  useEffect(() => {
-    if (deleteSent) {
-
-      if (deleteResponse.isLoading){
-        Alert.info(`Deleting dapp ...`, {timeout: 500 });
-
-      } 
-      else if (deleteResponse.error) {
-        markDeleteSent(false)
-        markFetchListSent(false)
-
-        switch(deleteResponse.error.code){
-          case '401': {
-            Alert.error("Unauthorized resource, please sign in");
-            break;
-          }
-          default:{
-            Alert.error("Error Details:"+deleteResponse.error.message);
-          }
-        }
-
-      } 
-      else if (deleteResponse.data) {
-        markDeleteSent(false);
-        Alert.success(`Your dapp was successfully deleted!`, {timeout: 500 });
-
-        handleFetchList()
-        navigate(`/home`);
-
-      }
-    }
-  }, [deleteResponse])
-
-  // ----- FETCH LIST HANDLER ----- 
+  //----- LIST REQUEST & HANDLING -----//
+  const [listResponse, sendListRequest] = useResource(API.private.list());
   const [fetchListSent, markFetchListSent] = useState(false);
-  const handleFetchList= async() => {
+  const handleFetchList= async () => {
     markFetchListSent(true);
-    sendListRequest();
-  }
-  useEffect(() => {
-    if (fetchListSent){
-      
-      if (listResponse.isLoading){
-        Alert.info("Fetching Dapp List", { timeout: 750});
-        
-      } 
-      else if (listResponse.error) {
-        markFetchListSent(false)
-
-        switch(listResponse.error.code){
-          case '401': {
-            Alert.error("Unauthorized resource, please sign in");
-            break;
-          }
-          default:{
-            Alert.error("Error Details:"+listResponse.error.message);
-          }
-        }
-
-      } 
-      else if(listResponse.data){
-        markFetchListSent(false);
-        Alert.success("Access Granted", { timeout: 750 });
-        
-      }
+    try {
+      await API.refreshAuthorization();
+      sendListRequest();
+    } catch (err) {
+      Alert.error(`Error fetching dapp list : ${err.toString()}`)
     }
-  }, [listResponse]);
+  }
 
   useEffect(() => {
     handleFetchList()
   }, []);
+
+  useEffect(() => {
+    if (!fetchListSent) return
+    if (listResponse.isLoading){
+      Alert.info("Fetching Dapp List", { timeout: 750});  
+    } 
+    else if (listResponse.error) {
+      markFetchListSent(false)
+      Alert.error("Error fetching dapp list:"+listResponse.error.message);
+    } 
+    else if(listResponse.data) {
+      markFetchListSent(false);
+    }
+  }, [listResponse]);
+  
+  //----- DELETE REQUEST & HANDLING -----//
+  const [deleteResponse, sendDeleteRequest] = useResource(API.private.delete());
+  const [deleteSent, markDeleteSent] = useState(false);
+  const handleDelete = async (dappName: string) => {
+    markDeleteSent(true);
+    try {
+      await API.refreshAuthorization();
+      sendDeleteRequest(dappName);
+    } catch (err) {
+      Alert.error(`Error sending delete : ${err.toString()}`)
+    }
+  }
+  useEffect(() => {
+    if (deleteSent) {
+      if (deleteResponse.isLoading){
+        Alert.info(`Deleting dapp ...`, {timeout: 500 });
+      } 
+      else if (deleteResponse.error) {
+        markDeleteSent(false)
+        markFetchListSent(false)
+        Alert.error("Error on deleting your dapp: "+deleteResponse.error.message);
+      } 
+      else if (deleteResponse.data) {
+        markDeleteSent(false);
+        Alert.success(`Your dapp was successfully deleted!`, {timeout: 500 });
+        handleFetchList()
+        navigate(`/home`);
+      }
+    }
+  }, [deleteResponse])
   
   //EDIT RESPONSE HANDLER
-  const [editResponse, sendEditRequest] = useResource(ABIClerk.edit(user));
+  const [editResponse, sendEditRequest] = useResource(API.private.edit());
   
   //PROP DRILL: props for DappDetailsContainer && DashboardContainer
   let dappList:DappDetail[] = [];
@@ -162,7 +131,6 @@ export const DashboardBase: React.SFC<Props> = ({user, setUser, ...props}) => {
     console.log('Error when trying to load from listResponse: ',e);
   }
   
-
     return (
       <div>
         <Router>    

@@ -1,9 +1,9 @@
 import React, { FC, useState } from 'react';
+import Alert from 'react-s-alert';
 import { RouteComponentProps } from '@reach/router';
 import { useResource } from 'react-request-hook';
 import { DappCreateArgs, DappArgNameStrs, Tiers} from '../types';
-
-import ABIClerk from '../services/abiClerk';
+import API from '../services/api';
 
 //eould have to fetch the list and filter by the path router.
 
@@ -12,12 +12,10 @@ import '../components/froala/froala_blocks.min.css';
 import { DappForm } from '../components';
 
 interface DappDetailsProps extends RouteComponentProps {
-  user? : any
-  id? : string
-  setUser: (newUser:any)=>void
+  API : API
 }
 
-export const DappDetails:FC<DappDetailsProps> = ({user, id, setUser}) => {
+export const DappDetails:FC<DappDetailsProps> = ({API}) => {
 
   const [args, setArgs] = useState({
     DappName: '',
@@ -34,8 +32,17 @@ export const DappDetails:FC<DappDetailsProps> = ({user, id, setUser}) => {
     setArgs(newArgs)
   }
 
-  const [createResponse, sendCreateRequest] = useResource(ABIClerk.create(user))
-  
+  const [createResponse, sendCreateRequest] = useResource(API.private.create())
+
+  async function handleCreate(){
+    try {
+      await API.refreshAuthorization();
+      await sendCreateRequest(args);
+    } catch (err) {
+      Alert.error(`Error creating your dapp : ${err.toString()}`)
+    }
+  }
+
   return (
     <div className="container">
 
@@ -71,7 +78,7 @@ export const DappDetails:FC<DappDetailsProps> = ({user, id, setUser}) => {
           setArgVal={setArgVal}
           response={createResponse} 
           formTarget='edit'
-          sendRequest={sendCreateRequest} />
+          sendRequest={handleCreate} />
         </div>
       </div>
 

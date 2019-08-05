@@ -3,15 +3,14 @@ import { Box, Text, Button } from "../components/ui";
 import { Input } from "../components/ui/NavLeft/Input";
 import {
   LayoutContainer,
-  ButtonText,
   InputContainer,
   InputGroup,
   InputTitle
 } from "../layout";
-import { UserResponse } from "../types";
+import { UserResponseData } from "../types";
 
 export interface ProfileProps {
-  user: UserResponse;
+  user: UserResponseData;
   onProfileInputChange?: (inputs: ProfileState) => void;
   onProfileSave: (
     event: React.MouseEvent<HTMLElement, MouseEvent>,
@@ -33,7 +32,6 @@ export interface ProfileState {
 }
 
 export default class Profile extends Component<ProfileProps, ProfileState> {
-  //TODO: change API response server side to have clean access to user attributes
   state: ProfileState = {
     email: this.props.user.User.Email
   };
@@ -64,13 +62,9 @@ export default class Profile extends Component<ProfileProps, ProfileState> {
           <InputTitle color="gray">Email</InputTitle>
           <InputContainer>
             <Box column={12} mdColumn={8}>
-              <Input
-                name="email"
-                value={email}
-                onChange={this.onEmailChange}
-                type="email"
-                placeholder="email address"
-              />
+              <Text>
+                {email}
+              </Text>
             </Box>
           </InputContainer>
         </InputGroup>
