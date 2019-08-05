@@ -15,6 +15,7 @@ export interface DashboardContainerProps extends RouteComponentProps {
   onRefresh?: () => void;
   onCreateNewApp?: () => void;
   dapps: DappTableProps["dapps"];
+  dappsLoading: boolean;
 };
 
 export const DashboardContainer: React.SFC<DashboardContainerProps> = props => {
@@ -60,9 +61,30 @@ export const DashboardContainer: React.SFC<DashboardContainerProps> = props => {
       <Divider type="secondary" />
       <Container>
 
-      {props.dapps.length ? (
+      {props.dappsLoading ? (
+        <Box marginTop={9} marginBottom={12}>
+          <Container>
+            <div className="mb-5 mt-5 text-center">
+              <Text
+                bold
+                size="lg"
+                smSize="lg"
+                mdSize="lg"
+                lgSize="lg"
+                align="center"
+                className="mb-3"
+                color="blue"
+                >
+                Loading Dapps...
+              </Text>
+            </div>
+          </Container>
+        </Box>
+      ) : props.dapps.length ? (
         <Box marginTop={9}>
-          <DappTable dapps={props.dapps} />
+          <DappTable
+            dapps={props.dapps}
+          />
         </Box>
       ) : (
         <Box marginTop={9} marginBottom={12}>

@@ -122,13 +122,16 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props}) => {
   
   //PROP DRILL: props for DappDetailsContainer && DashboardContainer
   let dappList:DappDetail[] = [];
+  let dappsLoading:boolean = true;
   try {
     if (listResponse.data){
       dappList.push(...(listResponse as any).data.data.items)
+      dappsLoading = false;
     }
   } 
   catch (e) {
     console.log('Error when trying to load from listResponse: ',e);
+    dappsLoading = false;
   }
   
     return (
@@ -137,6 +140,7 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props}) => {
           <DashboardContainer
             path="/"
             dapps={dappList}
+            dappsLoading={dappsLoading}
             onRefresh={() => {
               handleFetchList()
             }}
