@@ -123,7 +123,6 @@ export class API {
     const refreshRequest = refreshRequestFactory({
       refreshToken : user.RefreshToken
     });
-    console.log('refreshRequest: ',refreshRequest);
     try {
       const refreshResult = await request(refreshRequest);
       const RefreshedUser:UserResponseData = refreshResult.data;
