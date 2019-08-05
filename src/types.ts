@@ -128,3 +128,17 @@ export enum Tiers{
   Professional = 'PROFESSIONAL',
   Enterprise = 'ENTERPRISE'
 }
+
+export interface UserCreateArgs {
+  email : string
+  name : string
+  plans : StripePlans
+  coupon?: string
+  token?: string
+}
+
+export interface StripePlans {
+  standard: number
+  professional: number
+  enterprise: number
+}

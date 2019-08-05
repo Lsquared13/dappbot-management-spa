@@ -1,7 +1,10 @@
 import { XOR } from 'ts-xor';
 import { 
-  DappDbItem, ChallengeData, UserResponseData, ChallengeType
+  DappDbItem, ChallengeData, UserResponseData, 
+  ChallengeType, User, StripePlans
 } from "../../types";
+import Stripe from 'stripe';
+import { Resource } from 'react-request-hook';
 
 export interface RequestArgs {
   url: string,
@@ -21,7 +24,8 @@ export interface AuthorizedRequest extends RequestArgs {
 export enum RootResources {
   private = 'private',
   public = 'public',
-  auth = 'auth'
+  auth = 'auth',
+  payment = 'payment'
 }
 
 export type RootStrings = keyof typeof RootResources;
@@ -33,8 +37,16 @@ export enum Operations {
   delete = "delete",
   edit = "edit",
   list = "list",
-  read = "read"
+  read = "read",
+  signup = "signup",
+  updatePlanCount = "updatePlanCount",
+  updatePayment = "updatePayment",
+  readStripeData = "readStripeData",
+  cancelStripe = "cancelStripe"
 }
+
+export type RequestFactory = <Args>(operation: Operations, rootResource?: "private" | "public" | "auth") => (args: Args, subResource?: string | undefined) => AuthorizedRequest
+export type ResourceFactory = <Args, Returns>(operation: Operations, rootResource?: RootStrings) => (args: Args, subResource?: string | undefined) => Resource<Returns>
 
 export interface DappBotResponse<ResponseType> {
   data: ResponseType
@@ -71,3 +83,49 @@ export function challengeDataFactory(typeOfChallenge:ChallengeType) {
 export function defaultChallengeResponse():ChallengeResponse{
   return {data:challengeDataFactory(ChallengeType.Default),err:null}
 }
+
+export interface GetStripeDataArgs {
+  email : string
+}
+
+export type Customer = Stripe.customers.ICustomer;
+export type Subscription = Stripe.subscriptions.ISubscription;
+
+export interface StripeUserData {
+  user : User
+  subscription : Subscription
+  customer : Customer
+}
+
+export type StripeUserDataResponse = DappBotResponse<StripeUserData>
+
+export type StripeCancelResponse = DappBotResponse<{
+  success: boolean
+  cancelledSub : Subscription
+}>
+
+export type UserCreateResponse = DappBotResponse<{
+  stripeId: number
+  subscriptionId: number
+  success: boolean
+  user : User | boolean
+}>
+
+export interface UpdatePlanCountArgs {
+  plans : StripePlans
+}
+
+export type UpdatePlanCountResponse = DappBotResponse<{
+  success : boolean
+  updatedSubscription : Subscription
+  updatedUser : User
+}>
+
+export interface UpdatePaymentArgs {
+  token : string
+}
+
+export type UpdatePaymentResponse = DappBotResponse<{
+  success : boolean
+  updatedCustomer : Customer
+}>

@@ -1,16 +1,17 @@
-import API from '../api';
 import { 
   DappCreateArgs, DappData, UserResponseData, UserSetter 
 } from '../../types';
-import { Operations, ListResponse, MessageResponse, ReadResponse, AuthorizedRequest } from './types';
-import { Resource } from 'react-request-hook';
+import { 
+  Operations, ListResponse, MessageResponse, ReadResponse, 
+  ResourceFactory, RequestFactory
+} from './types';
 
 export class PrivateAPI {
   constructor(
     user:UserResponseData, 
     setUser:UserSetter,
-    resourceFactory:<Args, Returns>(operation: Operations, rootResource?: "private" | "public" | "auth") => (args: Args, subResource?: string | undefined) => Resource<Returns>, 
-    requestFactory:<Args>(operation: Operations, rootResource?: "private" | "public" | "auth") => (args: Args, subResource?: string | undefined) => AuthorizedRequest
+    resourceFactory:ResourceFactory, 
+    requestFactory:RequestFactory
   ){
     this.user = user;
     this.setUser = setUser;
@@ -19,8 +20,8 @@ export class PrivateAPI {
   }
   user:UserResponseData
   setUser:(newUser:UserResponseData) => void
-  resourceFactory:<Args, Returns>(operation: Operations, rootResource?: "private" | "public" | "auth") => (args: Args, subResource?: string | undefined) => Resource<Returns>
-  requestFactory:<Args>(operation: Operations, rootResource?: "private" | "public" | "auth") => (args: Args, subResource?: string | undefined) => AuthorizedRequest
+  resourceFactory:ResourceFactory
+  requestFactory:RequestFactory
 
   create() {
     return this.resourceFactory<DappData, MessageResponse>(Operations.create, 'private');
