@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { RouteComponentProps, Link } from '@reach/router';
 import { StringField, NumberField, Uints } from '../components/fields';
 import { Button, Box, Text } from '../components/ui';
@@ -6,14 +6,19 @@ import { Button, Box, Text } from '../components/ui';
 import { CardElement, injectStripe, ReactStripeElements } from 'react-stripe-elements';
 import request from 'request-promise-native';
 import validate from 'validator';
+import API from '../services/api';
+import Alert from 'react-s-alert';
 
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
 import { ErrorBox } from '../components';
+import { useResource } from 'react-request-hook';
+import { UserCreateArgs } from '../types';
 
 interface PaymentProps extends RouteComponentProps, ReactStripeElements.InjectedStripeProps {
   user?: any
   setUser: (newUser:any)=>void
+  API: API
 }
 
 export const PLAN_PRICES = {
@@ -34,7 +39,7 @@ export const CheckoutBox:FC<{numDapps:string}> = ({numDapps}) => {
 }
 
 
-export const Payment:FC<PaymentProps> = (props) => {
+export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe}) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [coupon, setCoupon] = useState('');
@@ -46,46 +51,51 @@ export const Payment:FC<PaymentProps> = (props) => {
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
   const [successful, setSuccessful] = useState(false);
-  const createSubscription = async () => {
-    let planType = "plan"
-    if(addon1){
-      planType = planType.concat("_Bra_1")
-    }else{
-      planType = planType.concat("_Bra_0")
+
+  const [createUserResponse, sendCreateUserRequest] = useResource(API.payment.createUser());
+  const [createUserSent, markCreateUserSent] = useState(false);
+  const handleCreateUser= async (args:UserCreateArgs) => {
+    markCreateUserSent(true);
+    setErr('');
+    try {
+      sendCreateUserRequest(args);
+    } catch (err) {
+      Alert.error(`Error sending new user request : ${err.toString()}`)
     }
-    if(addon2){
-      planType = planType.concat("_Url_1")
-    }else{
-      planType = planType.concat("_Url_0")
-    }
-    if(addon3){
-      planType = planType.concat("_Wat_1")
-    }else{
-      planType = planType.concat("_Wat_0")
-    }
-    if (props.stripe && process.env.REACT_APP_PAYMENT_ENDPOINT){
+  }
+  useEffect(() => {
+    if (!createUserSent) return
+    if (createUserResponse.isLoading){
       setLoading(true);
-      setErr('');
-      // console.log('name: ',name)
-      const token = await props.stripe.createToken({name});
-      // console.log(token.token)
-      // console.log(planType)
-      const lambdaRes = await request.post(process.env.REACT_APP_PAYMENT_ENDPOINT.concat("/create-stripe"), {
-        json: true,
-        body: { "token":token.token,"plans":[{
-          [planType] : numDapps
-        }], "email":email, "name":name, "coupon":coupon}
-      })
-      // console.log('Response from lambda fxn: ',lambdaRes);
-      if (lambdaRes.customerId) {
-        // Tell the user that they'll be receiving a
-        // temporary password in just a moment
-        setSuccessful(true);
-      } else {
-        // console.log(lambdaRes.err)
-        // setErr(lambdaRes.err);
-      }
+      Alert.info("Sending Request", { timeout: 750});  
+    } 
+    else if (createUserResponse.error) {
+      markCreateUserSent(false)
       setLoading(false);
+      setErr(createUserResponse.error.message);
+      Alert.error("Error creating new user:"+createUserResponse.error.message);
+    } 
+    else if(createUserResponse.data) {
+      console.log(createUserResponse.data)
+      setLoading(false);
+      setSuccessful(true);
+      markCreateUserSent(false);
+    }
+  }, [createUserResponse]);
+  
+  // export interface UserCreateArgs {
+  //   email : string
+  //   name : string
+  //   plans : StripePlans
+  //   coupon?: string
+  //   token?: string
+  // }
+  const createSubscription = async () => {
+    if (stripe){
+      let {token} = await stripe.createToken({name: "Name"});
+      if (token) {
+        handleCreateUser({ token:token.id, "plans":{standard:1, professional:0, enterprise:0}, "email":email, "name":name, "coupon":coupon})
+      }
     }
   }
 
