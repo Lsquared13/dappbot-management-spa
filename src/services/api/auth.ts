@@ -1,7 +1,7 @@
 import { UserResponseData, UserSetter } from '../../types';
 import { 
   Operations, MessageResponse, SignInResponse,
-  AuthorizedRequest, RootStrings
+  RequestFactory, ResourceFactory
 } from './types'
 import { Resource } from 'react-request-hook';
 
@@ -37,8 +37,8 @@ export class AuthAPI {
   constructor(
     user:UserResponseData, 
     setUser:UserSetter, 
-    resourceFactory:<Args, Returns>(operation: Operations, rootResource?: RootStrings) => (args: Args, subResource?: string | undefined) => Resource<Returns>, 
-    requestFactory:<Args>(operation: Operations, rootResource?: "private" | "public" | "auth") => (args: Args, subResource?: string | undefined) => AuthorizedRequest
+    resourceFactory:ResourceFactory, 
+    requestFactory:RequestFactory
   ){
     this.user = user;
     this.setUser = setUser;
@@ -47,8 +47,8 @@ export class AuthAPI {
   }
   user:UserResponseData
   setUser:(newUser:UserResponseData) => void
-  resourceFactory:<Args, Returns>(operation: Operations, rootResource?: "private" | "public" | "auth") => (args: Args, subResource?: string | undefined) => Resource<Returns>
-  requestFactory:<Args>(operation: Operations, rootResource?: "private" | "public" | "auth") => (args: Args, subResource?: string | undefined) => AuthorizedRequest
+  resourceFactory:ResourceFactory
+  requestFactory:RequestFactory
 
   signIn(){
     return (args:SignInArgs) => {
