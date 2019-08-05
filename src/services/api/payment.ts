@@ -18,7 +18,7 @@ export class PaymentAPI {
     requestFactory:RequestFactory
   ){
     this.user = user;
-    this.setUser = setUser,
+    this.setUser = setUser;
     this.requestFactory = requestFactory;
     this.resourceFactory = resourceFactory;
   }
