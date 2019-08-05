@@ -136,14 +136,14 @@ export const Login: FC<LoginProps> = (props) => {
     }
   }, [challenge, setChallenge, user, navigate])
 
-  let loginFields;
 
+  let loginFields;
   let challengeProps = { setChallenge, setErr }
 
   switch (challenge.ChallengeName) {
 
     default:
-      loginFields = (
+      let loginFields = (
         <div className="fdb-box fdb-touch">
           <div className="row">
             <div className="col">
@@ -172,14 +172,14 @@ export const Login: FC<LoginProps> = (props) => {
                 disabled={loading}
                 onChange={setPassword}
                 value={password} />
-              <p className="text-right">Don't have an account yet? <a href="/signup">Sign Up</a></p>
+              <p className="text-center">Don't have an account yet? <a href="/signup">Sign Up</a></p>
             </div>
           </div>
           <div className="row mt-4">
             <div className="col">
-              <div style={{ textAlign: "left" }}>
-                <Button disabled={loading} onClick={handleSignIn}>Submit</Button>
-                <Button onClick={handleForgottenPass}>Forgot Password?</Button>
+              <div style={{ display: "flex", justifyContent: "space-between"  }}>
+                <Button disabled={loading} onClick={handleSignIn}>Log In</Button>
+                <Button onClick={handleForgottenPass} style='standard' theme='outlineBlue'>Forgot Password?</Button>
                 <ErrorBox errMsg={err}></ErrorBox>
               </div>
               {/* <button className="btn btn-primary" type="button">Submit</button> */}

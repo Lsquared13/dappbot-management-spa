@@ -157,7 +157,7 @@ export class CreateDapp extends React.Component<
               Repository
             </Text>
             <Box display="flex" wrap={true} marginBottom={3} marginTop={2}>
-              <Box width={100}>
+              <Box width={100} marginTop={1}>
                 <Button
                   block
                   size="small"
@@ -169,7 +169,7 @@ export class CreateDapp extends React.Component<
                 </Button>
               </Box>
               <Box display="inlineBlock" margin={2} />
-              <Box width={100}>
+              <Box width={100} marginTop={1}>
                 <Button
                   block
                   size="small"
@@ -190,29 +190,25 @@ export class CreateDapp extends React.Component<
           </Box>
         </Box>
 
-        <Box display="flex">
-          <Box width={125}>
-            <Button
-              block
-              size="small"
-              onClick={e => onConfigDapp(e, this.state)}
-              disabled={disableSubmit}
-            >
-              <ButtonText>Configure Dapp</ButtonText>
-            </Button>
-          </Box>
-          <Box display="inlineBlock" margin={2} />
-          <Box width={125}>
-            <Button
-              block
-              size="small"
-              theme="outlineBlue"
-              onClick={e => onCancel(e, this.state)}
-            >
-              <ButtonText>Cancel</ButtonText>
-            </Button>
-          </Box>
-        </Box>
+        <div style={{ display: "flex", justifyContent: "space-between"  }} >
+          <Button
+            size="small"
+            style="standard"
+            theme="cta"
+            onClick={e => onConfigDapp(e, this.state)}
+            disabled={disableSubmit}
+          >
+            <ButtonText>Configure Dapp</ButtonText>
+          </Button>
+          <Button
+            size="small"
+            style="standard"
+            theme="outlineBlue"
+            onClick={e => onCancel(e, this.state)}
+          >
+            <ButtonText>Cancel</ButtonText>
+          </Button>
+        </div>
       </LayoutContainer>
     );
   }
