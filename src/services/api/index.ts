@@ -82,6 +82,7 @@ export class API {
         case Operations.read:
         case Operations.readStripeData:
           httpMethodType = 'GET';
+          break;
         default:
           throw new Error(`Unrecognized operation : ${operation}`);
       }
