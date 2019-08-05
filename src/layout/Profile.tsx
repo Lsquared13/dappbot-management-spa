@@ -62,13 +62,9 @@ export default class Profile extends Component<ProfileProps, ProfileState> {
           <InputTitle color="gray">Email</InputTitle>
           <InputContainer>
             <Box column={12} mdColumn={8}>
-              <Input
-                name="email"
-                value={email}
-                onChange={this.onEmailChange}
-                type="email"
-                placeholder="email address"
-              />
+              <Text>
+                {email}
+              </Text>
             </Box>
           </InputContainer>
         </InputGroup>
