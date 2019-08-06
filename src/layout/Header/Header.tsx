@@ -27,8 +27,7 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
     let user = this.props.user;
     this.state = {
       displayEmail: user && user.User && user.User.Email ? user.User.Email : this.placeholderEmail,
-      activeIndex:
-        this.props.uri === "/home/" || this.props.uri === "/home" ? 0 : 1
+      activeIndex: ['/home/', '/home'].includes(this.props.uri) ? 0 : 1
     };
     
   }
