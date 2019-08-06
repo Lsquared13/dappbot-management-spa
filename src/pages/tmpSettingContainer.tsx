@@ -1,15 +1,15 @@
-import React from "react";
+import React, { FC, useState } from "react";
 import { RouteComponentProps } from "@reach/router";
 import { Container, Breadcrumb, Title } from "../layout";
 import { Box } from "../components/ui";
-import SettingHeader from "../components/reusable/settings/Header";
 import Profile, { ProfileState } from "../layout/Profile";
-import Password, { PasswordState } from "../layout/Password";
-import Billing, {
+import { PasswordState } from "../layout/Password";
+import {
   SubscriptionPlan,
   SubscriptionDetail,
   SubscriptionChanges
-} from "../layout/Billing";
+} from "../layout/OldBilling";
+import Billing from '../components/Billing';
 import { UserResponseData } from "../types";
 
 
@@ -49,6 +49,44 @@ export interface SettingState {
   activeTab: string;
 }
 
+export const SettingContainer:FC<SettingsContainerProps> = (props) => {
+
+  // TODO: This page is going to contain the full
+  // Settings content for now, both the email and
+  // billing info.  As such, this code related to
+  // switching tabs is dead for now.  Keeping it
+  // as a reminder.
+  const [activeTab, setActiveTab] = useState('Profile');
+  const [activeIndex, setActiveIndex] = useState(0);
+  function handleChange({ activeTabIndex, event }:any){
+    event.preventDefault();
+    setActiveTab('Profile');
+    setActiveIndex(activeTabIndex)
+  }
+  
+  return (
+    <Box>
+      <Breadcrumb title={"none"} />
+
+
+      <Title title={'Profile'} />
+
+      <Container>
+        <Box>
+          <Profile {...props} />
+        </Box>
+      </Container>
+
+      <Title title={'Billing'} />
+      <Container>
+        <Box>
+          <Billing {...props} />
+        </Box>
+      </Container>
+    </Box>
+  );
+}
+
 export default class SettingContianer extends React.Component<
   SettingsContainerProps,
   SettingState
@@ -68,6 +106,7 @@ export default class SettingContianer extends React.Component<
 
   render() {
     console.log('user in tmpSettingContainer: ',this.props.user);
+    
     return (
       <Box>
         <Breadcrumb title={"none"} />

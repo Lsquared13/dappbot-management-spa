@@ -5,11 +5,11 @@ import { Box } from "../components/ui";
 import SettingHeader from "../components/reusable/settings/Header";
 import Profile, { ProfileState } from "../layout/Profile";
 import Password, { PasswordState } from "../layout/Password";
-import Billing, {
+import OldBilling, {
   SubscriptionPlan,
   SubscriptionDetail,
   SubscriptionChanges
-} from "../layout/Billing";
+} from "../layout/OldBilling";
 import { UserResponseData } from "../types";
 
 export interface SettingsContainerProps extends RouteComponentProps {
@@ -89,7 +89,7 @@ export default class SettingContianer extends React.Component<
             ) : this.state.activeIndex === 1 ? (
               <Password {...this.props} />
             ) : (
-              <Billing {...this.props} />
+              <OldBilling {...this.props} />
             )}
           </Box>
         </Container>
