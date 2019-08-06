@@ -42,15 +42,15 @@ const SETTING_OPTIONS = [
   },
 
 ];
-const BUILDING_DAPP = useRef({
-  DappName: "Building ... ",
-  Web3URL: "Building ... ",
-  ContractAddr: "Building ... ",
-  DnsName: "Building ... "
-} as DappDetail);
 
 
 export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser, API, ...props}) => {
+    const buildingDappDetails = useRef({
+      DappName: "Building ... ",
+      Web3URL: "Building ... ",
+      ContractAddr: "Building ... ",
+      DnsName: "Building ... "
+    } as DappDetail);
     const [DappName, setDappName] = useState("")
     const [createResponse, sendCreateRequest] = useResource(API.private.create());
     const [listResponse, sendListRequest] = useResource(API.private.list(),[]);
@@ -165,9 +165,9 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
                 ContractAddr: contractAddress,
                 Tier: Tiers.Standard
               }
-              BUILDING_DAPP.current.DappName = DappName;
-              BUILDING_DAPP.current.Web3URL = web3URL;
-              BUILDING_DAPP.current.ContractAddr = contractAddress;
+              buildingDappDetails.current.DappName = DappName;
+              buildingDappDetails.current.Web3URL = web3URL;
+              buildingDappDetails.current.ContractAddr = contractAddress;
               handleCreate(args)
             }
           }}
@@ -181,8 +181,8 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
          <BuildDetailsContainer
             path="/:dappName/*"
             building={true}
-            dappName={BUILDING_DAPP.current.DappName}
-            dapp={BUILDING_DAPP.current}
+            dappName={buildingDappDetails.current.DappName}
+            dapp={buildingDappDetails.current}
             onStatusCopy={() => {}}
             defaultTab="status"
             settingOptions={SETTING_OPTIONS}
