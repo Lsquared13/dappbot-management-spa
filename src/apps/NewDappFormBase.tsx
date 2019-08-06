@@ -42,11 +42,11 @@ const SETTING_OPTIONS = [
   },
 
 ];
-const LOADING_DAPP = {
-  DappName: "Loading ... ",
-  Web3URL: "Loading ... ",
-  ContractAddr: "Loading ... ",
-  DnsName: "Loading ... "
+const BUILDING_DAPP = {
+  DappName: "Building ... ",
+  Web3URL: "Building ... ",
+  ContractAddr: "Building ... ",
+  DnsName: "Building ... "
 } as DappDetail
 
 
@@ -165,6 +165,9 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
                 ContractAddr: contractAddress,
                 Tier: Tiers.Standard
               }
+              BUILDING_DAPP.DappName = DappName;
+              BUILDING_DAPP.Web3URL = web3URL;
+              BUILDING_DAPP.ContractAddr = contractAddress;
               handleCreate(args)
             }
           }}
@@ -179,7 +182,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
             path="/:dappName/*"
             building={true}
             dappName="loading"
-            dapp={LOADING_DAPP}
+            dapp={BUILDING_DAPP}
             onStatusCopy={() => {}}
             defaultTab="status"
             settingOptions={SETTING_OPTIONS}
