@@ -74,8 +74,10 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
 
   const isRequired = requireCreditCard;
   let extraFields;
-  const noCreditCardSignupArgs = { "plans":{standard:1, professional:0, enterprise:0}, "email":email, "name":name, "coupon":coupon};
-  const creditCardSignupArgs   = { "token":"", "plans":{standard:+numDapps, professional:0, enterprise:0}, "email":email, "name":name, "coupon":coupon};
+  const noCreditCardSignupArgs = { plans:{standard:1, professional:0, enterprise:0},
+                                   email, name, coupon };
+  const creditCardSignupArgs   = { plans:{standard:+numDapps, professional:0, enterprise:0},
+                                   email, name, coupon, token:""};
 
   const  handleCreateUser= async () => {
     markCreateUserSent(true);
@@ -108,14 +110,12 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
     if (createUserResponse.isLoading){
       setLoading(true);
       Alert.info("Sending Request", { timeout: 750});  
-    } 
-    else if (createUserResponse.error) {
+    } else if (createUserResponse.error) {
       markCreateUserSent(false)
       setLoading(false);
       setErr(createUserResponse.error.message);
       Alert.error("Error creating new user:"+createUserResponse.error.message);
-    } 
-    else if(createUserResponse.data) {
+    } else if(createUserResponse.data) {
       console.log(createUserResponse.data)
       setLoading(false);
       setSuccessful(true);
@@ -128,28 +128,7 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
     extraFields = (
       <div>
         
-        <div className="row mb-4">
-          <div className="col" style={{textAlign: "left"}}>
-         
-            <NumberField name='numDapps' 
-            value={numDapps}
-            displayName={'Number of Dapps'}
-            disabled={loading}
-            size={Uints.size32}
-            onChange={setNumDapps} />
-          </div>
-        </div>
-
-        <div className="row mb-4">
-          <div className="col">
-            <div style={{textAlign: "left"}}>
-              <p className="input-group-header" >Payment</p>
-            </div>
-            <div style={{border: "1px solid #8e8e8e", borderRadius: 4, padding: 20}}>
-              <CardElement />
-            </div>
-          </div>
-        </div>
+       
       
       </div>
    
@@ -201,11 +180,36 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
                   </div>
                 </div>
                 
-                {extraFields}
+                { !requireCreditCard ? null : (
+                  <div>
+                      <div className="row mb-4">
+                        <div className="col" style={{textAlign: "left"}}>
+                      
+                          <NumberField name='numDapps' 
+                          value={numDapps}
+                          displayName={'Number of Dapps'}
+                          disabled={loading}
+                          size={Uints.size32}
+                          onChange={setNumDapps} />
+                        </div>
+                      </div>
+
+                      <div className="row mb-4">
+                        <div className="col">
+                          <div style={{textAlign: "left"}}>
+                            <p className="input-group-header" >Payment</p>
+                          </div>
+                          <div style={{border: "1px solid #8e8e8e", borderRadius: 4, padding: 20}}>
+                            <CardElement />
+                          </div>
+                        </div>
+                      </div>
+                  </div>)
+                }
                 
                 <div className="row mt-4 mb-4">
                   <div className="col">
-                    <CheckoutBox numDapps={numDapps} requireCreditCard={requireCreditCard?true:false}/>
+                    <CheckoutBox numDapps={numDapps} requireCreditCard={!!requireCreditCard}/>
                   </div>
                 </div>
 
