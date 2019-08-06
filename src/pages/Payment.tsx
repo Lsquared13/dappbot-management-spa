@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { RouteComponentProps, Link } from '@reach/router';
 import { StringField, NumberField, Uints } from '../components/fields';
 import { Button, Box, Text } from '../components/ui';
@@ -6,14 +6,21 @@ import { Button, Box, Text } from '../components/ui';
 import { CardElement, injectStripe, ReactStripeElements } from 'react-stripe-elements';
 import request from 'request-promise-native';
 import validate from 'validator';
+import API from '../services/api';
+import Alert from 'react-s-alert';
 
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
 import { ErrorBox } from '../components';
+import { useResource } from 'react-request-hook';
+import { UserCreateArgs } from '../types';
 
 interface PaymentProps extends RouteComponentProps, ReactStripeElements.InjectedStripeProps {
   user?: any
   setUser: (newUser:any)=>void
+  API: API
+  requireCreditCard?: boolean
+
 }
 
 export const PLAN_PRICES = {
@@ -22,23 +29,37 @@ export const PLAN_PRICES = {
   STARTUP : 150
 }
 
-export const CheckoutBox:FC<{numDapps:string}> = ({numDapps}) => {
-  const priceTag = parseInt(numDapps) * PLAN_PRICES.PROJECT;
-  return (
-    <Box>
-      <Text>
-        You are purchasing <strong>{numDapps} dapps</strong> on our <strong>Project Plan</strong>, at a cost of <strong>${priceTag} per month</strong>.
-      </Text>
-    </Box>
-  )
+export const CheckoutBox:FC<{numDapps:string, requireCreditCard:boolean}> = ({numDapps, requireCreditCard}) => {
+  const priceTag = parseInt(numDapps) * PLAN_PRICES.ENTHUSIAST;
+  if (requireCreditCard){
+    return (
+      <Box>
+        <Text>
+          You are purchasing <strong>{numDapps} dapps</strong> on our <strong>Basic Plan</strong>, at a cost of <strong>${priceTag} per month</strong>.
+        </Text>
+      </Box>
+    )
+  } 
+  else {
+    return (
+      <Box>
+        <Text>
+          You will receive access to <strong>{numDapps} dapps</strong> on your <strong>Free Trial</strong>, lasting 7 days.
+        </Text>
+      </Box>
+    )
+   
+  }
+  
 }
 
+      
 
-export const Payment:FC<PaymentProps> = (props) => {
+export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCreditCard}) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [coupon, setCoupon] = useState('');
-  const [numDapps, setNumDapps] = useState('0');
+  const [numDapps, setNumDapps] = useState('10');
   const [addon1, setAddon1] = useState(false)
   const [addon2, setAddon2] = useState(false)
   const [addon3, setAddon3] = useState(false)
@@ -46,49 +67,61 @@ export const Payment:FC<PaymentProps> = (props) => {
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
   const [successful, setSuccessful] = useState(false);
-  const createSubscription = async () => {
-    let planType = "plan"
-    if(addon1){
-      planType = planType.concat("_Bra_1")
-    }else{
-      planType = planType.concat("_Bra_0")
-    }
-    if(addon2){
-      planType = planType.concat("_Url_1")
-    }else{
-      planType = planType.concat("_Url_0")
-    }
-    if(addon3){
-      planType = planType.concat("_Wat_1")
-    }else{
-      planType = planType.concat("_Wat_0")
-    }
-    if (props.stripe && process.env.REACT_APP_PAYMENT_ENDPOINT){
-      setLoading(true);
-      setErr('');
-      // console.log('name: ',name)
-      const token = await props.stripe.createToken({name});
-      // console.log(token.token)
-      // console.log(planType)
-      const lambdaRes = await request.post(process.env.REACT_APP_PAYMENT_ENDPOINT.concat("/create-stripe"), {
-        json: true,
-        body: { "token":token.token,"plans":[{
-          [planType] : numDapps
-        }], "email":email, "name":name, "coupon":coupon}
-      })
-      // console.log('Response from lambda fxn: ',lambdaRes);
-      if (lambdaRes.customerId) {
-        // Tell the user that they'll be receiving a
-        // temporary password in just a moment
-        setSuccessful(true);
-      } else {
-        // console.log(lambdaRes.err)
-        // setErr(lambdaRes.err);
-      }
-      setLoading(false);
-    }
-  }
 
+
+  const [createUserResponse, sendCreateUserRequest] = useResource(API.payment.createUser());
+  const [createUserSent, markCreateUserSent] = useState(false);
+
+  const isRequired = requireCreditCard;
+  const noCreditCardSignupArgs = { plans:{standard:10, professional:0, enterprise:0},
+                                   email, name, coupon };
+  const creditCardSignupArgs   = { plans:{standard:+numDapps, professional:0, enterprise:0},
+                                   email, name, coupon, token:""};
+
+  const  handleCreateUser= async () => {
+    markCreateUserSent(true);
+    setErr('');
+
+    if (isRequired && stripe) {
+      try {
+        let {token} = await stripe.createToken({'name': name});
+        if (token && token.id) { 
+          creditCardSignupArgs.token = token.id
+          sendCreateUserRequest(creditCardSignupArgs) }
+      }
+      catch(err){
+        Alert.error(`Error sending new user request : ${err.toString()}`)   
+      }
+    } 
+    else {
+      try {
+        sendCreateUserRequest(noCreditCardSignupArgs);
+      } 
+      catch (err) {
+        Alert.error(`Error sending new user request : ${err.toString()}`)
+      }
+    }
+
+ 
+  }
+  useEffect(() => {
+    if (!createUserSent) return
+    if (createUserResponse.isLoading){
+      setLoading(true);
+      Alert.info("Sending Request", { timeout: 750});  
+    } else if (createUserResponse.error) {
+      markCreateUserSent(false)
+      setLoading(false);
+      setErr(createUserResponse.error.message);
+      Alert.error("Error creating new user:"+createUserResponse.error.message);
+    } else if(createUserResponse.data) {
+      console.log(createUserResponse.data)
+      setLoading(false);
+      setSuccessful(true);
+      markCreateUserSent(false);
+    }
+  }, [createUserResponse]);
+  
   return successful ? (
     <div>
       <h2>Congratulations!</h2>
@@ -131,56 +164,41 @@ export const Payment:FC<PaymentProps> = (props) => {
                     onChange={setEmail}/>
                   </div>
                 </div>
+                
+                { !requireCreditCard ? null : (
+                  <div>
+                      <div className="row mb-4">
+                        <div className="col" style={{textAlign: "left"}}>
+                      
+                          <NumberField name='numDapps' 
+                          value={numDapps}
+                          displayName={'Number of Dapps'}
+                          disabled={loading}
+                          size={Uints.size32}
+                          onChange={setNumDapps} />
+                        </div>
+                      </div>
 
-                <div className="row mt-4">
-                  <div className="col">
-                    <NumberField name='numDapps' 
-                    value={numDapps}
-                    disabled={loading}
-                    size={Uints.size32}
-                    displayName='Number of Dapps'
-                    onChange={setNumDapps} />
-                  </div>
-                </div>
-
-                <div className="row-mt-4">
-                  <div className="col">
-                  <input type={"checkbox"} className="Addon 1" onChange={e=>setAddon1(!addon1)}></input>
-                  <input type={"checkbox"} className="Addon 2" onChange={e=>setAddon2(!addon2)}></input>
-                  <input type={"checkbox"} className="Addon 3" onChange={e=>setAddon3(!addon3)}></input>
-                  </div>
-                </div>
-
-                <div className="row mt-4">
-                  <div className="col">
-                    <StringField name='coupon' 
-                    onChange={setCoupon}
-                    displayName='Coupon'
-                    help='If you were given a coupon code for discounted dapps, please enter it here.'
-                    value={coupon} />
-                    {/* <p className="text-right">Already have an account? <a href="/login">Log In</a></p> */}
-                  </div>
-                </div>
-
-                <div className="row mb-4">
-                  <div className="col">
-                    <div style={{textAlign: "left"}}>
-                      <p className="input-group-header" >Payment</p>
-                    </div>
-                    <div style={{border: "1px solid #8e8e8e", borderRadius: 4, padding: 20}}>
-                      <CardElement />
-                    </div>
-                  </div>
-                </div>
-
-
+                      <div className="row mb-4">
+                        <div className="col">
+                          <div style={{textAlign: "left"}}>
+                            <p className="input-group-header" >Payment</p>
+                          </div>
+                          <div style={{border: "1px solid #8e8e8e", borderRadius: 4, padding: 20}}>
+                            <CardElement />
+                          </div>
+                        </div>
+                      </div>
+                  </div>)
+                }
+                
                 <div className="row mt-4 mb-4">
                   <div className="col">
-                    <CheckoutBox numDapps={numDapps} />
+                    <CheckoutBox numDapps={numDapps} requireCreditCard={!!requireCreditCard}/>
                   </div>
                 </div>
 
-                <Button disabled={loading} onClick={createSubscription} block>
+                <Button disabled={loading} onClick={handleCreateUser} block>
                   Submit
                 </Button>
 
@@ -193,6 +211,10 @@ export const Payment:FC<PaymentProps> = (props) => {
       <ErrorBox errMsg={err} />
     </div>
   )
+}
+
+Payment.defaultProps = {
+  requireCreditCard: false,
 }
 
 export const PaymentPage = injectStripe(Payment);

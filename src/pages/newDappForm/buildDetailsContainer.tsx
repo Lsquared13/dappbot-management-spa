@@ -24,18 +24,10 @@ SettingMenuProps {
     
 }
 
-let LOADING_DAPP = {
-    DappName: "Building ... ",
-    Web3URL: "Building ... ",
-    ContractAddr: "Building ... ",
-    DnsName: "Building ... "
-}as DappDetail
-
-
 export const BuildDetailsContainer : React.SFC < buildDetailsContainerProps > = props => {
     
     let [dappDetailProps,
-        setDappDetailProps] = useState(LOADING_DAPP)
+        setDappDetailProps] = useState(props.dapp)
     let dapp = (
         <Box>
             <Breadcrumb title={props.dappName}/>
