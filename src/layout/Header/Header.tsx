@@ -15,16 +15,19 @@ export interface HeaderProps {
 
 export interface HeaderState {
   activeIndex: any;
+  displayEmail: string;
 }
 
 export class Header extends React.Component<HeaderProps, HeaderState> {
+  placeholderEmail = 'demo@dapp.bot';
 
   constructor(props: any) {
     super(props);
 
+    let user = this.props.user;
     this.state = {
-      activeIndex:
-        this.props.uri === "/home/" || this.props.uri === "/home" ? 0 : 1
+      displayEmail: user && user.User && user.User.Email ? user.User.Email : this.placeholderEmail,
+      activeIndex: ['/home/', '/home'].includes(this.props.uri) ? 0 : 1
     };
     
   }
@@ -53,8 +56,7 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
   };
 
   render() {
-    let user = this.props.user;
-    let email = user && user.User && user.User.Email || 'demo@dapp.bot';
+    let email = this.state.displayEmail;
     return (
       <StyledHeader>
         <Box paddingX={12}>
