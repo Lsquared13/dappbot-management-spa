@@ -19,6 +19,8 @@ interface PaymentProps extends RouteComponentProps, ReactStripeElements.Injected
   user?: any
   setUser: (newUser:any)=>void
   API: API
+  requireCreditCard?: boolean
+
 }
 
 export const PLAN_PRICES = {
@@ -27,23 +29,37 @@ export const PLAN_PRICES = {
   STARTUP : 150
 }
 
-export const CheckoutBox:FC<{numDapps:string}> = ({numDapps}) => {
-  const priceTag = parseInt(numDapps) * PLAN_PRICES.PROJECT;
-  return (
-    <Box>
-      <Text>
-        You are purchasing <strong>{numDapps} dapps</strong> on our <strong>Project Plan</strong>, at a cost of <strong>${priceTag} per month</strong>.
-      </Text>
-    </Box>
-  )
+export const CheckoutBox:FC<{numDapps:string, requireCreditCard:boolean}> = ({numDapps, requireCreditCard}) => {
+  const priceTag = parseInt(numDapps) * PLAN_PRICES.ENTHUSIAST;
+  if (requireCreditCard){
+    return (
+      <Box>
+        <Text>
+          You are purchasing <strong>{numDapps} dapps</strong> on our <strong>Basic Plan</strong>, at a cost of <strong>${priceTag} per month</strong>.
+        </Text>
+      </Box>
+    )
+  } 
+  else {
+    return (
+      <Box>
+        <Text>
+          You will receive access to <strong>{numDapps} dapps</strong> on your <strong>Free Trial</strong>, lasting 7 days.
+        </Text>
+      </Box>
+    )
+   
+  }
+  
 }
 
+      
 
-export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe}) => {
+export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCreditCard}) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [coupon, setCoupon] = useState('');
-  const [numDapps, setNumDapps] = useState('0');
+  const [numDapps, setNumDapps] = useState('1');
   const [addon1, setAddon1] = useState(false)
   const [addon2, setAddon2] = useState(false)
   const [addon3, setAddon3] = useState(false)
@@ -52,16 +68,40 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe}) => {
   const [loading, setLoading] = useState(false);
   const [successful, setSuccessful] = useState(false);
 
+
   const [createUserResponse, sendCreateUserRequest] = useResource(API.payment.createUser());
   const [createUserSent, markCreateUserSent] = useState(false);
-  const handleCreateUser= async (args:UserCreateArgs) => {
+
+  const isRequired = requireCreditCard;
+  let extraFields;
+  const noCreditCardSignupArgs = { "plans":{standard:1, professional:0, enterprise:0}, "email":email, "name":name, "coupon":coupon};
+  const creditCardSignupArgs   = { "token":"", "plans":{standard:+numDapps, professional:0, enterprise:0}, "email":email, "name":name, "coupon":coupon};
+
+  const  handleCreateUser= async () => {
     markCreateUserSent(true);
     setErr('');
-    try {
-      sendCreateUserRequest(args);
-    } catch (err) {
-      Alert.error(`Error sending new user request : ${err.toString()}`)
+
+    if (isRequired && stripe) {
+      try {
+        let {token} = await stripe.createToken({'name': name});
+        if (token && token.id) { 
+          creditCardSignupArgs.token = token.id
+          sendCreateUserRequest(creditCardSignupArgs) }
+      }
+      catch(err){
+        Alert.error(`Error sending new user request : ${err.toString()}`)   
+      }
+    } 
+    else {
+      try {
+        sendCreateUserRequest(noCreditCardSignupArgs);
+      } 
+      catch (err) {
+        Alert.error(`Error sending new user request : ${err.toString()}`)
+      }
     }
+
+ 
   }
   useEffect(() => {
     if (!createUserSent) return
@@ -82,24 +122,42 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe}) => {
       markCreateUserSent(false);
     }
   }, [createUserResponse]);
-  
 
-  const createSubscription = async () => {
-    handleCreateUser({ "plans":{standard:1, professional:0, enterprise:0}, "email":email, "name":name, "coupon":coupon})
+
+  if (isRequired) {
+    extraFields = (
+      <div>
         
-    // if (stripe){
-    //   try{
-    //     let {token} = await stripe.createToken({'name': name});
-    //     if (token) {
-    //       handleCreateUser({ token:token.id, "plans":{standard:1, professional:0, enterprise:0}, "email":email, "name":name, "coupon":coupon})
-    //     }
-    //   }catch(e){
-    //     console.log(e);
-    //   }
-      
-    // }
-  }
+        <div className="row mb-4">
+          <div className="col" style={{textAlign: "left"}}>
+         
+            <NumberField name='numDapps' 
+            value={numDapps}
+            displayName={'Number of Dapps'}
+            disabled={loading}
+            size={Uints.size32}
+            onChange={setNumDapps} />
+          </div>
+        </div>
 
+        <div className="row mb-4">
+          <div className="col">
+            <div style={{textAlign: "left"}}>
+              <p className="input-group-header" >Payment</p>
+            </div>
+            <div style={{border: "1px solid #8e8e8e", borderRadius: 4, padding: 20}}>
+              <CardElement />
+            </div>
+          </div>
+        </div>
+      
+      </div>
+   
+       )
+  } else {
+    extraFields = <div></div>;
+  }
+  
   return successful ? (
     <div>
       <h2>Congratulations!</h2>
@@ -143,55 +201,15 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe}) => {
                   </div>
                 </div>
                 
-                {/*TODO: TOGGLE THESE INPUTS WITH TOKEN INPUT ON PROPS TO USE AS UPDATE SCREEN AS WELL <div className="row mt-4">
-                  <div className="col">
-                    <NumberField name='numDapps' 
-                    value={numDapps}
-                    disabled={loading}
-                    size={Uints.size32}
-                    displayName='Number of Dapps'
-                    onChange={setNumDapps} />
-                  </div>
-                </div>
-
-                <div className="row-mt-4">
-                  <div className="col">
-                  <input type={"checkbox"} className="Addon 1" onChange={e=>setAddon1(!addon1)}></input>
-                  <input type={"checkbox"} className="Addon 2" onChange={e=>setAddon2(!addon2)}></input>
-                  <input type={"checkbox"} className="Addon 3" onChange={e=>setAddon3(!addon3)}></input>
-                  </div>
-                </div>
-
-                <div className="row mt-4">
-                  <div className="col">
-                    <StringField name='coupon' 
-                    onChange={setCoupon}
-                    displayName='Coupon'
-                    help='If you were given a coupon code for discounted dapps, please enter it here.'
-                    value={coupon} />
-                    <p className="text-right">Already have an account? <a href="/login">Log In</a></p>
-                  </div>
-                </div>
-
-                <div className="row mb-4">
-                  <div className="col">
-                    <div style={{textAlign: "left"}}>
-                      <p className="input-group-header" >Payment</p>
-                    </div>
-                    <div style={{border: "1px solid #8e8e8e", borderRadius: 4, padding: 20}}>
-                      <CardElement />
-                    </div>
-                  </div>
-                </div> */}
-
-
+                {extraFields}
+                
                 <div className="row mt-4 mb-4">
                   <div className="col">
-                    <CheckoutBox numDapps={numDapps} />
+                    <CheckoutBox numDapps={numDapps} requireCreditCard={requireCreditCard?true:false}/>
                   </div>
                 </div>
 
-                <Button disabled={loading} onClick={createSubscription} block>
+                <Button disabled={loading} onClick={handleCreateUser} block>
                   Submit
                 </Button>
 
@@ -204,6 +222,10 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe}) => {
       <ErrorBox errMsg={err} />
     </div>
   )
+}
+
+Payment.defaultProps = {
+  requireCreditCard: false,
 }
 
 export const PaymentPage = injectStripe(Payment);
