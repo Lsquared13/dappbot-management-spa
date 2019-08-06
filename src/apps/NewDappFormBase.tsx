@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect, useRef } from 'react';
 import { useResource } from 'react-request-hook';
 import { Router, navigate, RouteComponentProps, NavigateFn } from "@reach/router";
 import Alert from 'react-s-alert';
@@ -42,15 +42,15 @@ const SETTING_OPTIONS = [
   },
 
 ];
-const LOADING_DAPP = {
-  DappName: "Loading ... ",
-  Web3URL: "Loading ... ",
-  ContractAddr: "Loading ... ",
-  DnsName: "Loading ... "
-} as DappDetail
 
 
 export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser, API, ...props}) => {
+    const buildingDappDetails = useRef({
+      DappName: "Building ... ",
+      Web3URL: "Building ... ",
+      ContractAddr: "Building ... ",
+      DnsName: "Building ... "
+    } as DappDetail);
     const [DappName, setDappName] = useState("")
     const [createResponse, sendCreateRequest] = useResource(API.private.create());
     const [listResponse, sendListRequest] = useResource(API.private.list(),[]);
@@ -165,6 +165,9 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
                 ContractAddr: contractAddress,
                 Tier: Tiers.Standard
               }
+              buildingDappDetails.current.DappName = DappName;
+              buildingDappDetails.current.Web3URL = web3URL;
+              buildingDappDetails.current.ContractAddr = contractAddress;
               handleCreate(args)
             }
           }}
@@ -178,8 +181,8 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
          <BuildDetailsContainer
             path="/:dappName/*"
             building={true}
-            dappName="loading"
-            dapp={LOADING_DAPP}
+            dappName={buildingDappDetails.current.DappName}
+            dapp={buildingDappDetails.current}
             onStatusCopy={() => {}}
             defaultTab="status"
             settingOptions={SETTING_OPTIONS}
