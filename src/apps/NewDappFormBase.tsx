@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect, useRef } from 'react';
 import { useResource } from 'react-request-hook';
 import { Router, navigate, RouteComponentProps, NavigateFn } from "@reach/router";
 import Alert from 'react-s-alert';
@@ -42,12 +42,12 @@ const SETTING_OPTIONS = [
   },
 
 ];
-const BUILDING_DAPP = {
+const BUILDING_DAPP = useRef({
   DappName: "Building ... ",
   Web3URL: "Building ... ",
   ContractAddr: "Building ... ",
   DnsName: "Building ... "
-} as DappDetail
+} as DappDetail);
 
 
 export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser, API, ...props}) => {
@@ -165,9 +165,9 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
                 ContractAddr: contractAddress,
                 Tier: Tiers.Standard
               }
-              BUILDING_DAPP.DappName = DappName;
-              BUILDING_DAPP.Web3URL = web3URL;
-              BUILDING_DAPP.ContractAddr = contractAddress;
+              BUILDING_DAPP.current.DappName = DappName;
+              BUILDING_DAPP.current.Web3URL = web3URL;
+              BUILDING_DAPP.current.ContractAddr = contractAddress;
               handleCreate(args)
             }
           }}
@@ -181,8 +181,8 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
          <BuildDetailsContainer
             path="/:dappName/*"
             building={true}
-            dappName={BUILDING_DAPP.DappName}
-            dapp={BUILDING_DAPP}
+            dappName={BUILDING_DAPP.current.DappName}
+            dapp={BUILDING_DAPP.current}
             onStatusCopy={() => {}}
             defaultTab="status"
             settingOptions={SETTING_OPTIONS}
