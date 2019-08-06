@@ -59,7 +59,7 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [coupon, setCoupon] = useState('');
-  const [numDapps, setNumDapps] = useState('1');
+  const [numDapps, setNumDapps] = useState('10');
   const [addon1, setAddon1] = useState(false)
   const [addon2, setAddon2] = useState(false)
   const [addon3, setAddon3] = useState(false)
@@ -73,8 +73,7 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
   const [createUserSent, markCreateUserSent] = useState(false);
 
   const isRequired = requireCreditCard;
-  let extraFields;
-  const noCreditCardSignupArgs = { plans:{standard:1, professional:0, enterprise:0},
+  const noCreditCardSignupArgs = { plans:{standard:10, professional:0, enterprise:0},
                                    email, name, coupon };
   const creditCardSignupArgs   = { plans:{standard:+numDapps, professional:0, enterprise:0},
                                    email, name, coupon, token:""};
@@ -122,20 +121,6 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
       markCreateUserSent(false);
     }
   }, [createUserResponse]);
-
-
-  if (isRequired) {
-    extraFields = (
-      <div>
-        
-       
-      
-      </div>
-   
-       )
-  } else {
-    extraFields = <div></div>;
-  }
   
   return successful ? (
     <div>
