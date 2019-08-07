@@ -4,7 +4,7 @@ import {
 } from '../../types';
 import { 
   Operations, ResourceFactory, RequestFactory,
-  GetStripeDataArgs, StripeUserDataResponse, 
+  StripeUserDataResponse, 
   StripeCancelResponse, UserCreateResponse,
   UpdatePlanCountArgs, UpdatePlanCountResponse,
   UpdatePaymentArgs, UpdatePaymentResponse
@@ -36,8 +36,8 @@ export class PaymentAPI {
   }
 
   getUserStripeData(){
-    return (args:GetStripeDataArgs) => {
-      return this.resourceFactory<GetStripeDataArgs, StripeUserDataResponse>(Operations.readStripeData, 'payment')(args, 'stripe');
+    return () => {
+      return this.resourceFactory<null, StripeUserDataResponse>(Operations.readStripeData, 'payment')(null, 'stripe');
     }
   }
 
