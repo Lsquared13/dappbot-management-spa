@@ -33,14 +33,14 @@ const EasyInputGroup:FC<EasyInputGroupProps> = ({ title, children }) => (
 
 export interface BillingProps extends RSE.InjectedStripeProps {
   source: XOR<CardType, null>
-  sub: XOR<subscriptions.ISubscription, null>
+  subscription: XOR<subscriptions.ISubscription, null>
   name: string
   submitWithToken:(token:stripe.Token)=>Promise<any>
   loadingData: boolean
 }
 
 const Billing:FC<BillingProps> = ({ 
-  source, sub, stripe, name, submitWithToken, loadingData
+  source, subscription, stripe, name, submitWithToken, loadingData
 }) => {
 
   const [updatingCard, setUpdatingCard] = useState(false);
@@ -66,15 +66,15 @@ const Billing:FC<BillingProps> = ({
     }
   }
 
-  let nextBillingDate, subStatus = 'Loading...';
-  if (sub) {
+  let nextBillingDate, subscriptionStatus = 'Loading...';
+  if (subscription) {
     // Format is like 'January 1st, 2019'
-    nextBillingDate = moment(sub.current_period_end).format('MMMM Do, YYYY');
+    nextBillingDate = moment(subscription.current_period_end).format('MMMM Do, YYYY');
 
-    subStatus = 
-      sub.status === 'trialing' ? 'Trial' :
-      sub.status === 'active' ? 'Active' :
-      sub.status === 'canceled' ? 'Cancelled' :
+    subscriptionStatus = 
+      subscription.status === 'trialing' ? 'Trial' :
+      subscription.status === 'active' ? 'Active' :
+      subscription.status === 'canceled' ? 'Cancelled' :
       'Lapsed';
   }
 
@@ -100,7 +100,7 @@ const Billing:FC<BillingProps> = ({
       </EasyInputGroup>
       <EasyInputGroup title='Subscription Status'>
         <Text>
-          {subStatus}
+          {subscriptionStatus}
         </Text>
       </EasyInputGroup>
       <EasyInputGroup title='Next Billing Date'>
