@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from 'react';
 import { RouteComponentProps, Link } from '@reach/router';
-import { StringField, NumberField, Uints } from '../components/fields';
+import { StringField, NumberField, Uints, BooleanField } from '../components/fields';
 import { Button, Box, Text } from '../components/ui';
 
 import { CardElement, injectStripe, ReactStripeElements } from 'react-stripe-elements';
@@ -59,7 +59,7 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [coupon, setCoupon] = useState('');
-  const [numDapps, setNumDapps] = useState('10');
+  const [numDapps, setNumDapps] = useState('1');
   const [addon1, setAddon1] = useState(false)
   const [addon2, setAddon2] = useState(false)
   const [addon3, setAddon3] = useState(false)
@@ -67,13 +67,16 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
   const [successful, setSuccessful] = useState(false);
+  const [organization, setOrganization] = useState("");
+  const [occupation, setOccupation] = useState("");
+  const [agreeTerms, setAgreeTerms] = useState(false) ;
 
 
   const [createUserResponse, sendCreateUserRequest] = useResource(API.payment.createUser());
   const [createUserSent, markCreateUserSent] = useState(false);
 
   const isRequired = requireCreditCard;
-  const noCreditCardSignupArgs = { plans:{standard:10, professional:0, enterprise:0},
+  const noCreditCardSignupArgs = { plans:{standard:1, professional:0, enterprise:0},
                                    email, name, coupon };
   const creditCardSignupArgs   = { plans:{standard:+numDapps, professional:0, enterprise:0},
                                    email, name, coupon, token:""};
@@ -154,6 +157,7 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
                   </div>
                 </div>
                 
+             
                 <div className="row mt-4">
                   <div className="col">
                     <StringField name='email' 
@@ -162,6 +166,38 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
                     disabled={loading}
                     displayName='Email'
                     onChange={setEmail}/>
+                  </div>
+                </div>
+                <div className="row mt-4">
+                  <div className="col">
+                    <StringField name='organization' 
+                    value={organization} 
+                    isValid={()=> true}
+                    disabled={loading}
+                    displayName='Organization'
+                    onChange={setOrganization}/>
+                  </div>
+                </div>
+                <div className="row mt-4">
+                  <div className="col">
+                    <StringField name='occupation' 
+                    value={occupation} 
+                    isValid={()=> true}
+                    disabled={loading}
+                    displayName='Occupation'
+                    onChange={setOccupation}/>
+                  </div>
+                </div>
+      
+                <div className="row mt-4">
+                  <div className="col">
+                    <BooleanField name='agreeTerms' 
+                    value={agreeTerms} 
+                    labels={   {true: "",
+                      false: "Agree"}}
+                    disabled={loading}
+                    displayName={"Agree to Terms & Conditions"}
+                    onChange={setAgreeTerms}/>
                   </div>
                 </div>
                 
@@ -191,6 +227,7 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
                       </div>
                   </div>)
                 }
+                
                 
                 <div className="row mt-4 mb-4">
                   <div className="col">
