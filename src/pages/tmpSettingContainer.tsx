@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from "react";
 import { RouteComponentProps } from "@reach/router";
 import Alert from 'react-s-alert';
-import { Container, Breadcrumb, Title } from "../layout";
+import { Container, Breadcrumb, Title, LayoutContainer } from "../layout";
 import { Box } from "../components/ui";
 import Profile, { ProfileState } from "../layout/Profile";
 import { PasswordState } from "../layout/Password";
@@ -13,7 +13,7 @@ import {
 import Billing from '../components/Billing';
 import { UserResponseData } from "../types";
 import { injectStripe, ReactStripeElements as RSE } from "react-stripe-elements";
-import API from "../services/api";
+import API, { StripeUserData } from "../services/api";
 import { useResource } from "react-request-hook";
 import { ICard, subscriptions } from "stripe";
 import { XOR } from "ts-xor";
@@ -70,7 +70,10 @@ export interface SettingState {
 //   setActiveIndex(activeTabIndex)
 // }
 
-export const SettingContainer:FC<SettingsContainerProps> = (props) => {
+// Explicitly not exporting raw component because
+// it needs to be run with the injectStripe HOC
+// on the default object.
+const SettingContainer:FC<SettingsContainerProps> = (props) => {
   const { API, user } = props;
 
   let [source, setSource] = useState(null as XOR<ICard, null>);
@@ -79,12 +82,18 @@ export const SettingContainer:FC<SettingsContainerProps> = (props) => {
   const [stripeData, fetchStripeData] = useResource(API.payment.getUserStripeData(), []);
   useEffect(function handleStripeDataLoad(){
     let { data, error } = stripeData;
+    if (data) console.log('data: ',data);
     if (data){
-      const { customer, subscription } = data.data;
+      // @ts-ignore Resource Factory expects responses to all
+      // have the data object nesting, payment lambda doesn't.
+      // Ignore this until that's updated.
+      const userData:StripeUserData = data;
+      const { customer, subscription } = userData;
       setSource(customer.default_source as XOR<ICard, null>);
       setSubscription(subscription);
       setName(customer.name || '');
     } else if (error) {
+      console.log('error fetching data: ',error);
       Alert.error(`Error fetching your subscription data: ${error.toString()}`)
     }
   }, [stripeData]);
@@ -102,6 +111,7 @@ export const SettingContainer:FC<SettingsContainerProps> = (props) => {
     } else if (data && !isLoading) {
       fetchStripeData();
     }
+    if (data) console.log('updatedPaymentResponse: ',data);
   }, [updatePaymentResponse, fetchStripeData]);
   
   return (
@@ -111,19 +121,16 @@ export const SettingContainer:FC<SettingsContainerProps> = (props) => {
       <Title title={'Profile'} />
       <Container>
         <Box>
-          <Profile {...props} />
+          <LayoutContainer>
+            <Profile {...props} />
+            <Billing source={source} 
+              subscription={subscription} 
+              name={name}
+              loadingData={stripeData.isLoading}
+              submitWithToken={sendUpdatePayment} />
+          </LayoutContainer>
         </Box>
       </Container>
-
-      <Title title={'Billing'} />
-      <Container>
-        <Box>
-          <Billing source={source} sub={subscription} name={name}
-            loadingData={stripeData.isLoading}
-            submitWithToken={sendUpdatePayment} />
-        </Box>
-      </Container>
-      
     </Box>
   );
 }

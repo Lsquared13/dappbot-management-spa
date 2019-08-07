@@ -37,7 +37,9 @@ export class PaymentAPI {
 
   getUserStripeData(){
     return () => {
-      return this.resourceFactory<null, StripeUserDataResponse>(Operations.readStripeData, 'payment')(null, 'stripe');
+      let getDataRequest = this.resourceFactory<null, StripeUserDataResponse>(Operations.readStripeData, 'payment')(null, 'stripe');
+      console.log('getDataRequest: ',getDataRequest);
+      return getDataRequest;
     }
   }
 
@@ -55,7 +57,9 @@ export class PaymentAPI {
 
   updatePaymentMethod(){
     return (args:UpdatePaymentArgs) => {
-      return this.resourceFactory<UpdatePaymentArgs, UpdatePaymentResponse>(Operations.updatePayment, 'payment')(args, 'stripe')
+      let updatePaymentReq = this.resourceFactory<UpdatePaymentArgs, UpdatePaymentResponse>(Operations.updatePayment, 'payment')(args, 'stripe');
+      console.log('updatePaymentReq: ',updatePaymentReq);
+      return updatePaymentReq;
     }
   }
 

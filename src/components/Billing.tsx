@@ -27,7 +27,6 @@ const EasyInputGroup:FC<EasyInputGroupProps> = ({ title, children }) => (
         {children}
       </Box>
     </InputContainer>
-    {/* TODO: Add an update button within here*/}
   </InputGroup>
 )
 
@@ -68,8 +67,8 @@ const Billing:FC<BillingProps> = ({
 
   let nextBillingDate, subscriptionStatus = 'Loading...';
   if (subscription) {
-    // Format is like 'January 1st, 2019'
-    nextBillingDate = moment(subscription.current_period_end).format('MMMM Do, YYYY');
+    // Format is like 'January 1st, 2019', API comes in seconds
+    nextBillingDate = moment(subscription.current_period_end * 1000).format('MMMM Do, YYYY');
 
     subscriptionStatus = 
       subscription.status === 'trialing' ? 'Trial' :
@@ -80,18 +79,32 @@ const Billing:FC<BillingProps> = ({
 
   
   return (
-    <LayoutContainer>
+    <>
       <EasyInputGroup title='Credit Card'>
         <>
         { cardElt }
         {
           updatingCard ? (
             <>
-              <Button onClick={toggleUpdatingCard}>Cancel</Button>
-              <Button onClick={submitCardUpdate}>Submit</Button>
+              <Button onClick={toggleUpdatingCard}
+                size='small' 
+                style='quiet'
+                theme='outlineBlue'>
+                Cancel
+              </Button>
+              <Button onClick={submitCardUpdate}
+                size='small' 
+                style='quiet'
+                theme='outlineBlue'>
+                Submit
+              </Button>
             </>
           ) : (
-            <Button onClick={toggleUpdatingCard} disabled={loadingData}>
+            <Button onClick={toggleUpdatingCard} 
+              size='small' 
+              style='quiet'
+              theme='outlineBlue'
+              disabled={loadingData}>
               Update
             </Button>
           )
@@ -111,7 +124,7 @@ const Billing:FC<BillingProps> = ({
 
       {/* TODO: List the current number of subs */}
 
-    </LayoutContainer>
+    </>
   )
 }
 

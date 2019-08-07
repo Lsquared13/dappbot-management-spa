@@ -57,35 +57,35 @@ export default class Profile extends Component<ProfileProps, ProfileState> {
     let { email } = this.state;
     console.log()
     return (
-      <LayoutContainer>
-        <InputGroup>
-          <InputTitle color="gray">Email</InputTitle>
-          <InputContainer>
-            <Box column={12} mdColumn={8}>
-              <Text>
-                {email}
-              </Text>
-            </Box>
-          </InputContainer>
-        </InputGroup>
-
-        {/* <Box display="flex" justifyContent="between" alignItems="center">
-          <Box>
-            <Button size="small" onClick={e => onProfileSave(e, this.state)}>
-              <ButtonText>Save</ButtonText>
-            </Button>
+      <InputGroup>
+        <InputTitle color="gray">Email</InputTitle>
+        <InputContainer>
+          <Box column={12} mdColumn={8}>
+            <Text>
+              {email}
+            </Text>
           </Box>
-          <Box>
-            <Button
-              theme="outlineBlue"
-              size="small"
-              onClick={e => onProfileDelete(e, this.state)}
-            >
-              <ButtonText>Delete Account</ButtonText>
-            </Button>
-          </Box>
-        </Box> */}
-      </LayoutContainer>
+        </InputContainer>
+      </InputGroup>
     );
   }
 }
+
+{/* <LayoutContainer>
+  <Box display="flex" justifyContent="between" alignItems="center">
+    <Box>
+      <Button size="small" onClick={e => onProfileSave(e, this.state)}>
+        <ButtonText>Save</ButtonText>
+      </Button>
+    </Box>
+    <Box>
+      <Button
+        theme="outlineBlue"
+        size="small"
+        onClick={e => onProfileDelete(e, this.state)}
+      >
+        <ButtonText>Delete Account</ButtonText>
+      </Button>
+    </Box>
+  </Box>
+</LayoutContainer> */}
