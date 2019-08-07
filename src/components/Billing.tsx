@@ -60,6 +60,8 @@ const Billing:FC<BillingProps> = ({
     const { token } = await stripe.createToken({'name' : name })
     if (token && token.id) {
       submitWithToken(token)
+      Alert.info("Securely updating your new credit card with Stripe...");
+      toggleUpdatingCard();
     } else {
       Alert.error("Stripe was not able to save these credit card details.");
     }

@@ -107,7 +107,7 @@ const SettingContainer:FC<SettingsContainerProps> = (props) => {
   useEffect(function handleUpdatedPayment(){
     let { isLoading, data, error } = updatePaymentResponse;
     if (error) {
-      Alert.error(`Error updating your card: ${error.toString()}`)
+      Alert.error(`Error updating your card: ${error.message}`)
     } else if (data && !isLoading) {
       fetchStripeData();
     }
