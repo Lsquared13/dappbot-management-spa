@@ -38,7 +38,7 @@ const MarketingContent = () => {
       <section className="fdb-block" data-block-type="contents" id="features">
         <div className="container">
           <div className="row text-left">
-            <div className="col-10 col-sm-6 m-auto m-lg-0 col-lg-4">
+            <div className="col-10 col-sm-6 m-auto m-lg-0 col-lg-4 text-center">
               <img alt="Development SDK" className="img-fluid" src="SDK.svg" />
             </div>
             <div className="col-12 col-lg-7 offset-lg-1 pt-4 pt-lg-0">
@@ -86,12 +86,12 @@ const MarketingContent = () => {
           </div>
 
           <div className="row align-items-center mt-5 mb-5">
-            <div className="col-12 col-md-6 mr-md-auto mt-4 mt-md-0 order-sm-2 order-md-1">
-              <img alt="image" className="img-fluid" src="deploy.png" />
-            </div>
-            <div className="col-12 col-md-6 col-lg-5 order-sm-1 order-md-2">
+            <div className="col-12 col-md-6 col-lg-5 order-md-2">
               <h2>Deploy Dapp</h2>
               <p className="">Deploy your Dapp with an automatically configured scalable infrastructure which guarantees rapid responses by caching your application in 165 locations around the world.</p>
+            </div>
+            <div className="col-12 col-md-6 mr-md-auto mt-4 mt-md-0 order-md-1">
+              <img alt="image" className="img-fluid" src="deploy.png" />
             </div>
           </div>
 
@@ -106,12 +106,12 @@ const MarketingContent = () => {
           </div>
 
           <div className="row align-items-center mt-5 mb-5">
-            <div className="col-12 col-md-6 mr-md-auto mt-4 mt-md-0 text-center order-sm-2 order-md-1">
-              <img alt="image" className="img-fluid" src="launch.svg" />
-            </div>
-            <div className="col-12 col-md-6 col-lg-5 order-sm-1 order-md-2">
+            <div className="col-12 col-md-6 col-lg-5 order-md-2">
               <h2>Launch Dapp</h2>
               <p className="">In five minutes you have deployed a decentralized application. Launch your new app to interact with your smart contract through a simple, elegant, and responsive web interface.</p>
+            </div>
+            <div className="col-12 col-md-6 mr-md-auto mt-4 mt-md-0 text-center order-md-1">
+              <img alt="image" className="img-fluid" src="launch.svg" />
             </div>
           </div>
 
