@@ -79,7 +79,12 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props}) => {
     } 
     else if (listResponse.error) {
       markFetchListSent(false)
-      Alert.error("Error fetching dapp list:"+listResponse.error.message);
+        switch (listResponse.error.code) {
+
+          default: {
+            Alert.error(listResponse.error.data.err.message);
+          }
+        }
     } 
     else if(listResponse.data) {
       markFetchListSent(false);
@@ -106,7 +111,12 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props}) => {
       else if (deleteResponse.error) {
         markDeleteSent(false)
         markFetchListSent(false)
-        Alert.error("Error on deleting your dapp: "+deleteResponse.error.message);
+        switch (deleteResponse.error.code) {
+
+          default: {
+            Alert.error(deleteResponse.error.data.err.message);
+          }
+        }
       } 
       else if (deleteResponse.data) {
         markDeleteSent(false);

@@ -115,8 +115,15 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
     } else if (createUserResponse.error) {
       markCreateUserSent(false)
       setLoading(false);
-      setErr(createUserResponse.error.message);
-      Alert.error("Error creating new user:"+createUserResponse.error.message);
+      console.log(createUserResponse.error)
+      switch (createUserResponse.error.code) {
+
+        default: {
+          setErr(createUserResponse.error.message)
+          Alert.error(createUserResponse.error.message);
+        }
+      }
+
     } else if(createUserResponse.data) {
       console.log(createUserResponse.data)
       setLoading(false);

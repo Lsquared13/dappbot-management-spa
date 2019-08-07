@@ -44,7 +44,13 @@ export const DappList: FC<DappListProps> = ({ dappList, fetchList, ...props }) =
   useEffect(() => {
     if (deleteSent) {
       if (deleteResponse.error) {
-        Alert.error(`There was an error deleting your dapp: ${deleteResponse.error.message}`)
+        markDeleteSent(false)
+        switch (deleteResponse.error.code) {
+
+          default: {
+            Alert.error(deleteResponse.error.data.err.message);
+          }
+        }
       } else if (!deleteResponse.isLoading && deleteResponse.data) {
         Alert.success(`Your dapp was successfully deleted!`);
         fetchList()
