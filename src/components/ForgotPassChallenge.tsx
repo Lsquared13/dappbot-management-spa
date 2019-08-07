@@ -38,9 +38,15 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
       return;
     }
     if(newPasswordResponse.error) {
-      setErr(newPasswordResponse.error.message)
       markNewPassSent(false)
-      Alert.error(`There was an error processing your new password: ${newPasswordResponse.error.message}`)
+
+        switch (newPasswordResponse.error.code) {
+
+          default: {
+            setErr(newPasswordResponse.error.message)
+            Alert.error(newPasswordResponse.error.data.err.message);
+          }
+        }
       return
     }else if(newPasswordResponse.data) {
       markNewPassSent(false);
