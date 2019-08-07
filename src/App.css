@@ -83,3 +83,14 @@
   max-width: 60%;
   margin: auto;
 }
+
+.fdb-block h1, .fdb-block h2, .fdb-block h3 {
+  font-family: "ReplicaStd-Regular";
+}
+
+h1, h2, h3 {
+  font-family: "ReplicaStd-Regular";
+}
+
+p, a, div {  font-family: "DINRoundPro";
+}
