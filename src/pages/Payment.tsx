@@ -190,28 +190,24 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
                 </div>
       
                 <div className="row mt-4">
-                  <div className="col flex d-flex flex-row">
-
-                   {/*  <BooleanField 
-                      name='agreeTerms' 
-                      value={agreeTerms} 
-                      labels={ {true: "",
-                        false: "Agree"}}
-                      disabled={loading}
-                      displayName={"Agree to Terms & Conditions"}
-                      onChange={setAgreeTerms}
-                    /> */}
-                    <div className="mt-1">
-                      <Checkbox
-                        id='agreeTerms'
-                        name='agreeTerms'
-                        size='sm'
-                        onChange={({ event, checked }) => {
-                          ;
-                        }}
-                      />
-                    </div>
-                    <p className="text-left mr-2 pl-2">I have read and agreed to the <a target="_blank" href="/privacy">DappBot Privacy Policy</a>.</p>
+                  <div className="col">	                  
+                    <div className="col flex d-flex flex-row">
+                      
+                      <div className="mt-1">
+                        <Checkbox
+                          checked={agreeTerms}
+                          disabled={false}
+                          indeterminate={false}
+                          id='agreeTerms'
+                          name='agreeTerms'
+                          size='sm'
+                          onChange={({ event, checked }) => {
+                            setAgreeTerms(!agreeTerms)
+                          }}
+                        />
+                      </div>
+                      <p className="text-left mr-2 pl-2">I have read and agreed to the <a target="_blank" href="/privacy">DappBot Privacy Policy</a>.</p>
+                    </div>	                 
                   </div>
                 </div>
                 
