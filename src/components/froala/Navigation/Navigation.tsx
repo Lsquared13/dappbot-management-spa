@@ -20,7 +20,7 @@ export const Navigation:FC<NavProps> = ({hideLogin, user, setUser}) => {
   const loginLogoutLink = user.signInUserSession ? (
     <Link className='nav-link' onClick={logOut} to='/login'>Log Out</Link>
   ) : (
-    <Link className="nav-link" to='/login'>Login</Link>
+    <Link className="ml-2 btn btn-primary" to='/login'>Login</Link>
   )
 
   return (
@@ -36,7 +36,13 @@ export const Navigation:FC<NavProps> = ({hideLogin, user, setUser}) => {
           <div className="collapse navbar-collapse" id="navbarNav3">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
-                  <a className="nav-link" target="_blank" href="https://dappbot.drift.help/category/getting-started/">Support</a>
+                  <a className="nav-link" href="#features">Features</a>
+              </li>
+              <li className="nav-item">
+                  <a className="nav-link" href="#learn">Learn</a>
+              </li>
+              <li className="nav-item">
+                  <a className="nav-link" target="_blank" href="https://dappbot.drift.help/category/getting-started/">Docs</a>
               </li>
               <li className="nav-item">
                 { loginLogoutLink }
