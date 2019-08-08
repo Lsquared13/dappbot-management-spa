@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, FunctionComponent, SyntheticEvent, ReactElement, useState, FocusEvent } from 'react';
+import React, { KeyboardEvent, FunctionComponent, ReactElement, useState, FocusEvent } from 'react';
 import { FieldProps, inputUpdater, inputValidator } from './shared'
 import TextField, { TextFieldTypes } from '../ui/TextField';
 import HelpIcon from '../ui/HelpIcon';

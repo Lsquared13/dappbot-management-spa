@@ -1,4 +1,4 @@
-import React, { FC, KeyboardEvent, SyntheticEvent, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { RouteComponentProps } from '@reach/router';
 import isEmail from 'validator/lib/isEmail';
 import { Button } from '../components/ui';
