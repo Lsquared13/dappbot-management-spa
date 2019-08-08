@@ -3,7 +3,7 @@ import classnames from "classnames";
 import Text from "./../Text";
 import { StyledTabs, StyledTab } from "./StyledTabs";
 
-type eventData = {
+export type TabChangeData = {
   event: React.SyntheticEvent<HTMLAnchorElement>;
   activeTabIndex: number;
 };
@@ -24,7 +24,7 @@ export interface TabProps {
    * function, ({ event: SyntheticEvent<HTMLAnchorElement>, activeTabIndex: number }) => void
    * Event is fired when tab is cliked
    **/
-  onChange: ({ event, activeTabIndex }: eventData) => void;
+  onChange: ({ event, activeTabIndex }: TabChangeData) => void;
   /**
    * boolean, By default, flex items will all try to fit onto one line. You can change that and allow the items to wrap onto multiple lines,
    * from top to bottom.

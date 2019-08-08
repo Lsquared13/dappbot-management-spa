@@ -5,28 +5,36 @@ import Navigation from "../components/froala/Navigation";
 import Footer from "../components/froala/Footer";
 import {PaymentStatusBanner} from "../components/PaymentStatusBanner"
 import Header, { HeaderState }  from "./Header";
-import { UserResponseData } from "../types";
-
-
+import { UserResponseData, emptyUserResponse } from "../types";
 
 export interface HomeBaseProps extends RouteComponentProps {
   user: UserResponseData
   setUser: (newUser:UserResponseData)=>void
 }
 
-export const HomeBase: FC<HomeBaseProps> = ({user, setUser,uri, ...props}) => {
+export const HomeBase: FC<HomeBaseProps> = ({user, setUser, location, uri, path, navigate, ...props}) => {
 
   useEffect(function puntLoggedOutUsers(){
-    if (user.Authorization === '' && props.navigate) {
-      props.navigate('/login')
+    if (user.Authorization === '' && navigate) {
+      navigate('/login')
     }
   }, [user])
-  
+
+  function logOut(){
+    setUser(emptyUserResponse());
+  }
+
+  function goToSettings(){ navigate && navigate('/home/user-settings')}
+
+  function goToHome(){ navigate && navigate('/home')}
+
   // AppBase is responsible for providing outermost
-  // div & the Alert component
+  // div & the Alert component, so this HomeBase
+  // component is only responsible for the Header,
+  // Footer, and PaymentStatusBanner.
   return (
     <>
-      <Header setUser={setUser} user={user} uri={uri} />
+      <Header logOut={logOut} goToSettings={goToSettings} goToHome={goToHome} user={user} location={location}/>
       <PaymentStatusBanner paymentState={user.User.UserAttributes["custom:payment_status"]}/>
       {props.children}
       <Footer />
