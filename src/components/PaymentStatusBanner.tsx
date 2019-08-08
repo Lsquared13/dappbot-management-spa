@@ -9,10 +9,10 @@ export const PaymentStatusBanner:FC<PaymentBannerProps> = ({paymentState}) => {
   let msg = '';
   switch(paymentState){
     case("LAPSED"):
-      msg = "Your payment method has failed. Please update your credit card info."
+      msg = "Your payment method has failed. Please update your credit card info in order to avoid any disruption of service."
       break
     case("CANCELLED"):
-      msg = "Your account has been cancelled and will no longer be able to access your old dapps or create new ones."
+      msg = "You previously cancelled your account.  Please restart your subscription in order to access your old dapps or create new ones."
       break
     default:
       return null
