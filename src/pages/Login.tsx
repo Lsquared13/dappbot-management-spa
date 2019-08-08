@@ -171,7 +171,6 @@ export const Login: FC<LoginProps> = (props) => {
               <StringField
                 value={email}
                 onChange={setEmail}
-                onKeyDown={handleEnterPress}
                 displayName='Email'
                 disabled={loading}
                 isValid={isEmail}
@@ -187,7 +186,7 @@ export const Login: FC<LoginProps> = (props) => {
                 displayName='Password'
                 disabled={loading}
                 onChange={setPassword}
-                onKeyDown={handleEnterPress}
+                onPressEnter={handleSignIn}
                 value={password} />
               <p className="text-center">Don't have an account yet? <a href="/signup">Sign Up</a></p>
             </div>
