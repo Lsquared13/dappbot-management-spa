@@ -1,6 +1,10 @@
 import React,{FC} from 'react';
 import { Box, Text } from './ui';
-import { UserResponseData } from "../types";
+import styled from "styled-components";
+const RedWarningDiv = styled.div`
+  background-color: red;
+  opacity: .8;
+`
 
 export interface PaymentStatusBannerProps{
   paymentState: string
@@ -23,10 +27,10 @@ export const PaymentStatusBanner:FC<PaymentStatusBannerProps> = ({paymentState})
       throw new Error("Invalid payment status")
   }
   return(
-    <div className="payment-status-banner">
-    <Box shape="square" top={true} padding={4} >
-      <Text color='white' align="center" bold={true} size="lg">{msg}</Text>
-    </Box>
-  </div>
+    <RedWarningDiv>
+      <Box shape="square" top={true} padding={4} >
+        <Text color='white' align="center" bold={true} size="lg">{msg}</Text>
+      </Box>
+    </RedWarningDiv>
   )
 }
