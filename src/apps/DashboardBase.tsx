@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useResource } from "react-request-hook";
-import { Router, navigate, RouteComponentProps, NavigateFn } from "@reach/router";
+import { Router, navigate, RouteComponentProps } from "@reach/router";
 import Alert from 'react-s-alert';
 import { DashboardContainer, DappDetailsContainer, DeleteDappContainer } from "../pages/dashboard";
 import API from '../services/api';
 import { DeleteDappState } from "../components";
 import { NotFound } from "../pages/notFound";
-import { defaultUserResponse, UserResponseData } from "../types";
+import { UserResponseData } from "../types";
 
 export interface Props extends RouteComponentProps {
   setUser: (user: UserResponseData) => void

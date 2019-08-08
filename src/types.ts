@@ -102,7 +102,7 @@ export interface UserResponseData {
 
 export type UserSetter = (newUser:UserResponseData)=>void
 
-export function defaultUser():User {
+export function emptyUser():User {
   return {
     Username:"", 
     Email: "",
@@ -110,13 +110,9 @@ export function defaultUser():User {
   }
 }
 
-export function defaultAuthRefreshData():AuthRefreshData{
-  return {Token:'', ExpiresAt:''}
-}
-
-export function defaultUserResponse():UserResponseData {
+export function emptyUserResponse():UserResponseData {
   return {
-    User: defaultUser(),
+    User: emptyUser(),
     Authorization:'',
     RefreshToken: '',
     ExpiresAt: new Date().toISOString()

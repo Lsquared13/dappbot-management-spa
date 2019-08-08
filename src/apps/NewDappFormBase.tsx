@@ -9,7 +9,7 @@ import {NewDappContainer, BuildDetailsContainer, ConfigureDappContainer} from ".
 import API from '../services/api';
 import {ListResponse} from '../services/api/types'
 
-import { DappCreateArgs,DappData, Tiers, defaultUserResponse, UserResponseData } from '../types';
+import { DappCreateArgs,DappData, Tiers, emptyUserResponse, UserResponseData } from '../types';
 import { CreateDappState, ConfigureDappState, DappDetail, CreateDapp } from "../components";
 
 

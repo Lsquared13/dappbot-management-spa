@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect } from 'react';
 import Alert from 'react-s-alert';
 import { RouteComponentProps, NavigateFn } from '@reach/router';
 import { useResource } from 'react-request-hook';
-import { DappCreateArgs, DappArgNameStrs, SampleDappArgs, UserResponseData, defaultUserResponse } from '../types';
+import { DappCreateArgs, DappArgNameStrs, SampleDappArgs, UserResponseData, emptyUserResponse } from '../types';
 import API from '../services/api';
 import { DappList, DappForm } from '../components';
 
@@ -23,9 +23,8 @@ export const Home:FC<HomeProps> = ({user, setUser, API, ...props}) => {
 
   let dappList:DappCreateArgs[] = [];
   if (listResponse && listResponse.data && (['The incoming token has expired', 'Unauthorized'].includes((listResponse.data as any).message))){
-    let newUser = defaultUserResponse();
+    setUser(emptyUserResponse());
     (props.navigate as NavigateFn)('/login');
-    setUser(newUser);
   }
   try {
     if (listResponse.data){
