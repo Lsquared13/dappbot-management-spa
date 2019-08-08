@@ -3,7 +3,7 @@ import { RouteComponentProps } from "@reach/router";
 import Alert from "react-s-alert";
 import Navigation from "../components/froala/Navigation";
 import Footer from "../components/froala/Footer";
-import {PaymentLapseBanner} from "../components/PaymentLapseBanner"
+import {PaymentStatusBanner} from "../components/PaymentStatusBanner"
 import Header, { HeaderState }  from "./Header";
 import { UserResponseData } from "../types";
 
@@ -24,10 +24,11 @@ export const HomeBase: FC<HomeBaseProps> = ({user, setUser,uri, ...props}) => {
   
   // AppBase is responsible for providing outermost
   // div & the Alert component
+  console.log(user)
   return (
     <>
       <Header setUser={setUser} user={user} uri={uri} />
-      <PaymentLapseBanner paymentState={true}/>
+      <PaymentLapseBanner paymentState={user.User.UserAttributes["custom:payment_status"]}/>
       {props.children}
       <Footer />
     </>
