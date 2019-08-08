@@ -47,10 +47,6 @@ export const Login: FC<LoginProps> = (props) => {
     requestSignIn(loginDetails)
   }
 
-  // If we now have a Cognito user and no challenge
-  // TODO: This probably won't behave right, as CognitoUser
-  // can match with an empty object.  Need to determine a good
-  // property to check for.
   useEffect(function handleLoginResult() {
     if (signInSent) {
       if (signInResponse.isLoading) {
@@ -172,6 +168,7 @@ export const Login: FC<LoginProps> = (props) => {
                 displayName='Password'
                 disabled={loading}
                 onChange={setPassword}
+                onPressEnter={handleSignIn}
                 value={password} />
               <p className="text-center">Don't have an account yet? <a href="/signup">Sign Up</a></p>
             </div>
@@ -227,8 +224,6 @@ export const Login: FC<LoginProps> = (props) => {
       </div>
     </section>
   )
-
-    ;
 }
 
 export default Login;

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactElement, useState, FocusEvent } from 'react';
+import React, { KeyboardEvent, FunctionComponent, ReactElement, useState, FocusEvent } from 'react';
 import { FieldProps, inputUpdater, inputValidator } from './shared'
 import TextField, { TextFieldTypes } from '../ui/TextField';
 import HelpIcon from '../ui/HelpIcon';
@@ -6,6 +6,7 @@ import HelpIcon from '../ui/HelpIcon';
 interface Props extends FieldProps {
     value: string
     onChange: (newVal:string)=>void
+    onPressEnter?:()=>void
     input?: ReactElement,
     isValid?: (value:string)=>boolean,
     errorMsg?: string,
@@ -16,7 +17,10 @@ interface Props extends FieldProps {
     password?: boolean
 }
 
-const StringField: FunctionComponent<Props> = ({value, onChange, name, displayName, isValid, errorMsg, clean, ...props}) => {
+const StringField: FunctionComponent<Props> = ({
+    value, onChange, name, displayName, isValid, 
+    errorMsg, clean, ...props
+}) => {
 
     const update = inputUpdater(onChange, { clean : clean ? clean : (val)=>val });
     const [errMsg, setErr] = useState("");
@@ -27,6 +31,12 @@ const StringField: FunctionComponent<Props> = ({value, onChange, name, displayNa
             validator = inputValidator(isValid, setErr, errorMsg);
         } else {
             validator = inputValidator(isValid, setErr);
+        }
+    }
+    
+    let keyDownHandler = (e:KeyboardEvent<HTMLInputElement>) => {
+        if (props.onPressEnter !== undefined && e.keyCode === 13) {
+            props.onPressEnter()
         }
     }
 
@@ -49,6 +59,7 @@ const StringField: FunctionComponent<Props> = ({value, onChange, name, displayNa
                                     value={value} 
                                     disabled={props.disabled}
                                     onChange={update} 
+                                    onKeyDown={keyDownHandler}
                                     showError={errMsg !== ""}
                                     errorMessage={errMsg}
                                     onBlur={validator}

@@ -68,7 +68,7 @@ export interface TextFieldProps {
    * function, ({ event: React.SyntheticEvent<HTMLInputElement>, value: boolean }) => void
    * Event is fired on key down
    **/
-  onKeyDown?: (event:React.SyntheticEvent<HTMLInputElement>)=>void
+  onKeyDown?: (event:React.KeyboardEvent<HTMLInputElement>)=>void
   /**
    * string, placeholder
    **/
@@ -125,7 +125,7 @@ export default class TextField extends React.Component<
     }
   };
 
-  handleKeyDown = (event: React.SyntheticEvent<HTMLInputElement>) => {
+  handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (this.props.onKeyDown) {
       this.props.onKeyDown(event);
     }
