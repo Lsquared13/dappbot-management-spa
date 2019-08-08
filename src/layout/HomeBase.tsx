@@ -3,6 +3,7 @@ import { RouteComponentProps } from "@reach/router";
 import Alert from "react-s-alert";
 import Navigation from "../components/froala/Navigation";
 import Footer from "../components/froala/Footer";
+import {PaymentLapseBanner} from "../components/PaymentLapseBanner"
 import Header, { HeaderState }  from "./Header";
 import { UserResponseData } from "../types";
 
@@ -10,7 +11,7 @@ import { UserResponseData } from "../types";
 
 export interface HomeBaseProps extends RouteComponentProps {
   user: UserResponseData
-  setUser: (newUser:any)=>void
+  setUser: (newUser:UserResponseData)=>void
 }
 
 export const HomeBase: FC<HomeBaseProps> = ({user, setUser,uri, ...props}) => {
@@ -26,6 +27,7 @@ export const HomeBase: FC<HomeBaseProps> = ({user, setUser,uri, ...props}) => {
   return (
     <>
       <Header setUser={setUser} user={user} uri={uri} />
+      <PaymentLapseBanner paymentState={true}/>
       {props.children}
       <Footer />
     </>
