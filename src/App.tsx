@@ -19,6 +19,7 @@ import { emptyUserResponse } from './types';
 const App: FC = () => {
   let [user, setUser] = useLocalStorage('user', emptyUserResponse());
   const API = new APIFactory({user, setUser});
+
   let userData = { user, setUser, API };
   
   return (
@@ -33,7 +34,6 @@ const App: FC = () => {
               <Privacy path='privacy'  />
             </PageBase>
             <HomeBase path="/home" {...userData}>
-              {/* SUB-APPLICATION: Dapp Dashboard */}
               <DappDetails path="dapp/:id" {...userData} />
               <DashboardBase path="/*"  {...userData}/>
               <NewDappFormBase path="new/*" {...userData} />
