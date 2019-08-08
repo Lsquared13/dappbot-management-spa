@@ -70,22 +70,3 @@ export default class Profile extends Component<ProfileProps, ProfileState> {
     );
   }
 }
-
-{/* <LayoutContainer>
-  <Box display="flex" justifyContent="between" alignItems="center">
-    <Box>
-      <Button size="small" onClick={e => onProfileSave(e, this.state)}>
-        <ButtonText>Save</ButtonText>
-      </Button>
-    </Box>
-    <Box>
-      <Button
-        theme="outlineBlue"
-        size="small"
-        onClick={e => onProfileDelete(e, this.state)}
-      >
-        <ButtonText>Delete Account</ButtonText>
-      </Button>
-    </Box>
-  </Box>
-</LayoutContainer> */}
