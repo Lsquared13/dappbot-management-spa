@@ -1,4 +1,8 @@
 @charset "UTF-8";
+.payment-lapse-banner{
+  background-color: red;
+  opacity: .8;
+}
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
