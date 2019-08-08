@@ -7,9 +7,9 @@ import {
   SubscriptionChanges,
   SubscriptionDetail,
   SubscriptionTable
-} from "../layout";
+} from ".";
 
-export * from "../layout/SubscriptionTable";
+export * from "./SubscriptionTable";
 
 export interface SubscriptionPlan {
   apps: SubscriptionDetail[];
@@ -52,7 +52,7 @@ const States: FC<TextProps> = props => (
   </Box>
 );
 
-export const Billing: FC<BillingProps> = props => {
+export const OldBilling: FC<BillingProps> = props => {
   let [subcriptionDetails, setSubscriptionDetails] = useState();
   let {
     subscriptionPlan,
@@ -165,4 +165,4 @@ export const Billing: FC<BillingProps> = props => {
   );
 };
 
-export default Billing;
+export default OldBilling;

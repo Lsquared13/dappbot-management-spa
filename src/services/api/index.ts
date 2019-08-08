@@ -93,7 +93,7 @@ export class API {
       let headers:Headers = {
         'Content-Type': 'application/json'
       }
-      if(rootResource === 'private'&& this.user){
+      if(['private','payment'].includes(rootResource) && this.user){
         headers.Authorization = this.user.Authorization
       }
       let request = {

@@ -12,7 +12,7 @@ export const AppBase: FC<AppBaseProps> = (props) => {
   return (
     <div className="App" id="appBase">
       {props.children}
-      <Alert stack={{limit: 3}} timeout={30000} />
+      <Alert stack={{limit: 3}} timeout={5000} />
     </div>
   );
 };

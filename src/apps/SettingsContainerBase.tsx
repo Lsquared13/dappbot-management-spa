@@ -6,10 +6,12 @@ import { ProfileState } from "../layout/Profile";
 import { PasswordState } from "../layout/Password";
 import { useResource } from 'react-request-hook';
 import { UserResponseData } from '../types';
+import API from "../services/api";
 
 export interface Props extends RouteComponentProps {
   user : UserResponseData
   setUser : (user:UserResponseData)=>void
+  API : API
 }
 export const SettingsContainerBase: React.SFC<Props> = props => {
   
@@ -17,6 +19,7 @@ export const SettingsContainerBase: React.SFC<Props> = props => {
       <Router>
         <SettingContainer
           default
+          API = {props.API}
           user = {props.user}
           /* Password tab props */
           onPasswordInputChange={inputs => {

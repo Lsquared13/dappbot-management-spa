@@ -84,10 +84,6 @@ export function defaultChallengeResponse():ChallengeResponse{
   return {data:challengeDataFactory(ChallengeType.Default),err:null}
 }
 
-export interface GetStripeDataArgs {
-  email : string
-}
-
 export type Customer = Stripe.customers.ICustomer;
 export type Subscription = Stripe.subscriptions.ISubscription;
 

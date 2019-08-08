@@ -60,9 +60,6 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
   const [name, setName] = useState('');
   const [coupon, setCoupon] = useState('');
   const [numDapps, setNumDapps] = useState('1');
-  const [addon1, setAddon1] = useState(false)
-  const [addon2, setAddon2] = useState(false)
-  const [addon3, setAddon3] = useState(false)
   
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
@@ -76,12 +73,17 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
   const [createUserSent, markCreateUserSent] = useState(false);
 
   const isRequired = requireCreditCard;
-  const noCreditCardSignupArgs = { plans:{standard:1, professional:0, enterprise:0},
-                                   email, name, coupon };
-  const creditCardSignupArgs   = { plans:{standard:+numDapps, professional:0, enterprise:0},
-                                   email, name, coupon, token:""};
+  const noCreditCardSignupArgs = { 
+    plans: { standard:10, professional:0, enterprise:0 },
+    email, name, coupon 
+  };
+  const creditCardSignupArgs   = { 
+    plans: { standard:+numDapps, professional:0, enterprise:0 },
+    token: "",
+    email, name, coupon
+  };
 
-  const  handleCreateUser= async () => {
+  const handleCreateUser= async () => {
     markCreateUserSent(true);
     setErr('');
 
