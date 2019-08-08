@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactElement, useState, FocusEvent } from 'react';
+import React, { FunctionComponent, SyntheticEvent, ReactElement, useState, FocusEvent } from 'react';
 import { FieldProps, inputUpdater, inputValidator } from './shared'
 import TextField, { TextFieldTypes } from '../ui/TextField';
 import HelpIcon from '../ui/HelpIcon';
@@ -6,6 +6,7 @@ import HelpIcon from '../ui/HelpIcon';
 interface Props extends FieldProps {
     value: string
     onChange: (newVal:string)=>void
+    onKeyDown?: (event:SyntheticEvent)=>void
     input?: ReactElement,
     isValid?: (value:string)=>boolean,
     errorMsg?: string,
@@ -16,7 +17,7 @@ interface Props extends FieldProps {
     password?: boolean
 }
 
-const StringField: FunctionComponent<Props> = ({value, onChange, name, displayName, isValid, errorMsg, clean, ...props}) => {
+const StringField: FunctionComponent<Props> = ({value, onChange, onKeyDown, name, displayName, isValid, errorMsg, clean, ...props}) => {
 
     const update = inputUpdater(onChange, { clean : clean ? clean : (val)=>val });
     const [errMsg, setErr] = useState("");
@@ -49,6 +50,7 @@ const StringField: FunctionComponent<Props> = ({value, onChange, name, displayNa
                                     value={value} 
                                     disabled={props.disabled}
                                     onChange={update} 
+                                    onKeyDown={onKeyDown}
                                     showError={errMsg !== ""}
                                     errorMessage={errMsg}
                                     onBlur={validator}

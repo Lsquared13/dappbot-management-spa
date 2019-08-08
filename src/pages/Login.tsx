@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, KeyboardEvent, SyntheticEvent, useState, useEffect } from 'react';
 import { RouteComponentProps } from '@reach/router';
 import isEmail from 'validator/lib/isEmail';
 import { Button } from '../components/ui';
@@ -45,6 +45,20 @@ export const Login: FC<LoginProps> = (props) => {
     }
     markSignInSent(true)
     requestSignIn(loginDetails)
+  }
+
+  const ENTER_KEY_CODE = 13;
+  const KEYDOWN_EVENT_TYPE = 'keydown';
+
+  const handleEnterPress = (event: SyntheticEvent) => {
+    if (event.type === KEYDOWN_EVENT_TYPE) {
+      // Typescript compiler complains about direct conversion, despite this definitely being a KeyboardEvent
+      let keyboardEvent = event.nativeEvent as unknown as KeyboardEvent;
+      let code = keyboardEvent.keyCode || keyboardEvent.which;
+      if (code === ENTER_KEY_CODE) {
+        handleSignIn();
+      } 
+    }
   }
 
   // If we now have a Cognito user and no challenge
@@ -157,6 +171,7 @@ export const Login: FC<LoginProps> = (props) => {
               <StringField
                 value={email}
                 onChange={setEmail}
+                onKeyDown={handleEnterPress}
                 displayName='Email'
                 disabled={loading}
                 isValid={isEmail}
@@ -172,6 +187,7 @@ export const Login: FC<LoginProps> = (props) => {
                 displayName='Password'
                 disabled={loading}
                 onChange={setPassword}
+                onKeyDown={handleEnterPress}
                 value={password} />
               <p className="text-center">Don't have an account yet? <a href="/signup">Sign Up</a></p>
             </div>
