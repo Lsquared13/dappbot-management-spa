@@ -23,9 +23,8 @@ export const Home:FC<HomeProps> = ({user, setUser, API, ...props}) => {
 
   let dappList:DappCreateArgs[] = [];
   if (listResponse && listResponse.data && (['The incoming token has expired', 'Unauthorized'].includes((listResponse.data as any).message))){
-    let newUser = emptyUserResponse();
+    setUser(emptyUserResponse());
     (props.navigate as NavigateFn)('/login');
-    setUser(newUser);
   }
   try {
     if (listResponse.data){
