@@ -47,24 +47,6 @@ export const Login: FC<LoginProps> = (props) => {
     requestSignIn(loginDetails)
   }
 
-  const ENTER_KEY_CODE = 13;
-  const KEYDOWN_EVENT_TYPE = 'keydown';
-
-  const handleEnterPress = (event: SyntheticEvent) => {
-    if (event.type === KEYDOWN_EVENT_TYPE) {
-      // Typescript compiler complains about direct conversion, despite this definitely being a KeyboardEvent
-      let keyboardEvent = event.nativeEvent as unknown as KeyboardEvent;
-      let code = keyboardEvent.keyCode || keyboardEvent.which;
-      if (code === ENTER_KEY_CODE) {
-        handleSignIn();
-      } 
-    }
-  }
-
-  // If we now have a Cognito user and no challenge
-  // TODO: This probably won't behave right, as CognitoUser
-  // can match with an empty object.  Need to determine a good
-  // property to check for.
   useEffect(function handleLoginResult() {
     if (signInSent) {
       if (signInResponse.isLoading) {

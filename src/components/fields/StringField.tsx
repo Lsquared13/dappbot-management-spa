@@ -35,7 +35,7 @@ const StringField: FunctionComponent<Props> = ({
     }
     
     let keyDownHandler = (e:KeyboardEvent<HTMLInputElement>) => {
-        if (props.onPressEnter !== undefined && e.charCode === 13) {
+        if (props.onPressEnter !== undefined && e.keyCode === 13) {
             props.onPressEnter()
         }
     }
