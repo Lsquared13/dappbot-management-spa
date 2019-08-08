@@ -128,9 +128,7 @@ export const Login: FC<LoginProps> = (props) => {
 
   useEffect(function handleChallengeResult() {
     if (challenge.ChallengeName === ChallengeType.Default && user.Authorization !== '') {
-      console.log('user.Authorization on login redirect: ',user.Authorization);
       navigate && navigate('/home');
-
     }
   }, [challenge, setChallenge, user, navigate])
 

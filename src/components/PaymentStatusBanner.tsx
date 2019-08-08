@@ -11,6 +11,7 @@ export interface PaymentStatusBannerProps{
   paymentState: string
 }
 export const PaymentStatusBanner:FC<PaymentStatusBannerProps> = ({paymentState}) => {
+  if (!paymentState) return null;
   let msg;
   switch(paymentState){
     case("ACTIVE"):
@@ -25,8 +26,7 @@ export const PaymentStatusBanner:FC<PaymentStatusBannerProps> = ({paymentState})
       msg = "Your account is no longer active due to having exceeded the time limit for updating payment info after payment failure."
       break
     default:
-      console.error('received an unknown paymentState: ',paymentState);
-      return null;
+      throw new Error(`Received an unknown paymentState: ${paymentState}`);
   }
   return(
     <RedWarningDiv>
