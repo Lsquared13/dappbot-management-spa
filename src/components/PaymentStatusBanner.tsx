@@ -25,7 +25,8 @@ export const PaymentStatusBanner:FC<PaymentStatusBannerProps> = ({paymentState})
       msg = "Your account is no longer active due to having exceeded the time limit for updating payment info after payment failure."
       break
     default:
-      throw new Error("Invalid payment status")
+      console.error('received an unknown paymentState: ',paymentState);
+      return null;
   }
   return(
     <RedWarningDiv>
