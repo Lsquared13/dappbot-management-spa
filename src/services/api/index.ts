@@ -129,6 +129,10 @@ export class API {
     const refreshRequest = refreshRequestFactory({
       refreshToken : user.RefreshToken
     });
+    // @ts-ignore Request prefers a different shape
+    // for sending JSON data -- don't tell Typescript,
+    // it'll want us to update everything elsewhere.
+    refreshRequest.json = refreshRequest.data;
     try {
       const refreshResult = await request(refreshRequest);
       const RefreshedUser:UserResponseData = refreshResult.data;
