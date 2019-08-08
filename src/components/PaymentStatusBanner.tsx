@@ -8,6 +8,8 @@ export interface PaymentStatusBannerProps{
 export const PaymentStatusBanner:FC<PaymentStatusBannerProps> = ({paymentState}) => {
   let msg;
   switch(paymentState){
+    case("ACTIVE"):
+      return null
     case("LAPSED"):
       msg = "Your payment method has failed. Please update your credit card info in order to avoid any disruption of service."
       break
@@ -17,8 +19,6 @@ export const PaymentStatusBanner:FC<PaymentStatusBannerProps> = ({paymentState})
     case("FAILED"):
       msg = "Your account is no longer active due to having exceeded the time limit for updating payment info after payment failure."
       break
-    case("ACTIVE"):
-      return null
     default:
       throw new Error("Invalid payment status")
   }
