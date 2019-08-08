@@ -1,6 +1,7 @@
 import React,{FC} from 'react';
 import { Box, Text } from './ui';
 import styled from "styled-components";
+
 const RedWarningDiv = styled.div`
   background-color: red;
   opacity: .8;
