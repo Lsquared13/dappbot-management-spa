@@ -13,8 +13,8 @@ export const PaymentStatusBanner:FC<PaymentBannerProps> = ({paymentState}) => {
       break
     case("CANCELLED"):
       msg = "Your account has been cancelled and will no longer be able to access your old dapps or create new ones."
+      break
     default:
-      console.log(paymentState)
       return null
   }
   return(

@@ -28,7 +28,7 @@ export const HomeBase: FC<HomeBaseProps> = ({user, setUser,uri, ...props}) => {
   return (
     <>
       <Header setUser={setUser} user={user} uri={uri} />
-      <PaymentLapseBanner paymentState={user.User.UserAttributes["custom:payment_status"]}/>
+      <PaymentStatusBanner paymentState={user.User.UserAttributes["custom:payment_status"]}/>
       {props.children}
       <Footer />
     </>
