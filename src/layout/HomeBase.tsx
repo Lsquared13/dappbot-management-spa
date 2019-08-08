@@ -34,7 +34,7 @@ export const HomeBase: FC<HomeBaseProps> = ({user, setUser, location, uri, path,
   // Footer, and PaymentStatusBanner.
   return (
     <>
-      <Header logOut={logOut} goToSettings={goToSettings} goToHome={goToHome} user={user} location={location}/>
+      <Header {...{ logOut, goToSettings, goToHome, user, location }} />
       <PaymentStatusBanner paymentState={user.User.UserAttributes["custom:payment_status"]}/>
       {props.children}
       <Footer />
