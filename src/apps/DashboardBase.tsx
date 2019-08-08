@@ -64,7 +64,7 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
       await API.refreshAuthorization();
       sendListRequest();
     } catch (err) {
-      Alert.error(`Error fetching dapp list : ${err.toString()}`)
+      Alert.error(`Error refreshing your session : ${err.toString()}`)
     }
   }
 
@@ -79,9 +79,13 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
     }
     else if (listResponse.error) {
       markFetchListSent(false)
-      Alert.error("Error fetching dapp list:" + listResponse.error.message);
-    }
-    else if (listResponse.data) {
+      switch (listResponse.error.code) {
+        default: {
+          Alert.error(listResponse.error.data.err.message);
+        }
+      }
+    } 
+    else if(listResponse.data) {
       markFetchListSent(false);
     }
   }, [listResponse]);
@@ -106,8 +110,12 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
       else if (deleteResponse.error) {
         markDeleteSent(false)
         markFetchListSent(false)
-        Alert.error("Error on deleting your dapp: " + deleteResponse.error.message);
-      }
+        switch (deleteResponse.error.code) {
+          default: {
+            Alert.error(deleteResponse.error.data.err.message);
+          }
+        }
+      } 
       else if (deleteResponse.data) {
         markDeleteSent(false);
         Alert.success(`Your dapp was successfully deleted!`, { timeout: 500 });

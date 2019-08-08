@@ -43,8 +43,13 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
       return;
     }
     if(newPassResponse.error){
-      setErr(newPassResponse.error.message)
-      Alert.error(`There was an error setting a password: ${newPassResponse.error.message}`)
+      switch (newPassResponse.error.code) {
+
+        default: {
+          setErr(newPassResponse.error.message)
+          Alert.error(newPassResponse.error.data.err.message);
+        }
+      }
     }
     let response:any = newPassResponse.data
     // console.log(response.data)

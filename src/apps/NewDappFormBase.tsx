@@ -79,10 +79,15 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
       }
 
       if (listResponse.isLoading){
-        Alert.info("Fetching Dapp List", { timeout: 750});
+        
       } else if (listResponse.error) {
         markFetchListSent(false)
-        Alert.error("Error fetching current dapp list");
+        switch (listResponse.error.code) {
+
+          default: {
+            Alert.error(listResponse.error.data.err.message);
+          }
+        }
       } else if(listResponse.data){
         markFetchListSent(false);
         const {count} = listResponse.data.data
@@ -103,20 +108,33 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
       
       const dappData:DappData = omit(dappArgs, ['DappName'])
       markCreateSent(true);
-      Alert.info(`Starting build...`)
+      Alert.info(`Making request...`)
       sendCreateRequest(dappData,dappArgs.DappName)
     }
     useEffect(() => {
-      if (createSent) {
-        if (createResponse.error) {
-          Alert.error(`There was an error building your dapp: ${createResponse.error.message}`)
-        } else if (!createResponse.isLoading && createResponse.data) {
-          Alert.success(` Build for: ${DappName} started`);
-          markCreateSent(false);
-          navigate(`/home/new/${DappName}/build`);
-        }
+      if (!createSent){
+        return
       }
-    }, [createSent, createResponse])
+
+      if (createResponse.isLoading){
+        Alert.info("Creating dapp", { timeout: 750});
+      } else if (createResponse.error) {
+
+        markCreateSent(false)
+        switch (createResponse.error.code) {
+
+          default: {
+            Alert.error(createResponse.error.data.err.message);
+          }
+        }
+      } else if(createResponse.data){
+        markCreateSent(false);
+        Alert.success(` Build for: ${DappName} started`);
+        navigate(`/home/new/${DappName}/build`);    
+      }
+      
+    }, [createResponse]);
+
     
     const handleStep1 = (e:any, inputs: CreateDappState) => {
       if (availableNumOfDapps<=0){

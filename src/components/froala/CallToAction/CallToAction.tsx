@@ -14,7 +14,7 @@ const CallToAction = () => (
           <h2>Tools for Blockchain Developers</h2>
           <p className="lead">DappBot empowers blockchain learners and builders to immediately make smart contracts usable by anybody with a browser within three steps and five minutes.</p>
           <p className="mt-4">
-            <Link className="btn btn-primary" to='/login'>Start Your Free Trial</Link>
+            <Link className="btn btn-primary" to='/signup'>Start Your Free Trial</Link>
           </p>
         </div>
       </div>

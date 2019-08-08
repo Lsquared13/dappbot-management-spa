@@ -30,7 +30,8 @@ export const Login: FC<LoginProps> = (props) => {
 
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
-  const [challenge, setChallenge] = useState(challengeDataFactory(ChallengeType.Default));
+  const initialChallenge = challengeDataFactory(ChallengeType.Default);
+  const [challenge, setChallenge] = useState(initialChallenge);
   const [signInResponse, requestSignIn] = useResource(API.auth.signIn())
   const [beginPasswordResetResponse, beginPasswordReset] = useResource(API.auth.beginPasswordReset())
   //Response Handler
