@@ -224,8 +224,6 @@ export const Login: FC<LoginProps> = (props) => {
       </div>
     </section>
   )
-
-    ;
 }
 
 export default Login;
