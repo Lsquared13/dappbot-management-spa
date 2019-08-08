@@ -24,7 +24,6 @@ export const HomeBase: FC<HomeBaseProps> = ({user, setUser,uri, ...props}) => {
   
   // AppBase is responsible for providing outermost
   // div & the Alert component
-  console.log(user)
   return (
     <>
       <Header setUser={setUser} user={user} uri={uri} />
