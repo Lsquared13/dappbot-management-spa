@@ -4,7 +4,7 @@ import StyledHeader from "./StyledHeader";
 import { ReactComponent as AvatarImage } from "../../assets/images/avatar.svg";
 
 import { ReactComponent as Logo } from "../../assets/images/Dapp_Logo.svg";
-import {UserResponseData, defaultUserResponse, UserSetter} from '../../types'
+import {UserResponseData, emptyUserResponse, UserSetter} from '../../types'
 import { navigate } from "@reach/router";
 
 export interface HeaderProps {
@@ -33,8 +33,7 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
   }
 
   logOut = () => {
-    const newUser = defaultUserResponse()
-    this.props.setUser(newUser)
+    this.props.setUser(emptyUserResponse())
   }
 
   handleChange = ({ activeTabIndex, event }: any) => {

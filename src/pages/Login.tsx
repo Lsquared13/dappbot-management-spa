@@ -6,7 +6,7 @@ import StringField from '../components/fields/StringField';
 import Alert from 'react-s-alert';
 import { useResource } from 'react-request-hook';
 import {
-  UserResponseData, defaultUserResponse,
+  UserResponseData, emptyUserResponse,
   ChallengeType
 } from '../types';
 import API from '../services/api';
@@ -71,7 +71,7 @@ export const Login: FC<LoginProps> = (props) => {
         //Ensure that the response has a session, and if so create a tempUser
         if (response.Session) {
           //This tempUser refers to when the password needs to be reset for the first login.
-          let tempUser = defaultUserResponse()
+          let tempUser = emptyUserResponse()
           tempUser.User.Username = email
 
           setUser(tempUser)
@@ -128,6 +128,7 @@ export const Login: FC<LoginProps> = (props) => {
 
   useEffect(function handleChallengeResult() {
     if (challenge.ChallengeName === ChallengeType.Default && user.Authorization !== '') {
+      console.log('user.Authorization on login redirect: ',user.Authorization);
       navigate && navigate('/home');
 
     }

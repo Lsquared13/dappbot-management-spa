@@ -1,4 +1,4 @@
-import { UserResponseData, UserSetter, defaultUserResponse } from "../../types";
+import { UserResponseData, UserSetter, emptyUserResponse } from "../../types";
 import { request as resourceRequest } from 'react-request-hook';
 import moment from 'moment';
 import request from 'request-promise-native';
@@ -145,7 +145,7 @@ export class API {
         setUser
       })
     } catch (err) {
-      setUser(defaultUserResponse());
+      setUser(emptyUserResponse());
       throw new Error("Unable to refresh your session, please log in again.");
     }
   }

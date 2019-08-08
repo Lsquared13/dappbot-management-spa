@@ -14,10 +14,10 @@ import { SettingsContainerBase } from "./apps/SettingsContainerBase";
 import {  Welcome, Login, Privacy, DappDetails, PaymentPage } from './pages';
 import { DashboardBase } from './apps/DashboardBase';
 import { NewDappFormBase } from './apps';
-import { UserResponseData } from './types';
+import { emptyUserResponse } from './types';
 
 const App: FC = () => {
-  let [user, setUser] = useLocalStorage('user', {} as UserResponseData);
+  let [user, setUser] = useLocalStorage('user', emptyUserResponse());
   const API = new APIFactory({user, setUser});
   let userData = { user, setUser, API };
   
