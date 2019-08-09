@@ -13,14 +13,13 @@ export interface Props extends RouteComponentProps {
   setUser : (user:UserResponseData)=>void
   API : API
 }
-export const SettingsContainerBase: React.SFC<Props> = props => {
+export const SettingsContainerBase: React.SFC<Props> = ({user, setUser, API }) => {
   
     return (
       <Router>
         <SettingContainer
           default
-          API = {props.API}
-          user = {props.user}
+          {...{ user, setUser, API }}
           /* Password tab props */
           onPasswordInputChange={inputs => {
             console.log("Password Inputs", inputs);

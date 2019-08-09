@@ -18,9 +18,15 @@ import { useResource } from "react-request-hook";
 import { ICard, subscriptions } from "stripe";
 import { XOR } from "ts-xor";
 
+function sleep(seconds:number){
+  return new Promise((resolve) => {
+    setTimeout(resolve, seconds * 1000);
+  })
+}
 
 export interface SettingsContainerProps extends RouteComponentProps, RSE.InjectedStripeProps {
   user : UserResponseData;
+  setUser : (user:UserResponseData)=>void
   API : API;
   /* Profile tab props */
   onProfileInputChange?: (inputs: ProfileState) => void;
@@ -74,7 +80,7 @@ export interface SettingState {
 // it needs to be run with the injectStripe HOC
 // on the default object.
 const SettingContainer:FC<SettingsContainerProps> = (props) => {
-  const { API, user } = props;
+  const { API, user, setUser } = props;
 
   let [source, setSource] = useState(null as XOR<ICard, null>);
   let [subscription, setSubscription] = useState(null as XOR<subscriptions.ISubscription, null>);
@@ -88,9 +94,14 @@ const SettingContainer:FC<SettingsContainerProps> = (props) => {
       // have the data object nesting, payment lambda doesn't.
       // Ignore this until that's updated.
       const userData:StripeUserData = data;
+      const newUser = userData.user;
       const { customer, subscription } = userData;
       setSource(customer.default_source as XOR<ICard, null>);
       setSubscription(subscription);
+      setUser({
+        ...user,
+        User : newUser
+      });
       setName(customer.name || '');
     } else if (error) {
       console.log('error fetching data: ',error);
@@ -110,6 +121,11 @@ const SettingContainer:FC<SettingsContainerProps> = (props) => {
       Alert.error(`Error updating your card: ${error.message}`)
     } else if (data && !isLoading) {
       fetchStripeData();
+      sleep(5).then(() => {
+        // Payment status may take a few seconds to propagate,
+        // this sleep gives the infra a moment to do its magic.
+        API.refreshUser();
+      })
     }
     if (data) console.log('updatedPaymentResponse: ',data);
   }, [updatePaymentResponse, fetchStripeData]);

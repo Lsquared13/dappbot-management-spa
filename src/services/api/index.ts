@@ -1,5 +1,6 @@
 import { UserResponseData, UserSetter, emptyUserResponse } from "../../types";
 import { request as resourceRequest } from 'react-request-hook';
+import Alert from 'react-s-alert';
 import moment from 'moment';
 import request from 'request-promise-native';
 import { NavigateFn } from '@reach/router';
@@ -107,46 +108,43 @@ export class API {
   }
 
   /**
-   * Given a user & setUser, checks the ExpiresAt field
-   * to see if the Authorization needs to be updated,
-   * and then performs the update if necessary.  Returns
-   * true if Authorization was updated, false if no
-   * update was required, throws if something goes wrong
-   * in the process.
-   * @param user 
-   * @param setUser 
+   * Checks the ExpiresAt field to see if the Authorization
+   * needs to be updated, and then performs the update 
+   * if necessary.  Returns a new API object if the user
+   * was updated, returns self if nothing changed, throws
+   * an error if something goes wrong in the process.
    */
   async refreshAuthorization(){
-    const user:UserResponseData = this.user;
-    const setUser:UserSetter = this.setUser;
+    const { user } = this;
+
+    // user === emptyUserResponse()
     if (user.RefreshToken === '' || user.ExpiresAt === ''){
       throw new Error("Please log in.")
     }
+
     if (moment(user.ExpiresAt).isAfter(moment.now())) {
       return this;
+    } else {
+      return this.refreshUser()
     }
-    const refreshRequestFactory = this.auth.refresh();
-    const refreshRequest = refreshRequestFactory({
+  }
+
+  /**
+   * Refreshes the full user object, updating each 
+   * parameter except for RefreshToken.
+   */
+  async refreshUser(){
+    const { user, setUser } = this;
+    if (!user.RefreshToken) throw new Error("Please log in.");
+    const refreshRequest = this.auth.refresh()({
       refreshToken : user.RefreshToken
     });
-    // @ts-ignore Request prefers a different shape
-    // for sending JSON data -- don't tell Typescript,
-    // it'll want us to update everything elsewhere.
-    refreshRequest.json = refreshRequest.data;
     try {
       const refreshResult = await request(refreshRequest);
       const RefreshedUser:UserResponseData = refreshResult.data;
-      // Note that we spread the original object *then* add
-      // the updated keys. Later entries overwrite earlier ones.
-      const NewUser = {
-        ...user,
-        Authorization : RefreshedUser.Authorization,
-        ExpiresAt : RefreshedUser.ExpiresAt,
-        User : {
-          ...user.User,
-          ...RefreshedUser.User
-        }
-      }
+      // Use the assign because RefreshedUser doesn't have
+      // the RefreshToken on it.
+      const NewUser = Object.assign({ RefreshToken : user.RefreshToken }, RefreshedUser);
       setUser(NewUser)
       return new API({
         user : NewUser,

@@ -65,8 +65,14 @@ export class AuthAPI {
   refresh(){
     return (args:RefreshArgs) => {
       // This function is a *requestFactory* because we just want the config object,
-      // doing our request directly.
-      return this.requestFactory<RefreshArgs>(Operations.login, "auth")(args, 'login')
+      // doing our request directly.  
+      let refreshRequest = this.requestFactory<RefreshArgs>(Operations.login, "auth")(args, 'login');
+
+      // @ts-ignore The `.data` field is copied to `.json`, because
+      // that's where `request` expects to find it. Don't tell
+      // Typescript though, it'll get angry.
+      refreshRequest.json = refreshRequest.data;
+      return refreshRequest
     }
   }
   
