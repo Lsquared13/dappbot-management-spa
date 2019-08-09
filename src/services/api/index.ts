@@ -141,7 +141,11 @@ export class API {
       const NewUser = {
         ...user,
         Authorization : RefreshedUser.Authorization,
-        ExpiresAt : RefreshedUser.ExpiresAt
+        ExpiresAt : RefreshedUser.ExpiresAt,
+        User : {
+          ...user.User,
+          ...RefreshedUser.User
+        }
       }
       setUser(NewUser)
       return new API({
