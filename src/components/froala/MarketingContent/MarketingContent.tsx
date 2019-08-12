@@ -6,8 +6,7 @@ import './../froala_blocks.min.css';
 const MarketingContent = () => {
   return (
     <div>
-
-      <section className="fdb-block" data-block-type="features" data-id={3}>
+      <section className="fdb-block" data-block-type="features" id="apps">
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-12 text-center">
@@ -18,17 +17,17 @@ const MarketingContent = () => {
           <div className="row text-center mt-5">
             <div className="col-12 col-sm-4">
               <img alt="Hosted Infrastructure" className="fdb-icon" src="Hosted.svg" />
-              <h3><strong>Educational Tool</strong> for Blockchain Education / Hackathons</h3>
-              <p className="text-left">Whether you’re learning about smart contracts or participating a Hackathon want an interface, but don’t want to waste time writing web apps. We can get you a Dapp in five minutes flat.</p>
+              <h3 className="text-left"><strong>Educational Tool</strong><br/>Spend your time on smart contracts rather than web apps</h3>
+              <p className="text-left">Whether you’re learning about smart contracts or participating a Hackathon want an interface, but don’t want to spend time creating a frnot-end for your Dapps. We can get you a responsive Dapp infterface in five minutes.</p>
             </div>
             <div className="col-12 col-sm-4 pt-4 pt-sm-0">
               <img alt="Rapid Prototyping" className="fdb-icon" src="Rapid.svg" />
-              <h3><strong>Hosted MVP</strong> for Blockchain Developers</h3>
+              <h3 className="text-left"><strong>Hosted MVP</strong><br/>Focus on your app logic rather than infrastructure</h3>
               <p className="text-left">For blockchain builders who are looking to build on distributed ledgers, DappBot provides a working MVP foundation and rock-solid deployment infrastructure.</p>
             </div>
             <div className="col-12 col-sm-4 pt-4 pt-sm-0">
               <img alt="Educational Tool" className="fdb-icon" src="Edu.svg" />
-              <h3><strong>Rapid Prototyping</strong> for Enterprise Demos</h3>
+              <h3 className="text-left"><strong>Rapid Prototyping</strong><br/>Decrease DevOps for your Dapps to zero</h3>
               <p className="text-left">If you need generate live demos for client pitch or would like to explore the best smart contract use-cases, we help you dramatically cut iteration time and reduce DevOps effort to zero.</p>
             </div>
           </div>
@@ -59,7 +58,7 @@ const MarketingContent = () => {
                 </div>
                 <div className="col-12 col-sm-4">
                   <h3><strong>Simplicity</strong></h3>
-                  <p>Simplify your ongoing development experience by deploying via GitHub branches, just like working with Pages.</p>
+                  <p>Simplify your ongoing development experience by deploying via GitHub branches, just like working with Pages. <small>(Shipping Soon)</small></p>
                 </div>
           </div>
 
