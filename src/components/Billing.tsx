@@ -8,6 +8,8 @@ import CreditCard from './CreditCard';
 import 'react-credit-cards/lib/styles.scss';
 import API from '../services/api';
 import Alert from 'react-s-alert';
+import { NumberField, Uints} from '../components/fields';
+
 import { 
   CardElement as NewCardElement,
   ReactStripeElements as RSE,
@@ -43,7 +45,11 @@ const Billing:FC<BillingProps> = ({
 }) => {
 
   const [updatingCard, setUpdatingCard] = useState(false);
+  const [updatingNumDapps, setUpdateNumDapps] = useState(false);
+  const [numDapps, setNumDapps] = useState('1');
+
   function toggleUpdatingCard() { setUpdatingCard(!updatingCard) }
+  function toggleUpdatingNumDapps() {setUpdateNumDapps(!updatingNumDapps)}
   let cardElt = <Text>Loading...</Text>
   if (updatingCard) {
     cardElt = <NewCardElement />
@@ -52,7 +58,22 @@ const Billing:FC<BillingProps> = ({
   } else if (!loadingData) {
     cardElt = <Text>No Card on File</Text>
   }
-
+  const handleNumDapps = async () =>{
+    return
+  }
+  let numDappsElement = <Text>Loading...</Text>
+  if(updatingNumDapps) {
+    numDappsElement = 
+      <NumberField name='numDapps' 
+      value={numDapps}
+      displayName={'Number of Dapps'}
+      size={Uints.size32}
+      onChange={setNumDapps} />
+      
+  }else {
+    numDappsElement =<Text> hello </Text>
+  }
+  
   async function submitCardUpdate(){
     if (!stripe) {
       throw new Error("Billing component loaded without injectStripe; Billing always needs stripe.");
@@ -123,7 +144,19 @@ const Billing:FC<BillingProps> = ({
           {nextBillingDate}
         </Text>
       </EasyInputGroup>
-
+      <EasyInputGroup title='Update number of Dapps'>
+        <>
+        {numDappsElement}
+        {
+          updatingNumDapps ? (
+            <Button onClick={handleNumDapps} block>
+              Submit
+            </Button>
+          ):<Button onClick={toggleUpdatingNumDapps}/>
+        }
+        </>
+      </EasyInputGroup>
+      
       {/* TODO: List the current number of subs */}
 
     </>
