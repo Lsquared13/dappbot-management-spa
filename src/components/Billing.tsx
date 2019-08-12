@@ -31,6 +31,7 @@ const EasyInputGroup:FC<EasyInputGroupProps> = ({ title, children }) => (
 )
 
 export interface BillingProps extends RSE.InjectedStripeProps {
+  hasStripe: boolean
   source: XOR<CardType, null>
   subscription: XOR<subscriptions.ISubscription, null>
   name: string
@@ -39,7 +40,8 @@ export interface BillingProps extends RSE.InjectedStripeProps {
 }
 
 const Billing:FC<BillingProps> = ({ 
-  source, subscription, stripe, name, submitWithToken, loadingData
+  source, subscription, stripe, name, submitWithToken, 
+  loadingData, hasStripe
 }) => {
 
   const [updatingCard, setUpdatingCard] = useState(false);
@@ -50,7 +52,11 @@ const Billing:FC<BillingProps> = ({
   } else if (source) {
     cardElt = <CreditCard card={source} />
   } else if (!loadingData) {
-    cardElt = <Text>No Card on File</Text>
+    if (hasStripe) {
+      cardElt = <Text>No Card on File</Text>
+    } else {
+      cardElt = <Text>No Stripe Payment Details</Text>
+    }
   }
 
   async function submitCardUpdate(){
@@ -77,40 +83,44 @@ const Billing:FC<BillingProps> = ({
       subscription.status === 'active' ? 'Active' :
       subscription.status === 'canceled' ? 'Cancelled' :
       'Lapsed';
+  } else if (!loadingData && !hasStripe) {
+    subscriptionStatus = 'N/A'
+    nextBillingDate = 'N/A'
   }
 
-  
+  let updateCardBtns = null;
+  if (hasStripe) {
+    updateCardBtns = updatingCard ? (
+      <>
+        <Button onClick={toggleUpdatingCard}
+          size='small' 
+          style='quiet'
+          theme='outlineBlue'>
+          Cancel
+        </Button>
+        <Button onClick={submitCardUpdate}
+          size='small' 
+          style='quiet'
+          theme='outlineBlue'>
+          Submit
+        </Button>
+      </>
+    ) : (
+      <Button onClick={toggleUpdatingCard} 
+        size='small' 
+        style='quiet'
+        theme='outlineBlue'
+        disabled={loadingData}>
+        Update
+      </Button>
+    )
+  }
   return (
     <>
       <EasyInputGroup title='Credit Card'>
         <>
         { cardElt }
-        {
-          updatingCard ? (
-            <>
-              <Button onClick={toggleUpdatingCard}
-                size='small' 
-                style='quiet'
-                theme='outlineBlue'>
-                Cancel
-              </Button>
-              <Button onClick={submitCardUpdate}
-                size='small' 
-                style='quiet'
-                theme='outlineBlue'>
-                Submit
-              </Button>
-            </>
-          ) : (
-            <Button onClick={toggleUpdatingCard} 
-              size='small' 
-              style='quiet'
-              theme='outlineBlue'
-              disabled={loadingData}>
-              Update
-            </Button>
-          )
-        }
+        { updateCardBtns }
         </>
       </EasyInputGroup>
       <EasyInputGroup title='Subscription Status'>
