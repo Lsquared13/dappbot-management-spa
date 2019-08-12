@@ -58,7 +58,7 @@ const MarketingContent = () => {
                 </div>
                 <div className="col-12 col-sm-4">
                   <h3><strong>Simplicity</strong></h3>
-                  <p>Simplify your ongoing development experience by deploying via GitHub branches, just like working with Pages.</p>
+                  <p>Simplify your ongoing development experience by deploying via GitHub branches, just like working with Pages. <small>(Shipping Soon)</small></p>
                 </div>
           </div>
 
