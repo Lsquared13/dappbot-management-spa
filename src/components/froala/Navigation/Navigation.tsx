@@ -12,10 +12,10 @@ export interface NavProps {
 
 export const Navigation:FC<NavProps> = ({hideLogin, user, setUser}) => {
 
-  const [sideNavVisible, setSideNavVisible] = useState(false);
+  const [mobileNavVisible, setMobileNavVisible] = useState(false);
 
-  function toggleSideNav() {
-    setSideNavVisible(!sideNavVisible);
+  function toggleMobileNav() {
+    setMobileNavVisible(!mobileNavVisible);
   };
   
   const logOut = () => {
@@ -38,10 +38,10 @@ export const Navigation:FC<NavProps> = ({hideLogin, user, setUser}) => {
           <button className="navbar-toggler" type="button" 
             data-toggle="collapse" data-target="#navbarNav3" 
             aria-controls="navbarNav3" aria-expanded="false" 
-            aria-label="Toggle navigation" onClick={toggleSideNav}>
+            aria-label="Toggle navigation" onClick={toggleMobileNav}>
             <span className="navbar-toggler-icon" />
           </button>
-          <div className={`collapse navbar-collapse ${sideNavVisible ? " show" : ""}`} id="navbarNav3">
+          <div className={`collapse navbar-collapse ${mobileNavVisible ? " show" : ""}`} id="navbarNav3">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
                   <a className="nav-link" href="#features">Features</a>
