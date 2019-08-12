@@ -2,6 +2,9 @@ import React, { FC, useState, useEffect } from 'react';
 import { RouteComponentProps, Link } from '@reach/router';
 import { StringField, NumberField, Uints, BooleanField } from '../components/fields';
 import { Button, Box, Text, Checkbox } from '../components/ui';
+import { Container } from "../layout";
+import EmailImage from "../assets/images/CheckEmail.svg";
+
 
 import { CardElement, injectStripe, ReactStripeElements } from 'react-stripe-elements';
 import request from 'request-promise-native';
@@ -135,14 +138,45 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
   }, [createUserResponse]);
   
   return successful ? (
-    <div>
-      <h2>Congratulations!</h2>
-      <Text>
-        You've successfully purchased {numDapps} slots on Dappsmith.
-        We've sent you an email with your temporary 
-        password, <Link to='/login'>login here</Link>.
-      </Text>
-    </div>
+    <Box marginTop={9} marginBottom={12}>
+      <Container>
+        <div className="mb-5 mt-5 text-center">
+          <div className="row text-center mb-3">
+            <div className="col-sm-6 m-auto col-lg-4">
+              <img alt="Dapp Empty State" className="img-fluid" src={EmailImage} />
+            </div>
+          </div>
+          <Text
+            bold
+            size="lg"
+            smSize="lg"
+            mdSize="lg"
+            lgSize="lg"
+            align="center"
+            className="mb-3"
+            color="blue"
+            >
+            Check your Email
+          </Text>
+          <div className="row text-center">
+            <div className="col-sm-6 col-md-6 m-auto">
+              <Text
+              size="sm"
+              smSize="sm"
+              mdSize="sm"
+              lgSize="sm"
+              color="gray"
+              align="center"
+              className="mb-5">
+                You've successfully purchased {numDapps} slots on DappBot.
+                <br />
+                We've sent you an email with your temporary password, <Link to='/login'>login here</Link>.
+              </Text>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </Box>
   ) : (
     <div>
 
