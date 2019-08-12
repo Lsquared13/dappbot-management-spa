@@ -105,3 +105,12 @@ p, a, div {  font-family: "DINRoundPro";
     background-image: url("/MobileSplash.svg");
   }
 }
+
+.icon.blue, .Text.blue {
+  color: #0064FF;
+}
+
+.icon.blue:hover {
+  color: #0064FF;
+  opacity: .8;
+}
