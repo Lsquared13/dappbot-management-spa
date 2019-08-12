@@ -81,7 +81,7 @@ export interface SettingState {
 // on the default object.
 const SettingContainer:FC<SettingsContainerProps> = (props) => {
   const { API, user, setUser } = props;
-
+  let [hasStripe, setHasStripe] = useState(false);
   let [source, setSource] = useState(null as XOR<ICard, null>);
   let [subscription, setSubscription] = useState(null as XOR<subscriptions.ISubscription, null>);
   let [name, setName] = useState('Loading...');
@@ -96,13 +96,19 @@ const SettingContainer:FC<SettingsContainerProps> = (props) => {
       const userData:StripeUserData = data;
       const newUser = userData.user;
       const { customer, subscription } = userData;
-      setSource(customer.default_source as XOR<ICard, null>);
-      setSubscription(subscription);
+      if (customer){
+        setSource(customer.default_source as XOR<ICard, null>);
+        setName(customer.name || '');
+        setHasStripe(true);
+      } else {
+        setHasStripe(false);
+        Alert.info('No Stripe customer found!');
+      }
+      if (subscription) setSubscription(subscription);
       setUser({
         ...user,
         User : newUser
       });
-      setName(customer.name || '');
     } else if (error) {
       console.log('error fetching data: ',error);
       Alert.error(`Error fetching your subscription data: ${error.toString()}`)
@@ -142,6 +148,7 @@ const SettingContainer:FC<SettingsContainerProps> = (props) => {
             <Billing source={source} 
               subscription={subscription} 
               name={name}
+              hasStripe={hasStripe}
               loadingData={stripeData.isLoading}
               submitWithToken={sendUpdatePayment} />
           </LayoutContainer>
