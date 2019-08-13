@@ -87,6 +87,54 @@ const SettingContainer:FC<SettingsContainerProps> = (props) => {
   let [name, setName] = useState('Loading...');
   const [updateSubscriptionResponse, sendUpdateSubscriptionRequest] = useResource(API.payment.updatePlanCounts())
 
+
+  //HANDLE LIST GETTING
+  const [listResponse, sendListRequest] = useResource(API.private.list(),[]);
+    
+    const [availableNumOfDapps, markAvailableNumOfDapps ] = useState(-1)
+    const [fetchListSent, markFetchListSent] = useState(false);
+    
+    const handleFetchList= async() => {
+      
+      markFetchListSent(true);
+      try {
+        await API.refreshAuthorization();
+        sendListRequest();
+      } catch (err) {
+        Alert.error(`Error fetching dapp list : ${err.toString()}`)
+      }
+    }
+
+    useEffect(() => {
+      handleFetchList()
+    }, []);
+
+    useEffect(() => {
+      if (!fetchListSent){
+        return
+      }
+
+      if (listResponse.isLoading){
+        
+      } else if (listResponse.error) {
+        markFetchListSent(false)
+        switch (listResponse.error.code) {
+
+          default: {
+            Alert.error(listResponse.error.data.err.message);
+          }
+        }
+      } else if(listResponse.data){
+        markFetchListSent(false);
+        const {count} = listResponse.data.data
+        const totalAvailableDapps = parseInt(user.User.UserAttributes['custom:standard_limit'])
+        markAvailableNumOfDapps(totalAvailableDapps - count)
+        Alert.success("Access Granted", { timeout: 750 });
+        
+      }
+      
+    }, [listResponse]);
+    //HANDLING LIST
   async function sendUpdateDapps (numDapps:number) {
     let plans:StripePlans = {
       standard : numDapps,
@@ -103,7 +151,11 @@ const SettingContainer:FC<SettingsContainerProps> = (props) => {
     let{isLoading, data, error} = updateSubscriptionResponse;
     if(error){
       Alert.error(`Error updating your subscription: ${error.message}`)
-    } 
+    } else if( data && !isLoading){
+      sleep(5).then(() => {
+        API.refreshUser()
+      })
+    }
     if(data) console.log("updatedSubscriptionREsponse: ", data)
   },[updateSubscriptionResponse])
   const [stripeData, fetchStripeData] = useResource(API.payment.getUserStripeData(), []);
@@ -172,8 +224,10 @@ const SettingContainer:FC<SettingsContainerProps> = (props) => {
               hasStripe={hasStripe}
               loadingData={stripeData.isLoading}
               submitWithToken={sendUpdatePayment} 
-              numberOfDapps={parseInt(user.User.UserAttributes['custom:standard_limit'])}
+              totalNumDapps={parseInt(user.User.UserAttributes['custom:standard_limit'])}
               submitUpdateDapps ={sendUpdateDapps}
+              availableNumDapps={availableNumOfDapps}
+
               />
           </LayoutContainer>
         </Box>

@@ -37,19 +37,20 @@ export interface BillingProps extends RSE.InjectedStripeProps {
   name: string
   submitWithToken:(token:stripe.Token)=>Promise<any>
   loadingData: boolean
-  numberOfDapps: number
+  totalNumDapps: number
   submitUpdateDapps:(numDapps:number) => Promise<any>
+  availableNumDapps: number
 }
 
 const Billing:FC<BillingProps> = ({ 
   source, subscription, stripe, name, submitWithToken, 
-  loadingData, hasStripe,numberOfDapps, submitUpdateDapps
+  loadingData, hasStripe,totalNumDapps: totalNumDapps, submitUpdateDapps, availableNumDapps
 }) => {
 
 
   const [updatingCard, setUpdatingCard] = useState(false);
   const [updatingNumDapps, setUpdateNumDapps] = useState(false);
-  const [numDapps, setNumDapps] = useState(numberOfDapps.toString());
+  const [numDapps, setNumDapps] = useState(totalNumDapps.toString());
  
 
   function toggleUpdatingCard() { setUpdatingCard(!updatingCard) }
@@ -80,15 +81,24 @@ const Billing:FC<BillingProps> = ({
     numDappsElement =<Text> {numDapps} </Text>
   }
   async function submitDappSubscriptionUpdate(){
-    const numDappsInt = parseInt(numDapps)
-    if(numDappsInt!==numberOfDapps){
-      if(numDappsInt>numberOfDapps){
-        submitUpdateDapps(numDappsInt)
+    const updateNumber = parseInt(numDapps)
+    if(updateNumber<0){
+      Alert.info("You cannot update the number of dapps to a negative amount")
+      setNumDapps(totalNumDapps.toString())      
+    } else if(updateNumber!==totalNumDapps){
+      if((updateNumber < totalNumDapps) && (availableNumDapps < totalNumDapps-updateNumber)){
+        
+        Alert.error("Please delete a dapp if you want to update your subscription to a lower number of dapps")
+      }else{
+        console.log(updateNumber)
+        console.log(availableNumDapps)
+        console.log(totalNumDapps)
+        submitUpdateDapps(updateNumber)
         Alert.info("Updating your subscription, this may take a moment.")
       }
       toggleUpdatingNumDapps();
-    }else{
-      Alert.error("Updating your subscription has failed.")
+    } else{
+        Alert.error("You cannot update the number of dapps to the same amount")
     }
   }
   async function submitCardUpdate(){
