@@ -80,14 +80,17 @@ const Billing:FC<BillingProps> = ({
   }else {
     numDappsElement =<Text> {numDapps} </Text>
   }
+  function resetNumDapps() {
+    setNumDapps(totalNumDapps.toString())      
+  }
   async function submitDappSubscriptionUpdate(){
     const updateNumber = parseInt(numDapps)
     if(updateNumber<0){
       Alert.info("You cannot update the number of dapps to a negative amount")
-      setNumDapps(totalNumDapps.toString())      
+      resetNumDapps()
     } else if(updateNumber!==totalNumDapps){
       if((updateNumber < totalNumDapps) && (availableNumDapps < totalNumDapps-updateNumber)){
-        
+        resetNumDapps()
         Alert.error("Please delete a dapp if you want to update your subscription to a lower number of dapps")
       }else{
         console.log(updateNumber)
