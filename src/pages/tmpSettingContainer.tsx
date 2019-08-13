@@ -85,6 +85,8 @@ const SettingContainer:FC<SettingsContainerProps> = (props) => {
   let [source, setSource] = useState(null as XOR<ICard, null>);
   let [subscription, setSubscription] = useState(null as XOR<subscriptions.ISubscription, null>);
   let [name, setName] = useState('Loading...');
+  const [updateDappResponse, sendUpdateDappRequest] = useResource(API.payment.updatePlanCounts())
+
   const [stripeData, fetchStripeData] = useResource(API.payment.getUserStripeData(), []);
   useEffect(function handleStripeDataLoad(){
     let { data, error } = stripeData;
@@ -150,7 +152,12 @@ const SettingContainer:FC<SettingsContainerProps> = (props) => {
               name={name}
               hasStripe={hasStripe}
               loadingData={stripeData.isLoading}
-              submitWithToken={sendUpdatePayment} />
+              submitWithToken={sendUpdatePayment} 
+              numberOfDapps={parseInt(user.User.UserAttributes['custom:standard_limit'])}
+              professionalDapps = {parseInt(user.User.UserAttributes['custom:professional_limit'])}
+              enterpriseDapps = {parseInt(user.User.UserAttributes['custom:enterprise_limit'])}
+              API = {API}
+              />
           </LayoutContainer>
         </Box>
       </Container>

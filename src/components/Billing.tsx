@@ -6,10 +6,9 @@ import moment from 'moment';
 import { LayoutContainer, InputGroup, InputTitle, InputContainer } from '../layout';
 import CreditCard from './CreditCard';
 import 'react-credit-cards/lib/styles.scss';
-import API from '../services/api';
 import Alert from 'react-s-alert';
 import { NumberField, Uints} from '../components/fields';
-
+import {StripePlans} from "../types"
 import { 
   CardElement as NewCardElement,
   ReactStripeElements as RSE,
@@ -39,16 +38,19 @@ export interface BillingProps extends RSE.InjectedStripeProps {
   name: string
   submitWithToken:(token:stripe.Token)=>Promise<any>
   loadingData: boolean
+  numberOfDapps: number
 }
 
 const Billing:FC<BillingProps> = ({ 
   source, subscription, stripe, name, submitWithToken, 
-  loadingData, hasStripe
+  loadingData, hasStripe,numberOfDapps
 }) => {
+
 
   const [updatingCard, setUpdatingCard] = useState(false);
   const [updatingNumDapps, setUpdateNumDapps] = useState(false);
-  const [numDapps, setNumDapps] = useState('1');
+  const [numDapps, setNumDapps] = useState(numberOfDapps.toString());
+ 
 
   function toggleUpdatingCard() { setUpdatingCard(!updatingCard) }
   function toggleUpdatingNumDapps() {setUpdateNumDapps(!updatingNumDapps)}
@@ -64,9 +66,7 @@ const Billing:FC<BillingProps> = ({
       cardElt = <Text>No Stripe Payment Details</Text>
     }
   }
-  const handleNumDapps = async () =>{
-    return
-  }
+
   let numDappsElement = <Text>Loading...</Text>
   if(updatingNumDapps) {
     numDappsElement = 
@@ -77,7 +77,7 @@ const Billing:FC<BillingProps> = ({
       onChange={setNumDapps} />
       
   }else {
-    numDappsElement =<Text> hello </Text>
+    numDappsElement =<Text> {numDapps} </Text>
   }
   
   async function submitCardUpdate(){
@@ -162,7 +162,13 @@ const Billing:FC<BillingProps> = ({
             <Button onClick={handleNumDapps} block>
               Submit
             </Button>
-          ):<Button onClick={toggleUpdatingNumDapps}/>
+          ):
+          <Button onClick={toggleUpdatingNumDapps}
+            size='small' 
+            style='quiet'
+            theme='outlineBlue'>
+            Update
+          </Button>
         }
         </>
       </EasyInputGroup>
