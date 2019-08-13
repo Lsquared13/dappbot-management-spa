@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Text, Icon } from "../../components/ui";
+import { Box, Text, Icon, Button } from "../../components/ui";
 import { Container } from "./../Container";
 
 export interface DappStatusProps {
@@ -29,7 +29,9 @@ export const DappStatus: React.SFC<DappStatusProps> = props => {
           </Text>
         </Text>
         <Box>
-          <Icon icon="copy" color="blue" onClick={props.onStatusCopy} />
+          <Button size="small" theme="outlineBlue" onClick={props.onStatusCopy} >
+            ABI <Icon icon="copy" color="blue"/>
+          </Button>
         </Box>
       </Box>
     </Container>

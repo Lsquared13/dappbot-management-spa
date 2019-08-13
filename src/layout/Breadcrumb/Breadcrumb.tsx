@@ -8,12 +8,12 @@ export interface BreadcrumbProps {
   title: React.ReactNode;
 }
 
-const NavLink = ({ partial = true, ...props }) => {
+const NavLink = ({ ...props }) => {
   return (
     <Link
       {...props}
       getProps={({ isCurrent, isPartiallyCurrent }) => {
-        const isActive = partial ? isPartiallyCurrent : isCurrent;
+        const isActive = isPartiallyCurrent;
         return {
           style: {
             display: isActive ? "inline-block" : "none",
@@ -30,7 +30,7 @@ const Breadcrumbs: React.SFC<BreadcrumbProps> = props => (
   <nav>
     <NavLink to="/home">
       {" "}
-      DAPPS{" "}
+      DASHBOARD{" "}
       <span style={{ color: "black", textDecoration: "none !important" }}>
         /  
       </span>
@@ -78,6 +78,13 @@ const Breadcrumbs: React.SFC<BreadcrumbProps> = props => (
       GENERAL SETTINGS{" "}
       <span style={{ color: "black", textDecoration: "none !important" }}>
         /
+      </span>
+    </NavLink>
+    <NavLink to="/home/user-settings">
+      {" "}
+      SETTINGS{" "}
+      <span style={{ color: "black", textDecoration: "none !important" }}>
+        /  
       </span>
     </NavLink>
   </nav>
