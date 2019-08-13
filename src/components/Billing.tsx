@@ -39,12 +39,12 @@ export interface BillingProps extends RSE.InjectedStripeProps {
   loadingData: boolean
   totalNumDapps: number
   submitUpdateDapps:(numDapps:number) => Promise<any>
-  availableNumDapps: number
+  usedNumDapps: number
 }
 
 const Billing:FC<BillingProps> = ({ 
   source, subscription, stripe, name, submitWithToken, 
-  loadingData, hasStripe,totalNumDapps: totalNumDapps, submitUpdateDapps, availableNumDapps
+  loadingData, hasStripe,totalNumDapps: totalNumDapps, submitUpdateDapps, usedNumDapps
 }) => {
 
 
@@ -85,6 +85,7 @@ const Billing:FC<BillingProps> = ({
   }
   async function submitDappSubscriptionUpdate(){
     const updateNumber = parseInt(numDapps)
+    const availableNumDapps = totalNumDapps-usedNumDapps
     if(updateNumber<0){
       Alert.info("You cannot update the number of dapps to a negative amount")
       resetNumDapps()
@@ -93,9 +94,6 @@ const Billing:FC<BillingProps> = ({
         resetNumDapps()
         Alert.error("Please delete a dapp if you want to update your subscription to a lower number of dapps")
       }else{
-        console.log(updateNumber)
-        console.log(availableNumDapps)
-        console.log(totalNumDapps)
         submitUpdateDapps(updateNumber)
         Alert.info("Updating your subscription, this may take a moment.")
       }

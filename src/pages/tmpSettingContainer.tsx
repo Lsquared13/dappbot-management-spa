@@ -91,7 +91,7 @@ const SettingContainer:FC<SettingsContainerProps> = (props) => {
   //HANDLE LIST GETTING
   const [listResponse, sendListRequest] = useResource(API.private.list(),[]);
     
-    const [availableNumOfDapps, markAvailableNumOfDapps ] = useState(-1)
+    const [usedNumDapps, markUsedNumOfDapps ] = useState(-1)
     const [fetchListSent, markFetchListSent] = useState(false);
     
     const handleFetchList= async() => {
@@ -127,10 +127,7 @@ const SettingContainer:FC<SettingsContainerProps> = (props) => {
       } else if(listResponse.data){
         markFetchListSent(false);
         const {count} = listResponse.data.data
-        const totalAvailableDapps = parseInt(user.User.UserAttributes['custom:standard_limit'])
-        markAvailableNumOfDapps(totalAvailableDapps - count)
-        Alert.success("Access Granted", { timeout: 750 });
-        
+        markUsedNumOfDapps(count)        
       }
       
     }, [listResponse]);
@@ -226,7 +223,7 @@ const SettingContainer:FC<SettingsContainerProps> = (props) => {
               submitWithToken={sendUpdatePayment} 
               totalNumDapps={parseInt(user.User.UserAttributes['custom:standard_limit'])}
               submitUpdateDapps ={sendUpdateDapps}
-              availableNumDapps={availableNumOfDapps}
+              usedNumDapps={usedNumDapps}
 
               />
           </LayoutContainer>
