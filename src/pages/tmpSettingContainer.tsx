@@ -11,7 +11,7 @@ import {
   SubscriptionChanges
 } from "../layout/OldBilling";
 import Billing from '../components/Billing';
-import { UserResponseData } from "../types";
+import { UserResponseData, StripePlans } from "../types";
 import { injectStripe, ReactStripeElements as RSE } from "react-stripe-elements";
 import API, { StripeUserData } from "../services/api";
 import { useResource } from "react-request-hook";
@@ -85,8 +85,27 @@ const SettingContainer:FC<SettingsContainerProps> = (props) => {
   let [source, setSource] = useState(null as XOR<ICard, null>);
   let [subscription, setSubscription] = useState(null as XOR<subscriptions.ISubscription, null>);
   let [name, setName] = useState('Loading...');
-  const [updateDappResponse, sendUpdateDappRequest] = useResource(API.payment.updatePlanCounts())
+  const [updateSubscriptionResponse, sendUpdateSubscriptionRequest] = useResource(API.payment.updatePlanCounts())
 
+  async function sendUpdateDapps (numDapps:number) {
+    let plans:StripePlans = {
+      standard : numDapps,
+      professional : parseInt(user.User.UserAttributes['custom:professional_limit']),
+      enterprise : parseInt(user.User.UserAttributes['custom:enterprise_limit'])
+    }
+    let request ={
+      plans:plans
+    }
+    sendUpdateSubscriptionRequest(request)
+  }
+
+  useEffect(function handleUpdateSubscription() {
+    let{isLoading, data, error} = updateSubscriptionResponse;
+    if(error){
+      Alert.error(`Error updating your subscription: ${error.message}`)
+    } 
+    if(data) console.log("updatedSubscriptionREsponse: ", data)
+  },[updateSubscriptionResponse])
   const [stripeData, fetchStripeData] = useResource(API.payment.getUserStripeData(), []);
   useEffect(function handleStripeDataLoad(){
     let { data, error } = stripeData;
@@ -154,9 +173,7 @@ const SettingContainer:FC<SettingsContainerProps> = (props) => {
               loadingData={stripeData.isLoading}
               submitWithToken={sendUpdatePayment} 
               numberOfDapps={parseInt(user.User.UserAttributes['custom:standard_limit'])}
-              professionalDapps = {parseInt(user.User.UserAttributes['custom:professional_limit'])}
-              enterpriseDapps = {parseInt(user.User.UserAttributes['custom:enterprise_limit'])}
-              API = {API}
+              submitUpdateDapps ={sendUpdateDapps}
               />
           </LayoutContainer>
         </Box>

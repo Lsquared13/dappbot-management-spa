@@ -8,7 +8,6 @@ import CreditCard from './CreditCard';
 import 'react-credit-cards/lib/styles.scss';
 import Alert from 'react-s-alert';
 import { NumberField, Uints} from '../components/fields';
-import {StripePlans} from "../types"
 import { 
   CardElement as NewCardElement,
   ReactStripeElements as RSE,
@@ -39,11 +38,12 @@ export interface BillingProps extends RSE.InjectedStripeProps {
   submitWithToken:(token:stripe.Token)=>Promise<any>
   loadingData: boolean
   numberOfDapps: number
+  submitUpdateDapps:(numDapps:number) => Promise<any>
 }
 
 const Billing:FC<BillingProps> = ({ 
   source, subscription, stripe, name, submitWithToken, 
-  loadingData, hasStripe,numberOfDapps
+  loadingData, hasStripe,numberOfDapps, submitUpdateDapps
 }) => {
 
 
@@ -79,7 +79,18 @@ const Billing:FC<BillingProps> = ({
   }else {
     numDappsElement =<Text> {numDapps} </Text>
   }
-  
+  async function submitDappSubscriptionUpdate(){
+    const numDappsInt = parseInt(numDapps)
+    if(numDappsInt!==numberOfDapps){
+      if(numDappsInt>numberOfDapps){
+        submitUpdateDapps(numDappsInt)
+        Alert.info("Updating your subscription, this may take a moment.")
+      }
+      toggleUpdatingNumDapps();
+    }else{
+      Alert.error("Updating your subscription has failed.")
+    }
+  }
   async function submitCardUpdate(){
     if (!stripe) {
       throw new Error("Billing component loaded without injectStripe; Billing always needs stripe.");
@@ -159,7 +170,7 @@ const Billing:FC<BillingProps> = ({
         {numDappsElement}
         {
           updatingNumDapps ? (
-            <Button onClick={handleNumDapps} block>
+            <Button onClick={submitDappSubscriptionUpdate} block>
               Submit
             </Button>
           ):
