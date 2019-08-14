@@ -133,7 +133,7 @@ const SettingContainer:FC<SettingsContainerProps> = (props) => {
     }, [listResponse]);
     //HANDLING LIST
   async function sendUpdateDapps (numDapps:number) {
-    let plans:StripePlans = {
+    let plans:any = {
       standard : numDapps,
       professional : parseInt(user.User.UserAttributes['custom:professional_limit']),
       enterprise : parseInt(user.User.UserAttributes['custom:enterprise_limit'])
@@ -159,12 +159,11 @@ const SettingContainer:FC<SettingsContainerProps> = (props) => {
   useEffect(function handleStripeDataLoad(){
     let { data, error } = stripeData;
     if (data) console.log('data: ',data);
-    if (data){
-      // @ts-ignore Resource Factory expects responses to all
-      // have the data object nesting, payment lambda doesn't.
-      // Ignore this until that's updated.
-      const userData:StripeUserData = data;
+    if (data){ 
+      const userData:StripeUserData = data.data;
+      console.log("userData: ",userData)
       const newUser = userData.user;
+      console.log("newUser: ",newUser)
       const { customer, subscription } = userData;
       if (customer){
         setSource(customer.default_source as XOR<ICard, null>);

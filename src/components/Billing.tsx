@@ -78,7 +78,7 @@ const Billing:FC<BillingProps> = ({
       onChange={setNumDapps} />
       
   }else {
-    numDappsElement =<Text> {numDapps} </Text>
+    numDappsElement =<Text> {totalNumDapps} </Text>
   }
   function resetNumDapps() {
     setNumDapps(totalNumDapps.toString())      
@@ -176,7 +176,7 @@ const Billing:FC<BillingProps> = ({
           {nextBillingDate}
         </Text>
       </EasyInputGroup>
-      <EasyInputGroup title='Update number of Dapps'>
+      <EasyInputGroup title='Total Number of Dapps'>
         <>
         {numDappsElement}
         {
