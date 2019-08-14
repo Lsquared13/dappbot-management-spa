@@ -11,23 +11,23 @@ import {
   SubscriptionChanges
 } from "../layout/OldBilling";
 import Billing from '../components/Billing';
-import { UserResponseData } from "../types";
+import { UserResponseData, StripePlans } from "../types";
 import { injectStripe, ReactStripeElements as RSE } from "react-stripe-elements";
 import API, { StripeUserData } from "../services/api";
 import { useResource } from "react-request-hook";
 import { ICard, subscriptions } from "stripe";
 import { XOR } from "ts-xor";
 
-function sleep(seconds:number){
+function sleep(seconds: number) {
   return new Promise((resolve) => {
     setTimeout(resolve, seconds * 1000);
   })
 }
 
 export interface SettingsContainerProps extends RouteComponentProps, RSE.InjectedStripeProps {
-  user : UserResponseData;
-  setUser : (user:UserResponseData)=>void
-  API : API;
+  user: UserResponseData;
+  setUser: (user: UserResponseData) => void
+  API: API;
   /* Profile tab props */
   onProfileInputChange?: (inputs: ProfileState) => void;
   onProfileDelete: (
@@ -79,24 +79,27 @@ export interface SettingState {
 // Explicitly not exporting raw component because
 // it needs to be run with the injectStripe HOC
 // on the default object.
-const SettingContainer:FC<SettingsContainerProps> = (props) => {
+const SettingContainer: FC<SettingsContainerProps> = (props) => {
   const { API, user, setUser } = props;
+  
+  ///////////////////////////////////
+  // FETCHING USER'S STRIPE DATA
+  ///////////////////////////////////
+  const [stripeData, fetchStripeData] = useResource(API.payment.getUserStripeData(), []);
   let [hasStripe, setHasStripe] = useState(false);
+  let [name, setName] = useState('Loading...');
   let [source, setSource] = useState(null as XOR<ICard, null>);
   let [subscription, setSubscription] = useState(null as XOR<subscriptions.ISubscription, null>);
-  let [name, setName] = useState('Loading...');
-  const [stripeData, fetchStripeData] = useResource(API.payment.getUserStripeData(), []);
-  useEffect(function handleStripeDataLoad(){
+  useEffect(function handleStripeDataLoad() {
     let { data, error } = stripeData;
-    if (data) console.log('data: ',data);
-    if (data){
-      // @ts-ignore Resource Factory expects responses to all
-      // have the data object nesting, payment lambda doesn't.
-      // Ignore this until that's updated.
-      const userData:StripeUserData = data;
-      const newUser = userData.user;
+    if (error){
+      console.log('error fetching data: ', error);
+      Alert.error(`Error fetching your subscription data: ${error.toString()}`)
+    }
+    if (data) {
+      const userData: StripeUserData = data.data;
       const { customer, subscription } = userData;
-      if (customer){
+      if (customer) {
         setSource(customer.default_source as XOR<ICard, null>);
         setName(customer.name || '');
         setHasStripe(true);
@@ -107,21 +110,74 @@ const SettingContainer:FC<SettingsContainerProps> = (props) => {
       if (subscription) setSubscription(subscription);
       setUser({
         ...user,
-        User : newUser
+        User: userData.user
       });
-    } else if (error) {
-      console.log('error fetching data: ',error);
-      Alert.error(`Error fetching your subscription data: ${error.toString()}`)
     }
   }, [stripeData]);
 
 
-  const [updatePaymentResponse, updatePaymentRequest] = useResource(API.payment.updatePaymentMethod());
-  async function sendUpdatePayment(token:stripe.Token){
-    await API.refreshAuthorization();
-    updatePaymentRequest({ token : token.id });
+  ///////////////////////////////////
+  // FETCHING USER'S DAPP COUNT
+  ///////////////////////////////////
+  const [listResponse, sendListRequest] = useResource(API.private.list(), []);
+  const [usedNumDapps, markUsedNumOfDapps] = useState(-1)
+  const handleFetchList = async () => {
+    try {
+      await API.refreshAuthorization();
+      sendListRequest();
+    } catch (err) {
+      Alert.error(`Error fetching dapp list : ${err.toString()}`)
+    }
   }
-  useEffect(function handleUpdatedPayment(){
+  useEffect(function handleListResponse(){
+    const { isLoading, error, data } = listResponse;
+    if (error) {
+      switch (error.code) {
+        default: {
+          Alert.error(error.data.err.message);
+        }
+      }
+    }
+    if (data && !isLoading) {
+      const { count } = data.data
+      markUsedNumOfDapps(count);
+    }
+  }, [listResponse]);
+
+  ///////////////////////////////////
+  // UPDATING USER'S DAPP ALLOTMENT
+  ///////////////////////////////////
+  const [updateSubscriptionResponse, sendUpdateSubscriptionRequest] = useResource(API.payment.updatePlanCounts())
+  async function sendUpdateDapps(numDapps: number) {
+    let plans:StripePlans = {
+      standard: numDapps,
+      professional: parseInt(user.User.UserAttributes['custom:professional_limit']),
+      enterprise: parseInt(user.User.UserAttributes['custom:enterprise_limit'])
+    }
+    let request = {
+      plans: plans
+    }
+    sendUpdateSubscriptionRequest(request)
+  }
+  useEffect(function handleUpdateSubscription() {
+    let { isLoading, data, error } = updateSubscriptionResponse;
+    if (error) {
+      Alert.error(`Error updating your subscription: ${error.message}`)
+    } else if (data && !isLoading) {
+      API.refreshUser()
+    }
+  }, [updateSubscriptionResponse])
+
+
+  ///////////////////////////////////
+  // UPDATING USER'S PAYMENT
+  ///////////////////////////////////
+  const [updatePaymentResponse, updatePaymentRequest] = useResource(API.payment.updatePaymentMethod());
+  async function sendUpdatePayment(token: stripe.Token) {
+    await API.refreshAuthorization();
+    updatePaymentRequest({ token: token.id });
+  }
+  useEffect(function handleUpdatedPayment() {
     let { isLoading, data, error } = updatePaymentResponse;
     if (error) {
       Alert.error(`Error updating your card: ${error.message}`)
@@ -133,9 +189,15 @@ const SettingContainer:FC<SettingsContainerProps> = (props) => {
         API.refreshUser();
       })
     }
-    if (data) console.log('updatedPaymentResponse: ',data);
   }, [updatePaymentResponse, fetchStripeData]);
-  
+
+  ///////////////////////////////////
+  // STARTUP EFFECT
+  ///////////////////////////////////
+  useEffect(() => {
+    handleFetchList()
+  }, []);
+
   return (
     <Box>
       <Breadcrumb title={"none"} />
@@ -145,12 +207,17 @@ const SettingContainer:FC<SettingsContainerProps> = (props) => {
         <Box>
           <LayoutContainer>
             <Profile {...props} />
-            <Billing source={source} 
-              subscription={subscription} 
+            <Billing source={source}
+              subscription={subscription}
               name={name}
               hasStripe={hasStripe}
               loadingData={stripeData.isLoading}
-              submitWithToken={sendUpdatePayment} />
+              submitWithToken={sendUpdatePayment}
+              totalNumDapps={parseInt(user.User.UserAttributes['custom:standard_limit'])}
+              submitUpdateDapps={sendUpdateDapps}
+              usedNumDapps={usedNumDapps}
+
+            />
           </LayoutContainer>
         </Box>
       </Container>

@@ -23,11 +23,10 @@ The Dapp.Bot landing page is a static website which is stored in S3, delivered b
 
 ### Prerequisites
 
+> This section used to cover setting up the underlying Cognito User Pool that this client depends on.  The [`dappbot-api-lambda`](https://github.com/Eximchain/dappbot-api-lambda) now fully contains all of the Cognito logic within the `auth` method, so that content is no longer necessary.
+
 #### ACM Certificate
 Prior to setting this up, make sure that you have an SSL certificate configured to verify your intended deployment domain.  For instance, if you are deploying to `test.dapp.bot`, then you need an cert for `test.dapp.bot` or `*.dapp.bot`.  Note that wildcard certificates do not allow for different subdomain nesting: `*.dapp.bot` will cover `other-test.dapp.bot`, but not `other.test.dapp.bot` or `dapp.bot`.  If you're using a domain which you have configured in Route 53, then AWS can create the required CNAME record for you.  If not, take note of the record they ask you to create and look up how to do it with your provider.  Once your record has been validated, you're ready to begin.
-
-#### Cognito User Pool
-dapp.bot uses AWS Cognito for User-Management-as-a-Service, so the `.env` file needs to have values for both the User Pool ID (`REACT_APP_USER_POOL_ID`) and the Client ID (`REACT_APP_USER_POOL_CLIENT_ID`).
 
 ### S3 Bucket
 Your S3 bucket needs to be configured to host a public website.  You can create it with all the default settings.  Take note of the bucket name, as you'll use it again later. Once you have created it in the console:

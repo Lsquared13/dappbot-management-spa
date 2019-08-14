@@ -6,8 +6,8 @@ import moment from 'moment';
 import { LayoutContainer, InputGroup, InputTitle, InputContainer } from '../layout';
 import CreditCard from './CreditCard';
 import 'react-credit-cards/lib/styles.scss';
-import API from '../services/api';
 import Alert from 'react-s-alert';
+import { NumberField, Uints} from '../components/fields';
 import { 
   CardElement as NewCardElement,
   ReactStripeElements as RSE,
@@ -37,28 +37,21 @@ export interface BillingProps extends RSE.InjectedStripeProps {
   name: string
   submitWithToken:(token:stripe.Token)=>Promise<any>
   loadingData: boolean
+  totalNumDapps: number
+  submitUpdateDapps:(numDapps:number) => Promise<any>
+  usedNumDapps: number
 }
 
 const Billing:FC<BillingProps> = ({ 
   source, subscription, stripe, name, submitWithToken, 
-  loadingData, hasStripe
+  loadingData, hasStripe,totalNumDapps, submitUpdateDapps, usedNumDapps
 }) => {
 
+  /////////////////////////////////
+  // UPDATE CARD
+  /////////////////////////////////
   const [updatingCard, setUpdatingCard] = useState(false);
   function toggleUpdatingCard() { setUpdatingCard(!updatingCard) }
-  let cardElt = <Text>Loading...</Text>
-  if (updatingCard) {
-    cardElt = <NewCardElement />
-  } else if (source) {
-    cardElt = <CreditCard card={source} />
-  } else if (!loadingData) {
-    if (hasStripe) {
-      cardElt = <Text>No Card on File</Text>
-    } else {
-      cardElt = <Text>No Stripe Payment Details</Text>
-    }
-  }
-
   async function submitCardUpdate(){
     if (!stripe) {
       throw new Error("Billing component loaded without injectStripe; Billing always needs stripe.");
@@ -72,22 +65,18 @@ const Billing:FC<BillingProps> = ({
       Alert.error("Stripe was not able to save these credit card details.");
     }
   }
-
-  let nextBillingDate, subscriptionStatus = 'Loading...';
-  if (subscription) {
-    // Format is like 'January 1st, 2019', API comes in seconds
-    nextBillingDate = moment(subscription.current_period_end * 1000).format('MMMM Do, YYYY');
-
-    subscriptionStatus = 
-      subscription.status === 'trialing' ? 'Trial' :
-      subscription.status === 'active' ? 'Active' :
-      subscription.status === 'canceled' ? 'Cancelled' :
-      'Lapsed';
-  } else if (!loadingData && !hasStripe) {
-    subscriptionStatus = 'N/A'
-    nextBillingDate = 'N/A'
+  let cardElt = <Text>Loading...</Text>
+  if (updatingCard) {
+    cardElt = <NewCardElement />
+  } else if (source) {
+    cardElt = <CreditCard card={source} />
+  } else if (!loadingData) {
+    if (hasStripe) {
+      cardElt = <Text>No Card on File</Text>
+    } else {
+      cardElt = <Text>No Stripe Payment Details</Text>
+    }
   }
-
   let updateCardBtns = null;
   if (hasStripe) {
     updateCardBtns = updatingCard ? (
@@ -115,6 +104,77 @@ const Billing:FC<BillingProps> = ({
       </Button>
     )
   }
+
+  /////////////////////////////////
+  // UPDATE DAPPS
+  /////////////////////////////////
+  const [updatingNumDapps, setUpdateNumDapps] = useState(false);
+  const [numDapps, setNumDapps] = useState(totalNumDapps.toString());
+  function toggleUpdatingNumDapps() {setUpdateNumDapps(!updatingNumDapps)}
+  async function submitDappSubscriptionUpdate(){
+    const updateNumber = parseInt(numDapps)
+    if (updateNumber === totalNumDapps) {
+      Alert.info("New number of dapps same as the old one, no update required.");
+      toggleUpdatingNumDapps();
+      return;
+    }
+    if (updateNumber < usedNumDapps) {
+      Alert.error(`You cannot subscribe to fewer dapps than you currently have.  If you would like to subscribe to ${updateNumber} dapps, please delete ${usedNumDapps - updateNumber} of your existing dapps.`)
+      return;
+    }
+    submitUpdateDapps(updateNumber);
+    toggleUpdatingNumDapps();
+    Alert.info("Updating your subscription, it may take a moment for the new values to be reflected here.");
+  }
+  let updateDappsElement = <Text>Loading...</Text>
+  if(updatingNumDapps) {
+    updateDappsElement = 
+      <NumberField name='numDapps' 
+      value={numDapps}
+      displayName={'Number of Dapps'}
+      size={Uints.size32}
+      onChange={setNumDapps} />
+  } else {
+    updateDappsElement =<Text> {totalNumDapps} </Text>
+  }
+  let updateDappsBtn = updatingNumDapps ? (
+    <>
+    <Button onClick={toggleUpdatingNumDapps}
+      size='small' 
+      style='quiet'
+      theme='outlineBlue'>
+      Cancel
+    </Button>
+    <Button onClick={submitDappSubscriptionUpdate} block>
+      Submit
+    </Button>
+    </>
+  ):
+  <Button onClick={toggleUpdatingNumDapps}
+    size='small' 
+    style='quiet'
+    theme='outlineBlue'>
+    Update
+  </Button>
+
+  /////////////////////////////////
+  // SUBSCRIPTION DETAIL PRESENTATION LOGIC
+  /////////////////////////////////
+  let nextBillingDate, subscriptionStatus = 'Loading...';
+  if (subscription) {
+    // Format is like 'January 1st, 2019', API comes in seconds
+    nextBillingDate = moment(subscription.current_period_end * 1000).format('MMMM Do, YYYY');
+
+    subscriptionStatus = 
+      subscription.status === 'trialing' ? 'Trial' :
+      subscription.status === 'active' ? 'Active' :
+      subscription.status === 'canceled' ? 'Cancelled' :
+      'Lapsed';
+  } else if (!loadingData && !hasStripe) {
+    subscriptionStatus = 'N/A'
+    nextBillingDate = 'N/A'
+  }
+
   return (
     <>
       <EasyInputGroup title='Credit Card'>
@@ -133,7 +193,13 @@ const Billing:FC<BillingProps> = ({
           {nextBillingDate}
         </Text>
       </EasyInputGroup>
-
+      <EasyInputGroup title='Total Number of Dapps'>
+        <>
+        { updateDappsElement }
+        { updateDappsBtn }
+        </>
+      </EasyInputGroup>
+      
       {/* TODO: List the current number of subs */}
 
     </>
