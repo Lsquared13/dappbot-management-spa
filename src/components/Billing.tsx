@@ -114,11 +114,6 @@ const Billing:FC<BillingProps> = ({
   function resetNumDapps() { setNumDapps(totalNumDapps.toString()) }
   async function submitDappSubscriptionUpdate(){
     const updateNumber = parseInt(numDapps)
-    if(updateNumber<0){
-      Alert.info("You cannot subscribe to negative dapps.")
-      resetNumDapps()
-      return;
-    }
     if (updateNumber === totalNumDapps) {
       Alert.info("New number of dapps same as the old one, no update required.");
       toggleUpdatingNumDapps();
