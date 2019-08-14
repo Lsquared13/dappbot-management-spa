@@ -32,10 +32,11 @@ export const HomeBase: FC<HomeBaseProps> = ({user, setUser, location, uri, path,
   // div & the Alert component, so this HomeBase
   // component is only responsible for the Header,
   // Footer, and PaymentStatusBanner.
+  let paymentState = user && user.User && user.User.UserAttributes && user.User.UserAttributes["custom:payment_status"] || 'ACTIVE';
   return (
     <>
       <Header {...{ logOut, goToSettings, goToHome, user, location }} />
-      <PaymentStatusBanner paymentState={user.User.UserAttributes["custom:payment_status"]}/>
+      <PaymentStatusBanner paymentState={paymentState}/>
       {props.children}
       <Footer />
     </>

@@ -127,7 +127,7 @@ export const Login: FC<LoginProps> = (props) => {
   }, [beginPasswordResetResponse])
 
   useEffect(function handleChallengeResult() {
-    if (challenge.ChallengeName === ChallengeType.Default && user.Authorization !== '') {
+    if (challenge.ChallengeName === ChallengeType.Default && user.Authorization !== '' && user.User) {
       navigate && navigate('/home');
     }
   }, [challenge, setChallenge, user, navigate])

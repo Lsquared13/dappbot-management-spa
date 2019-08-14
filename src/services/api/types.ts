@@ -96,14 +96,12 @@ export interface StripeUserData {
 export type StripeUserDataResponse = DappBotResponse<StripeUserData>
 
 export type StripeCancelResponse = DappBotResponse<{
-  success: boolean
   cancelledSub : Subscription
 }>
 
 export type UserCreateResponse = DappBotResponse<{
   stripeId: number
   subscriptionId: number
-  success: boolean
   user : User | boolean
 }>
 
@@ -112,7 +110,6 @@ export interface UpdatePlanCountArgs {
 }
 
 export type UpdatePlanCountResponse = DappBotResponse<{
-  success : boolean
   updatedSubscription : Subscription
   updatedUser : User
 }>
@@ -122,6 +119,5 @@ export interface UpdatePaymentArgs {
 }
 
 export type UpdatePaymentResponse = DappBotResponse<{
-  success : boolean
   updatedCustomer : Customer
 }>

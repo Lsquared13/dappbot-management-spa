@@ -1,6 +1,4 @@
 import React, { FC } from "react";
-import { RouteComponentProps } from "@reach/router";
-import Alert from "react-s-alert";
 
 export interface AppBaseProps {
 
@@ -12,7 +10,6 @@ export const AppBase: FC<AppBaseProps> = (props) => {
   return (
     <div className="App" id="appBase">
       {props.children}
-      <Alert stack={{limit: 3}} timeout={10000} />
     </div>
   );
 };
