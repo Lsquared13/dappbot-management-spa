@@ -23,7 +23,7 @@ The Dapp.Bot landing page is a static website which is stored in S3, delivered b
 
 ### Prerequisites
 
-> This document used to explain how to set up the underlying Cognito User Pool that this client depends now.  The [`dappbot-api-lambda`](https://github.com/Eximchain/dappbot-api-lambda) now fully contains all of the Cognito logic within the `auth` method, so that content is no longer necessary.
+> This section used to cover setting up the underlying Cognito User Pool that this client depends now.  The [`dappbot-api-lambda`](https://github.com/Eximchain/dappbot-api-lambda) now fully contains all of the Cognito logic within the `auth` method, so that content is no longer necessary.
 
 #### ACM Certificate
 Prior to setting this up, make sure that you have an SSL certificate configured to verify your intended deployment domain.  For instance, if you are deploying to `test.dapp.bot`, then you need an cert for `test.dapp.bot` or `*.dapp.bot`.  Note that wildcard certificates do not allow for different subdomain nesting: `*.dapp.bot` will cover `other-test.dapp.bot`, but not `other.test.dapp.bot` or `dapp.bot`.  If you're using a domain which you have configured in Route 53, then AWS can create the required CNAME record for you.  If not, take note of the record they ask you to create and look up how to do it with your provider.  Once your record has been validated, you're ready to begin.
