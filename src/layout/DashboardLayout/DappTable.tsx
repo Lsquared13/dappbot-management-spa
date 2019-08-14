@@ -52,7 +52,7 @@ export const DappTable: React.SFC<DappTableProps> = props => {
     url: <FancyLink href={`https://${dapp.DnsName}`}>{`https://${dapp.DnsName}`}</FancyLink>,
     status: (
       //TODO: FACTOR OUT ONCE WE HAVE STATUS API
-      <Box marginLeft={-5}display="flex" alignItems="start" >
+      <Box marginLeft={-5}display="flex" alignItems="start" justifyContent="center" >
         {/* <Box marginRight={2}>
           {dapp.status === "available" ? (
             <CheckIcon height={24} width={24} />
@@ -61,7 +61,7 @@ export const DappTable: React.SFC<DappTableProps> = props => {
           )}
         </Box> */}
         <Box marginRight={2}>
-          <CheckIcon height={24} width={24} />
+          <CheckIcon height={20} width={20} />
         </Box>
         
         <Content textTransform="capitalize">available</Content>

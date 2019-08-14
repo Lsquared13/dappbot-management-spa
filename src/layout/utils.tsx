@@ -1,7 +1,7 @@
 
-import { Box, Text, TextProps, Link, LinkProps, EXCAddressProps } from "../components/ui";
+import { Box, Text, TextProps, Link, LinkProps, EXCAddressProps, Icon } from "../components/ui";
 import { ReactComponent as LinkIcon } from "../assets/images/link.svg";
-import { RouteComponentProps, navigate } from "@reach/router";
+import { RouteComponentProps, navigate, Link as RouterLink } from "@reach/router";
 
 import * as React from "react";
 import copy from 'copy-to-clipboard';
@@ -16,7 +16,7 @@ export const EXCAddresLink: React.FC<EXCAddressProps> = props => {
             <Box display={"inlineBlock"} marginRight={1}> 
               <EXCAddress  size="sm"  short={short} onClick={()=>{handleCopy2Clipboard(address)}} address={address}></EXCAddress>
             </Box>
-            <LinkIcon />
+            <Icon icon="copy" color="blue" />
           </Box>
 }
 const handleCopy2Clipboard = (val: string) => {
@@ -110,8 +110,8 @@ export const ReferenceLinkOLD: React.SFC<LinkProps> = props => {
 export const FancyLink: React.SFC<LinkProps> = props => {
   return (
     
-    <Box marginTop={1}>
-      <Text  color="blue" size="xs" smSize="xs" mdSize="xs" lgSize="xs">
+    <Box marginTop={1} marginBottom={1}>
+      <Text  color="blue" size="sm" smSize="sm" mdSize="sm" lgSize="sm">
         <Link target="blank" {...props} >
           <Box display={"inlineBlock"}>
               <Box display={"inlineBlock"} marginRight={1}>  {props.children}</Box>
@@ -152,15 +152,15 @@ export const DappDetailLink: React.FC<DappDetailLinkProps> = ({dappName, ...prop
 
   return (
     <Content>
-       <div onClick={()=>{handleDappDetailTransition(dappName)}} >
-       <Text color="blue" size="xs" smSize="xs" mdSize="xs" lgSize="sm">
+       <RouterLink to={`/home/${dappName}`}>
+       <Text bold color="blue" size="sm" smSize="sm" mdSize="sm" lgSize="sm">
         <Box display={"inlineBlock"}>
           <Box display={"inlineBlock"} marginRight={1}> {dappName} </Box>
           {/* <LinkIcon /> */}
         </Box>
        </Text>
        
-       </div>
+       </RouterLink>
     </Content>
   )
   // return ;
@@ -198,12 +198,12 @@ export const NetworkReferenceLink: React.SFC<LinkProps> = props => {
 
   
   return (
-    <Box marginTop={1} >
-      <Text size="xs" smSize="xs" mdSize="xs" lgSize="sm">
+    <Box marginTop={1} marginBottom={1}>
+      <Text size="sm" smSize="sm" mdSize="sm" lgSize="sm">
         <Link onClick={handleCopy}{...props}>
           <Box display={"inlineBlock"}>
             <Box display={"inlineBlock"} marginRight={1}> {network} </Box>
-            <LinkIcon />
+            <Icon icon="copy" color="blue" />
           </Box>
         </Link>
         
