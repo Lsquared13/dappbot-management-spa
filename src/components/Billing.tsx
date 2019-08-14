@@ -111,7 +111,6 @@ const Billing:FC<BillingProps> = ({
   const [updatingNumDapps, setUpdateNumDapps] = useState(false);
   const [numDapps, setNumDapps] = useState(totalNumDapps.toString());
   function toggleUpdatingNumDapps() {setUpdateNumDapps(!updatingNumDapps)}
-  function resetNumDapps() { setNumDapps(totalNumDapps.toString()) }
   async function submitDappSubscriptionUpdate(){
     const updateNumber = parseInt(numDapps)
     if (updateNumber === totalNumDapps) {
