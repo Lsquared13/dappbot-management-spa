@@ -44,7 +44,7 @@ export interface BillingProps extends RSE.InjectedStripeProps {
 
 const Billing:FC<BillingProps> = ({ 
   source, subscription, stripe, name, submitWithToken, 
-  loadingData, hasStripe,totalNumDapps: totalNumDapps, submitUpdateDapps, usedNumDapps
+  loadingData, hasStripe,totalNumDapps, submitUpdateDapps, usedNumDapps
 }) => {
 
 
@@ -181,9 +181,17 @@ const Billing:FC<BillingProps> = ({
         {numDappsElement}
         {
           updatingNumDapps ? (
+            <>
+            <Button onClick={toggleUpdatingNumDapps}
+              size='small' 
+              style='quiet'
+              theme='outlineBlue'>
+              Cancel
+            </Button>
             <Button onClick={submitDappSubscriptionUpdate} block>
               Submit
             </Button>
+            </>
           ):
           <Button onClick={toggleUpdatingNumDapps}
             size='small' 
