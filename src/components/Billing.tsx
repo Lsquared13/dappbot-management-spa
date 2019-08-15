@@ -137,6 +137,7 @@ const Billing:FC<BillingProps> = ({
   } else {
     updateDappsElement =<Text> {totalNumDapps} </Text>
   }
+  let noUpdatesAllowed = !!(subscription && subscription.status === 'trialing');
   let updateDappsBtn = updatingNumDapps ? (
     <>
     <Button onClick={toggleUpdatingNumDapps}
@@ -149,13 +150,15 @@ const Billing:FC<BillingProps> = ({
       Submit
     </Button>
     </>
-  ):
-  <Button onClick={toggleUpdatingNumDapps}
+  ): (
+    <Button onClick={toggleUpdatingNumDapps}
     size='small' 
     style='quiet'
+    disabled={noUpdatesAllowed}
     theme='outlineBlue'>
     Update
   </Button>
+  )
 
   /////////////////////////////////
   // SUBSCRIPTION DETAIL PRESENTATION LOGIC
