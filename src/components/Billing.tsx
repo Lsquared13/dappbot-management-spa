@@ -138,6 +138,12 @@ const Billing:FC<BillingProps> = ({
     updateDappsElement =<Text> {totalNumDapps} </Text>
   }
   let noUpdatesAllowed = !!(subscription && subscription.status === 'trialing');
+  let noUpdateMsg = noUpdatesAllowed ? (
+    <Text>
+      Please plug in payment information to begin your subscription
+      and buy more dapp slots.
+    </Text>
+  ) : null;
   let updateDappsBtn = updatingNumDapps ? (
     <>
     <Button onClick={toggleUpdatingNumDapps}
@@ -180,10 +186,11 @@ const Billing:FC<BillingProps> = ({
 
   return (
     <>
-      <EasyInputGroup title='Credit Card'>
+      <EasyInputGroup title='Total Number of Dapps'>
         <>
-        { cardElt }
-        { updateCardBtns }
+        { updateDappsElement }
+        { updateDappsBtn }
+        { noUpdateMsg }
         </>
       </EasyInputGroup>
       <EasyInputGroup title='Subscription Status'>
@@ -191,16 +198,16 @@ const Billing:FC<BillingProps> = ({
           {subscriptionStatus}
         </Text>
       </EasyInputGroup>
+      <EasyInputGroup title='Credit Card'>
+        <>
+        { cardElt }
+        { updateCardBtns }
+        </>
+      </EasyInputGroup>
       <EasyInputGroup title='Next Billing Date'>
         <Text>
           {nextBillingDate}
         </Text>
-      </EasyInputGroup>
-      <EasyInputGroup title='Total Number of Dapps'>
-        <>
-        { updateDappsElement }
-        { updateDappsBtn }
-        </>
       </EasyInputGroup>
       
       {/* TODO: List the current number of subs */}
