@@ -94,7 +94,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     let { data, error } = stripeData;
     if (error){
       console.log('error fetching data: ', error);
-      Alert.error(`Error fetching your subscription data: ${error.toString()}`)
+      Alert.error(`Error fetching your subscription data: ${error.message}`)
     }
     if (data) {
       const userData: StripeUserData = data.data;
@@ -126,7 +126,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
       await API.refreshAuthorization();
       sendListRequest();
     } catch (err) {
-      Alert.error(`Error fetching dapp list : ${err.toString()}`)
+      Alert.error(`Error fetching dapp list : ${err.message}`)
     }
   }
   useEffect(function handleListResponse(){
@@ -134,7 +134,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     if (error) {
       switch (error.code) {
         default: {
-          Alert.error(error.data.err.message);
+          Alert.error(error.message);
         }
       }
     }

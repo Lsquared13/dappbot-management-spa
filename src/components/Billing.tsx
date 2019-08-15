@@ -1,18 +1,20 @@
 import React, { FC, useState, ReactElement } from 'react';
 import { ICard as CardType, subscriptions } from 'stripe';
-import { useResource } from 'react-request-hook';
-import { XOR } from 'ts-xor';
-import moment from 'moment';
-import { LayoutContainer, InputGroup, InputTitle, InputContainer } from '../layout';
-import CreditCard from './CreditCard';
-import 'react-credit-cards/lib/styles.scss';
-import Alert from 'react-s-alert';
-import { NumberField, Uints} from '../components/fields';
+import { confirmAlert } from 'react-confirm-alert';
 import { 
   CardElement as NewCardElement,
   ReactStripeElements as RSE,
   injectStripe
 } from 'react-stripe-elements';
+import { XOR } from 'ts-xor';
+import moment from 'moment';
+import Alert from 'react-s-alert';
+import { LayoutContainer, InputGroup, InputTitle, InputContainer } from '../layout';
+import CreditCard from './CreditCard';
+import 'react-credit-cards/lib/styles.scss';
+import CustomConfirmFactory from './CustomConfirmAlert';
+import { NumberField, Uints} from '../components/fields';
+
 import { Box, Text, Button } from './ui';
 
 interface EasyInputGroupProps {
@@ -122,9 +124,26 @@ const Billing:FC<BillingProps> = ({
       Alert.error(`You cannot subscribe to fewer dapps than you currently have.  If you would like to subscribe to ${updateNumber} dapps, please delete ${usedNumDapps - updateNumber} of your existing dapps.`)
       return;
     }
-    submitUpdateDapps(updateNumber);
+    function runUpdate(){
+      submitUpdateDapps(updateNumber);
     toggleUpdatingNumDapps();
     Alert.info("Updating your subscription, it may take a moment for the new values to be reflected here.");
+    }
+    if (!(subscription && subscription.status === 'trialing')) {
+      runUpdate();
+    } else {
+      let billingCost = 10 * parseInt(numDapps);
+      confirmAlert({
+        customUI: CustomConfirmFactory({
+          title : 'Confirm Purchase',
+          message : [
+            `You are still in your free trial.  If you increase your number of dapps, the trial will end immediately and you will be billed $${billingCost} USD (${numDapps} Standard Dapps at $10 each).`,
+            'Would you like to continue?'
+          ],
+          onConfirm : runUpdate
+        })
+      })
+    }
   }
   let updateDappsElement = <Text>Loading...</Text>
   if(updatingNumDapps) {
@@ -137,13 +156,7 @@ const Billing:FC<BillingProps> = ({
   } else {
     updateDappsElement =<Text> {totalNumDapps} </Text>
   }
-  let noUpdatesAllowed = !!(subscription && subscription.status === 'trialing');
-  let noUpdateMsg = noUpdatesAllowed ? (
-    <Text>
-      Please plug in payment information to begin your subscription
-      and buy more dapp slots.
-    </Text>
-  ) : null;
+  let noUpdatesAllowed = !source;
   let updateDappsBtn = updatingNumDapps ? (
     <>
     <Button onClick={toggleUpdatingNumDapps}
@@ -186,11 +199,17 @@ const Billing:FC<BillingProps> = ({
 
   return (
     <>
-      <EasyInputGroup title='Total Number of Dapps'>
+      <EasyInputGroup title='Max Number of Dapps'>
         <>
         { updateDappsElement }
         { updateDappsBtn }
-        { noUpdateMsg }
+        { 
+          noUpdatesAllowed && !loadingData ? (
+            <Text>
+              Please plug in payment information to buy more dapp slots.
+            </Text>
+          ) : null 
+        }
         </>
       </EasyInputGroup>
       <EasyInputGroup title='Subscription Status'>
