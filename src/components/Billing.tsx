@@ -42,10 +42,11 @@ export interface BillingProps extends RSE.InjectedStripeProps {
   totalNumDapps: number
   submitUpdateDapps:(numDapps:number) => Promise<any>
   usedNumDapps: number
+  paymentStatus: string
 }
 
 const Billing:FC<BillingProps> = ({ 
-  source, subscription, stripe, name, submitWithToken, 
+  source, subscription, stripe, name, submitWithToken, paymentStatus,
   loadingData, hasStripe,totalNumDapps, submitUpdateDapps, usedNumDapps
 }) => {
 
@@ -186,12 +187,11 @@ const Billing:FC<BillingProps> = ({
   if (subscription) {
     // Format is like 'January 1st, 2019', API comes in seconds
     nextBillingDate = moment(subscription.current_period_end * 1000).format('MMMM Do, YYYY');
-
-    subscriptionStatus = 
-      subscription.status === 'trialing' ? 'Trial' :
-      subscription.status === 'active' ? 'Active' :
-      subscription.status === 'canceled' ? 'Cancelled' :
-      'Lapsed';
+    if (subscription.status === 'trialing') {
+      subscriptionStatus = 'Trial';
+    } else {
+      subscriptionStatus = paymentStatus.charAt(0).toUpperCase() + paymentStatus.slice(1).toLowerCase();
+    }
   } else if (!loadingData && !hasStripe) {
     subscriptionStatus = 'N/A'
     nextBillingDate = 'N/A'

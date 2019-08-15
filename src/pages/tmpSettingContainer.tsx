@@ -165,6 +165,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
       Alert.error(`Error updating your subscription: ${error.message}`)
     } else if (data && !isLoading) {
       API.refreshUser()
+      fetchStripeData()
     }
   }, [updateSubscriptionResponse])
 
@@ -198,6 +199,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     handleFetchList()
   }, []);
 
+  let paymentStatus = user.User.UserAttributes['custom:payment_status'] || 'ACTIVE';
   return (
     <Box>
       <Breadcrumb title={"none"} />
@@ -210,6 +212,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
             <Billing source={source}
               subscription={subscription}
               name={name}
+              paymentStatus={paymentStatus}
               hasStripe={hasStripe}
               loadingData={stripeData.isLoading}
               submitWithToken={sendUpdatePayment}
