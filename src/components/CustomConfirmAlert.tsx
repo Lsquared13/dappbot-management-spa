@@ -32,7 +32,7 @@ export function CustomConfirmFactory(args: CustomConfirmFactoryArgs) {
   const { title, message, onConfirm } = args;
   const newConfirm: CustomConfirmAlert = ({ onClose }: CustomUIOptions) => {
     let messageElts = [];
-    if (typeof message === 'object') {
+    if (Array.isArray(message)) {
       message.forEach((eachMsg, i) => {
         messageElts.push(...[
           <Text key={i * 2}>{eachMsg}</Text>,
