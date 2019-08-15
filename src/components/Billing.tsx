@@ -14,7 +14,6 @@ import CreditCard from './CreditCard';
 import 'react-credit-cards/lib/styles.scss';
 import CustomConfirmFactory from './CustomConfirmAlert';
 import { NumberField, Uints } from '../components/fields';
-
 import { Box, Text, Button } from './ui';
 
 interface EasyInputGroupProps {
@@ -31,6 +30,23 @@ const EasyInputGroup: FC<EasyInputGroupProps> = ({ title, children }) => (
     </InputContainer>
   </InputGroup>
 )
+
+interface EvenBlocksProps {
+  left : ReactElement
+  right : ReactElement
+}
+const EvenBlocks:FC<EvenBlocksProps> = ({ left, right }) => {
+  return (
+    <Box display='flex'>
+      <Box display='flex' flex='grow' paddingX={1}>
+        { left }
+      </Box>
+      <Box display='flex' flex='grow' paddingX={1}>
+        { right }
+      </Box>
+    </Box>
+  )
+}
 
 export interface BillingProps extends RSE.InjectedStripeProps {
   hasStripe: boolean
@@ -70,7 +86,13 @@ const Billing: FC<BillingProps> = ({
   }
   let cardElt = <Text>Loading...</Text>
   if (updatingCard) {
-    cardElt = <NewCardElement />
+    cardElt = (
+      <>
+      <br />
+      <NewCardElement />
+      <br />
+      </>
+    )
   } else if (source) {
     cardElt = <CreditCard card={source} />
   } else if (!loadingData) {
@@ -83,28 +105,29 @@ const Billing: FC<BillingProps> = ({
   let updateCardBtns = null;
   if (hasStripe) {
     updateCardBtns = updatingCard ? (
-      <>
-        <Button onClick={toggleUpdatingCard}
-          size='small'
-          style='quiet'
-          theme='outlineBlue'>
-          Cancel
-        </Button>
-        <Button onClick={submitCardUpdate}
-          size='small'
-          style='quiet'
-          theme='outlineBlue'>
-          Submit
-        </Button>
-      </>
+      <EvenBlocks
+        left={
+          <Button onClick={toggleUpdatingCard}
+            block
+            theme='outlineNeutral'>
+            Cancel
+          </Button>
+        }
+        right={
+          <Button onClick={submitCardUpdate}
+            block
+            theme='outlineBlue'>
+            Submit
+          </Button>
+        }
+      />
     ) : (
         <Button onClick={toggleUpdatingCard}
           size='small'
-          style='quiet'
           theme='outlineBlue'
           disabled={loadingData}>
           Update
-      </Button>
+        </Button>
       )
   }
 
@@ -159,23 +182,29 @@ const Billing: FC<BillingProps> = ({
   }
   let noUpdatesAllowed = !source;
   let updateDappsBtn = updatingNumDapps ? (
-    <>
-      <Button onClick={toggleUpdatingNumDapps}
-        size='small'
-        style='quiet'
-        theme='outlineBlue'>
-        Cancel
-    </Button>
-      <Button onClick={submitDappSubscriptionUpdate} block>
-        Submit
-    </Button>
-    </>
+    <EvenBlocks
+      left={
+        <Button onClick={toggleUpdatingNumDapps}
+          block
+          theme='outlineNeutral'>
+          Cancel
+        </Button>
+      }
+      right={
+        <Button onClick={submitDappSubscriptionUpdate} 
+          theme='outlineBlue'
+          block>
+          Submit
+        </Button>
+      }
+    />
+
+
   ) : (
       <Button onClick={toggleUpdatingNumDapps}
         size='small'
-        style='quiet'
-        disabled={noUpdatesAllowed}
-        theme='outlineBlue'>
+        theme='outlineBlue'
+        disabled={noUpdatesAllowed || loadingData}>
         Update
   </Button>
     )
