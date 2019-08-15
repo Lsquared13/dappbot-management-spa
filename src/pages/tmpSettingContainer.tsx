@@ -81,7 +81,7 @@ export interface SettingState {
 // on the default object.
 const SettingContainer: FC<SettingsContainerProps> = (props) => {
   const { API, user, setUser } = props;
-  
+
   ///////////////////////////////////
   // FETCHING USER'S STRIPE DATA
   ///////////////////////////////////
@@ -92,7 +92,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   let [subscription, setSubscription] = useState(null as XOR<subscriptions.ISubscription, null>);
   useEffect(function handleStripeDataLoad() {
     let { data, error } = stripeData;
-    if (error){
+    if (error) {
       console.log('error fetching data: ', error);
       Alert.error(`Error fetching your subscription data: ${error.message}`)
     }
@@ -129,7 +129,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
       Alert.error(`Error fetching dapp list : ${err.message}`)
     }
   }
-  useEffect(function handleListResponse(){
+  useEffect(function handleListResponse() {
     const { isLoading, error, data } = listResponse;
     if (error) {
       switch (error.code) {
@@ -149,7 +149,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   ///////////////////////////////////
   const [updateSubscriptionResponse, sendUpdateSubscriptionRequest] = useResource(API.payment.updatePlanCounts())
   async function sendUpdateDapps(numDapps: number) {
-    let plans:StripePlans = {
+    let plans: StripePlans = {
       standard: numDapps,
       professional: parseInt(user.User.UserAttributes['custom:professional_limit']),
       enterprise: parseInt(user.User.UserAttributes['custom:enterprise_limit'])

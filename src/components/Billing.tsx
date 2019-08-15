@@ -1,7 +1,7 @@
 import React, { FC, useState, ReactElement } from 'react';
 import { ICard as CardType, subscriptions } from 'stripe';
 import { confirmAlert } from 'react-confirm-alert';
-import { 
+import {
   CardElement as NewCardElement,
   ReactStripeElements as RSE,
   injectStripe
@@ -13,15 +13,15 @@ import { LayoutContainer, InputGroup, InputTitle, InputContainer } from '../layo
 import CreditCard from './CreditCard';
 import 'react-credit-cards/lib/styles.scss';
 import CustomConfirmFactory from './CustomConfirmAlert';
-import { NumberField, Uints} from '../components/fields';
+import { NumberField, Uints } from '../components/fields';
 
 import { Box, Text, Button } from './ui';
 
 interface EasyInputGroupProps {
-  title:string
-  children:ReactElement
+  title: string
+  children: ReactElement
 }
-const EasyInputGroup:FC<EasyInputGroupProps> = ({ title, children }) => (
+const EasyInputGroup: FC<EasyInputGroupProps> = ({ title, children }) => (
   <InputGroup>
     <InputTitle color="gray">{title}</InputTitle>
     <InputContainer>
@@ -37,17 +37,17 @@ export interface BillingProps extends RSE.InjectedStripeProps {
   source: XOR<CardType, null>
   subscription: XOR<subscriptions.ISubscription, null>
   name: string
-  submitWithToken:(token:stripe.Token)=>Promise<any>
+  submitWithToken: (token: stripe.Token) => Promise<any>
   loadingData: boolean
   totalNumDapps: number
-  submitUpdateDapps:(numDapps:number) => Promise<any>
+  submitUpdateDapps: (numDapps: number) => Promise<any>
   usedNumDapps: number
   paymentStatus: string
 }
 
-const Billing:FC<BillingProps> = ({ 
+const Billing: FC<BillingProps> = ({
   source, subscription, stripe, name, submitWithToken, paymentStatus,
-  loadingData, hasStripe,totalNumDapps, submitUpdateDapps, usedNumDapps
+  loadingData, hasStripe, totalNumDapps, submitUpdateDapps, usedNumDapps
 }) => {
 
   /////////////////////////////////
@@ -55,11 +55,11 @@ const Billing:FC<BillingProps> = ({
   /////////////////////////////////
   const [updatingCard, setUpdatingCard] = useState(false);
   function toggleUpdatingCard() { setUpdatingCard(!updatingCard) }
-  async function submitCardUpdate(){
+  async function submitCardUpdate() {
     if (!stripe) {
       throw new Error("Billing component loaded without injectStripe; Billing always needs stripe.");
     }
-    const { token } = await stripe.createToken({'name' : name })
+    const { token } = await stripe.createToken({ 'name': name })
     if (token && token.id) {
       submitWithToken(token)
       Alert.info("Securely updating your new credit card with Stripe, this may take a moment...");
@@ -85,27 +85,27 @@ const Billing:FC<BillingProps> = ({
     updateCardBtns = updatingCard ? (
       <>
         <Button onClick={toggleUpdatingCard}
-          size='small' 
+          size='small'
           style='quiet'
           theme='outlineBlue'>
           Cancel
         </Button>
         <Button onClick={submitCardUpdate}
-          size='small' 
+          size='small'
           style='quiet'
           theme='outlineBlue'>
           Submit
         </Button>
       </>
     ) : (
-      <Button onClick={toggleUpdatingCard} 
-        size='small' 
-        style='quiet'
-        theme='outlineBlue'
-        disabled={loadingData}>
-        Update
+        <Button onClick={toggleUpdatingCard}
+          size='small'
+          style='quiet'
+          theme='outlineBlue'
+          disabled={loadingData}>
+          Update
       </Button>
-    )
+      )
   }
 
   /////////////////////////////////
@@ -113,8 +113,8 @@ const Billing:FC<BillingProps> = ({
   /////////////////////////////////
   const [updatingNumDapps, setUpdateNumDapps] = useState(false);
   const [numDapps, setNumDapps] = useState(totalNumDapps.toString());
-  function toggleUpdatingNumDapps() {setUpdateNumDapps(!updatingNumDapps)}
-  async function submitDappSubscriptionUpdate(){
+  function toggleUpdatingNumDapps() { setUpdateNumDapps(!updatingNumDapps) }
+  async function submitDappSubscriptionUpdate() {
     const updateNumber = parseInt(numDapps)
     if (updateNumber === totalNumDapps) {
       Alert.info("New number of dapps same as the old one, no update required.");
@@ -125,10 +125,10 @@ const Billing:FC<BillingProps> = ({
       Alert.error(`You cannot subscribe to fewer dapps than you currently have.  If you would like to subscribe to ${updateNumber} dapps, please delete ${usedNumDapps - updateNumber} of your existing dapps.`)
       return;
     }
-    function runUpdate(){
+    function runUpdate() {
       submitUpdateDapps(updateNumber);
-    toggleUpdatingNumDapps();
-    Alert.info("Updating your subscription, it may take a moment for the new values to be reflected here.");
+      toggleUpdatingNumDapps();
+      Alert.info("Updating your subscription, it may take a moment for the new values to be reflected here.");
     }
     if (!(subscription && subscription.status === 'trialing')) {
       runUpdate();
@@ -136,49 +136,49 @@ const Billing:FC<BillingProps> = ({
       let billingCost = 10 * parseInt(numDapps);
       confirmAlert({
         customUI: CustomConfirmFactory({
-          title : 'Confirm Purchase',
-          message : [
+          title: 'Confirm Purchase',
+          message: [
             `You are still in your free trial.  If you increase your number of dapps, the trial will end immediately and you will be billed $${billingCost} USD (${numDapps} Standard Dapps at $10 each).`,
             'Would you like to continue?'
           ],
-          onConfirm : runUpdate
+          onConfirm: runUpdate
         })
       })
     }
   }
   let updateDappsElement = <Text>Loading...</Text>
-  if(updatingNumDapps) {
-    updateDappsElement = 
-      <NumberField name='numDapps' 
-      value={numDapps}
-      displayName={'Number of Dapps'}
-      size={Uints.size32}
-      onChange={setNumDapps} />
+  if (updatingNumDapps) {
+    updateDappsElement =
+      <NumberField name='numDapps'
+        value={numDapps}
+        displayName={'Number of Dapps'}
+        size={Uints.size32}
+        onChange={setNumDapps} />
   } else {
-    updateDappsElement =<Text> {totalNumDapps} </Text>
+    updateDappsElement = <Text> {totalNumDapps} </Text>
   }
   let noUpdatesAllowed = !source;
   let updateDappsBtn = updatingNumDapps ? (
     <>
-    <Button onClick={toggleUpdatingNumDapps}
-      size='small' 
-      style='quiet'
-      theme='outlineBlue'>
-      Cancel
+      <Button onClick={toggleUpdatingNumDapps}
+        size='small'
+        style='quiet'
+        theme='outlineBlue'>
+        Cancel
     </Button>
-    <Button onClick={submitDappSubscriptionUpdate} block>
-      Submit
+      <Button onClick={submitDappSubscriptionUpdate} block>
+        Submit
     </Button>
     </>
-  ): (
-    <Button onClick={toggleUpdatingNumDapps}
-    size='small' 
-    style='quiet'
-    disabled={noUpdatesAllowed}
-    theme='outlineBlue'>
-    Update
+  ) : (
+      <Button onClick={toggleUpdatingNumDapps}
+        size='small'
+        style='quiet'
+        disabled={noUpdatesAllowed}
+        theme='outlineBlue'>
+        Update
   </Button>
-  )
+    )
 
   /////////////////////////////////
   // SUBSCRIPTION DETAIL PRESENTATION LOGIC
@@ -201,15 +201,15 @@ const Billing:FC<BillingProps> = ({
     <>
       <EasyInputGroup title='Max Number of Dapps'>
         <>
-        { updateDappsElement }
-        { updateDappsBtn }
-        { 
-          noUpdatesAllowed && !loadingData ? (
-            <Text>
-              Please plug in payment information to buy more dapp slots.
+          {updateDappsElement}
+          {updateDappsBtn}
+          {
+            noUpdatesAllowed && !loadingData ? (
+              <Text>
+                Please plug in payment information to buy more dapp slots.
             </Text>
-          ) : null 
-        }
+            ) : null
+          }
         </>
       </EasyInputGroup>
       <EasyInputGroup title='Subscription Status'>
@@ -219,8 +219,8 @@ const Billing:FC<BillingProps> = ({
       </EasyInputGroup>
       <EasyInputGroup title='Credit Card'>
         <>
-        { cardElt }
-        { updateCardBtns }
+          {cardElt}
+          {updateCardBtns}
         </>
       </EasyInputGroup>
       <EasyInputGroup title='Next Billing Date'>
@@ -228,7 +228,7 @@ const Billing:FC<BillingProps> = ({
           {nextBillingDate}
         </Text>
       </EasyInputGroup>
-      
+
       {/* TODO: List the current number of subs */}
 
     </>
