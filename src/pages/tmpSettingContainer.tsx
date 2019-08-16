@@ -81,7 +81,7 @@ export interface SettingState {
 // on the default object.
 const SettingContainer: FC<SettingsContainerProps> = (props) => {
   const { API, user, setUser } = props;
-  
+
   ///////////////////////////////////
   // FETCHING USER'S STRIPE DATA
   ///////////////////////////////////
@@ -92,9 +92,9 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   let [subscription, setSubscription] = useState(null as XOR<subscriptions.ISubscription, null>);
   useEffect(function handleStripeDataLoad() {
     let { data, error } = stripeData;
-    if (error){
+    if (error) {
       console.log('error fetching data: ', error);
-      Alert.error(`Error fetching your subscription data: ${error.toString()}`)
+      Alert.error(`Error fetching your subscription data: ${error.message}`)
     }
     if (data) {
       const userData: StripeUserData = data.data;
@@ -126,15 +126,15 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
       await API.refreshAuthorization();
       sendListRequest();
     } catch (err) {
-      Alert.error(`Error fetching dapp list : ${err.toString()}`)
+      Alert.error(`Error fetching dapp list : ${err.message}`)
     }
   }
-  useEffect(function handleListResponse(){
+  useEffect(function handleListResponse() {
     const { isLoading, error, data } = listResponse;
     if (error) {
       switch (error.code) {
         default: {
-          Alert.error(error.data.err.message);
+          Alert.error(error.message);
         }
       }
     }
@@ -149,7 +149,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   ///////////////////////////////////
   const [updateSubscriptionResponse, sendUpdateSubscriptionRequest] = useResource(API.payment.updatePlanCounts())
   async function sendUpdateDapps(numDapps: number) {
-    let plans:StripePlans = {
+    let plans: StripePlans = {
       standard: numDapps,
       professional: parseInt(user.User.UserAttributes['custom:professional_limit']),
       enterprise: parseInt(user.User.UserAttributes['custom:enterprise_limit'])
@@ -165,6 +165,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
       Alert.error(`Error updating your subscription: ${error.message}`)
     } else if (data && !isLoading) {
       API.refreshUser()
+      fetchStripeData()
     }
   }, [updateSubscriptionResponse])
 
@@ -198,6 +199,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     handleFetchList()
   }, []);
 
+  let paymentStatus = user.User.UserAttributes['custom:payment_status'] || 'ACTIVE';
   return (
     <Box>
       <Breadcrumb title={"none"} />
@@ -210,6 +212,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
             <Billing source={source}
               subscription={subscription}
               name={name}
+              paymentStatus={paymentStatus}
               hasStripe={hasStripe}
               loadingData={stripeData.isLoading}
               submitWithToken={sendUpdatePayment}

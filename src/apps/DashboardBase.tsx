@@ -82,7 +82,7 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
       switch (listResponse.error.code) {
         default: {
           console.error('Error fetching Dapp List: ',listResponse.error)
-          Alert.error(listResponse.error.message);
+          Alert.error(JSON.stringify(listResponse.error.data, null, 2));
         }
       }
     } 
