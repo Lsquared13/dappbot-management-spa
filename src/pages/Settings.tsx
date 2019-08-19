@@ -28,12 +28,6 @@ export interface SettingsContainerProps extends RouteComponentProps, RSE.Injecte
   user: UserResponseData;
   setUser: (user: UserResponseData) => void
   API: API;
-  /* Profile tab props */
-  onProfileInputChange?: (inputs: ProfileState) => void;
-  onProfileDelete: (
-    event: React.MouseEvent<HTMLElement, MouseEvent>,
-    inputs: ProfileState
-  ) => void;
 }
 
 export interface SettingState {
