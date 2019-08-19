@@ -11,15 +11,6 @@ import { UserResponseData } from "../types";
 
 export interface ProfileProps {
   user: UserResponseData;
-  onProfileInputChange?: (inputs: ProfileState) => void;
-  onProfileSave: (
-    event: React.MouseEvent<HTMLElement, MouseEvent>,
-    inputs: ProfileState
-  ) => void;
-  onProfileDelete: (
-    event: React.MouseEvent<HTMLElement, MouseEvent>,
-    inputs: ProfileState
-  ) => void;
 }
 export type InputEvent =
   | React.ChangeEvent<HTMLInputElement>
@@ -36,24 +27,7 @@ export default class Profile extends Component<ProfileProps, ProfileState> {
     email: this.props.user.User.Email
   };
 
-  broadcastInputs = () => {
-    let { onProfileInputChange } = this.props;
-    onProfileInputChange && onProfileInputChange(Object.assign({}, this.state));
-  };
-
-  onEmailChange = (event: InputEvent) => {
-    if (event && event.target) {
-      this.setState(
-        {
-          email: event.target.value
-        },
-        this.broadcastInputs
-      );
-    }
-  };
-
   render() {
-    let { onProfileDelete, onProfileSave } = this.props;
     let { email } = this.state;
     console.log()
     return (

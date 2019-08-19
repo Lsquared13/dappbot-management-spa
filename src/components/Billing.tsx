@@ -9,12 +9,13 @@ import {
 import { XOR } from 'ts-xor';
 import moment from 'moment';
 import Alert from 'react-s-alert';
-import { LayoutContainer, InputGroup, InputTitle, InputContainer } from '../layout';
+import { InputGroup, InputTitle, InputContainer } from '../layout';
 import CreditCard from './CreditCard';
 import 'react-credit-cards/lib/styles.scss';
 import CustomConfirmFactory from './CustomConfirmAlert';
 import { NumberField, Uints } from '../components/fields';
 import { Box, Text, Button } from './ui';
+import InvoiceTable from './InvoiceTable';
 
 interface EasyInputGroupProps {
   title: string
@@ -257,9 +258,9 @@ const Billing: FC<BillingProps> = ({
           {nextBillingDate}
         </Text>
       </EasyInputGroup>
-
-      {/* TODO: List the current number of subs */}
-
+      <EasyInputGroup title='Invoice'>
+          <InvoiceTable />
+      </EasyInputGroup>
     </>
   )
 }

@@ -34,27 +34,6 @@ export interface SettingsContainerProps extends RouteComponentProps, RSE.Injecte
     event: React.MouseEvent<HTMLElement, MouseEvent>,
     inputs: ProfileState
   ) => void;
-  onProfileSave: (
-    event: React.MouseEvent<HTMLElement, MouseEvent>,
-    inputs: ProfileState
-  ) => void;
-
-  /* Password tab props */
-  onPasswordSave: (
-    event: React.MouseEvent<HTMLElement, MouseEvent>,
-    inputs: PasswordState
-  ) => void;
-  onPasswordInputChange?: (inputs: PasswordState) => void;
-
-  /* Billing tab props */
-  subscriptionPlan: SubscriptionPlan;
-  onCancelSubscription?: () => void;
-  onCreateSubscription?: (newPlan: SubscriptionDetail) => void;
-  onPurchaseDapps?: () => void;
-  onViewPastInvoice?: () => void;
-  onRenewSubscription?: (renewPlan: SubscriptionDetail) => void;
-  onSave?: (subscriptionDetail: SubscriptionChanges) => void;
-  onUpdateSubscription?: (subscriptionPlan: SubscriptionDetail) => void;
 }
 
 export interface SettingState {
