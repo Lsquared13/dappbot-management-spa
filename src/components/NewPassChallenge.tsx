@@ -99,6 +99,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
                       help="Must match field above."
                       errorMsg="Make sure this matches the field above."
                       onChange={setConfirmPass}
+                      onPressEnter={handleNewPassword}
                       name='confirmPassword' />
                   </div>
                 </div>
