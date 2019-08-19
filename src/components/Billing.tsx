@@ -16,6 +16,7 @@ import CustomConfirmFactory from './CustomConfirmAlert';
 import { NumberField, Uints } from '../components/fields';
 import { Box, Text, Button } from './ui';
 import InvoiceTable from './InvoiceTable';
+import { Invoice } from '../services/api/types';
 
 interface EasyInputGroupProps {
   title: string
@@ -53,6 +54,7 @@ export interface BillingProps extends RSE.InjectedStripeProps {
   hasStripe: boolean
   source: XOR<CardType, null>
   subscription: XOR<subscriptions.ISubscription, null>
+  invoice: XOR<Invoice, null>
   name: string
   submitWithToken: (token: stripe.Token) => Promise<any>
   loadingData: boolean
@@ -64,7 +66,8 @@ export interface BillingProps extends RSE.InjectedStripeProps {
 
 const Billing: FC<BillingProps> = ({
   source, subscription, stripe, name, submitWithToken, paymentStatus,
-  loadingData, hasStripe, totalNumDapps, submitUpdateDapps, usedNumDapps
+  loadingData, hasStripe, totalNumDapps, submitUpdateDapps, usedNumDapps,
+  invoice
 }) => {
 
   /////////////////////////////////
@@ -213,9 +216,11 @@ const Billing: FC<BillingProps> = ({
   /////////////////////////////////
   // SUBSCRIPTION DETAIL PRESENTATION LOGIC
   /////////////////////////////////
-  let nextBillingDate, subscriptionStatus = 'Loading...';
+  let nextBillingDate, subscriptionStatus, invoiceTitle = 'Loading...';
   if (subscription) {
     // Format is like 'January 1st, 2019', API comes in seconds
+    invoiceTitle = 'Invoice';
+    if (['FAILED', 'LAPSED'].includes(paymentStatus)) invoiceTitle = 'Failed Invoice';
     nextBillingDate = moment(subscription.current_period_end * 1000).format('MMMM Do, YYYY');
     if (subscription.status === 'trialing') {
       subscriptionStatus = 'Trial';
@@ -258,8 +263,8 @@ const Billing: FC<BillingProps> = ({
           {nextBillingDate}
         </Text>
       </EasyInputGroup>
-      <EasyInputGroup title='Invoice'>
-          <InvoiceTable />
+      <EasyInputGroup title={invoiceTitle}>
+        <InvoiceTable invoice={invoice} />
       </EasyInputGroup>
     </>
   )

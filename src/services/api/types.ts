@@ -86,11 +86,14 @@ export function defaultChallengeResponse():ChallengeResponse{
 
 export type Customer = Stripe.customers.ICustomer;
 export type Subscription = Stripe.subscriptions.ISubscription;
+export type Invoice = Stripe.invoices.IInvoice;
+export type LineItem = Stripe.invoices.IInvoiceLineItem;
 
 export interface StripeUserData {
   user : User
   subscription : Subscription
   customer : Customer
+  invoice: Invoice
 }
 
 export type StripeUserDataResponse = DappBotResponse<StripeUserData>
