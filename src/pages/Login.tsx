@@ -216,7 +216,7 @@ export const Login: FC<LoginProps> = (props) => {
     <section className="fdb-block fp-active" data-block-type="forms">
       <div className="container">
         <div className="row justify-content-center">
-          <div className="col-12 col-md-8 col-lg-7 col-md-5 text-center">
+          <div className="col-12 col-md-8 col-lg-7 text-center">
             {loginFields}
           </div>
         </div>
