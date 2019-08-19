@@ -62,10 +62,10 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
 
   return (
     <>
-      <section className="fdb-block fp-active" data-block-type="forms">
+      <section className="fdb-block fp-active pt-0" data-block-type="forms" >
         <div className="container">
           <div className="row justify-content-center">
-            <div className="col-12 col-md-8 col-lg-7 col-md-5 text-center">
+            <div className="col-12 col-md-10 col-lg-8 text-center">
               <div className="fdb-box fdb-touch">
                 <div className="row">
                   <div className="col">
@@ -99,6 +99,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
                       help="Must match field above."
                       errorMsg="Make sure this matches the field above."
                       onChange={setConfirmPass}
+                      onPressEnter={handleNewPassword}
                       name='confirmPassword' />
                   </div>
                 </div>
