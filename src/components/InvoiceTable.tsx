@@ -140,9 +140,9 @@ export const InvoiceTable: FC<InvoiceTableProps> = (props) => {
     <table className='table' style={{width:'100%'}}>
       <thead>
         <tr>
-          <td></td>
-          <td>Date Range</td>
-          <td>Amount</td>
+          <th>Charge Description</th>
+          <th>Time Period</th>
+          <th>Amount</th>
         </tr>
       </thead>
       <tbody>
