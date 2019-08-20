@@ -26,7 +26,7 @@ const EasyInputGroup: FC<EasyInputGroupProps> = ({ title, children }) => (
   <InputGroup>
     <InputTitle color="gray">{title}</InputTitle>
     <InputContainer>
-      <Box column={12} mdColumn={8}>
+      <Box column={12} mdColumn={12}>
         {children}
       </Box>
     </InputContainer>
@@ -216,10 +216,10 @@ const Billing: FC<BillingProps> = ({
   /////////////////////////////////
   // SUBSCRIPTION DETAIL PRESENTATION LOGIC
   /////////////////////////////////
-  let nextBillingDate, subscriptionStatus, invoiceTitle = 'Loading...';
+  let nextBillingDate, subscriptionStatus= 'Loading...';
+  let invoiceTitle = 'Upcoming Invoice';
   if (subscription) {
     // Format is like 'January 1st, 2019', API comes in seconds
-    invoiceTitle = 'Invoice';
     if (['FAILED', 'LAPSED'].includes(paymentStatus)) invoiceTitle = 'Failed Invoice';
     nextBillingDate = moment(subscription.current_period_end * 1000).format('MMMM Do, YYYY');
     if (subscription.status === 'trialing') {
@@ -234,37 +234,43 @@ const Billing: FC<BillingProps> = ({
 
   return (
     <>
-      <EasyInputGroup title='Max Number of Dapps'>
-        <>
-          {updateDappsElement}
-          {updateDappsBtn}
-          {
-            noUpdatesAllowed && !loadingData ? (
-              <Text>
-                Please plug in payment information to buy more dapp slots.
+      <EvenBlocks left={
+        <EasyInputGroup title='Max Number of Dapps'>
+          <>
+            {updateDappsElement}
+            {updateDappsBtn}
+            {
+              noUpdatesAllowed && !loadingData ? (
+                <Text>
+                  Please plug in payment information to buy more dapp slots.
             </Text>
-            ) : null
-          }
-        </>
-      </EasyInputGroup>
-      <EasyInputGroup title='Subscription Status'>
-        <Text>
-          {subscriptionStatus}
-        </Text>
-      </EasyInputGroup>
-      <EasyInputGroup title='Credit Card'>
-        <>
-          {cardElt}
-          {updateCardBtns}
-        </>
-      </EasyInputGroup>
-      <EasyInputGroup title='Next Billing Date'>
-        <Text>
-          {nextBillingDate}
-        </Text>
-      </EasyInputGroup>
+              ) : null
+            }
+          </>
+        </EasyInputGroup>
+      } right={
+        <EasyInputGroup title='Credit Card'>
+          <>
+            {cardElt}
+            {updateCardBtns}
+          </>
+        </EasyInputGroup>
+      } />
+      <EvenBlocks left={
+        <EasyInputGroup title='Subscription Status'>
+          <Text>
+            {subscriptionStatus}
+          </Text>
+        </EasyInputGroup>
+      } right={
+        <EasyInputGroup title='Next Billing Date'>
+          <Text>
+            {nextBillingDate}
+          </Text>
+        </EasyInputGroup>
+      } />
       <EasyInputGroup title={invoiceTitle}>
-        <InvoiceTable invoice={invoice} />
+        <InvoiceTable invoice={invoice} loadingData={loadingData} />
       </EasyInputGroup>
     </>
   )
