@@ -39,7 +39,7 @@ export const DappDetails:FC<DappDetailsProps> = ({API}) => {
       await API.refreshAuthorization();
       await sendCreateRequest(args);
     } catch (err) {
-      Alert.error(`Error creating your dapp : ${err.toString()}`)
+      Alert.error(`Error creating your dapp : ${err.message || err.toString()}`)
     }
   }
 

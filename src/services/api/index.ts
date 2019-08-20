@@ -125,7 +125,7 @@ export class API {
     if (moment(user.ExpiresAt).isAfter(moment.now())) {
       return this;
     } else {
-      return this.refreshUser()
+      return await this.refreshUser()
     }
   }
 

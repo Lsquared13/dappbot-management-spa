@@ -58,14 +58,13 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
     const [availableNumOfDapps, markAvailableNumOfDapps ] = useState(-1)
     const [fetchListSent, markFetchListSent] = useState(false);
     
-    const handleFetchList= async() => {
-      
+    const handleFetchList= async() => { 
       markFetchListSent(true);
       try {
         await API.refreshAuthorization();
         sendListRequest();
       } catch (err) {
-        Alert.error(`Error fetching dapp list : ${err.toString()}`)
+        Alert.error(`Error fetching dapp list : ${err.message || err.toString()}`)
       }
     }
 
@@ -83,9 +82,8 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
       } else if (listResponse.error) {
         markFetchListSent(false)
         switch (listResponse.error.code) {
-
           default: {
-            Alert.error(listResponse.error.data.err.message);
+            Alert.error(listResponse.error.data.message);
           }
         }
       } else if(listResponse.data){
@@ -93,8 +91,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
         const {count} = listResponse.data.data
         const totalAvailableDapps = parseInt(user.User.UserAttributes['custom:standard_limit'])
         markAvailableNumOfDapps(totalAvailableDapps - count)
-        Alert.success("Access Granted", { timeout: 750 });
-        
+        Alert.success("Access Granted", { timeout: 750 });      
       }
       
     }, [listResponse]);
@@ -119,12 +116,10 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
       if (createResponse.isLoading){
         Alert.info("Creating dapp", { timeout: 750});
       } else if (createResponse.error) {
-
         markCreateSent(false)
         switch (createResponse.error.code) {
-
           default: {
-            Alert.error(createResponse.error.data.err.message);
+            Alert.error(createResponse.error.data.message);
           }
         }
       } else if(createResponse.data){
@@ -138,7 +133,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
     
     const handleStep1 = (e:any, inputs: CreateDappState) => {
       if (availableNumOfDapps<=0){
-        Alert.error(`Cannot create anymore dapps please buy additional dapp slots`, { timeout: 3000})
+        Alert.error(`Please purchase more dapp slots before creating more dapps.`, { timeout: 3000})
         return
       }
       const { dappName } = inputs

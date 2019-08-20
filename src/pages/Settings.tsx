@@ -61,8 +61,8 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   useEffect(function handleStripeDataLoad() {
     let { data, error } = stripeData;
     if (error) {
-      console.log('error fetching data: ', error);
-      Alert.error(`Error fetching your subscription data: ${error.message}`)
+      console.log('error fetching Stripe data: ', error);
+      Alert.error(`Error fetching your subscription data: ${error.data.message}`)
     }
     if (data) {
       const userData: StripeUserData = data.data;
@@ -95,7 +95,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
       await API.refreshAuthorization();
       sendListRequest();
     } catch (err) {
-      Alert.error(`Error fetching dapp list : ${err.message}`)
+      Alert.error(`Error fetching dapp list : ${err.message || err.toString()}`)
     }
   }
   useEffect(function handleListResponse() {
@@ -103,7 +103,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     if (error) {
       switch (error.code) {
         default: {
-          Alert.error(error.message);
+          Alert.error(error.data.message);
         }
       }
     }
@@ -131,7 +131,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   useEffect(function handleUpdateSubscription() {
     let { isLoading, data, error } = updateSubscriptionResponse;
     if (error) {
-      Alert.error(`Error updating your subscription: ${error.message}`)
+      Alert.error(`Error updating your subscription: ${error.data.message}`)
     } else if (data && !isLoading) {
       API.refreshUser()
       fetchStripeData()
@@ -150,7 +150,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   useEffect(function handleUpdatedPayment() {
     let { isLoading, data, error } = updatePaymentResponse;
     if (error) {
-      Alert.error(`Error updating your card: ${error.message}`)
+      Alert.error(`Error updating your card: ${error.data.message}`)
     } else if (data && !isLoading) {
       fetchStripeData();
       sleep(5).then(() => {

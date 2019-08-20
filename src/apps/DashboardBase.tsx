@@ -64,7 +64,7 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
       await API.refreshAuthorization();
       sendListRequest();
     } catch (err) {
-      Alert.error(`Error refreshing your session : ${err.toString()}`)
+      Alert.error(`Error refreshing your session : ${err.message || err.toString()}`)
     }
   }
 
@@ -82,7 +82,7 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
       switch (listResponse.error.code) {
         default: {
           console.error('Error fetching Dapp List: ',listResponse.error)
-          Alert.error(JSON.stringify(listResponse.error.data, null, 2));
+          Alert.error(listResponse.error.data.message);
         }
       }
     } 
@@ -100,7 +100,7 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
       await API.refreshAuthorization();
       sendDeleteRequest(dappName);
     } catch (err) {
-      Alert.error(`Error sending delete : ${err.toString()}`)
+      Alert.error(`Error sending delete : ${err.message || err.toString()}`)
     }
   }
   useEffect(() => {
@@ -114,7 +114,7 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
         switch (deleteResponse.error.code) {
           default: {
             console.error("Error on deleting dapp: ",deleteResponse.error);
-            Alert.error(deleteResponse.error.message);
+            Alert.error(deleteResponse.error.data.message);
           }
         }
       } 
