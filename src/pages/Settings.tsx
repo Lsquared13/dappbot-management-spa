@@ -3,17 +3,11 @@ import { RouteComponentProps } from "@reach/router";
 import Alert from 'react-s-alert';
 import { Container, Breadcrumb, Title, LayoutContainer } from "../layout";
 import { Box } from "../components/ui";
-import Profile, { ProfileState } from "../layout/Profile";
-import { PasswordState } from "../layout/Password";
-import {
-  SubscriptionPlan,
-  SubscriptionDetail,
-  SubscriptionChanges
-} from "../layout/OldBilling";
+import Profile from "../layout/Profile";
 import Billing from '../components/Billing';
 import { UserResponseData, StripePlans } from "../types";
 import { injectStripe, ReactStripeElements as RSE } from "react-stripe-elements";
-import API, { StripeUserData } from "../services/api";
+import API, { StripeUserData, Invoice } from "../services/api";
 import { useResource } from "react-request-hook";
 import { ICard, subscriptions } from "stripe";
 import { XOR } from "ts-xor";
@@ -28,33 +22,6 @@ export interface SettingsContainerProps extends RouteComponentProps, RSE.Injecte
   user: UserResponseData;
   setUser: (user: UserResponseData) => void
   API: API;
-  /* Profile tab props */
-  onProfileInputChange?: (inputs: ProfileState) => void;
-  onProfileDelete: (
-    event: React.MouseEvent<HTMLElement, MouseEvent>,
-    inputs: ProfileState
-  ) => void;
-  onProfileSave: (
-    event: React.MouseEvent<HTMLElement, MouseEvent>,
-    inputs: ProfileState
-  ) => void;
-
-  /* Password tab props */
-  onPasswordSave: (
-    event: React.MouseEvent<HTMLElement, MouseEvent>,
-    inputs: PasswordState
-  ) => void;
-  onPasswordInputChange?: (inputs: PasswordState) => void;
-
-  /* Billing tab props */
-  subscriptionPlan: SubscriptionPlan;
-  onCancelSubscription?: () => void;
-  onCreateSubscription?: (newPlan: SubscriptionDetail) => void;
-  onPurchaseDapps?: () => void;
-  onViewPastInvoice?: () => void;
-  onRenewSubscription?: (renewPlan: SubscriptionDetail) => void;
-  onSave?: (subscriptionDetail: SubscriptionChanges) => void;
-  onUpdateSubscription?: (subscriptionPlan: SubscriptionDetail) => void;
 }
 
 export interface SettingState {
@@ -90,6 +57,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   let [name, setName] = useState('Loading...');
   let [source, setSource] = useState(null as XOR<ICard, null>);
   let [subscription, setSubscription] = useState(null as XOR<subscriptions.ISubscription, null>);
+  let [invoice, setInvoice] = useState(null as XOR<Invoice, null>);
   useEffect(function handleStripeDataLoad() {
     let { data, error } = stripeData;
     if (error) {
@@ -98,10 +66,11 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     }
     if (data) {
       const userData: StripeUserData = data.data;
-      const { customer, subscription } = userData;
+      const { customer, subscription, invoice } = userData;
       if (customer) {
         setSource(customer.default_source as XOR<ICard, null>);
         setName(customer.name || '');
+        setInvoice(invoice || null);
         setHasStripe(true);
       } else {
         setHasStripe(false);
@@ -212,6 +181,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
             <Billing source={source}
               subscription={subscription}
               name={name}
+              invoice={invoice}
               paymentStatus={paymentStatus}
               hasStripe={hasStripe}
               loadingData={stripeData.isLoading}
@@ -219,7 +189,6 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
               totalNumDapps={parseInt(user.User.UserAttributes['custom:standard_limit'])}
               submitUpdateDapps={sendUpdateDapps}
               usedNumDapps={usedNumDapps}
-
             />
           </LayoutContainer>
         </Box>

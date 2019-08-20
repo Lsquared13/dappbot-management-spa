@@ -9,12 +9,14 @@ import {
 import { XOR } from 'ts-xor';
 import moment from 'moment';
 import Alert from 'react-s-alert';
-import { LayoutContainer, InputGroup, InputTitle, InputContainer } from '../layout';
+import { InputGroup, InputTitle, InputContainer } from '../layout';
 import CreditCard from './CreditCard';
 import 'react-credit-cards/lib/styles.scss';
 import CustomConfirmFactory from './CustomConfirmAlert';
 import { NumberField, Uints } from '../components/fields';
 import { Box, Text, Button } from './ui';
+import InvoiceTable from './InvoiceTable';
+import { Invoice } from '../services/api/types';
 
 interface EasyInputGroupProps {
   title: string
@@ -24,7 +26,7 @@ const EasyInputGroup: FC<EasyInputGroupProps> = ({ title, children }) => (
   <InputGroup>
     <InputTitle color="gray">{title}</InputTitle>
     <InputContainer>
-      <Box column={12} mdColumn={8}>
+      <Box column={12} mdColumn={12}>
         {children}
       </Box>
     </InputContainer>
@@ -52,6 +54,7 @@ export interface BillingProps extends RSE.InjectedStripeProps {
   hasStripe: boolean
   source: XOR<CardType, null>
   subscription: XOR<subscriptions.ISubscription, null>
+  invoice: XOR<Invoice, null>
   name: string
   submitWithToken: (token: stripe.Token) => Promise<any>
   loadingData: boolean
@@ -63,7 +66,8 @@ export interface BillingProps extends RSE.InjectedStripeProps {
 
 const Billing: FC<BillingProps> = ({
   source, subscription, stripe, name, submitWithToken, paymentStatus,
-  loadingData, hasStripe, totalNumDapps, submitUpdateDapps, usedNumDapps
+  loadingData, hasStripe, totalNumDapps, submitUpdateDapps, usedNumDapps,
+  invoice
 }) => {
 
   /////////////////////////////////
@@ -212,9 +216,11 @@ const Billing: FC<BillingProps> = ({
   /////////////////////////////////
   // SUBSCRIPTION DETAIL PRESENTATION LOGIC
   /////////////////////////////////
-  let nextBillingDate, subscriptionStatus = 'Loading...';
+  let nextBillingDate, subscriptionStatus= 'Loading...';
+  let invoiceTitle = 'Upcoming Invoice';
   if (subscription) {
     // Format is like 'January 1st, 2019', API comes in seconds
+    if (['FAILED', 'LAPSED'].includes(paymentStatus)) invoiceTitle = 'Failed Invoice';
     nextBillingDate = moment(subscription.current_period_end * 1000).format('MMMM Do, YYYY');
     if (subscription.status === 'trialing') {
       subscriptionStatus = 'Trial';
@@ -228,38 +234,44 @@ const Billing: FC<BillingProps> = ({
 
   return (
     <>
-      <EasyInputGroup title='Max Number of Dapps'>
-        <>
-          {updateDappsElement}
-          {updateDappsBtn}
-          {
-            noUpdatesAllowed && !loadingData ? (
-              <Text>
-                Please plug in payment information to buy more dapp slots.
+      <EvenBlocks left={
+        <EasyInputGroup title='Max Number of Dapps'>
+          <>
+            {updateDappsElement}
+            {updateDappsBtn}
+            {
+              noUpdatesAllowed && !loadingData ? (
+                <Text>
+                  Please plug in payment information to buy more dapp slots.
             </Text>
-            ) : null
-          }
-        </>
+              ) : null
+            }
+          </>
+        </EasyInputGroup>
+      } right={
+        <EasyInputGroup title='Credit Card'>
+          <>
+            {cardElt}
+            {updateCardBtns}
+          </>
+        </EasyInputGroup>
+      } />
+      <EvenBlocks left={
+        <EasyInputGroup title='Subscription Status'>
+          <Text>
+            {subscriptionStatus}
+          </Text>
+        </EasyInputGroup>
+      } right={
+        <EasyInputGroup title='Next Billing Date'>
+          <Text>
+            {nextBillingDate}
+          </Text>
+        </EasyInputGroup>
+      } />
+      <EasyInputGroup title={invoiceTitle}>
+        <InvoiceTable invoice={invoice} loadingData={loadingData} />
       </EasyInputGroup>
-      <EasyInputGroup title='Subscription Status'>
-        <Text>
-          {subscriptionStatus}
-        </Text>
-      </EasyInputGroup>
-      <EasyInputGroup title='Credit Card'>
-        <>
-          {cardElt}
-          {updateCardBtns}
-        </>
-      </EasyInputGroup>
-      <EasyInputGroup title='Next Billing Date'>
-        <Text>
-          {nextBillingDate}
-        </Text>
-      </EasyInputGroup>
-
-      {/* TODO: List the current number of subs */}
-
     </>
   )
 }
