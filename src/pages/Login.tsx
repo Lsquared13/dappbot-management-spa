@@ -14,7 +14,7 @@ import { challengeDataFactory } from '../services/api/types';
 import { BeginPasswordResetArgs, SignInArgs } from '../services/api/auth';
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
-import { ErrorBox, NewPassChallenge, ForgotPassChallenge } from '../components';
+import { ErrorBox, NewPassChallenge, PassResetChallenge } from '../components';
 
 
 export interface LoginProps extends RouteComponentProps {
@@ -204,7 +204,7 @@ export const Login: FC<LoginProps> = (props) => {
               <h2>Set New Password</h2>
             </div>
           </div>
-          <ForgotPassChallenge email={email} API={API} {...challengeProps} />
+          <PassResetChallenge email={email} API={API} {...challengeProps} />
         </React.Fragment>
 
       break;

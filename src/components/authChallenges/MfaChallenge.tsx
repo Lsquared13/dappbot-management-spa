@@ -1,9 +1,7 @@
 import React, { FC, useState } from 'react';
-import { Button } from '../components/ui';
-import { StringField } from '../components/fields';
-import Auth from '../services/api/auth';
-import { CognitoUser } from '@aws-amplify/auth';
-import {UserResponseData} from '../types'
+import { Button } from '../ui';
+import { StringField } from '../fields';
+import {UserResponseData} from '../../types'
 
 interface MfaChallengeProps {
   user: UserResponseData

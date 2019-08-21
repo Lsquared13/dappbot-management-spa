@@ -1,14 +1,14 @@
 import React, { FC, useState, useEffect } from 'react';
-import { Button } from '../components/ui';
-import { UserResponseData, ChallengeData, ChallengeType } from '../types'
-import { StringField } from '../components/fields';
-import API, { challengeDataFactory } from '../services/api';
-import {passwordChecker, NewPasswordArgs} from '../services/api/auth';
+import { Button } from '../ui';
+import { UserResponseData, ChallengeData, ChallengeType } from '../../types'
+import { StringField } from '../fields';
+import API, { challengeDataFactory } from '../../services/api';
+import {passwordChecker, NewPasswordArgs} from '../../services/api/auth';
 import Alert from 'react-s-alert';
 
-import { ErrorBox } from '.';
+import { ErrorBox } from '..';
 import { useResource } from 'react-request-hook';
-import { getErrMsg } from '../services/util';
+import { getErrMsg } from '../../services/util';
 
 
 interface NewPassChallengeProps {

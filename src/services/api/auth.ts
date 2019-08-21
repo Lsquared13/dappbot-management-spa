@@ -3,7 +3,6 @@ import {
   Operations, MessageResponse, SignInResponse,
   RequestFactory, ResourceFactory
 } from './types'
-import { Resource } from 'react-request-hook';
 
 interface RequestArgs {
   url: string,

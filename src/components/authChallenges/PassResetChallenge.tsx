@@ -1,14 +1,14 @@
 import React, { FC, useState, useEffect } from 'react';
 import { useResource } from 'react-request-hook';
 import Alert from 'react-s-alert';
-import { Button } from '../components/ui';
-import { StringField } from '../components/fields';
-import API, { challengeDataFactory } from '../services/api';
-import { passwordChecker, ConfirmPasswordResetArgs } from '../services/api/auth';
-import {ChallengeData,ChallengeType} from '../types'
-import { getErrMsg } from '../services/util';
+import { Button } from '../ui';
+import { StringField } from '../fields';
+import API, { challengeDataFactory } from '../../services/api';
+import { passwordChecker, ConfirmPasswordResetArgs } from '../../services/api/auth';
+import {ChallengeData,ChallengeType} from '../../types'
+import { getErrMsg } from '../../services/util';
 
-interface MfaChallengeProps {
+interface PassResetChallengeProps {
   email: string
   setChallenge: (challenge:ChallengeData)=>void
   setErr: (err:string)=>void
@@ -16,7 +16,7 @@ interface MfaChallengeProps {
 }
 
 
-export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, setErr, API})=>{
+export const PassResetChallenge:FC<PassResetChallengeProps> = ({email, setChallenge, setErr, API})=>{
   const [newPass, setNewPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
   const [code, setCode] = useState('');
@@ -75,4 +75,4 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
   )
 }
 
-export default ForgotPassChallenge;
+export default PassResetChallenge;
