@@ -46,7 +46,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
       switch (newPassResponse.error.code) {
         default: {
           setErr(newPassResponse.error.message)
-          Alert.error(newPassResponse.error.data.message);
+          Alert.error(newPassResponse.error.data.err.message);
         }
       }
     }

@@ -48,7 +48,7 @@ export const DappList: FC<DappListProps> = ({ dappList, fetchList, ...props }) =
         switch (deleteResponse.error.code) {
 
           default: {
-            Alert.error(deleteResponse.error.data.message);
+            Alert.error(deleteResponse.error.data.err.message);
           }
         }
       } else if (!deleteResponse.isLoading && deleteResponse.data) {
