@@ -44,7 +44,7 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
 
           default: {
             setErr(newPasswordResponse.error.message)
-            Alert.error(newPasswordResponse.error.data.message);
+            Alert.error(newPasswordResponse.error.data.err.message);
           }
         }
       return

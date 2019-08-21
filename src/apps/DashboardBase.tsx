@@ -93,7 +93,7 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
       switch (listResponse.error.code) {
         default: {
           console.error('Error fetching Dapp List: ',listResponse.error)
-          Alert.error(listResponse.error.data.message);
+          Alert.error(listResponse.error.data.err.message);
         }
       }
     } 
@@ -130,7 +130,7 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
         switch (deleteResponse.error.code) {
           default: {
             console.error("Error on deleting dapp: ",deleteResponse.error);
-            Alert.error(deleteResponse.error.data.message);
+            Alert.error(deleteResponse.error.data.err.message);
           }
         }
       } 

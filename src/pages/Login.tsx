@@ -57,7 +57,7 @@ export const Login: FC<LoginProps> = (props) => {
         console.log(signInResponse.error)
         switch (signInResponse.error.code) {
           default: {
-            Alert.error(signInResponse.error.data.message);
+            Alert.error(signInResponse.error.data.err.message);
           }
         }
 

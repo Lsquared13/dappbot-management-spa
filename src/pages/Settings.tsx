@@ -62,7 +62,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     let { data, error } = stripeData;
     if (error) {
       console.log('error fetching Stripe data: ', error);
-      Alert.error(`Error fetching your subscription data: ${error.data.message}`)
+      Alert.error(`Error fetching your subscription data: ${error.data.err.message}`)
     }
     if (data) {
       const userData: StripeUserData = data.data;
@@ -117,7 +117,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     if (error) {
       switch (error.code) {
         default: {
-          Alert.error(error.data.message);
+          Alert.error(error.data.err.message);
         }
       }
     }
@@ -150,7 +150,8 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   useEffect(function handleUpdateSubscription() {
     let { isLoading, data, error } = updateSubscriptionResponse;
     if (error) {
-      Alert.error(`Error updating your subscription: ${error.data.message}`)
+      console.log('error: ',error);
+      Alert.error(`Error updating your subscription: ${error.data.err.message}`)
     } else if (data && !isLoading) {
       API.refreshUser()
       fetchStripeData()
@@ -173,7 +174,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   useEffect(function handleUpdatedPayment() {
     let { isLoading, data, error } = updatePaymentResponse;
     if (error) {
-      Alert.error(`Error updating your card: ${error.data.message}`)
+      Alert.error(`Error updating your card: ${error.data.err.message}`)
     } else if (data && !isLoading) {
       fetchStripeData();
       sleep(5).then(() => {

@@ -94,7 +94,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
         markFetchListSent(false)
         switch (listResponse.error.code) {
           default: {
-            Alert.error(listResponse.error.data.message);
+            Alert.error(listResponse.error.data.err.message);
           }
         }
       } else if(listResponse.data){
@@ -132,7 +132,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
         markCreateSent(false)
         switch (createResponse.error.code) {
           default: {
-            Alert.error(createResponse.error.data.message);
+            Alert.error(createResponse.error.data.err.message);
           }
         }
       } else if(createResponse.data){
