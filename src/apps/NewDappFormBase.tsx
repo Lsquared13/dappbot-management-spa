@@ -61,16 +61,20 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
     const handleFetchList= async() => { 
       markFetchListSent(true);
       try {
-        await API.refreshAuthorization();
-        sendListRequest();
+        const refreshedAPI = await API.refreshAuthorization();
+        if (refreshedAPI === API) {
+          sendListRequest();
+        } else {
+          Alert.info("We just refreshed your authorization to our server, one moment...")
+        }
       } catch (err) {
         Alert.error(`Error fetching dapp list : ${err.message || err.toString()}`)
       }
     }
 
-    useEffect(() => {
+    useEffect(function fetchListOnStartAndAPI() {
       handleFetchList()
-    }, []);
+    }, [API]);
 
     useEffect(() => {
       if (!fetchListSent){
@@ -101,12 +105,17 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
 
     // ----- CREATE RESPONSE HANDLER ----- 
     const [createSent, markCreateSent] = useState(false);
-    const handleCreate = (dappArgs: DappCreateArgs) => {
-      
+    const handleCreate = async (dappArgs: DappCreateArgs) => {
       const dappData:DappData = omit(dappArgs, ['DappName'])
       markCreateSent(true);
-      Alert.info(`Making request...`)
-      sendCreateRequest(dappData,dappArgs.DappName)
+      const refreshedAPI = await API.refreshAuthorization();
+      if (refreshedAPI === API) {
+        Alert.info(`Making request...`)
+        sendCreateRequest(dappData,dappArgs.DappName)
+      } else {
+        Alert.info("We just refreshed your authorization to our server, please try that again.", { timeout : 1000 });
+        markCreateSent(false);
+      }
     }
     useEffect(() => {
       if (!createSent){

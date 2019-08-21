@@ -88,16 +88,23 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   ///////////////////////////////////
   // FETCHING USER'S DAPP COUNT
   ///////////////////////////////////
-  const [listResponse, sendListRequest] = useResource(API.private.list(), []);
+  const [listResponse, sendListRequest] = useResource(API.private.list());
   const [usedNumDapps, markUsedNumOfDapps] = useState(-1)
   const handleFetchList = async () => {
     try {
-      await API.refreshAuthorization();
-      sendListRequest();
+      const refreshedAPI = await API.refreshAuthorization();
+      if (refreshedAPI === API) {
+        sendListRequest();
+      } else {
+        Alert.info("We just refreshed your authorization to our server, one moment...");
+      }
     } catch (err) {
       Alert.error(`Error fetching dapp list : ${err.message || err.toString()}`)
     }
   }
+  useEffect(function getListOnStartAndAPI(){
+    handleFetchList()
+  }, [API]);
   useEffect(function handleListResponse() {
     const { isLoading, error, data } = listResponse;
     if (error) {
@@ -126,7 +133,12 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     let request = {
       plans: plans
     }
-    sendUpdateSubscriptionRequest(request)
+    const refreshedAPI = await API.refreshAuthorization();
+    if (refreshedAPI === API) {
+      sendUpdateSubscriptionRequest(request)
+    } else {
+      Alert.info("We just refreshed your authorization to our server, please try that again.");
+    }
   }
   useEffect(function handleUpdateSubscription() {
     let { isLoading, data, error } = updateSubscriptionResponse;
@@ -144,8 +156,12 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   ///////////////////////////////////
   const [updatePaymentResponse, updatePaymentRequest] = useResource(API.payment.updatePaymentMethod());
   async function sendUpdatePayment(token: stripe.Token) {
-    await API.refreshAuthorization();
-    updatePaymentRequest({ token: token.id });
+    const refreshedAPI = await API.refreshAuthorization();
+    if (refreshedAPI === API) {
+      updatePaymentRequest({ token: token.id });
+    } else {
+      Alert.info("We just refreshed your authorization to our server, please try that again.");
+    }
   }
   useEffect(function handleUpdatedPayment() {
     let { isLoading, data, error } = updatePaymentResponse;
@@ -166,7 +182,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   ///////////////////////////////////
   useEffect(() => {
     handleFetchList()
-  }, []);
+  }, [API]);
 
   let paymentStatus = user.User.UserAttributes['custom:payment_status'] || 'ACTIVE';
   return (

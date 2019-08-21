@@ -61,16 +61,20 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
   const handleFetchList = async () => {
     markFetchListSent(true);
     try {
-      await API.refreshAuthorization();
-      sendListRequest();
+      const refreshedAPI = await API.refreshAuthorization();
+      if (refreshedAPI === API) {
+        sendListRequest();
+      } else {
+        Alert.info('We just refreshed your authorization to our server, one moment...');
+      }
     } catch (err) {
       Alert.error(`Error refreshing your session : ${err.message || err.toString()}`)
     }
   }
 
-  useEffect(() => {
+  useEffect(function fetchListOnStartAndAPI() {
     handleFetchList()
-  }, []);
+  }, [API]);
 
   useEffect(() => {
     if (!fetchListSent) return
@@ -97,8 +101,13 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
   const handleDelete = async (dappName: string) => {
     markDeleteSent(true);
     try {
-      await API.refreshAuthorization();
-      sendDeleteRequest(dappName);
+      const refreshedAPI = await API.refreshAuthorization();
+      if (refreshedAPI === API) {
+        sendDeleteRequest(dappName);
+      } else {
+        markDeleteSent(false);
+        Alert.info("We just refreshed your authorization to our server, please try that again.", { timeout : 1000 });
+      }
     } catch (err) {
       Alert.error(`Error sending delete : ${err.message || err.toString()}`)
     }
