@@ -20,24 +20,19 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
   const [newPass, setNewPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
   const [code, setCode] = useState('');
-  const [newPasswordResponse, requestNewPassword] = useResource(API.auth.confirmPasswordReset())
-  const [newPassSent, markNewPassSent] = useState(false)
 
-  function handleNewPassword() {
+  const [confirmResetResponse, requestConfirmReset] = useResource(API.auth.confirmPasswordReset())
+  function makeConfirmResetRequest() {
     const newPassDetails:ConfirmPasswordResetArgs = {
       'username': email,
       'newPassword': confirmPass,
       'passwordResetCode': code
     }
-    markNewPassSent(true)
-    requestNewPassword(newPassDetails)
+    requestConfirmReset(newPassDetails)
   }
-
-  useEffect(function handleNewPasswordResponse() {
-    if (!newPassSent || newPasswordResponse.isLoading) return;
-    const { error, data } = newPasswordResponse;
+  const { isLoading, error, data } = confirmResetResponse;
+  useEffect(function handleConfirmResetResponse() {
     if (error) {
-      markNewPassSent(false)
       switch (error.code) {
         default: {
           let msg = `Error resetting your password : ${getErrMsg(error)}`
@@ -46,16 +41,11 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
           break;
         }
       }
-    } else if (data) {
-      markNewPassSent(false);
-      // console.log("response.data: ", response.data)
-      if (data.data) {
-        Alert.success(`${data.data.message}`)
-      }
+    } else if (data && data.data) {
+      Alert.success(`${data.data.message}`)
       setChallenge(challengeDataFactory(ChallengeType.Default))
-      return
     }
-  }, [markNewPassSent, newPasswordResponse, newPassSent, setChallenge])
+  }, [error, data, setChallenge])
 
   return (
     <>
@@ -80,7 +70,7 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
         help="Must match the field above."
         onChange={setConfirmPass}
         name='confirmPassword' />
-      <Button disabled={newPassSent} block onClick={handleNewPassword}>Submit</Button>
+      <Button disabled={isLoading} block onClick={makeConfirmResetRequest}>Submit</Button>
     </>
   )
 }

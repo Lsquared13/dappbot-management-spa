@@ -163,6 +163,7 @@ const Billing: FC<BillingProps> = ({
           }
         })
       })
+      return;
     }
     if (updateNumber < usedNumDapps) {
       Alert.error(`You cannot subscribe to fewer dapps than you currently have.  If you would like to subscribe to ${updateNumber} dapps, please delete ${usedNumDapps - updateNumber} of your existing dapps.`)
@@ -189,6 +190,7 @@ const Billing: FC<BillingProps> = ({
       })
     }
   }
+  
   let updateDappsElement = <Text>Loading...</Text>
   if (updatingNumDapps) {
     updateDappsElement =

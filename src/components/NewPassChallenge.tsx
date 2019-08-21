@@ -36,7 +36,6 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
   }
   const { error, data, isLoading } = newPassResponse;
   useEffect(function handleNewPassResponse(){
-    if (isLoading) return;
     if(error){
       switch (error.code) {
         default: {
@@ -50,7 +49,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
       setUser(data);
       setChallenge(challengeDataFactory(ChallengeType.Default))
     }
-  }, [error, data, isLoading])
+  }, [error, data])
 
   return (
     <>
