@@ -96,13 +96,20 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
       if (refreshedAPI === API) {
         sendListRequest();
       } else {
-        Alert.info("We just refreshed your authorization to our server, one moment...");
+        Alert.info("We just refreshed your authorization to our server, one moment...", { timeout : 1000 });
       }
     } catch (err) {
       Alert.error(`Error fetching dapp list : ${err.message || err.toString()}`)
     }
   }
   useEffect(function getListOnStartAndAPI(){
+    // Note that by making this effect depend on the API
+    // object, we will automatically refetch whenever the
+    // Authorization changes (i.e. produces a new API instance).
+    //
+    // That is why handleFetchList() doesn't need to do
+    // anything when the API is stale; it will get called
+    // again once it is fresh.
     handleFetchList()
   }, [API]);
   useEffect(function handleListResponse() {

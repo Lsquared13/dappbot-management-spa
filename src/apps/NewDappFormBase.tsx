@@ -73,6 +73,13 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
     }
 
     useEffect(function fetchListOnStartAndAPI() {
+      // Note that by making this effect depend on the API
+      // object, we will automatically refetch whenever the
+      // Authorization changes (i.e. produces a new API instance).
+      //
+      // That is why handleFetchList() doesn't need to do
+      // anything when the API is stale; it will get called
+      // again once it is fresh.
       handleFetchList()
     }, [API]);
 
@@ -118,10 +125,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
       }
     }
     useEffect(() => {
-      if (!createSent){
-        return
-      }
-
+      if (!createSent){ return }
       if (createResponse.isLoading){
         Alert.info("Creating dapp", { timeout: 750});
       } else if (createResponse.error) {
