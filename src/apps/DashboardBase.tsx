@@ -61,16 +61,27 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
   const handleFetchList = async () => {
     markFetchListSent(true);
     try {
-      await API.refreshAuthorization();
-      sendListRequest();
+      const refreshedAPI = await API.refreshAuthorization();
+      if (refreshedAPI === API) {
+        sendListRequest();
+      } else {
+        Alert.info('We just refreshed your authorization to our server, one moment...');
+      }
     } catch (err) {
-      Alert.error(`Error refreshing your session : ${err.toString()}`)
+      Alert.error(`Error refreshing your session : ${err.message || err.toString()}`)
     }
   }
 
-  useEffect(() => {
+  useEffect(function fetchListOnStartAndAPI() {
+    // Note that by making this effect depend on the API
+    // object, we will automatically refetch whenever the
+    // Authorization changes (i.e. produces a new API instance).
+    //
+    // That is why handleFetchList() doesn't need to do
+    // anything when the API is stale; it will get called
+    // again once it is fresh.
     handleFetchList()
-  }, []);
+  }, [API]);
 
   useEffect(() => {
     if (!fetchListSent) return
@@ -82,7 +93,7 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
       switch (listResponse.error.code) {
         default: {
           console.error('Error fetching Dapp List: ',listResponse.error)
-          Alert.error(JSON.stringify(listResponse.error.data, null, 2));
+          Alert.error(listResponse.error.data.message);
         }
       }
     } 
@@ -97,10 +108,15 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
   const handleDelete = async (dappName: string) => {
     markDeleteSent(true);
     try {
-      await API.refreshAuthorization();
-      sendDeleteRequest(dappName);
+      const refreshedAPI = await API.refreshAuthorization();
+      if (refreshedAPI === API) {
+        sendDeleteRequest(dappName);
+      } else {
+        markDeleteSent(false);
+        Alert.info("We just refreshed your authorization to our server, please try that again.", { timeout : 1000 });
+      }
     } catch (err) {
-      Alert.error(`Error sending delete : ${err.toString()}`)
+      Alert.error(`Error sending delete : ${err.message || err.toString()}`)
     }
   }
   useEffect(() => {
@@ -114,7 +130,7 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
         switch (deleteResponse.error.code) {
           default: {
             console.error("Error on deleting dapp: ",deleteResponse.error);
-            Alert.error(deleteResponse.error.message);
+            Alert.error(deleteResponse.error.data.message);
           }
         }
       } 

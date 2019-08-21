@@ -36,10 +36,14 @@ export const DappDetails:FC<DappDetailsProps> = ({API}) => {
 
   async function handleCreate(){
     try {
-      await API.refreshAuthorization();
-      await sendCreateRequest(args);
+      const refreshedAPI = await API.refreshAuthorization();
+      if (refreshedAPI === API) {
+        await sendCreateRequest(args);
+      } else {
+        Alert.info("We just refreshed your authorization to our server, please try that again.", { timeout : 1000 });
+      }
     } catch (err) {
-      Alert.error(`Error creating your dapp : ${err.toString()}`)
+      Alert.error(`Error creating your dapp : ${err.message || err.toString()}`)
     }
   }
 

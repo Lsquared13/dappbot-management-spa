@@ -61,8 +61,8 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   useEffect(function handleStripeDataLoad() {
     let { data, error } = stripeData;
     if (error) {
-      console.log('error fetching data: ', error);
-      Alert.error(`Error fetching your subscription data: ${error.message}`)
+      console.log('error fetching Stripe data: ', error);
+      Alert.error(`Error fetching your subscription data: ${error.data.message}`)
     }
     if (data) {
       const userData: StripeUserData = data.data;
@@ -88,22 +88,36 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   ///////////////////////////////////
   // FETCHING USER'S DAPP COUNT
   ///////////////////////////////////
-  const [listResponse, sendListRequest] = useResource(API.private.list(), []);
+  const [listResponse, sendListRequest] = useResource(API.private.list());
   const [usedNumDapps, markUsedNumOfDapps] = useState(-1)
   const handleFetchList = async () => {
     try {
-      await API.refreshAuthorization();
-      sendListRequest();
+      const refreshedAPI = await API.refreshAuthorization();
+      if (refreshedAPI === API) {
+        sendListRequest();
+      } else {
+        Alert.info("We just refreshed your authorization to our server, one moment...", { timeout : 1000 });
+      }
     } catch (err) {
-      Alert.error(`Error fetching dapp list : ${err.message}`)
+      Alert.error(`Error fetching dapp list : ${err.message || err.toString()}`)
     }
   }
+  useEffect(function getListOnStartAndAPI(){
+    // Note that by making this effect depend on the API
+    // object, we will automatically refetch whenever the
+    // Authorization changes (i.e. produces a new API instance).
+    //
+    // That is why handleFetchList() doesn't need to do
+    // anything when the API is stale; it will get called
+    // again once it is fresh.
+    handleFetchList()
+  }, [API]);
   useEffect(function handleListResponse() {
     const { isLoading, error, data } = listResponse;
     if (error) {
       switch (error.code) {
         default: {
-          Alert.error(error.message);
+          Alert.error(error.data.message);
         }
       }
     }
@@ -126,12 +140,17 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     let request = {
       plans: plans
     }
-    sendUpdateSubscriptionRequest(request)
+    const refreshedAPI = await API.refreshAuthorization();
+    if (refreshedAPI === API) {
+      sendUpdateSubscriptionRequest(request)
+    } else {
+      Alert.info("We just refreshed your authorization to our server, please try that again.");
+    }
   }
   useEffect(function handleUpdateSubscription() {
     let { isLoading, data, error } = updateSubscriptionResponse;
     if (error) {
-      Alert.error(`Error updating your subscription: ${error.message}`)
+      Alert.error(`Error updating your subscription: ${error.data.message}`)
     } else if (data && !isLoading) {
       API.refreshUser()
       fetchStripeData()
@@ -144,13 +163,17 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   ///////////////////////////////////
   const [updatePaymentResponse, updatePaymentRequest] = useResource(API.payment.updatePaymentMethod());
   async function sendUpdatePayment(token: stripe.Token) {
-    await API.refreshAuthorization();
-    updatePaymentRequest({ token: token.id });
+    const refreshedAPI = await API.refreshAuthorization();
+    if (refreshedAPI === API) {
+      updatePaymentRequest({ token: token.id });
+    } else {
+      Alert.info("We just refreshed your authorization to our server, please try that again.");
+    }
   }
   useEffect(function handleUpdatedPayment() {
     let { isLoading, data, error } = updatePaymentResponse;
     if (error) {
-      Alert.error(`Error updating your card: ${error.message}`)
+      Alert.error(`Error updating your card: ${error.data.message}`)
     } else if (data && !isLoading) {
       fetchStripeData();
       sleep(5).then(() => {
@@ -166,7 +189,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   ///////////////////////////////////
   useEffect(() => {
     handleFetchList()
-  }, []);
+  }, [API]);
 
   let paymentStatus = user.User.UserAttributes['custom:payment_status'] || 'ACTIVE';
   return (

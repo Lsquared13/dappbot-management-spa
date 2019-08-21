@@ -51,15 +51,13 @@ export const Login: FC<LoginProps> = (props) => {
     if (signInSent) {
       if (signInResponse.isLoading) {
         Alert.info("Authenticating ...", { timeout: 750 });
-
       }
       else if (signInResponse.error) {
         markSignInSent(false)
         console.log(signInResponse.error)
         switch (signInResponse.error.code) {
-
           default: {
-            Alert.error(signInResponse.error.data.err.message);
+            Alert.error(signInResponse.error.data.message);
           }
         }
 
@@ -109,7 +107,7 @@ export const Login: FC<LoginProps> = (props) => {
         console.log(beginPasswordResetResponse.error)
         switch (beginPasswordResetResponse.error.code) {
           case '401': {
-            Alert.error("Unauthorized");
+            Alert.error("Authorization failure when resetting your password.");
             break;
           }
           default: {

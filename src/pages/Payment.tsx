@@ -98,7 +98,7 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
           sendCreateUserRequest(creditCardSignupArgs) }
       }
       catch(err){
-        Alert.error(`Error sending new user request : ${err.toString()}`)   
+        Alert.error(`Error sending new user request : ${err.message || err.toString()}`)   
       }
     } 
     else {
@@ -106,7 +106,7 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
         sendCreateUserRequest(noCreditCardSignupArgs);
       } 
       catch (err) {
-        Alert.error(`Error sending new user request : ${err.toString()}`)
+        Alert.error(`Error sending new user request : ${err.message || err.toString()}`)
       }
     }
 
@@ -124,8 +124,8 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
       switch (createUserResponse.error.code) {
 
         default: {
-          setErr(createUserResponse.error.message)
-          Alert.error(createUserResponse.error.message);
+          setErr(createUserResponse.error.data.message)
+          Alert.error(createUserResponse.error.data.message);
         }
       }
 
