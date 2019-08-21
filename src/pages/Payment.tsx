@@ -124,8 +124,8 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
       switch (createUserResponse.error.code) {
 
         default: {
-          setErr(createUserResponse.error.data.message)
-          Alert.error(createUserResponse.error.data.message);
+          setErr(createUserResponse.error.data.err.message)
+          Alert.error(createUserResponse.error.data.err.message);
         }
       }
 
