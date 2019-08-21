@@ -4,6 +4,7 @@ import { Router, navigate, RouteComponentProps } from "@reach/router";
 import Alert from 'react-s-alert';
 import { DashboardContainer, DappDetailsContainer, DeleteDappContainer } from "../pages/dashboard";
 import API from '../services/api';
+import { getErrMsg } from '../services/util';
 import { DeleteDappState } from "../components";
 import { NotFound } from "../pages/notFound";
 import { UserResponseData } from "../types";
@@ -58,7 +59,7 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
   //----- LIST REQUEST & HANDLING -----//
   const [listResponse, sendListRequest] = useResource(API.private.list());
   const [fetchListSent, markFetchListSent] = useState(false);
-  const handleFetchList = async () => {
+  async function makeListRequest() {
     markFetchListSent(true);
     try {
       const refreshedAPI = await API.refreshAuthorization();
@@ -68,10 +69,9 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
         Alert.info('We just refreshed your authorization to our server, one moment...');
       }
     } catch (err) {
-      Alert.error(`Error refreshing your session : ${err.message || err.toString()}`)
+      Alert.error(`Error refreshing your session : ${getErrMsg(err)}`)
     }
   }
-
   useEffect(function fetchListOnStartAndAPI() {
     // Note that by making this effect depend on the API
     // object, we will automatically refetch whenever the
@@ -80,24 +80,25 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
     // That is why handleFetchList() doesn't need to do
     // anything when the API is stale; it will get called
     // again once it is fresh.
-    handleFetchList()
+    makeListRequest()
   }, [API]);
 
-  useEffect(() => {
+  useEffect(function handleListResponse() {
     if (!fetchListSent) return
-    if (listResponse.isLoading) {
+    const { isLoading, error, data } = listResponse;
+    if (isLoading) {
       Alert.info("Fetching Dapp List", { timeout: 750 });
     }
-    else if (listResponse.error) {
+    else if (error) {
       markFetchListSent(false)
-      switch (listResponse.error.code) {
+      switch (error.code) {
         default: {
-          console.error('Error fetching Dapp List: ',listResponse.error)
-          Alert.error(listResponse.error.data.err.message);
+          console.error('Error fetching Dapp List: ',error)
+          Alert.error(`Error fetching your dapp list: ${getErrMsg(error)}`);
         }
       }
     } 
-    else if(listResponse.data) {
+    else if(data) {
       markFetchListSent(false);
     }
   }, [listResponse]);
@@ -105,7 +106,7 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
   //----- DELETE REQUEST & HANDLING -----//
   const [deleteResponse, sendDeleteRequest] = useResource(API.private.delete());
   const [deleteSent, markDeleteSent] = useState(false);
-  const handleDelete = async (dappName: string) => {
+  async function handleDeleteRequest(dappName: string) {
     markDeleteSent(true);
     try {
       const refreshedAPI = await API.refreshAuthorization();
@@ -116,30 +117,30 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
         Alert.info("We just refreshed your authorization to our server, please try that again.", { timeout : 1000 });
       }
     } catch (err) {
-      Alert.error(`Error sending delete : ${err.message || err.toString()}`)
+      Alert.error(`Error sending delete : ${getErrMsg(err)}`)
     }
   }
-  useEffect(() => {
-    if (deleteSent) {
-      if (deleteResponse.isLoading) {
-        Alert.info(`Deleting dapp ...`, { timeout: 500 });
-      }
-      else if (deleteResponse.error) {
-        markDeleteSent(false)
-        markFetchListSent(false)
-        switch (deleteResponse.error.code) {
-          default: {
-            console.error("Error on deleting dapp: ",deleteResponse.error);
-            Alert.error(deleteResponse.error.data.err.message);
-          }
+  useEffect(function handleDeleteResponse(){
+    if (!deleteSent) return;
+    const { isLoading, error, data } = deleteResponse;
+    if (isLoading) {
+      Alert.info(`Deleting dapp ...`, { timeout: 500 });
+    }
+    else if (error) {
+      markDeleteSent(false)
+      markFetchListSent(false)
+      switch (error.code) {
+        default: {
+          console.error("Error on deleting dapp: ",error);
+          Alert.error(`Error deleting your dapp : ${getErrMsg(error)}`);
         }
-      } 
-      else if (deleteResponse.data) {
-        markDeleteSent(false);
-        Alert.success(`Your dapp was successfully deleted!`, { timeout: 500 });
-        handleFetchList()
-        navigate(`/home`);
       }
+    } 
+    else if (data) {
+      markDeleteSent(false);
+      Alert.success(`Your dapp was successfully deleted!`, { timeout: 500 });
+      makeListRequest()
+      navigate(`/home`);
     }
   }, [deleteResponse])
 
@@ -168,7 +169,7 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
           dapps={dappList}
           dappsLoading={dappsLoading}
           onRefresh={() => {
-            handleFetchList()
+            makeListRequest()
           }}
           onCreateNewApp={() => {
             navigate(`/home/new/step-1`);
@@ -184,7 +185,7 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
           onDeleteDappBot={(e, inputs: string) => {
             const dappName = inputs;
             if (dappName) {
-              handleDelete(dappName);
+              handleDeleteRequest(dappName);
               navigate(`/home`);
             }
           }}

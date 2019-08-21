@@ -148,6 +148,22 @@ const Billing: FC<BillingProps> = ({
       toggleUpdatingNumDapps();
       return;
     }
+    if (updateNumber === 0) {
+      confirmAlert({
+        customUI: CustomConfirmFactory({
+          title : 'Cancel Subscription',
+          message : [
+            'If you do not want any dapp slots, we will cancel your subscription.',
+            'All of your dapps will be deleted, letting other people claim their names.  You will still be able to log in and resume your subscription.',
+            'Would you like to cancel?'
+          ],
+          onConfirm : () => {
+            // TODO: Implement cancellation handling on the payment-lambda
+            Alert.info('Account cancellation is under construction right now; please make a support ticket and we can fully cancel your subscription.', { timeout : 15000})
+          }
+        })
+      })
+    }
     if (updateNumber < usedNumDapps) {
       Alert.error(`You cannot subscribe to fewer dapps than you currently have.  If you would like to subscribe to ${updateNumber} dapps, please delete ${usedNumDapps - updateNumber} of your existing dapps.`)
       return;

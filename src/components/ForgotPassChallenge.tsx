@@ -6,6 +6,7 @@ import { StringField } from '../components/fields';
 import API, { challengeDataFactory } from '../services/api';
 import { passwordChecker, ConfirmPasswordResetArgs } from '../services/api/auth';
 import {ChallengeData,ChallengeType} from '../types'
+import { getErrMsg } from '../services/util';
 
 interface MfaChallengeProps {
   email: string
@@ -22,43 +23,39 @@ export const ForgotPassChallenge:FC<MfaChallengeProps> = ({email, setChallenge, 
   const [newPasswordResponse, requestNewPassword] = useResource(API.auth.confirmPasswordReset())
   const [newPassSent, markNewPassSent] = useState(false)
 
-  const handleNewPassword = () => {
+  function handleNewPassword() {
     const newPassDetails:ConfirmPasswordResetArgs = {
       'username': email,
       'newPassword': confirmPass,
       'passwordResetCode': code
-
     }
     markNewPassSent(true)
     requestNewPassword(newPassDetails)
   }
 
-  useEffect(()=>{
-    if(!newPassSent || newPasswordResponse.isLoading){
-      return;
-    }
-    if(newPasswordResponse.error) {
+  useEffect(function handleNewPasswordResponse() {
+    if (!newPassSent || newPasswordResponse.isLoading) return;
+    const { error, data } = newPasswordResponse;
+    if (error) {
       markNewPassSent(false)
-
-        switch (newPasswordResponse.error.code) {
-
-          default: {
-            setErr(newPasswordResponse.error.message)
-            Alert.error(newPasswordResponse.error.data.err.message);
-          }
+      switch (error.code) {
+        default: {
+          let msg = `Error resetting your password : ${getErrMsg(error)}`
+          setErr(msg)
+          Alert.error(msg);
+          break;
         }
-      return
-    }else if(newPasswordResponse.data) {
+      }
+    } else if (data) {
       markNewPassSent(false);
-      let response: any = newPasswordResponse.data
       // console.log("response.data: ", response.data)
-      if(response.data) {
-        Alert.success(`${response.data.message}`)
+      if (data.data) {
+        Alert.success(`${data.data.message}`)
       }
       setChallenge(challengeDataFactory(ChallengeType.Default))
       return
     }
-  }, [markNewPassSent,newPasswordResponse, newPassSent,  setChallenge])
+  }, [markNewPassSent, newPasswordResponse, newPassSent, setChallenge])
 
   return (
     <>

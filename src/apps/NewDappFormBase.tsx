@@ -11,6 +11,7 @@ import {ListResponse} from '../services/api/types'
 
 import { DappCreateArgs,DappData, Tiers, emptyUserResponse, UserResponseData } from '../types';
 import { CreateDappState, ConfigureDappState, DappDetail, CreateDapp } from "../components";
+import { getErrMsg } from '../services/util';
 
 
 export interface NewDappFormBaseProps extends RouteComponentProps {
@@ -52,13 +53,14 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
       DnsName: "Building ... "
     } as DappDetail);
     const [DappName, setDappName] = useState("")
-    const [createResponse, sendCreateRequest] = useResource(API.private.create());
-    const [listResponse, sendListRequest] = useResource(API.private.list(),[]);
     
+    ///////////////////////////
+    // GET DAPP LIST LOGIC
+    ///////////////////////////
+    const [listResponse, sendListRequest] = useResource(API.private.list());
     const [availableNumOfDapps, markAvailableNumOfDapps ] = useState(-1)
     const [fetchListSent, markFetchListSent] = useState(false);
-    
-    const handleFetchList= async() => { 
+    async function makeListRequest() { 
       markFetchListSent(true);
       try {
         const refreshedAPI = await API.refreshAuthorization();
@@ -68,10 +70,9 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
           Alert.info("We just refreshed your authorization to our server, one moment...")
         }
       } catch (err) {
-        Alert.error(`Error fetching dapp list : ${err.message || err.toString()}`)
+        Alert.error(`Error fetching dapp list : ${getErrMsg(err)}`)
       }
     }
-
     useEffect(function fetchListOnStartAndAPI() {
       // Note that by making this effect depend on the API
       // object, we will automatically refetch whenever the
@@ -80,39 +81,37 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
       // That is why handleFetchList() doesn't need to do
       // anything when the API is stale; it will get called
       // again once it is fresh.
-      handleFetchList()
+      makeListRequest()
     }, [API]);
-
-    useEffect(() => {
-      if (!fetchListSent){
-        return
-      }
-
-      if (listResponse.isLoading){
-        
-      } else if (listResponse.error) {
+    useEffect(function handleListResponse() {
+      if (!fetchListSent) return 
+      const { isLoading, error, data } = listResponse;
+      if (isLoading) return;
+      if (error) {
         markFetchListSent(false)
-        switch (listResponse.error.code) {
+        switch (error.code) {
           default: {
-            Alert.error(listResponse.error.data.err.message);
+            Alert.error(`Error fetching your dapp list : ${getErrMsg(error)}`);
           }
         }
-      } else if(listResponse.data){
+      } else if (data) {
         markFetchListSent(false);
-        const {count} = listResponse.data.data
+        const {count} = data.data
         const totalAvailableDapps = parseInt(user.User.UserAttributes['custom:standard_limit'])
         markAvailableNumOfDapps(totalAvailableDapps - count)
-        Alert.success("Access Granted", { timeout: 750 });      
+        Alert.success("Access Granted", { timeout: 750 });  
       }
-      
     }, [listResponse]);
 
     
 
 
-    // ----- CREATE RESPONSE HANDLER ----- 
+    ///////////////////////////
+    // DAPP CREATE LOGIC
+    ///////////////////////////
+    const [createResponse, sendCreateRequest] = useResource(API.private.create());
     const [createSent, markCreateSent] = useState(false);
-    const handleCreate = async (dappArgs: DappCreateArgs) => {
+    async function makeCreateRequest (dappArgs: DappCreateArgs) {
       const dappData:DappData = omit(dappArgs, ['DappName'])
       markCreateSent(true);
       const refreshedAPI = await API.refreshAuthorization();
@@ -124,18 +123,19 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
         markCreateSent(false);
       }
     }
-    useEffect(() => {
+    useEffect(function handleCreateResponse() {
       if (!createSent){ return }
-      if (createResponse.isLoading){
+      const { isLoading, error, data } = createResponse;
+      if (isLoading){
         Alert.info("Creating dapp", { timeout: 750});
-      } else if (createResponse.error) {
+      } else if (error) {
         markCreateSent(false)
-        switch (createResponse.error.code) {
+        switch (error.code) {
           default: {
-            Alert.error(createResponse.error.data.err.message);
+            Alert.error(`Error creating your dapp: ${getErrMsg(error)}`);
           }
         }
-      } else if(createResponse.data){
+      } else if (data){
         markCreateSent(false);
         Alert.success(` Build for: ${DappName} started`);
         navigate(`/home/new/${DappName}/build`);    
@@ -144,7 +144,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
     }, [createResponse]);
 
     
-    const handleStep1 = (e:any, inputs: CreateDappState) => {
+    function handleStep1(e:any, inputs: CreateDappState) {
       if (availableNumOfDapps<=0){
         Alert.error(`Please purchase more dapp slots before creating more dapps.`, { timeout: 3000})
         return
@@ -180,7 +180,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
             let {contractAddress, contractABI,web3URL} = inputs
             if ( DappName == "" ){ 
               navigate(`/home/new/step-1`);
-              Alert.error("dapp name required, do not refresh the page when creating a new dapp");
+              Alert.error("We need you to enter the dapp's name again; please do not refresh the page while creating a dapp.");
             }
             else{
               let args:DappCreateArgs = {
@@ -194,13 +194,13 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({user, setUser,
               buildingDappDetails.current.DappName = DappName;
               buildingDappDetails.current.Web3URL = web3URL;
               buildingDappDetails.current.ContractAddr = contractAddress;
-              handleCreate(args)
+              makeCreateRequest(args)
             }
           }}
           onInputChange={inputs => {
             if(DappName==""){ 
               navigate(`/home/new/step-1`);
-              Alert.error("dapp name required, do not refresh the page when creating a new dapp");
+              Alert.error("We need you to enter the dapp's name again; please do not refresh the page while creating a dapp.");
             }
           }}
         />

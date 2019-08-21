@@ -12,7 +12,7 @@ import AppBase from './layout/AppBase';
 import { useLocalStorage } from './services/localStorage';
 import APIFactory from './services/api';
 import { SettingsContainerBase } from "./apps/SettingsContainerBase";
-import {  Welcome, Login, Privacy, DappDetails, PaymentPage } from './pages';
+import {  Welcome, Login, Privacy, PaymentPage } from './pages';
 import { DashboardBase } from './apps/DashboardBase';
 import { NewDappFormBase } from './apps';
 import { emptyUserResponse, UserResponseData } from './types';
@@ -60,7 +60,6 @@ const App: FC = () => {
               <Privacy path='privacy'  />
             </PageBase>
             <HomeBase path="/home" {...userData}>
-              <DappDetails path="dapp/:id" {...userData} />
               <DashboardBase path="/*"  {...userData}/>
               <NewDappFormBase path="new/*" {...userData} />
               <SettingsContainerBase path="user-settings/*" {...userData}/>
