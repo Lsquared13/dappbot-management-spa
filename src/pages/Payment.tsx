@@ -45,7 +45,7 @@ export const CheckoutBox:FC<{numDapps:string, requireCreditCard:boolean}> = ({nu
     return (
       <Box>
         <Text>
-          You will receive access to <strong>{numDapps} dapps</strong> on your <strong>Free Trial</strong>, lasting 7 days.
+          You will receive access to <strong>{numDapps} dapps</strong> on your <strong>Free Trial</strong>, lasting 14 days.
         </Text>
       </Box>
     )
