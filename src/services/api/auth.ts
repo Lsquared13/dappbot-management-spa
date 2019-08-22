@@ -57,7 +57,7 @@ export class AuthAPI {
   
   newPassword(){
     return (args:NewPasswordArgs) => {
-      return this.resourceFactory<NewPasswordArgs, UserResponseData>(Operations.login, "auth")(args, 'login');
+      return this.resourceFactory<NewPasswordArgs, SignInResponse>(Operations.login, "auth")(args, 'login');
     }
   }
   
