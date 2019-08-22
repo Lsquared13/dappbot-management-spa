@@ -64,8 +64,6 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({ user, setUser
       const refreshedAPI = await API.refreshAuthorization();
       if (refreshedAPI === API) {
         requestList();
-      } else {
-        Alert.info("We just refreshed your authorization to our server, one moment...")
       }
     } catch (err) {
       Alert.error(`Error fetching dapp list : ${getErrMsg(err)}`)

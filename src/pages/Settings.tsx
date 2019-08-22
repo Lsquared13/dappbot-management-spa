@@ -64,8 +64,6 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
       const refreshedAPI = await API.refreshAuthorization();
       if (refreshedAPI === API) {
         requestStripe();
-      } else {
-        Alert.info("We just refreshed your authorization to our server, one moment...", { timeout : 1000 });
       }
     } catch (err) {
       Alert.error(`Error fetching Stripe data : ${getErrMsg(err)}`)
@@ -104,8 +102,6 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
       const refreshedAPI = await API.refreshAuthorization();
       if (refreshedAPI === API) {
         requestList();
-      } else {
-        Alert.info("We just refreshed your authorization to our server, one moment...", { timeout : 1000 });
       }
     } catch (err) {
       Alert.error(`Error requesting your dapp count : ${getErrMsg(err)}`)

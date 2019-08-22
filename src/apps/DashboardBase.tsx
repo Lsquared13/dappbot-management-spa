@@ -65,8 +65,6 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
       const refreshedAPI = await API.refreshAuthorization();
       if (refreshedAPI === API) {
         requestList();
-      } else {
-        Alert.info('We just refreshed your authorization to our server, one moment...');
       }
     } catch (err) {
       Alert.error(`Error refreshing your session : ${getErrMsg(err)}`)

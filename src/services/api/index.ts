@@ -146,6 +146,7 @@ export class API {
       // the RefreshToken on it.
       const NewUser = Object.assign({ RefreshToken : user.RefreshToken }, RefreshedUser);
       setUser(NewUser)
+      Alert.info('We just refreshed your authorization to our server, one moment...');
       return new API({
         user : NewUser,
         setUser
