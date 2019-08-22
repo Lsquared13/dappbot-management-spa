@@ -7,7 +7,6 @@ import EmailImage from "../assets/images/CheckEmail.svg";
 
 
 import { CardElement, injectStripe, ReactStripeElements } from 'react-stripe-elements';
-import request from 'request-promise-native';
 import validate from 'validator';
 import API from '../services/api';
 import Alert from 'react-s-alert';
@@ -16,11 +15,10 @@ import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
 import { ErrorBox } from '../components';
 import { useResource } from 'react-request-hook';
-import { UserCreateArgs } from '../types';
+import { getErrMsg } from '../services/util';
 
 interface PaymentProps extends RouteComponentProps, ReactStripeElements.InjectedStripeProps {
   user?: any
-  setUser: (newUser:any)=>void
   API: API
   requireCreditCard?: boolean
 
@@ -58,7 +56,7 @@ export const CheckoutBox:FC<{numDapps:string, requireCreditCard:boolean}> = ({nu
 
       
 
-export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCreditCard}) => {
+export const Payment:FC<PaymentProps> = ({user, API, stripe, requireCreditCard}) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [coupon, setCoupon] = useState('');
@@ -89,25 +87,20 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
   const handleCreateUser= async () => {
     markCreateUserSent(true);
     setErr('');
-
     if (isRequired && stripe) {
       try {
         let {token} = await stripe.createToken({'name': name});
         if (token && token.id) { 
           creditCardSignupArgs.token = token.id
           sendCreateUserRequest(creditCardSignupArgs) }
-      }
-      catch(err){
-        Alert.error(`Error sending new user request : ${err.message || err.toString()}`)   
+      } catch (err) {
+        let msg = `Error sending new user request : ${getErrMsg(err)}`;
+        setErr(msg);
+        Alert.error(msg);
       }
     } 
     else {
-      try {
-        sendCreateUserRequest(noCreditCardSignupArgs);
-      } 
-      catch (err) {
-        Alert.error(`Error sending new user request : ${err.message || err.toString()}`)
-      }
+      sendCreateUserRequest(noCreditCardSignupArgs);
     }
 
  
@@ -122,10 +115,10 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
       setLoading(false);
       console.log(createUserResponse.error)
       switch (createUserResponse.error.code) {
-
         default: {
-          setErr(createUserResponse.error.data.err.message)
-          Alert.error(createUserResponse.error.data.err.message);
+          let msg = `Error creating user : ${getErrMsg(createUserResponse.error)}`;
+          setErr(msg)
+          Alert.error(msg);
         }
       }
 

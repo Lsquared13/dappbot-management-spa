@@ -11,15 +11,13 @@ import { HomeBase } from "./layout/HomeBase";
 import AppBase from './layout/AppBase';
 import { useLocalStorage } from './services/localStorage';
 import APIFactory from './services/api';
+import { bodyHas } from './services/util';
 import { SettingsContainerBase } from "./apps/SettingsContainerBase";
-import {  Welcome, Login, Privacy, DappDetails, PaymentPage } from './pages';
+import {  Welcome, Login, Privacy, PaymentPage } from './pages';
 import { DashboardBase } from './apps/DashboardBase';
 import { NewDappFormBase } from './apps';
 import { emptyUserResponse, UserResponseData } from './types';
 
-function bodyHas(object:Object, propNames:string[]) {
-  return propNames.every(propName => object.hasOwnProperty(propName))
-}
 
 const App: FC = () => {
   let [user, setUser] = useLocalStorage('user', emptyUserResponse());
@@ -43,9 +41,12 @@ const App: FC = () => {
   }
   const API = new APIFactory({user, setUser});
 
-  let userData = { 
-    user, API,
-    setUser : safeSetUser
+  function logOut(){
+    setUser(emptyUserResponse());
+  }
+
+  let appData = { 
+    user, API
   };
   
   return (
@@ -53,17 +54,16 @@ const App: FC = () => {
       <Elements>
         <AppBase>
           <Router>
-            <PageBase path='/' {...userData} >
-              <Welcome default {...userData} />
-              <Login path='login' {...userData} />
-              <PaymentPage path='signup' {...userData}/>
+            <PageBase path='/' {...appData} >
+              <Welcome default {...appData} />
+              <Login path='login' {...appData} setUser={safeSetUser} />
+              <PaymentPage path='signup' {...appData}/>
               <Privacy path='privacy'  />
             </PageBase>
-            <HomeBase path="/home" {...userData}>
-              <DappDetails path="dapp/:id" {...userData} />
-              <DashboardBase path="/*"  {...userData}/>
-              <NewDappFormBase path="new/*" {...userData} />
-              <SettingsContainerBase path="user-settings/*" {...userData}/>
+            <HomeBase path="/home" logOut={logOut} {...appData}>
+              <DashboardBase path="/*"  {...appData}/>
+              <NewDappFormBase path="new/*" {...appData} />
+              <SettingsContainerBase path="user-settings/*" {...appData}/>
             </HomeBase>
           </Router>
         </AppBase>

@@ -14,7 +14,8 @@ import { challengeDataFactory } from '../services/api/types';
 import { BeginPasswordResetArgs, SignInArgs } from '../services/api/auth';
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
-import { ErrorBox, NewPassChallenge, ForgotPassChallenge } from '../components';
+import { ErrorBox, NewPassChallenge, PassResetChallenge } from '../components';
+import { getErrMsg } from '../services/util';
 
 
 export interface LoginProps extends RouteComponentProps {
@@ -29,100 +30,80 @@ export const Login: FC<LoginProps> = (props) => {
   const [password, setPassword] = useState("");
 
   const [err, setErr] = useState('');
-  const [loading, setLoading] = useState(false);
   const initialChallenge = challengeDataFactory(ChallengeType.Default);
   const [challenge, setChallenge] = useState(initialChallenge);
   const [signInResponse, requestSignIn] = useResource(API.auth.signIn())
-  const [beginPasswordResetResponse, beginPasswordReset] = useResource(API.auth.beginPasswordReset())
-  //Response Handler
-  const [signInSent, markSignInSent] = useState(false)
-  const [passwordResetSent, markPasswordResetSent] = useState(false);
+  const [passResetResponse, requestPassReset] = useResource(API.auth.beginPasswordReset())
 
-  const handleSignIn = () => {
+  function makeSignInRequest() {
     const loginDetails: SignInArgs = {
       'username': email,
       'password': password
     }
-    markSignInSent(true)
     requestSignIn(loginDetails)
   }
-
-  useEffect(function handleLoginResult() {
-    if (signInSent) {
-      if (signInResponse.isLoading) {
-        Alert.info("Authenticating ...", { timeout: 750 });
-      }
-      else if (signInResponse.error) {
-        markSignInSent(false)
-        console.log(signInResponse.error)
-        switch (signInResponse.error.code) {
-          default: {
-            Alert.error(signInResponse.error.data.err.message);
-          }
+  useEffect(function handleSignInResult() {
+    const { isLoading, error, data } = signInResponse;
+    if (isLoading) {
+      Alert.info("Authenticating ...", { timeout: 750 });
+      return;
+    }
+    else if (error) {
+      console.log('Error signing in : ',error)
+      switch (error.code) {
+        default: {
+          Alert.error(`Error signing in : ${getErrMsg(error)}`);
+          return;
         }
-
       }
-      else if (signInResponse.data) {
-        markSignInSent(false)
-
-        let response = signInResponse.data.data;
-        //Ensure that the response has a session, and if so create a tempUser
-        if (response.Session) {
-          //This tempUser refers to when the password needs to be reset for the first login.
-          let tempUser = emptyUserResponse()
-          tempUser.User.Username = email
-
-          setUser(tempUser)
-          setChallenge(response)
-
-        }
-        if (response.Authorization) {
-          setUser(response)
-          setChallenge(challengeDataFactory(ChallengeType.Default))
-          Alert.success("Authenticated with credentials for: " + response.User.Email)
-        }
-
+    }
+    else if (data) {
+      // A Session implies more challenges
+      if (data.data.Session) {
+        //This tempUser refers to when the password needs to be reset for the first login.
+        let tempUser = emptyUserResponse()
+        tempUser.User.Username = email
+        setUser(tempUser)
+        setChallenge(data.data)
       }
+
+      // Authorization implies success
+      if (data.data.Authorization) {
+        setUser(data.data)
+        setChallenge(challengeDataFactory(ChallengeType.Default))
+        Alert.success("Authenticated with credentials for: " + data.data.User.Email)
+      }
+
     }
   }, [signInResponse])
 
-  const handleForgottenPass = () => {
+  function makePassResetRequest() {
     const forgottenPassDetails: BeginPasswordResetArgs = {
       'username': email
     }
-    markPasswordResetSent(true)
-    beginPasswordReset(forgottenPassDetails)
-
+    requestPassReset(forgottenPassDetails)
   }
-
   useEffect(function handlePassResetResult() {
-    if (passwordResetSent) {
-      if (beginPasswordResetResponse.isLoading) {
-        Alert.info("Attempting password reset", { timeout: 1750 });
-
-      }
-      else if (beginPasswordResetResponse.error) {
-        markPasswordResetSent(false);
-
-        console.log(beginPasswordResetResponse.error)
-        switch (beginPasswordResetResponse.error.code) {
-          case '401': {
-            Alert.error("Authorization failure when resetting your password.");
-            break;
-          }
-          default: {
-            Alert.error("Failed to reset password, check the username field and make sure it is a valid email address");
-          }
+    const { isLoading, error, data } = passResetResponse;
+    if (isLoading) {
+      Alert.info("Attempting password reset", { timeout: 1750 })
+    }
+    else if (error) {
+      console.log(error)
+      switch (error.code) {
+        case '401': {
+          Alert.error("Authorization failure when resetting your password.");
+          break;
         }
-
-      }
-      else if (beginPasswordResetResponse.data) {
-        markPasswordResetSent(false)
-        setChallenge(challengeDataFactory(ChallengeType.ForgotPassword))
-
+        default: {
+          Alert.error("Failed to reset password, check the username field and make sure it is a valid email address");
+        }
       }
     }
-  }, [beginPasswordResetResponse])
+    else if (data) {
+      setChallenge(challengeDataFactory(ChallengeType.ForgotPassword))
+    }
+  }, [passResetResponse])
 
   useEffect(function handleChallengeResult() {
     if (challenge.ChallengeName === ChallengeType.Default && user.Authorization !== '' && user.User) {
@@ -151,7 +132,7 @@ export const Login: FC<LoginProps> = (props) => {
                 value={email}
                 onChange={setEmail}
                 displayName='Email'
-                disabled={loading}
+                disabled={signInResponse.isLoading}
                 isValid={isEmail}
                 name='email' />
             </div>
@@ -163,9 +144,9 @@ export const Login: FC<LoginProps> = (props) => {
                 fieldType='password'
                 name='password'
                 displayName='Password'
-                disabled={loading}
+                disabled={signInResponse.isLoading}
                 onChange={setPassword}
-                onPressEnter={handleSignIn}
+                onPressEnter={makeSignInRequest}
                 value={password} />
               <p className="text-center">Don't have an account yet? <a href="/signup">Sign Up</a></p>
             </div>
@@ -173,8 +154,8 @@ export const Login: FC<LoginProps> = (props) => {
           <div className="row mt-4">
             <div className="col">
               <div style={{ display: "flex", justifyContent: "space-between"  }}>
-                <Button disabled={loading} onClick={handleSignIn}>Log In</Button>
-                <Button onClick={handleForgottenPass} style='standard' theme='outlineBlue'>Forgot Password?</Button>
+                <Button disabled={signInResponse.isLoading} onClick={makeSignInRequest}>Log In</Button>
+                <Button onClick={makePassResetRequest} style='standard' theme='outlineBlue'>Forgot Password?</Button>
                 <ErrorBox errMsg={err}></ErrorBox>
               </div>
               {/* <button className="btn btn-primary" type="button">Submit</button> */}
@@ -204,7 +185,7 @@ export const Login: FC<LoginProps> = (props) => {
               <h2>Set New Password</h2>
             </div>
           </div>
-          <ForgotPassChallenge email={email} API={API} {...challengeProps} />
+          <PassResetChallenge email={email} API={API} {...challengeProps} />
         </React.Fragment>
 
       break;

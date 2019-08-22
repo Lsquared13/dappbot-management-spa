@@ -45,6 +45,10 @@ export function CustomConfirmFactory(args: CustomConfirmFactoryArgs) {
         <br key={1} />
       ])
     }
+    function complete(){
+      onConfirm();
+      onClose();
+    }
     return (
       <div className='react-confirm-alert-body'>
         <Box display='block'>
@@ -69,7 +73,7 @@ export function CustomConfirmFactory(args: CustomConfirmFactoryArgs) {
             <Button
               block
               theme='outlineBlue'
-              onClick={onConfirm}>
+              onClick={complete}>
               Yes
             </Button>
           </Box>

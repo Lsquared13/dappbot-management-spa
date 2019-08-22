@@ -4,12 +4,12 @@ import { Router, navigate, RouteComponentProps } from "@reach/router";
 import Alert from 'react-s-alert';
 import { DashboardContainer, DappDetailsContainer, DeleteDappContainer } from "../pages/dashboard";
 import API from '../services/api';
+import { getErrMsg } from '../services/util';
 import { DeleteDappState } from "../components";
 import { NotFound } from "../pages/notFound";
 import { UserResponseData } from "../types";
 
 export interface Props extends RouteComponentProps {
-  setUser: (user: UserResponseData) => void
   API: API
 }
 export interface DappDetail {
@@ -53,25 +53,22 @@ const SETTING_OPTIONS = [
   }
 ];
 
-export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
+export const DashboardBase: React.SFC<Props> = ({ API, ...props }) => {
 
-  //----- LIST REQUEST & HANDLING -----//
-  const [listResponse, sendListRequest] = useResource(API.private.list());
-  const [fetchListSent, markFetchListSent] = useState(false);
-  const handleFetchList = async () => {
-    markFetchListSent(true);
+  ///////////////////////////
+  // GET DAPP LIST LOGIC
+  ///////////////////////////
+  const [listResponse, requestList] = useResource(API.private.list());
+  async function makeListRequest() {
     try {
       const refreshedAPI = await API.refreshAuthorization();
       if (refreshedAPI === API) {
-        sendListRequest();
-      } else {
-        Alert.info('We just refreshed your authorization to our server, one moment...');
+        requestList();
       }
     } catch (err) {
-      Alert.error(`Error refreshing your session : ${err.message || err.toString()}`)
+      Alert.error(`Error refreshing your session : ${getErrMsg(err)}`)
     }
   }
-
   useEffect(function fetchListOnStartAndAPI() {
     // Note that by making this effect depend on the API
     // object, we will automatically refetch whenever the
@@ -80,66 +77,56 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
     // That is why handleFetchList() doesn't need to do
     // anything when the API is stale; it will get called
     // again once it is fresh.
-    handleFetchList()
+    makeListRequest()
   }, [API]);
-
-  useEffect(() => {
-    if (!fetchListSent) return
-    if (listResponse.isLoading) {
+  useEffect(function handleListResponse() {
+    const { isLoading, error } = listResponse;
+    if (isLoading) {
       Alert.info("Fetching Dapp List", { timeout: 750 });
+      return;
     }
-    else if (listResponse.error) {
-      markFetchListSent(false)
-      switch (listResponse.error.code) {
+    else if (error) {
+      switch (error.code) {
         default: {
-          console.error('Error fetching Dapp List: ',listResponse.error)
-          Alert.error(listResponse.error.data.err.message);
+          console.error('Error fetching Dapp List: ', error)
+          Alert.error(`Error fetching your dapp list: ${getErrMsg(error)}`);
         }
       }
-    } 
-    else if(listResponse.data) {
-      markFetchListSent(false);
     }
   }, [listResponse]);
 
-  //----- DELETE REQUEST & HANDLING -----//
-  const [deleteResponse, sendDeleteRequest] = useResource(API.private.delete());
-  const [deleteSent, markDeleteSent] = useState(false);
-  const handleDelete = async (dappName: string) => {
-    markDeleteSent(true);
+  ///////////////////////////
+  // DAPP DELETE LOGIC
+  ///////////////////////////
+  const [deleteResponse, requestDelete] = useResource(API.private.delete());
+  async function makeDeleteRequest(dappName: string) {
     try {
-      const refreshedAPI = await API.refreshAuthorization();
+      const refreshedAPI = await API.refreshAuthorization({ userMustRetry : true });
       if (refreshedAPI === API) {
-        sendDeleteRequest(dappName);
-      } else {
-        markDeleteSent(false);
-        Alert.info("We just refreshed your authorization to our server, please try that again.", { timeout : 1000 });
+        requestDelete(dappName);
       }
     } catch (err) {
-      Alert.error(`Error sending delete : ${err.message || err.toString()}`)
+      Alert.error(`Error sending delete : ${getErrMsg(err)}`)
     }
   }
-  useEffect(() => {
-    if (deleteSent) {
-      if (deleteResponse.isLoading) {
-        Alert.info(`Deleting dapp ...`, { timeout: 500 });
-      }
-      else if (deleteResponse.error) {
-        markDeleteSent(false)
-        markFetchListSent(false)
-        switch (deleteResponse.error.code) {
-          default: {
-            console.error("Error on deleting dapp: ",deleteResponse.error);
-            Alert.error(deleteResponse.error.data.err.message);
-          }
+  useEffect(function handleDeleteResponse() {
+    const { isLoading, error, data } = deleteResponse;
+    if (isLoading) {
+      Alert.info(`Deleting dapp ...`, { timeout: 500 });
+      return;
+    }
+    else if (error) {
+      switch (error.code) {
+        default: {
+          console.error("Error on deleting dapp: ", error);
+          Alert.error(`Error deleting your dapp : ${getErrMsg(error)}`);
         }
-      } 
-      else if (deleteResponse.data) {
-        markDeleteSent(false);
-        Alert.success(`Your dapp was successfully deleted!`, { timeout: 500 });
-        handleFetchList()
-        navigate(`/home`);
       }
+    }
+    else if (data) {
+      Alert.success(`Your dapp was successfully deleted!`, { timeout: 500 });
+      makeListRequest()
+      navigate(`/home`);
     }
   }, [deleteResponse])
 
@@ -168,7 +155,7 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
           dapps={dappList}
           dappsLoading={dappsLoading}
           onRefresh={() => {
-            handleFetchList()
+            makeListRequest()
           }}
           onCreateNewApp={() => {
             navigate(`/home/new/step-1`);
@@ -184,7 +171,7 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
           onDeleteDappBot={(e, inputs: string) => {
             const dappName = inputs;
             if (dappName) {
-              handleDelete(dappName);
+              makeDeleteRequest(dappName);
               navigate(`/home`);
             }
           }}
