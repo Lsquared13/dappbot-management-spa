@@ -21,7 +21,6 @@ function sleep(seconds: number) {
 
 export interface SettingsContainerProps extends RouteComponentProps, RSE.InjectedStripeProps {
   user: UserResponseData;
-  setUser: (user: UserResponseData) => void
   API: API;
 }
 
@@ -34,7 +33,7 @@ export interface SettingState {
 // it needs to be run with the injectStripe HOC
 // on the default object.
 const SettingContainer: FC<SettingsContainerProps> = (props) => {
-  const { API, user, setUser } = props;
+  const { API, user } = props;
 
   ///////////////////////////////////
   // TRIGGER DATA FETCHES
@@ -91,10 +90,6 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
         Alert.info('No Stripe customer found!');
       }
       if (subscription) setSubscription(subscription);
-      setUser({
-        ...user,
-        User: userData.user
-      });
     }
   }, [stripeResponse]);
 

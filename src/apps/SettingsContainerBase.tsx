@@ -7,16 +7,15 @@ import API from "../services/api";
 
 export interface Props extends RouteComponentProps {
   user : UserResponseData
-  setUser : (user:UserResponseData)=>void
   API : API
 }
-export const SettingsContainerBase: React.SFC<Props> = ({user, setUser, API }) => {
+export const SettingsContainerBase: React.SFC<Props> = ({user, API }) => {
   
     return (
       <Router>
         <SettingContainer
           default
-          {...{ user, setUser, API }}
+          {...{ user, API }}
         />
       </Router>
     );
