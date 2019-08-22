@@ -10,7 +10,6 @@ import { NotFound } from "../pages/notFound";
 import { UserResponseData } from "../types";
 
 export interface Props extends RouteComponentProps {
-  setUser: (user: UserResponseData) => void
   API: API
 }
 export interface DappDetail {
@@ -54,7 +53,7 @@ const SETTING_OPTIONS = [
   }
 ];
 
-export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
+export const DashboardBase: React.SFC<Props> = ({ API, ...props }) => {
 
   ///////////////////////////
   // GET DAPP LIST LOGIC

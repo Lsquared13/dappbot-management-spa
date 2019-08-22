@@ -9,20 +9,16 @@ import { UserResponseData, emptyUserResponse } from "../types";
 
 export interface HomeBaseProps extends RouteComponentProps {
   user: UserResponseData
-  setUser: (newUser:UserResponseData)=>void
+  logOut: () => void
 }
 
-export const HomeBase: FC<HomeBaseProps> = ({user, setUser, location, uri, path, navigate, ...props}) => {
+export const HomeBase: FC<HomeBaseProps> = ({user, logOut, location, uri, path, navigate, ...props}) => {
 
   useEffect(function puntLoggedOutUsers(){
     if (user.Authorization === '' && navigate) {
       navigate('/login')
     }
   }, [user])
-
-  function logOut(){
-    setUser(emptyUserResponse());
-  }
 
   function goToSettings(){ navigate && navigate('/home/user-settings')}
 

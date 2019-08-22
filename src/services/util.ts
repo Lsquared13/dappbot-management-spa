@@ -2,19 +2,19 @@
  * Given an error, use the following strategies to try and
  * extract a clean message:
  * 
- * 1. Check if we were given the error from useResource, 
- * in which case it has a `data` field.  
+ * 1. Check if the error has a `data` field, in which case
+ * we were given the error by useResource. If it does:
  * 
- * 2. If it does, try to get the `err.message` value from it,
+ *   1. Try to get the `err.message` value from it,
  * as that is where our API places errors.  
  * 
- * 3. If that key isn't present, try getting `message`, as 
+ *   2. If that key isn't present, try getting `message`, as 
  * that's where API Gateway places it.
  * 
- * 4. If there's no `data` field at all, look for a `message`
+ * 2. If there's no `data` field, look for a `message`
  * field, the default location for JS errors.
  * 
- * 5. If nothing is there, return the input stringified so
+ * 3. If nothing is there, return the input stringified so
  * there's always something.
  *    
  * @param err 
@@ -30,4 +30,8 @@ export function getErrMsg(err:any):string {
   } else {
     return JSON.stringify(err)
   }
+}
+
+export function bodyHas(object:Object, propNames:string[]) {
+  return propNames.every(propName => object.hasOwnProperty(propName))
 }

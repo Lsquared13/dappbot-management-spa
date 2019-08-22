@@ -19,7 +19,6 @@ import { getErrMsg } from '../services/util';
 
 interface PaymentProps extends RouteComponentProps, ReactStripeElements.InjectedStripeProps {
   user?: any
-  setUser: (newUser:any)=>void
   API: API
   requireCreditCard?: boolean
 
@@ -57,7 +56,7 @@ export const CheckoutBox:FC<{numDapps:string, requireCreditCard:boolean}> = ({nu
 
       
 
-export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCreditCard}) => {
+export const Payment:FC<PaymentProps> = ({user, API, stripe, requireCreditCard}) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [coupon, setCoupon] = useState('');

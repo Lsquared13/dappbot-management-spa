@@ -16,7 +16,6 @@ import { getErrMsg } from '../services/util';
 
 export interface NewDappFormBaseProps extends RouteComponentProps {
   user: UserResponseData
-  setUser: (user: UserResponseData) => void
   API: API
 }
 
@@ -45,7 +44,7 @@ const SETTING_OPTIONS = [
 ];
 
 
-export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({ user, setUser, API, ...props }) => {
+export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({ user, API, ...props }) => {
   const buildingDappDetails = useRef({
     DappName: "Building ... ",
     Web3URL: "Building ... ",
