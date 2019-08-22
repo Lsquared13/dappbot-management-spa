@@ -50,7 +50,10 @@ export const Navigation:FC<NavProps> = ({hideLogin, user, setUser}) => {
                   <a className="nav-link" href="#learn">Learn</a>
               </li>
               <li className="nav-item">
-                  <a className="nav-link mr-3 mb-2" target="_blank" href="https://dappbot.drift.help/category/getting-started/">Docs</a>
+                  <a className="nav-link" target="_blank" href="https://dappbot.drift.help/category/getting-started/">Docs</a>
+              </li>
+              <li className="nav-item">
+                  <a className="nav-link mr-3 mb-2" href="https://support.eximchain.com/hc/en-us/requests/new">Support</a>
               </li>
               <li className="nav-item">
                 { loginLogoutLink }
