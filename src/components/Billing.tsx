@@ -56,6 +56,7 @@ export interface BillingProps extends RSE.InjectedStripeProps {
   subscription: XOR<subscriptions.ISubscription, null>
   invoice: XOR<Invoice, null>
   name: string
+  email: string
   submitWithToken: (token: stripe.Token) => Promise<any>
   loadingData: boolean
   totalNumDapps: number
@@ -67,7 +68,7 @@ export interface BillingProps extends RSE.InjectedStripeProps {
 const Billing: FC<BillingProps> = ({
   source, subscription, stripe, name, submitWithToken, paymentStatus,
   loadingData, hasStripe, totalNumDapps, submitUpdateDapps, usedNumDapps,
-  invoice
+  invoice, email
 }) => {
 
   /////////////////////////////////
@@ -190,7 +191,6 @@ const Billing: FC<BillingProps> = ({
       })
     }
   }
-  
   let updateDappsElement = <Text>Loading...</Text>
   if (updatingNumDapps) {
     updateDappsElement =
@@ -253,9 +253,21 @@ const Billing: FC<BillingProps> = ({
   return (
     <>
       <EvenBlocks left={
+        <div>
+        <EasyInputGroup title='Email'>
+          <Text>
+            {email}
+          </Text>
+        </EasyInputGroup>
+        <EasyInputGroup title='Subscription Status'>
+          <Text>
+            {subscriptionStatus}
+          </Text>
+        </EasyInputGroup>
         <EasyInputGroup title='Max Number of Dapps'>
           <>
             {updateDappsElement}
+            <br />
             {updateDappsBtn}
             {
               noUpdatesAllowed && !loadingData ? (
@@ -266,25 +278,14 @@ const Billing: FC<BillingProps> = ({
             }
           </>
         </EasyInputGroup>
+        </div>
       } right={
         <EasyInputGroup title='Credit Card'>
-          <>
+          <div className='col-sm-12 col-md-6 col-lg-4'>
             {cardElt}
+            <br />
             {updateCardBtns}
-          </>
-        </EasyInputGroup>
-      } />
-      <EvenBlocks left={
-        <EasyInputGroup title='Subscription Status'>
-          <Text>
-            {subscriptionStatus}
-          </Text>
-        </EasyInputGroup>
-      } right={
-        <EasyInputGroup title='Next Billing Date'>
-          <Text>
-            {nextBillingDate}
-          </Text>
+          </div>
         </EasyInputGroup>
       } />
       <EasyInputGroup title={invoiceTitle}>
