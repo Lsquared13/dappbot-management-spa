@@ -33,17 +33,17 @@ const EasyInputGroup: FC<EasyInputGroupProps> = ({ title, children }) => (
 )
 
 interface EvenBlocksProps {
-  left : ReactElement
-  right : ReactElement
+  left: ReactElement
+  right: ReactElement
 }
-const EvenBlocks:FC<EvenBlocksProps> = ({ left, right }) => {
+const EvenBlocks: FC<EvenBlocksProps> = ({ left, right }) => {
   return (
-    <Box display='flex' style={{flexBasis:'100%', flex:'1 1 0'}}>
+    <Box display='flex' style={{ flexBasis: '100%', flex: '1 1 0' }}>
       <Box display='flex' flex='grow' alignItems='center' paddingX={1}>
-        { left }
+        {left}
       </Box>
       <Box display='flex' flex='grow' alignItems='center' paddingX={1}>
-        { right }
+        {right}
       </Box>
     </Box>
   )
@@ -92,9 +92,9 @@ const Billing: FC<BillingProps> = ({
   if (updatingCard) {
     cardElt = (
       <>
-      <br />
-      <NewCardElement id='stripe-card-form' />
-      <br />
+        <br />
+        <NewCardElement id='stripe-card-form' />
+        <br />
       </>
     )
   } else if (source) {
@@ -151,15 +151,15 @@ const Billing: FC<BillingProps> = ({
     if (updateNumber === 0) {
       confirmAlert({
         customUI: CustomConfirmFactory({
-          title : 'Cancel Subscription',
-          message : [
+          title: 'Cancel Subscription',
+          message: [
             'If you do not want any dapp slots, we will cancel your subscription.',
             'All of your dapps will be deleted, letting other people claim their names.  You will still be able to log in and resume your subscription.',
             'Would you like to cancel?'
           ],
-          onConfirm : () => {
+          onConfirm: () => {
             // TODO: Implement cancellation handling on the payment-lambda
-            Alert.info('Account cancellation is under construction right now; please make a support ticket and we can fully cancel your subscription.', { timeout : 15000})
+            Alert.info('Account cancellation is under construction right now; please make a support ticket and we can fully cancel your subscription.', { timeout: 15000 })
           }
         })
       })
@@ -212,7 +212,7 @@ const Billing: FC<BillingProps> = ({
         </Button>
       }
       right={
-        <Button onClick={submitDappSubscriptionUpdate} 
+        <Button onClick={submitDappSubscriptionUpdate}
           theme='outlineBlue'
           block>
           Submit
@@ -231,7 +231,7 @@ const Billing: FC<BillingProps> = ({
   /////////////////////////////////
   // SUBSCRIPTION DETAIL PRESENTATION LOGIC
   /////////////////////////////////
-  let subscriptionStatus= 'Loading...';
+  let subscriptionStatus = 'Loading...';
   let invoiceTitle = 'Upcoming Invoice';
   if (subscription) {
     if (['FAILED', 'LAPSED'].includes(paymentStatus)) invoiceTitle = 'Failed Invoice';
@@ -247,38 +247,38 @@ const Billing: FC<BillingProps> = ({
   return (
     <>
       <EvenBlocks left={
-        <div style={{width:'85%'}}>
-        <EasyInputGroup title='Email'>
-          <Text>
-            {email}
-          </Text>
-        </EasyInputGroup>
-        <EasyInputGroup title='Subscription Status'>
-          <Text>
-            {subscriptionStatus}
-          </Text>
-        </EasyInputGroup>
-        <EasyInputGroup title='Standard Dapp Slots'>
-          <>
-            {updateDappsElement}
-            <br />
-            {updateDappsBtn}
-            {
-              noUpdatesAllowed && !loadingData ? (
-                <Text>
-                  Please plug in payment information to buy more dapp slots.
+        <div style={{ width: '95%' }}>
+          <EasyInputGroup title='Email'>
+            <Text>
+              {email}
             </Text>
-              ) : null
-            }
-          </>
-        </EasyInputGroup>
+          </EasyInputGroup>
+          <EasyInputGroup title='Subscription Status'>
+            <Text>
+              {subscriptionStatus}
+            </Text>
+          </EasyInputGroup>
+          <EasyInputGroup title='Standard Dapp Slots'>
+            <>
+              {updateDappsElement}
+              <br />
+              {updateDappsBtn}
+              {
+                noUpdatesAllowed && !loadingData ? (
+                  <Text>
+                    Please plug in payment information to buy more dapp slots.
+            </Text>
+                ) : null
+              }
+            </>
+          </EasyInputGroup>
         </div>
       } right={
-        <div className='marginBottom11' style={{ minWidth:'95%' }}>
+        <div className='marginBottom11' style={{ minWidth: '95%' }}>
           <InputTitle color="gray">Credit Card</InputTitle>
           <div className='marginTop2 marginBottom3'>
             {cardElt}
-              <br />
+            <br />
             {updateCardBtns}
           </div>
         </div>
