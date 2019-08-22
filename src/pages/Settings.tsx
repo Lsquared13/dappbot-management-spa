@@ -192,10 +192,10 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
       <Container>
         <Box>
           <LayoutContainer>
-            <Profile {...props} />
             <Billing source={source}
               subscription={subscription}
               name={name}
+              email={user.User.Email}
               invoice={invoice}
               paymentStatus={paymentStatus}
               hasStripe={hasStripe}
