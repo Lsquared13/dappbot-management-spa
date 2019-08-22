@@ -1,11 +1,9 @@
 import React, { FC, useEffect } from "react";
 import { RouteComponentProps } from "@reach/router";
-import Alert from "react-s-alert";
-import Navigation from "../components/froala/Navigation";
 import Footer from "../components/froala/Footer";
 import {PaymentStatusBanner} from "../components/PaymentStatusBanner"
-import Header, { HeaderState }  from "./Header";
-import { UserResponseData, emptyUserResponse } from "../types";
+import Header  from "./Header";
+import { UserResponseData} from "../types";
 
 export interface HomeBaseProps extends RouteComponentProps {
   user: UserResponseData

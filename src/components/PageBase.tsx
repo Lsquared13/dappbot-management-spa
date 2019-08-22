@@ -29,7 +29,6 @@ export interface PageBaseProps extends RouteComponentProps {
 export const PageBase: FC<PageBaseProps> = ({user, setUser, ...props}) => {
   return (
     <div className='App' id='appBase'>
-      <Alert stack={{limit: 3}} />
       <Navigation user={user} setUser={setUser} />
       {props.children}
       <Footer />
