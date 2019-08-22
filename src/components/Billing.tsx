@@ -38,7 +38,7 @@ interface EvenBlocksProps {
 }
 const EvenBlocks:FC<EvenBlocksProps> = ({ left, right }) => {
   return (
-    <Box display='flex'>
+    <Box display='flex' style={{flexBasis:'100%', flex:'1 1 0'}}>
       <Box display='flex' flex='grow' alignItems='center' paddingX={1}>
         { left }
       </Box>
@@ -247,7 +247,7 @@ const Billing: FC<BillingProps> = ({
   return (
     <>
       <EvenBlocks left={
-        <div>
+        <div style={{width:'85%'}}>
         <EasyInputGroup title='Email'>
           <Text>
             {email}
@@ -274,9 +274,7 @@ const Billing: FC<BillingProps> = ({
         </EasyInputGroup>
         </div>
       } right={
-        <div className='marginBottom11' style={{
-          marginBottom:'22px', width:'100%'
-        }}>
+        <div className='marginBottom11' style={{ minWidth:'95%' }}>
           <InputTitle color="gray">Credit Card</InputTitle>
           <div className='marginTop2 marginBottom3'>
             {cardElt}
