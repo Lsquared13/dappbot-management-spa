@@ -135,11 +135,9 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     let request = {
       plans: plans
     }
-    const refreshedAPI = await API.refreshAuthorization();
+    const refreshedAPI = await API.refreshAuthorization({ userMustRetry : true });
     if (refreshedAPI === API) {
       requestUpdateDapps(request)
-    } else {
-      Alert.info("We just refreshed your authorization to our server, please try that again.");
     }
   }
   useEffect(function handleUpdateDappsResponse() {
@@ -159,11 +157,9 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   ///////////////////////////////////
   const [updatePaymentResponse, requestUpdatePayment] = useResource(API.payment.updatePaymentMethod());
   async function makeUpdatePaymentRequest(token: stripe.Token) {
-    const refreshedAPI = await API.refreshAuthorization();
+    const refreshedAPI = await API.refreshAuthorization({ userMustRetry : true });
     if (refreshedAPI === API) {
       requestUpdatePayment({ token: token.id });
-    } else {
-      Alert.info("We just refreshed your authorization to our server, please try that again.");
     }
   }
   useEffect(function handleUpdatedPaymentResponse() {

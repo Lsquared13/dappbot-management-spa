@@ -102,11 +102,9 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
   const [deleteResponse, requestDelete] = useResource(API.private.delete());
   async function makeDeleteRequest(dappName: string) {
     try {
-      const refreshedAPI = await API.refreshAuthorization();
+      const refreshedAPI = await API.refreshAuthorization({ userMustRetry : true });
       if (refreshedAPI === API) {
         requestDelete(dappName);
-      } else {
-        Alert.info("We just refreshed your authorization to our server, please try that again.", { timeout: 1000 });
       }
     } catch (err) {
       Alert.error(`Error sending delete : ${getErrMsg(err)}`)

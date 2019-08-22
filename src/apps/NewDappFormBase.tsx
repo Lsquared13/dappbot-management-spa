@@ -103,12 +103,10 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({ user, setUser
   const [createResponse, requestCreate] = useResource(API.private.create());
   async function makeCreateRequest(dappArgs: DappCreateArgs) {
     const dappData: DappData = omit(dappArgs, ['DappName'])
-    const refreshedAPI = await API.refreshAuthorization();
+    const refreshedAPI = await API.refreshAuthorization({ userMustRetry : true });
     if (refreshedAPI === API) {
       Alert.info(`Making request...`)
       requestCreate(dappData, dappArgs.DappName)
-    } else {
-      Alert.info("We just refreshed your authorization to our server, please try that again.", { timeout: 1000 });
     }
   }
   useEffect(function handleCreateResponse() {

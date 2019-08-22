@@ -19,6 +19,10 @@ export interface APIConfig {
   setUser: UserSetter
 }
 
+export interface RefreshOptions {
+  userMustRetry : boolean
+}
+
 export class API {
   constructor(args:APIConfig){
     const { user, setUser } = args;
@@ -113,11 +117,14 @@ export class API {
    * if necessary.  Returns a new API object if the user
    * was updated, returns self if nothing changed, throws
    * an error if something goes wrong in the process.
+   * 
+   * Options arg let the caller request that the refresh
+   * alert ask the user to repeat their action, in case
+   * it was triggered by a button press.
    */
-  async refreshAuthorization(){
+  async refreshAuthorization(opts:RefreshOptions={userMustRetry : false}){
     const { user } = this;
 
-    // user === emptyUserResponse()
     if (user.RefreshToken === '' || user.ExpiresAt === ''){
       throw new Error("Please log in.")
     }
@@ -125,7 +132,7 @@ export class API {
     if (moment(user.ExpiresAt).isAfter(moment.now())) {
       return this;
     } else {
-      return await this.refreshUser()
+      return await this.refreshUser(opts)
     }
   }
 
@@ -133,7 +140,7 @@ export class API {
    * Refreshes the full user object, updating each 
    * parameter except for RefreshToken.
    */
-  async refreshUser(){
+  async refreshUser(opts:RefreshOptions={userMustRetry : false}){
     const { user, setUser } = this;
     if (!user.RefreshToken) throw new Error("Please log in.");
     const refreshRequest = this.auth.refresh()({
@@ -146,7 +153,9 @@ export class API {
       // the RefreshToken on it.
       const NewUser = Object.assign({ RefreshToken : user.RefreshToken }, RefreshedUser);
       setUser(NewUser)
-      Alert.info('We just refreshed your authorization to our server, one moment...');
+      Alert.info(opts.userMustRetry ?
+        'We just refreshed your authorization to our server, please try that again.' :
+        'We just refreshed your authorization to our server, one moment...');
       return new API({
         user : NewUser,
         setUser
