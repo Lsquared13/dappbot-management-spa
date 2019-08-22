@@ -38,7 +38,7 @@ interface EvenBlocksProps {
 }
 const EvenBlocks: FC<EvenBlocksProps> = ({ left, right }) => {
   return (
-    <Box display='flex' style={{ flexBasis: '100%', flex: '1 1 0' }}>
+    <Box display='flex'>
       <Box display='flex' flex='grow' alignItems='center' paddingX={1}>
         {left}
       </Box>
@@ -190,7 +190,7 @@ const Billing: FC<BillingProps> = ({
       })
     }
   }
-  let updateDappsElement = <Text>Loading...</Text>;
+  let updateDappsElement = <Text className='marginBottom1'>Loading...</Text>;
   let noUpdatesAllowed = !source;
   if (updatingNumDapps) {
     updateDappsElement =
@@ -201,7 +201,7 @@ const Billing: FC<BillingProps> = ({
         onChange={setNumDapps} />
   } else {
     updateDappsElement = (
-      <Text> 
+      <Text className='marginBottom1'>
         {totalNumDapps} 
         {!loadingData && noUpdatesAllowed && ' - Please plug in payment information to buy more dapp slots.'}
       </Text>
@@ -251,8 +251,8 @@ const Billing: FC<BillingProps> = ({
 
   return (
     <>
-      <EvenBlocks left={
-        <div style={{ width: '95%' }}>
+      <div className='row'>
+        <div className='col-sm-12 col-md-6'>
           <EasyInputGroup title='Email'>
             <Text>
               {email}
@@ -266,21 +266,20 @@ const Billing: FC<BillingProps> = ({
           <EasyInputGroup title='Standard Dapp Slots'>
             <>
               {updateDappsElement}
-              <br />
               {updateDappsBtn}
             </>
           </EasyInputGroup>
         </div>
-      } right={
-        <div className='marginBottom11' style={{ minWidth: '95%' }}>
+        <div className='col-sm-12 col-md-6 my-auto'>
           <InputTitle color="gray">Credit Card</InputTitle>
           <div className='marginTop2 marginBottom3'>
-            {cardElt}
-            <br />
+            <div className='marginBottom2'>
+              {cardElt}
+            </div>
             {updateCardBtns}
           </div>
         </div>
-      } />
+      </div>
       <EasyInputGroup title={invoiceTitle}>
         <InvoiceTable invoice={invoice} loadingData={loadingData} />
       </EasyInputGroup>
