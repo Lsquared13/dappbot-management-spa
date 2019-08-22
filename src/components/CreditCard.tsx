@@ -1,16 +1,17 @@
 import React, { FC } from 'react';
 import { ICard as CardType } from 'stripe';
+import './CreditCard.scss';
 import Card from 'react-credit-cards';
 
 export interface CreditCardProps {
-  card : CardType
+  card: CardType
 }
 
-export const CreditCard:FC<CreditCardProps> = ({card}) => {
-  const { last4, brand, name, exp_month, exp_year} = card;
+export const CreditCard: FC<CreditCardProps> = ({ card }) => {
+  const { last4, brand, name, exp_month, exp_year } = card;
 
-  function convertBrand(brandName:typeof brand) {
-    switch (brandName){
+  function convertBrand(brandName: typeof brand) {
+    switch (brandName) {
       case 'American Express':
         return 'amex';
       case 'Diners Club':
@@ -21,13 +22,15 @@ export const CreditCard:FC<CreditCardProps> = ({card}) => {
   }
 
   return (
-    <Card 
+    <div style={{width:'300px'}}>
+      <Card
         name={name || ''}
         expiry={`${exp_month}/${exp_year}`}
         number={`**** **** **** ${last4}`}
         issuer={convertBrand(brand)}
         cvc='***'
         preview={true} />
+    </div>
   )
 }
 

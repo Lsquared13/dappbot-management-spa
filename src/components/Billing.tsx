@@ -11,7 +11,6 @@ import moment from 'moment';
 import Alert from 'react-s-alert';
 import { InputGroup, InputTitle, InputContainer } from '../layout';
 import CreditCard from './CreditCard';
-import 'react-credit-cards/lib/styles.scss';
 import CustomConfirmFactory from './CustomConfirmAlert';
 import { NumberField, Uints } from '../components/fields';
 import { Box, Text, Button } from './ui';
@@ -26,7 +25,7 @@ const EasyInputGroup: FC<EasyInputGroupProps> = ({ title, children }) => (
   <InputGroup>
     <InputTitle color="gray">{title}</InputTitle>
     <InputContainer>
-      <Box column={12} mdColumn={12}>
+      <Box column={12} mdColumn={12} width='100%'>
         {children}
       </Box>
     </InputContainer>
@@ -94,7 +93,7 @@ const Billing: FC<BillingProps> = ({
     cardElt = (
       <>
       <br />
-      <NewCardElement />
+      <NewCardElement id='stripe-card-form' />
       <br />
       </>
     )
@@ -220,8 +219,6 @@ const Billing: FC<BillingProps> = ({
         </Button>
       }
     />
-
-
   ) : (
       <Button onClick={toggleUpdatingNumDapps}
         size='small'
@@ -234,12 +231,10 @@ const Billing: FC<BillingProps> = ({
   /////////////////////////////////
   // SUBSCRIPTION DETAIL PRESENTATION LOGIC
   /////////////////////////////////
-  let nextBillingDate, subscriptionStatus= 'Loading...';
+  let subscriptionStatus= 'Loading...';
   let invoiceTitle = 'Upcoming Invoice';
   if (subscription) {
-    // Format is like 'January 1st, 2019', API comes in seconds
     if (['FAILED', 'LAPSED'].includes(paymentStatus)) invoiceTitle = 'Failed Invoice';
-    nextBillingDate = moment(subscription.current_period_end * 1000).format('MMMM Do, YYYY');
     if (subscription.status === 'trialing') {
       subscriptionStatus = 'Trial';
     } else {
@@ -247,7 +242,6 @@ const Billing: FC<BillingProps> = ({
     }
   } else if (!loadingData && !hasStripe) {
     subscriptionStatus = 'N/A'
-    nextBillingDate = 'N/A'
   }
 
   return (
@@ -280,13 +274,16 @@ const Billing: FC<BillingProps> = ({
         </EasyInputGroup>
         </div>
       } right={
-        <EasyInputGroup title='Credit Card'>
-          <div className='col-sm-12 col-md-6 col-lg-4'>
+        <div className='marginBottom11' style={{
+          marginBottom:'22px', width:'100%'
+        }}>
+          <InputTitle color="gray">Credit Card</InputTitle>
+          <div className='marginTop2 marginBottom3'>
             {cardElt}
-            <br />
+              <br />
             {updateCardBtns}
           </div>
-        </EasyInputGroup>
+        </div>
       } />
       <EasyInputGroup title={invoiceTitle}>
         <InvoiceTable invoice={invoice} loadingData={loadingData} />
