@@ -59,12 +59,12 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
   ///////////////////////////
   // GET DAPP LIST LOGIC
   ///////////////////////////
-  const [listResponse, sendListRequest] = useResource(API.private.list());
+  const [listResponse, requestList] = useResource(API.private.list());
   async function makeListRequest() {
     try {
       const refreshedAPI = await API.refreshAuthorization();
       if (refreshedAPI === API) {
-        sendListRequest();
+        requestList();
       } else {
         Alert.info('We just refreshed your authorization to our server, one moment...');
       }
@@ -101,12 +101,12 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
   ///////////////////////////
   // DAPP DELETE LOGIC
   ///////////////////////////
-  const [deleteResponse, sendDeleteRequest] = useResource(API.private.delete());
-  async function handleDeleteRequest(dappName: string) {
+  const [deleteResponse, requestDelete] = useResource(API.private.delete());
+  async function makeDeleteRequest(dappName: string) {
     try {
       const refreshedAPI = await API.refreshAuthorization();
       if (refreshedAPI === API) {
-        sendDeleteRequest(dappName);
+        requestDelete(dappName);
       } else {
         Alert.info("We just refreshed your authorization to our server, please try that again.", { timeout: 1000 });
       }
@@ -176,7 +176,7 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
           onDeleteDappBot={(e, inputs: string) => {
             const dappName = inputs;
             if (dappName) {
-              handleDeleteRequest(dappName);
+              makeDeleteRequest(dappName);
               navigate(`/home`);
             }
           }}

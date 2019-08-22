@@ -57,13 +57,13 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({ user, setUser
   ///////////////////////////
   // GET DAPP LIST LOGIC
   ///////////////////////////
-  const [listResponse, sendListRequest] = useResource(API.private.list());
+  const [listResponse, requestList] = useResource(API.private.list());
   const [availableNumOfDapps, markAvailableNumOfDapps] = useState(-1)
   async function makeListRequest() {
     try {
       const refreshedAPI = await API.refreshAuthorization();
       if (refreshedAPI === API) {
-        sendListRequest();
+        requestList();
       } else {
         Alert.info("We just refreshed your authorization to our server, one moment...")
       }
@@ -102,13 +102,13 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({ user, setUser
   ///////////////////////////
   // DAPP CREATE LOGIC
   ///////////////////////////
-  const [createResponse, sendCreateRequest] = useResource(API.private.create());
+  const [createResponse, requestCreate] = useResource(API.private.create());
   async function makeCreateRequest(dappArgs: DappCreateArgs) {
     const dappData: DappData = omit(dappArgs, ['DappName'])
     const refreshedAPI = await API.refreshAuthorization();
     if (refreshedAPI === API) {
       Alert.info(`Making request...`)
-      sendCreateRequest(dappData, dappArgs.DappName)
+      requestCreate(dappData, dappArgs.DappName)
     } else {
       Alert.info("We just refreshed your authorization to our server, please try that again.", { timeout: 1000 });
     }

@@ -30,20 +30,6 @@ export interface SettingState {
   activeTab: string;
 }
 
-// TODO: This page is going to contain the full
-// Settings content for now, both the email and
-// billing info.  As such, this code related to
-// switching tabs is dead for now.  Keeping it
-// as a reminder.
-//
-// const [activeTab, setActiveTab] = useState('Profile');
-// const [activeIndex, setActiveIndex] = useState(0);
-// function handleChange({ activeTabIndex, event }:any){
-//   event.preventDefault();
-//   setActiveTab('Profile');
-//   setActiveIndex(activeTabIndex)
-// }
-
 // Explicitly not exporting raw component because
 // it needs to be run with the injectStripe HOC
 // on the default object.
@@ -51,16 +37,43 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   const { API, user, setUser } = props;
 
   ///////////////////////////////////
+  // TRIGGER DATA FETCHES
+  ///////////////////////////////////
+  useEffect(function fetchOnStartAndAPI(){
+    // Note that by making this effect depend on the API
+    // object, we will automatically refetch whenever the
+    // Authorization changes (i.e. produces a new API instance).
+    //
+    // That is why handleListResponse() & handleStripeResponse
+    // don't need to do anything when the API is stale; they will
+    // get called again once it is fresh.
+    makeListRequest()
+    makeStripeRequest();
+  }, [API]);
+
+  ///////////////////////////////////
   // FETCHING USER'S STRIPE DATA
   ///////////////////////////////////
-  const [stripeData, fetchStripeData] = useResource(API.payment.getUserStripeData(), []);
+  const [stripeResponse, requestStripe] = useResource(API.payment.getUserStripeData(), []);
   let [hasStripe, setHasStripe] = useState(false);
   let [name, setName] = useState('Loading...');
   let [source, setSource] = useState(null as XOR<ICard, null>);
   let [subscription, setSubscription] = useState(null as XOR<subscriptions.ISubscription, null>);
   let [invoice, setInvoice] = useState(null as XOR<Invoice, null>);
+  async function makeStripeRequest(){
+    try {
+      const refreshedAPI = await API.refreshAuthorization();
+      if (refreshedAPI === API) {
+        requestStripe();
+      } else {
+        Alert.info("We just refreshed your authorization to our server, one moment...", { timeout : 1000 });
+      }
+    } catch (err) {
+      Alert.error(`Error fetching Stripe data : ${getErrMsg(err)}`)
+    }
+  }
   useEffect(function handleStripeDataLoad() {
-    let { data, error } = stripeData;
+    let { data, error } = stripeResponse;
     if (error) {
       console.log('error fetching Stripe data: ', error);
       Alert.error(`Error fetching your subscription data: ${getErrMsg(error)}`)
@@ -83,42 +96,32 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
         User: userData.user
       });
     }
-  }, [stripeData]);
+  }, [stripeResponse]);
 
 
   ///////////////////////////////////
   // FETCHING USER'S DAPP COUNT
   ///////////////////////////////////
-  const [listResponse, sendListRequest] = useResource(API.private.list());
+  const [listResponse, requestList] = useResource(API.private.list());
   const [usedNumDapps, markUsedNumOfDapps] = useState(-1)
-  const handleFetchList = async () => {
+  const makeListRequest = async () => {
     try {
       const refreshedAPI = await API.refreshAuthorization();
       if (refreshedAPI === API) {
-        sendListRequest();
+        requestList();
       } else {
         Alert.info("We just refreshed your authorization to our server, one moment...", { timeout : 1000 });
       }
     } catch (err) {
-      Alert.error(`Error fetching dapp list : ${err.message || err.toString()}`)
+      Alert.error(`Error requesting your dapp count : ${getErrMsg(err)}`)
     }
   }
-  useEffect(function getListOnStartAndAPI(){
-    // Note that by making this effect depend on the API
-    // object, we will automatically refetch whenever the
-    // Authorization changes (i.e. produces a new API instance).
-    //
-    // That is why handleFetchList() doesn't need to do
-    // anything when the API is stale; it will get called
-    // again once it is fresh.
-    handleFetchList()
-  }, [API]);
   useEffect(function handleListResponse() {
     const { isLoading, error, data } = listResponse;
     if (error) {
       switch (error.code) {
         default: {
-          Alert.error(`Error loading your current dapp count : ${getErrMsg(error)}`);
+          Alert.error(`Error from getting your dapp count : ${getErrMsg(error)}`);
         }
       }
     }
@@ -131,8 +134,8 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   ///////////////////////////////////
   // UPDATING USER'S DAPP ALLOTMENT
   ///////////////////////////////////
-  const [updateSubscriptionResponse, sendUpdateSubscriptionRequest] = useResource(API.payment.updatePlanCounts())
-  async function sendUpdateDapps(numDapps: number) {
+  const [updateDappsResponse, requestUpdateDapps] = useResource(API.payment.updatePlanCounts())
+  async function makeUpdateDappsRequest(numDapps: number) {
     let plans: StripePlans = {
       standard: numDapps,
       professional: parseInt(user.User.UserAttributes['custom:professional_limit']),
@@ -143,54 +146,54 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     }
     const refreshedAPI = await API.refreshAuthorization();
     if (refreshedAPI === API) {
-      sendUpdateSubscriptionRequest(request)
+      requestUpdateDapps(request)
     } else {
       Alert.info("We just refreshed your authorization to our server, please try that again.");
     }
   }
-  useEffect(function handleUpdateSubscription() {
-    let { isLoading, data, error } = updateSubscriptionResponse;
+  useEffect(function handleUpdateDappsResponse() {
+    let { isLoading, data, error } = updateDappsResponse;
     if (error) {
       console.log('error: ',error);
       Alert.error(`Error updating your subscription: ${getErrMsg(error)}`)
     } else if (data && !isLoading) {
       API.refreshUser()
-      fetchStripeData()
+      requestStripe()
     }
-  }, [updateSubscriptionResponse])
+  }, [updateDappsResponse])
 
 
   ///////////////////////////////////
   // UPDATING USER'S PAYMENT
   ///////////////////////////////////
-  const [updatePaymentResponse, updatePaymentRequest] = useResource(API.payment.updatePaymentMethod());
-  async function sendUpdatePayment(token: stripe.Token) {
+  const [updatePaymentResponse, requestUpdatePayment] = useResource(API.payment.updatePaymentMethod());
+  async function makeUpdatePaymentRequest(token: stripe.Token) {
     const refreshedAPI = await API.refreshAuthorization();
     if (refreshedAPI === API) {
-      updatePaymentRequest({ token: token.id });
+      requestUpdatePayment({ token: token.id });
     } else {
       Alert.info("We just refreshed your authorization to our server, please try that again.");
     }
   }
-  useEffect(function handleUpdatedPayment() {
+  useEffect(function handleUpdatedPaymentResponse() {
     let { isLoading, data, error } = updatePaymentResponse;
     if (error) {
       Alert.error(`Error updating your card: ${getErrMsg(error)}`)
     } else if (data && !isLoading) {
-      fetchStripeData();
+      requestStripe();
       sleep(5).then(() => {
         // Payment status may take a few seconds to propagate,
         // this sleep gives the infra a moment to do its magic.
         API.refreshUser();
       })
     }
-  }, [updatePaymentResponse, fetchStripeData]);
+  }, [updatePaymentResponse, requestStripe]);
 
   ///////////////////////////////////
   // STARTUP EFFECT
   ///////////////////////////////////
   useEffect(() => {
-    handleFetchList()
+    makeListRequest()
   }, [API]);
 
   let paymentStatus = user.User.UserAttributes['custom:payment_status'] || 'ACTIVE';
@@ -209,10 +212,10 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
               invoice={invoice}
               paymentStatus={paymentStatus}
               hasStripe={hasStripe}
-              loadingData={stripeData.isLoading}
-              submitWithToken={sendUpdatePayment}
+              loadingData={stripeResponse.isLoading}
+              submitWithToken={makeUpdatePaymentRequest}
               totalNumDapps={parseInt(user.User.UserAttributes['custom:standard_limit'])}
-              submitUpdateDapps={sendUpdateDapps}
+              submitUpdateDapps={makeUpdateDappsRequest}
               usedNumDapps={usedNumDapps}
             />
           </LayoutContainer>

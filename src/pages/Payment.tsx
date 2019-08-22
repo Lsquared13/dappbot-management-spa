@@ -88,25 +88,20 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
   const handleCreateUser= async () => {
     markCreateUserSent(true);
     setErr('');
-
     if (isRequired && stripe) {
       try {
         let {token} = await stripe.createToken({'name': name});
         if (token && token.id) { 
           creditCardSignupArgs.token = token.id
           sendCreateUserRequest(creditCardSignupArgs) }
-      }
-      catch(err){
-        Alert.error(`Error sending new user request : ${err.message || err.toString()}`)   
+      } catch (err) {
+        let msg = `Error sending new user request : ${getErrMsg(err)}`;
+        setErr(msg);
+        Alert.error(msg);
       }
     } 
     else {
-      try {
-        sendCreateUserRequest(noCreditCardSignupArgs);
-      } 
-      catch (err) {
-        Alert.error(`Error sending new user request : ${err.message || err.toString()}`)
-      }
+      sendCreateUserRequest(noCreditCardSignupArgs);
     }
 
  
