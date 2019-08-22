@@ -13,7 +13,7 @@ import { useLocalStorage } from './services/localStorage';
 import APIFactory from './services/api';
 import { bodyHas } from './services/util';
 import { SettingsContainerBase } from "./apps/SettingsContainerBase";
-import {  Welcome, Login, Privacy, PaymentPage } from './pages';
+import {  Welcome, Login, Privacy, PaymentPage, Terms } from './pages';
 import { DashboardBase } from './apps/DashboardBase';
 import { NewDappFormBase } from './apps';
 import { emptyUserResponse, UserResponseData } from './types';
@@ -59,6 +59,7 @@ const App: FC = () => {
               <Login path='login' {...appData} setUser={safeSetUser} />
               <PaymentPage path='signup' {...appData}/>
               <Privacy path='privacy'  />
+              <Terms path='terms'  />
             </PageBase>
             <HomeBase path="/home" logOut={logOut} {...appData}>
               <DashboardBase path="/*"  {...appData}/>
