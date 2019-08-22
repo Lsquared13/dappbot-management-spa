@@ -39,10 +39,10 @@ interface EvenBlocksProps {
 const EvenBlocks:FC<EvenBlocksProps> = ({ left, right }) => {
   return (
     <Box display='flex'>
-      <Box display='flex' flex='grow' paddingX={1}>
+      <Box display='flex' flex='grow' alignItems='center' paddingX={1}>
         { left }
       </Box>
-      <Box display='flex' flex='grow' paddingX={1}>
+      <Box display='flex' flex='grow' alignItems='center' paddingX={1}>
         { right }
       </Box>
     </Box>
