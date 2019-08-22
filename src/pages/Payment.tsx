@@ -7,7 +7,6 @@ import EmailImage from "../assets/images/CheckEmail.svg";
 
 
 import { CardElement, injectStripe, ReactStripeElements } from 'react-stripe-elements';
-import request from 'request-promise-native';
 import validate from 'validator';
 import API from '../services/api';
 import Alert from 'react-s-alert';
@@ -16,7 +15,7 @@ import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
 import { ErrorBox } from '../components';
 import { useResource } from 'react-request-hook';
-import { UserCreateArgs } from '../types';
+import { getErrMsg } from '../services/util';
 
 interface PaymentProps extends RouteComponentProps, ReactStripeElements.InjectedStripeProps {
   user?: any
@@ -122,10 +121,10 @@ export const Payment:FC<PaymentProps> = ({user, setUser, API, stripe, requireCre
       setLoading(false);
       console.log(createUserResponse.error)
       switch (createUserResponse.error.code) {
-
         default: {
-          setErr(createUserResponse.error.data.err.message)
-          Alert.error(createUserResponse.error.data.err.message);
+          let msg = `Error creating user : ${getErrMsg(createUserResponse.error)}`;
+          setErr(msg)
+          Alert.error(msg);
         }
       }
 

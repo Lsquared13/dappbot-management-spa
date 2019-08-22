@@ -11,6 +11,7 @@ import API, { StripeUserData, Invoice } from "../services/api";
 import { useResource } from "react-request-hook";
 import { ICard, subscriptions } from "stripe";
 import { XOR } from "ts-xor";
+import { getErrMsg } from "../services/util";
 
 function sleep(seconds: number) {
   return new Promise((resolve) => {
@@ -62,7 +63,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     let { data, error } = stripeData;
     if (error) {
       console.log('error fetching Stripe data: ', error);
-      Alert.error(`Error fetching your subscription data: ${error.data.err.message}`)
+      Alert.error(`Error fetching your subscription data: ${getErrMsg(error)}`)
     }
     if (data) {
       const userData: StripeUserData = data.data;
@@ -117,7 +118,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     if (error) {
       switch (error.code) {
         default: {
-          Alert.error(error.data.err.message);
+          Alert.error(`Error loading your current dapp count : ${getErrMsg(error)}`);
         }
       }
     }
@@ -151,7 +152,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     let { isLoading, data, error } = updateSubscriptionResponse;
     if (error) {
       console.log('error: ',error);
-      Alert.error(`Error updating your subscription: ${error.data.err.message}`)
+      Alert.error(`Error updating your subscription: ${getErrMsg(error)}`)
     } else if (data && !isLoading) {
       API.refreshUser()
       fetchStripeData()
@@ -174,7 +175,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   useEffect(function handleUpdatedPayment() {
     let { isLoading, data, error } = updatePaymentResponse;
     if (error) {
-      Alert.error(`Error updating your card: ${error.data.err.message}`)
+      Alert.error(`Error updating your card: ${getErrMsg(error)}`)
     } else if (data && !isLoading) {
       fetchStripeData();
       sleep(5).then(() => {

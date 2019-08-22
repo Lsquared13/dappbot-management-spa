@@ -56,11 +56,11 @@ const SETTING_OPTIONS = [
 
 export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
 
-  //----- LIST REQUEST & HANDLING -----//
+  ///////////////////////////
+  // GET DAPP LIST LOGIC
+  ///////////////////////////
   const [listResponse, sendListRequest] = useResource(API.private.list());
-  const [fetchListSent, markFetchListSent] = useState(false);
   async function makeListRequest() {
-    markFetchListSent(true);
     try {
       const refreshedAPI = await API.refreshAuthorization();
       if (refreshedAPI === API) {
@@ -82,62 +82,53 @@ export const DashboardBase: React.SFC<Props> = ({ setUser, API, ...props }) => {
     // again once it is fresh.
     makeListRequest()
   }, [API]);
-
   useEffect(function handleListResponse() {
-    if (!fetchListSent) return
-    const { isLoading, error, data } = listResponse;
+    const { isLoading, error } = listResponse;
     if (isLoading) {
       Alert.info("Fetching Dapp List", { timeout: 750 });
+      return;
     }
     else if (error) {
-      markFetchListSent(false)
       switch (error.code) {
         default: {
-          console.error('Error fetching Dapp List: ',error)
+          console.error('Error fetching Dapp List: ', error)
           Alert.error(`Error fetching your dapp list: ${getErrMsg(error)}`);
         }
       }
-    } 
-    else if(data) {
-      markFetchListSent(false);
     }
   }, [listResponse]);
 
-  //----- DELETE REQUEST & HANDLING -----//
+  ///////////////////////////
+  // DAPP DELETE LOGIC
+  ///////////////////////////
   const [deleteResponse, sendDeleteRequest] = useResource(API.private.delete());
-  const [deleteSent, markDeleteSent] = useState(false);
   async function handleDeleteRequest(dappName: string) {
-    markDeleteSent(true);
     try {
       const refreshedAPI = await API.refreshAuthorization();
       if (refreshedAPI === API) {
         sendDeleteRequest(dappName);
       } else {
-        markDeleteSent(false);
-        Alert.info("We just refreshed your authorization to our server, please try that again.", { timeout : 1000 });
+        Alert.info("We just refreshed your authorization to our server, please try that again.", { timeout: 1000 });
       }
     } catch (err) {
       Alert.error(`Error sending delete : ${getErrMsg(err)}`)
     }
   }
-  useEffect(function handleDeleteResponse(){
-    if (!deleteSent) return;
+  useEffect(function handleDeleteResponse() {
     const { isLoading, error, data } = deleteResponse;
     if (isLoading) {
       Alert.info(`Deleting dapp ...`, { timeout: 500 });
+      return;
     }
     else if (error) {
-      markDeleteSent(false)
-      markFetchListSent(false)
       switch (error.code) {
         default: {
-          console.error("Error on deleting dapp: ",error);
+          console.error("Error on deleting dapp: ", error);
           Alert.error(`Error deleting your dapp : ${getErrMsg(error)}`);
         }
       }
-    } 
+    }
     else if (data) {
-      markDeleteSent(false);
       Alert.success(`Your dapp was successfully deleted!`, { timeout: 500 });
       makeListRequest()
       navigate(`/home`);
