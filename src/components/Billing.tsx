@@ -190,7 +190,8 @@ const Billing: FC<BillingProps> = ({
       })
     }
   }
-  let updateDappsElement = <Text>Loading...</Text>
+  let updateDappsElement = <Text>Loading...</Text>;
+  let noUpdatesAllowed = !source;
   if (updatingNumDapps) {
     updateDappsElement =
       <NumberField name='numDapps'
@@ -199,9 +200,13 @@ const Billing: FC<BillingProps> = ({
         size={Uints.size32}
         onChange={setNumDapps} />
   } else {
-    updateDappsElement = <Text> {totalNumDapps} </Text>
+    updateDappsElement = (
+      <Text> 
+        {totalNumDapps} 
+        {!loadingData && noUpdatesAllowed && ' - Please plug in payment information to buy more dapp slots.'}
+      </Text>
+    )
   }
-  let noUpdatesAllowed = !source;
   let updateDappsBtn = updatingNumDapps ? (
     <EvenBlocks
       left={
@@ -263,13 +268,6 @@ const Billing: FC<BillingProps> = ({
               {updateDappsElement}
               <br />
               {updateDappsBtn}
-              {
-                noUpdatesAllowed && !loadingData ? (
-                  <Text>
-                    Please plug in payment information to buy more dapp slots.
-            </Text>
-                ) : null
-              }
             </>
           </EasyInputGroup>
         </div>
