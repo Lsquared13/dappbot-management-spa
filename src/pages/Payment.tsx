@@ -242,7 +242,7 @@ export const Payment:FC<PaymentProps> = ({user, API, stripe, requireCreditCard})
                           }}
                         />
                       </div>
-                      <label className="text-left mr-2 pl-2" htmlFor="agreeTerms">I have read and agreed to the <a target="_blank" href="/privacy">DappBot Privacy Policy</a>.</label>
+                      <label className="text-left mr-2 pl-2" htmlFor="agreeTerms">I have read and agreed to the DappBot <a target="_blank" href="/privacy">Privacy Policy</a> and <a target="_blank" href="/terms">Terms of Use</a>.</label>
                     </div>	                 
                   </div>
                 </div>
