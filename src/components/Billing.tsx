@@ -258,7 +258,7 @@ const Billing: FC<BillingProps> = ({
             {subscriptionStatus}
           </Text>
         </EasyInputGroup>
-        <EasyInputGroup title='Max Number of Dapps'>
+        <EasyInputGroup title='Standard Dapp Slots'>
           <>
             {updateDappsElement}
             <br />
