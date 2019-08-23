@@ -3,7 +3,6 @@ import {
   Operations, MessageResponse, SignInResponse,
   RequestFactory, ResourceFactory
 } from './types'
-import { Resource } from 'react-request-hook';
 
 interface RequestArgs {
   url: string,
@@ -58,7 +57,7 @@ export class AuthAPI {
   
   newPassword(){
     return (args:NewPasswordArgs) => {
-      return this.resourceFactory<NewPasswordArgs, UserResponseData>(Operations.login, "auth")(args, 'login');
+      return this.resourceFactory<NewPasswordArgs, SignInResponse>(Operations.login, "auth")(args, 'login');
     }
   }
   

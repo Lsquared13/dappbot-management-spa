@@ -5,10 +5,9 @@ import MarketingContent from '../components/froala/MarketingContent';
 
 interface WelcomeProps extends RouteComponentProps {
   user: any
-  setUser: (newUser:any)=>void
 }
 
-export const Welcome:FC<WelcomeProps> = ({user, setUser, navigate}) => {
+export const Welcome:FC<WelcomeProps> = ({user, navigate}) => {
   useEffect(()=>{
     if (navigate && user.signInUserSession){
       navigate('/home');

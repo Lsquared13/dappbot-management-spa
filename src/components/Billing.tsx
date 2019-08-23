@@ -11,7 +11,6 @@ import moment from 'moment';
 import Alert from 'react-s-alert';
 import { InputGroup, InputTitle, InputContainer } from '../layout';
 import CreditCard from './CreditCard';
-import 'react-credit-cards/lib/styles.scss';
 import CustomConfirmFactory from './CustomConfirmAlert';
 import { NumberField, Uints } from '../components/fields';
 import { Box, Text, Button } from './ui';
@@ -26,7 +25,7 @@ const EasyInputGroup: FC<EasyInputGroupProps> = ({ title, children }) => (
   <InputGroup>
     <InputTitle color="gray">{title}</InputTitle>
     <InputContainer>
-      <Box column={12} mdColumn={12}>
+      <Box column={12} mdColumn={12} width='100%'>
         {children}
       </Box>
     </InputContainer>
@@ -34,17 +33,17 @@ const EasyInputGroup: FC<EasyInputGroupProps> = ({ title, children }) => (
 )
 
 interface EvenBlocksProps {
-  left : ReactElement
-  right : ReactElement
+  left: ReactElement
+  right: ReactElement
 }
-const EvenBlocks:FC<EvenBlocksProps> = ({ left, right }) => {
+const EvenBlocks: FC<EvenBlocksProps> = ({ left, right }) => {
   return (
     <Box display='flex'>
-      <Box display='flex' flex='grow' paddingX={1}>
-        { left }
+      <Box display='flex' flex='grow' alignItems='center' paddingX={1}>
+        {left}
       </Box>
-      <Box display='flex' flex='grow' paddingX={1}>
-        { right }
+      <Box display='flex' flex='grow' alignItems='center' paddingX={1}>
+        {right}
       </Box>
     </Box>
   )
@@ -56,6 +55,7 @@ export interface BillingProps extends RSE.InjectedStripeProps {
   subscription: XOR<subscriptions.ISubscription, null>
   invoice: XOR<Invoice, null>
   name: string
+  email: string
   submitWithToken: (token: stripe.Token) => Promise<any>
   loadingData: boolean
   totalNumDapps: number
@@ -67,7 +67,7 @@ export interface BillingProps extends RSE.InjectedStripeProps {
 const Billing: FC<BillingProps> = ({
   source, subscription, stripe, name, submitWithToken, paymentStatus,
   loadingData, hasStripe, totalNumDapps, submitUpdateDapps, usedNumDapps,
-  invoice
+  invoice, email
 }) => {
 
   /////////////////////////////////
@@ -92,9 +92,9 @@ const Billing: FC<BillingProps> = ({
   if (updatingCard) {
     cardElt = (
       <>
-      <br />
-      <NewCardElement />
-      <br />
+        <br />
+        <NewCardElement id='stripe-card-form' />
+        <br />
       </>
     )
   } else if (source) {
@@ -148,6 +148,23 @@ const Billing: FC<BillingProps> = ({
       toggleUpdatingNumDapps();
       return;
     }
+    if (updateNumber === 0) {
+      confirmAlert({
+        customUI: CustomConfirmFactory({
+          title: 'Cancel Subscription',
+          message: [
+            'If you do not want any dapp slots, we will cancel your subscription.',
+            'All of your dapps will be deleted, letting other people claim their names.  You will still be able to log in and resume your subscription.',
+            'Would you like to cancel?'
+          ],
+          onConfirm: () => {
+            // TODO: Implement cancellation handling on the payment-lambda
+            Alert.info('Account cancellation is under construction right now; please make a support ticket and we can fully cancel your subscription.', { timeout: 15000 })
+          }
+        })
+      })
+      return;
+    }
     if (updateNumber < usedNumDapps) {
       Alert.error(`You cannot subscribe to fewer dapps than you currently have.  If you would like to subscribe to ${updateNumber} dapps, please delete ${usedNumDapps - updateNumber} of your existing dapps.`)
       return;
@@ -173,7 +190,8 @@ const Billing: FC<BillingProps> = ({
       })
     }
   }
-  let updateDappsElement = <Text>Loading...</Text>
+  let updateDappsElement = <Text className='marginBottom1'>Loading...</Text>;
+  let noUpdatesAllowed = !source;
   if (updatingNumDapps) {
     updateDappsElement =
       <NumberField name='numDapps'
@@ -182,9 +200,13 @@ const Billing: FC<BillingProps> = ({
         size={Uints.size32}
         onChange={setNumDapps} />
   } else {
-    updateDappsElement = <Text> {totalNumDapps} </Text>
+    updateDappsElement = (
+      <Text className='marginBottom1'>
+        {totalNumDapps} 
+        {!loadingData && noUpdatesAllowed && ' - Please plug in payment information to buy more dapp slots.'}
+      </Text>
+    )
   }
-  let noUpdatesAllowed = !source;
   let updateDappsBtn = updatingNumDapps ? (
     <EvenBlocks
       left={
@@ -195,15 +217,13 @@ const Billing: FC<BillingProps> = ({
         </Button>
       }
       right={
-        <Button onClick={submitDappSubscriptionUpdate} 
+        <Button onClick={submitDappSubscriptionUpdate}
           theme='outlineBlue'
           block>
           Submit
         </Button>
       }
     />
-
-
   ) : (
       <Button onClick={toggleUpdatingNumDapps}
         size='small'
@@ -216,12 +236,10 @@ const Billing: FC<BillingProps> = ({
   /////////////////////////////////
   // SUBSCRIPTION DETAIL PRESENTATION LOGIC
   /////////////////////////////////
-  let nextBillingDate, subscriptionStatus= 'Loading...';
+  let subscriptionStatus = 'Loading...';
   let invoiceTitle = 'Upcoming Invoice';
   if (subscription) {
-    // Format is like 'January 1st, 2019', API comes in seconds
     if (['FAILED', 'LAPSED'].includes(paymentStatus)) invoiceTitle = 'Failed Invoice';
-    nextBillingDate = moment(subscription.current_period_end * 1000).format('MMMM Do, YYYY');
     if (subscription.status === 'trialing') {
       subscriptionStatus = 'Trial';
     } else {
@@ -229,46 +247,39 @@ const Billing: FC<BillingProps> = ({
     }
   } else if (!loadingData && !hasStripe) {
     subscriptionStatus = 'N/A'
-    nextBillingDate = 'N/A'
   }
 
   return (
     <>
-      <EvenBlocks left={
-        <EasyInputGroup title='Max Number of Dapps'>
-          <>
-            {updateDappsElement}
-            {updateDappsBtn}
-            {
-              noUpdatesAllowed && !loadingData ? (
-                <Text>
-                  Please plug in payment information to buy more dapp slots.
+      <div className='row'>
+        <div className='col-sm-12 col-md-6'>
+          <EasyInputGroup title='Email'>
+            <Text>
+              {email}
             </Text>
-              ) : null
-            }
-          </>
-        </EasyInputGroup>
-      } right={
-        <EasyInputGroup title='Credit Card'>
-          <>
-            {cardElt}
+          </EasyInputGroup>
+          <EasyInputGroup title='Subscription Status'>
+            <Text>
+              {subscriptionStatus}
+            </Text>
+          </EasyInputGroup>
+          <EasyInputGroup title='Standard Dapp Slots'>
+            <>
+              {updateDappsElement}
+              {updateDappsBtn}
+            </>
+          </EasyInputGroup>
+        </div>
+        <div className='col-sm-12 col-md-6 my-auto'>
+          <InputTitle color="gray">Credit Card</InputTitle>
+          <div className='marginTop2 marginBottom3'>
+            <div className='marginBottom2'>
+              {cardElt}
+            </div>
             {updateCardBtns}
-          </>
-        </EasyInputGroup>
-      } />
-      <EvenBlocks left={
-        <EasyInputGroup title='Subscription Status'>
-          <Text>
-            {subscriptionStatus}
-          </Text>
-        </EasyInputGroup>
-      } right={
-        <EasyInputGroup title='Next Billing Date'>
-          <Text>
-            {nextBillingDate}
-          </Text>
-        </EasyInputGroup>
-      } />
+          </div>
+        </div>
+      </div>
       <EasyInputGroup title={invoiceTitle}>
         <InvoiceTable invoice={invoice} loadingData={loadingData} />
       </EasyInputGroup>

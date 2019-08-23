@@ -17,11 +17,12 @@ const Footer = () => (
             <li className="nav-item">
               <Link to='/privacy' className='nav-link'>Privacy Policy</Link>
             </li>
-
             <li className="nav-item">
-              <a className="nav-link" target="_blank" href="https://dappbot.drift.help/category/getting-started/">Support</a>
+              <Link to='/terms' className='nav-link'>Terms of Use</Link>
             </li>
-
+            <li className="nav-item">
+              <a className="nav-link" target="_blank" href="https://support.eximchain.com/hc/en-us/requests/new" rel="noopener noreferrer">Support</a>
+            </li>
           </ul>
         </div>
         <div className="col-12 col-md-4 mt-4 mt-md-0 text-md-right">

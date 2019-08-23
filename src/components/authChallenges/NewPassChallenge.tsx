@@ -1,13 +1,14 @@
 import React, { FC, useState, useEffect } from 'react';
-import { Button } from '../components/ui';
-import { UserResponseData, ChallengeData, ChallengeType } from '../types'
-import { StringField } from '../components/fields';
-import API, { challengeDataFactory } from '../services/api';
-import {passwordChecker, NewPasswordArgs} from '../services/api/auth';
+import { Button } from '../ui';
+import { UserResponseData, ChallengeData, ChallengeType } from '../../types'
+import { StringField } from '../fields';
+import API, { challengeDataFactory } from '../../services/api';
+import {passwordChecker, NewPasswordArgs} from '../../services/api/auth';
 import Alert from 'react-s-alert';
 
-import { ErrorBox } from '.';
+import { ErrorBox } from '..';
 import { useResource } from 'react-request-hook';
+import { getErrMsg } from '../../services/util';
 
 
 interface NewPassChallengeProps {
@@ -23,41 +24,32 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
   const [newPass, setNewPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
   const [err, setErr] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [newPassResponse, requestNewPass] = useResource(API.auth.newPassword())
-  //Response Handler
-  const [newPassSent, markNewPassSent] = useState(false)
 
-  const handleNewPassword = async () => {
+  const [newPassResponse, requestNewPass] = useResource(API.auth.newPassword())
+  const makeNewPassRequest = async () => {
     const newPassDetails:NewPasswordArgs = {
       'username': user.User.Username,
       'newPassword': newPass,
       'session': challenge.Session
     }
-    markNewPassSent(true)
     requestNewPass(newPassDetails)
   }
-  
-  useEffect(()=>{
-    if (!newPassSent || newPassResponse.isLoading){
-      return;
-    }
-    if(newPassResponse.error){
-      switch (newPassResponse.error.code) {
+  const { error, data, isLoading } = newPassResponse;
+  useEffect(function handleNewPassResponse(){
+    if(error){
+      switch (error.code) {
         default: {
-          setErr(newPassResponse.error.message)
-          Alert.error(newPassResponse.error.data.err.message);
+          let msg = `Error setting new password : ${getErrMsg(error)}`
+          setErr(msg)
+          Alert.error(msg);
         }
       }
     }
-    let response:any = newPassResponse.data
-    // console.log(response.data)
-    if(response.data.Authorization){
-      const newPassData:UserResponseData = response.data;
-      setUser(newPassData);
+    if(data && data.data && data.data.Authorization){
+      setUser(data.data);
       setChallenge(challengeDataFactory(ChallengeType.Default))
     }
-  }, [newPassSent, newPassResponse])
+  }, [error, data])
 
   return (
     <>
@@ -78,7 +70,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
                       value={newPass}
                       displayName='New Password'
                       fieldType='password'
-                      disabled={loading}
+                      disabled={isLoading}
                       isValid={(val)=>passwordChecker.validate(val)}
                       help="Minimum of 8 characters; include upper and lowercase letters, numbers, and a symbol."
                       errorMsg="Passwords must be at least 8 characters long, including upper and lowercase letters, a number, and a symbol."
@@ -93,19 +85,19 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
                       value={confirmPass}
                       displayName='Confirm New Password'
                       fieldType='password'
-                      disabled={loading}
+                      disabled={isLoading}
                       isValid={(val)=>passwordChecker.validate(val)}
                       help="Must match field above."
                       errorMsg="Make sure this matches the field above."
                       onChange={setConfirmPass}
-                      onPressEnter={handleNewPassword}
+                      onPressEnter={makeNewPassRequest}
                       name='confirmPassword' />
                   </div>
                 </div>
                 <div className="row mt-4">
                   <div className="col">
                     <div style={{textAlign: "left"}}>
-                      <Button onClick={handleNewPassword} disabled={loading}>Submit</Button>
+                      <Button onClick={makeNewPassRequest} disabled={isLoading}>Submit</Button>
                       <ErrorBox errMsg={err}></ErrorBox>
                     </div>
                     {/* <button className="btn btn-primary" type="button">Submit</button> */}

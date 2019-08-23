@@ -24,14 +24,16 @@ const CustomStyles:StylesMap = {
 interface RowData {
   description: string
   amount: number
-  period: string
+  period: string,
+  bold?: boolean
 }
-function Row({ description, amount, period }:RowData, key:number|string) {
+function InvoiceRow({ description, amount, period, bold }:RowData, key?:number|string) {
+  let styles = bold ? CustomStyles.bold : {};
   return (
     <tr key={key}>
-      <td>{description}</td>
-      <td>{period}</td>
-      <td>{formatStripeAmount(amount)}</td>
+      <td style={styles}>{description}</td>
+      <td style={styles}>{period}</td>
+      <td style={styles}>{formatStripeAmount(amount)}</td>
     </tr>
   )
 }
@@ -100,11 +102,12 @@ export const InvoiceTable: FC<InvoiceTableProps> = (props) => {
     // started this billing cycle. Note that this block
     // does not return.
     if (i === 0){
-      changeRows.push(Row({
-        description : `Credit from ${change.prevCount} Standard Dapps on Last Invoice`,
-        amount : change.credit,
-        period : formatStripeRange(period_start, change.timestamp)
-      }, 'initial-credit'))
+      changeRows.push(
+        <InvoiceRow key='initial-credit' 
+          description={`Credit from ${change.prevCount} Standard Dapps on Last Invoice`}
+          period={formatStripeRange(period_start, change.timestamp)}
+          amount={change.credit} />
+      )
     }
 
     // Last change has nothing following it, just use the
@@ -114,11 +117,12 @@ export const InvoiceTable: FC<InvoiceTableProps> = (props) => {
     // we don't want to compare against a "next" change
     // that doesn't exist.
     if (i === changeArray.length - 1){
-      changeRows.push(Row({
-        description : `Rest of Month: ${change.nextCount} Standard Dapps`,
-        period : formatStripeRange(change.timestamp, period_end),
-        amount : change.charge
-      }, 'final-charge'))
+      changeRows.push(
+        <InvoiceRow key='rest-of-month'
+          amount={change.charge}
+          description={`Rest of Month: ${change.nextCount} Standard Dapps`}
+          period={formatStripeRange(change.timestamp, period_end)} />
+      )
       return;
     }
 
@@ -128,13 +132,17 @@ export const InvoiceTable: FC<InvoiceTableProps> = (props) => {
     // the update was so fast as to cause no charge.
     const nextChange = changeArray[i + 1];
     if (change.charge + nextChange.credit > 0) {
-      changeRows.push(Row({
-        description : `${change.nextCount} Standard Dapps for ${stripeRangeLength(change.timestamp, nextChange.timestamp)}`,
-        period : formatStripeRange(change.timestamp, nextChange.timestamp),
-        amount : change.charge + nextChange.credit
-      }, i))
+      changeRows.push(
+        <InvoiceRow key={i}
+          description={`${change.nextCount} Standard Dapps for ${stripeRangeLength(change.timestamp, nextChange.timestamp)}`}
+          period={formatStripeRange(change.timestamp, nextChange.timestamp)}
+          amount={change.charge + nextChange.credit} />
+      )
     }
   })
+  const netChangeValue = changeArray.reduce((total, change) => {
+    return total + change.charge + change.credit;
+  }, 0);
 
   return (
     <table className='table' style={{width:'100%'}}>
@@ -146,22 +154,22 @@ export const InvoiceTable: FC<InvoiceTableProps> = (props) => {
         </tr>
       </thead>
       <tbody>
+        { 
+          changeRows.length > 0 && (
+            <InvoiceRow bold
+              description='This Month'
+              amount={netChangeValue}
+              period={formatStripeRange(period_start, subscriptionLine.period.start)} />
+          )
+         }
         { changeRows }
-        <tr>
-          <td style={CustomStyles.bold}>Next Month: {subscriptionLine.quantity} Standard Dapps</td>
-          <td>{formatStripeRange(subscriptionLine.period.start, subscriptionLine.period.end)}</td>
-          <td>{formatStripeAmount(subscriptionLine.amount)}</td>
-        </tr>
-        <tr>
-          <td style={CustomStyles.bold}>Subtotal Before Taxes &amp; Fees</td>
-          <td></td>
-          <td style={CustomStyles.bold}>{formatStripeAmount(subtotal)}</td>
-        </tr>
-        <tr>
-          <td style={CustomStyles.bold}>Total</td>
-          <td>{formatStripeRange(period_start, period_end)}</td>
-          <td style={CustomStyles.bold}>{formatStripeAmount(total)}</td>
-        </tr>
+        <InvoiceRow bold amount={subscriptionLine.amount} 
+          description={`Next Month: ${subscriptionLine.quantity} Standard Dapps`}
+          period={formatStripeRange(subscriptionLine.period.start, subscriptionLine.period.end)} />
+        <InvoiceRow description='Subtotal Before Taxes &amp; Fees' period='' amount={subtotal} />
+        <InvoiceRow bold description='Total' 
+          period={`Billing on ${moment(subscriptionLine.period.start * 1000).format('MMM D')}`} 
+          amount={total} />
       </tbody>
     </table>
   )
