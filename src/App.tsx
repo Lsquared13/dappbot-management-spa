@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { Router } from '@reach/router';
 import { StripeProvider, Elements } from 'react-stripe-elements';
 import Alert from 'react-s-alert';
@@ -20,7 +20,9 @@ import { emptyUserResponse, UserResponseData } from './types';
 
 
 const App: FC = () => {
-  let [user, setUser] = useLocalStorage('user', emptyUserResponse());
+  const [user, setUser] = useState(emptyUserResponse());
+  const [rememberUser, setRememberUser] = useLocalStorage('saveUser', true);
+  const [savedUser, setSavedUser] = useLocalStorage('user', emptyUserResponse());
 
   // We're seeing errors where the user document gets broken because
   // it's set to null, or something with an invalid shape.  This fxn
@@ -34,6 +36,7 @@ const App: FC = () => {
       bodyHas(newUser.User, Object.keys(sampleResponse.User))
     ) {
       setUser(newUser)
+      if (rememberUser) setSavedUser(newUser);
     } else {
       console.error("Attempted to setUser to the following broken value: ",newUser);
       Alert.error("Just attempted to set an invalid user value, check console for more information.");
@@ -41,8 +44,14 @@ const App: FC = () => {
   }
   const API = new APIFactory({user, setUser});
 
+  // Runs at startup, refreshing user in memory with the
+  // value available from local storage.
+  useEffect(function refreshUserFromStorage(){
+    setUser(savedUser);
+  }, []);
+
   function logOut(){
-    setUser(emptyUserResponse());
+    safeSetUser(emptyUserResponse());
   }
 
   let appData = { 
@@ -56,7 +65,10 @@ const App: FC = () => {
           <Router>
             <PageBase path='/' {...appData} >
               <Welcome default {...appData} />
-              <Login path='login' {...appData} setUser={safeSetUser} />
+              <Login path='login' {...appData} 
+                rememberUser={rememberUser}
+                setRememberUser={setRememberUser}
+                setUser={safeSetUser} />
               <PaymentPage path='signup' {...appData}/>
               <Privacy path='privacy'  />
               <Terms path='terms'  />
