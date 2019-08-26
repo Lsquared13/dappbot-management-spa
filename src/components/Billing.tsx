@@ -242,6 +242,7 @@ const Billing: FC<BillingProps> = ({
     if (['FAILED', 'LAPSED'].includes(paymentStatus)) invoiceTitle = 'Failed Invoice';
     if (subscription.status === 'trialing') {
       subscriptionStatus = 'Trial';
+      invoiceTitle = 'First Invoice';
     } else {
       subscriptionStatus = paymentStatus.charAt(0).toUpperCase() + paymentStatus.slice(1).toLowerCase();
     }
