@@ -1,8 +1,8 @@
 import React, { FC, useState, useEffect } from 'react';
 import { RouteComponentProps } from '@reach/router';
 import isEmail from 'validator/lib/isEmail';
-import { Button } from '../components/ui';
-import StringField from '../components/fields/StringField';
+import { Button, Checkbox } from '../components/ui';
+import { StringField } from '../components/fields';
 import Alert from 'react-s-alert';
 import { useResource } from 'react-request-hook';
 import {
@@ -19,13 +19,15 @@ import { getErrMsg } from '../services/util';
 
 
 export interface LoginProps extends RouteComponentProps {
+  rememberUser: boolean
+  setRememberUser: (shouldRemember: boolean) => void
   setUser: (user: UserResponseData) => void
   user: UserResponseData,
   API: API
 }
 
 export const Login: FC<LoginProps> = (props) => {
-  const { user, setUser, navigate, API } = props;
+  const { user, setUser, navigate, API, rememberUser, setRememberUser } = props;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -49,7 +51,7 @@ export const Login: FC<LoginProps> = (props) => {
       return;
     }
     else if (error) {
-      console.log('Error signing in : ',error)
+      console.log('Error signing in : ', error)
       switch (error.code) {
         default: {
           Alert.error(`Error signing in : ${getErrMsg(error)}`);
@@ -148,17 +150,30 @@ export const Login: FC<LoginProps> = (props) => {
                 onChange={setPassword}
                 onPressEnter={makeSignInRequest}
                 value={password} />
-              <p className="text-center">Don't have an account yet? <a href="/signup">Sign Up</a></p>
+            </div>
+          </div>
+          <div className='row mt-4'>
+            <div className='col flex d-flex flex-row'>
+              <div className='mt-1'>
+                <Checkbox id='remember-login' checked={rememberUser} onChange={({ checked }) => setRememberUser(checked)} />
+              </div>
+              <label htmlFor='remember-login' className='text-left mr-2 pl-2'>
+                Stay Logged In?  Uncheck if you're using a shared computer.
+              </label>
+            </div>
+          </div>
+          <div className="row mt-4">
+            <div className='col' style={{textAlign: 'left'}}>
+              <p>Don't have an account yet? <a href="/signup">Sign Up</a></p>
             </div>
           </div>
           <div className="row mt-4">
             <div className="col">
-              <div style={{ display: "flex", justifyContent: "space-between"  }}>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <Button disabled={signInResponse.isLoading} onClick={makeSignInRequest}>Log In</Button>
                 <Button onClick={makePassResetRequest} style='standard' theme='outlineBlue'>Forgot Password?</Button>
                 <ErrorBox errMsg={err}></ErrorBox>
               </div>
-              {/* <button className="btn btn-primary" type="button">Submit</button> */}
             </div>
           </div>
         </div>

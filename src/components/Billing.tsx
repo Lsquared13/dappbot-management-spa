@@ -101,7 +101,14 @@ const Billing: FC<BillingProps> = ({
     cardElt = <CreditCard card={source} />
   } else if (!loadingData) {
     if (hasStripe) {
-      cardElt = <Text>No Card on File</Text>
+      if (subscription && subscription.status === 'trialing') {
+        let end = moment(subscription.current_period_end * 1000);
+        let endDate = end.format('dddd, MMM D')
+        let endTime = end.format('h:mm A')
+        cardElt = <Text>No card on file, please add one before your trial ends on <strong>{endDate}</strong> at <strong>{endTime}</strong>.</Text>
+      } else {
+        cardElt = <Text>No Card on File</Text>
+      }
     } else {
       cardElt = <Text>No Stripe Payment Details</Text>
     }
@@ -242,6 +249,7 @@ const Billing: FC<BillingProps> = ({
     if (['FAILED', 'LAPSED'].includes(paymentStatus)) invoiceTitle = 'Failed Invoice';
     if (subscription.status === 'trialing') {
       subscriptionStatus = 'Trial';
+      invoiceTitle = 'First Invoice';
     } else {
       subscriptionStatus = paymentStatus.charAt(0).toUpperCase() + paymentStatus.slice(1).toLowerCase();
     }
