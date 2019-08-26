@@ -11,7 +11,7 @@ import * as serviceWorker from './serviceWorker';
 ReactDOM.render(
   <RequestProvider value={axios}>
     <App />
-    <Alert stack={{limit: 3}} timeout={10000} />
+    <Alert stack={{limit: 3}} timeout={3000} />
   </RequestProvider>, 
   document.getElementById('root')
 );

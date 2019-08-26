@@ -20,7 +20,7 @@ import { getErrMsg } from '../services/util';
 
 export interface LoginProps extends RouteComponentProps {
   rememberUser: boolean
-  setRememberUser: (shouldRemember:boolean) => void
+  setRememberUser: (shouldRemember: boolean) => void
   setUser: (user: UserResponseData) => void
   user: UserResponseData,
   API: API
@@ -51,7 +51,7 @@ export const Login: FC<LoginProps> = (props) => {
       return;
     }
     else if (error) {
-      console.log('Error signing in : ',error)
+      console.log('Error signing in : ', error)
       switch (error.code) {
         default: {
           Alert.error(`Error signing in : ${getErrMsg(error)}`);
@@ -154,27 +154,25 @@ export const Login: FC<LoginProps> = (props) => {
           </div>
           <div className='row mt-4'>
             <div className='col flex d-flex flex-row'>
-                <div className='mt-1'>
+              <div className='mt-1'>
                 <Checkbox id='remember-login' checked={rememberUser} onChange={({ checked }) => setRememberUser(checked)} />
-                </div>
-                <label htmlFor='remember-login' className='text-left mr-2 pl-2'>
-                  Remember You?  Uncheck if you're using a shared computer.
-                </label>
               </div>
+              <label htmlFor='remember-login' className='text-left mr-2 pl-2'>
+                Stay Logged In?  Uncheck if you're using a shared computer.
+              </label>
+            </div>
           </div>
           <div className="row mt-4">
-            <div className="col">
-              <div style={{ display: "flex", justifyContent: "space-between"  }}>
-                <Button disabled={signInResponse.isLoading} onClick={makeSignInRequest}>Log In</Button>
-                <Button onClick={makePassResetRequest} style='standard' theme='outlineBlue'>Forgot Password?</Button>
-                <ErrorBox errMsg={err}></ErrorBox>
-              </div>
+            <div className='col' style={{textAlign: 'left'}}>
+              <p>Don't have an account yet? <a href="/signup">Sign Up</a></p>
             </div>
           </div>
           <div className="row mt-4">
             <div className="col">
-              <div className='mt-4' style={{ display: "flex", justifyContent: "space-between"  }}>
-                <p className="text-center">Don't have an account yet? <a href="/signup">Sign Up</a></p>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <Button disabled={signInResponse.isLoading} onClick={makeSignInRequest}>Log In</Button>
+                <Button onClick={makePassResetRequest} style='standard' theme='outlineBlue'>Forgot Password?</Button>
+                <ErrorBox errMsg={err}></ErrorBox>
               </div>
             </div>
           </div>
