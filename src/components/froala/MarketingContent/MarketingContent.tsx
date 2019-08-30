@@ -18,7 +18,7 @@ const MarketingContent = () => {
             <div className="col-12 col-sm-4">
               <img alt="Hosted Infrastructure" className="fdb-icon" src="Hosted.svg" />
               <h3 className="text-left"><strong>Educational Tool</strong><br/>Spend your time on smart contracts rather than web apps</h3>
-              <p className="text-left">Whether you’re learning about smart contracts or participating a Hackathon want an interface, but don’t want to spend time creating a frnot-end for your Dapps. We can get you a responsive Dapp infterface in five minutes.</p>
+              <p className="text-left">Whether you’re learning about smart contracts or participating a Hackathon want an interface, but don’t want to spend time creating a front-end for your Dapps. We can get you a responsive Dapp infterface in five minutes.</p>
             </div>
             <div className="col-12 col-sm-4 pt-4 pt-sm-0">
               <img alt="Rapid Prototyping" className="fdb-icon" src="Rapid.svg" />
