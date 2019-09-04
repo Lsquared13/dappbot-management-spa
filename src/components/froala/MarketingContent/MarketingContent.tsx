@@ -183,8 +183,8 @@ const MarketingContent = () => {
                 <div className="bg-white pb-5 pt-5 pl-4 pr-4 rounded-left">
                 <h3><strong>Free Trial</strong></h3>
                   <p className="h4 hide">&lt; 10 employees</p>
-                  <p className="h1 mt-5">$0 <span className="lead"> 1 Dapp for 14 days</span></p>
-                  <p>Far far away, behind the word mountains, far from the countries.</p>
+                  <p className="h1 mt-5">$0 <span className="lead"> 1 Dapp for 14 Days</span></p>
+                  <p>Create Dapps with only a smart contract ABI. No coding required.</p>
                   <hr />
                   <p><em>Only 1 Dapp</em></p>
                   <p><em>Free hosting</em></p>
@@ -197,8 +197,8 @@ const MarketingContent = () => {
                 <div className="pb-5 pt-5 pl-4 pr-4">
                 <h3><strong>Standard</strong></h3>
                   <p className="h4 hide">10-100 employees</p>
-                  <p className="h1 mt-5">$10 <span className="lead">/ Dapp / month</span></p>
-                  <p>And if she hasn’t been rewritten, then they are still using her.</p>
+                  <p className="h1 mt-5">$10 <span className="lead"> Dapp / Month</span></p>
+                  <p>Create unlimited Dapps with only a smart contract ABI. No coding required.</p>
                   <hr />
                   <p><em>Unlimited Dapps</em></p>
                   <p><em>Prorated Subscription</em></p>
@@ -209,15 +209,15 @@ const MarketingContent = () => {
               </div>
               <div className="col-12 col-sm-10 col-md-8 ml-auto mr-auto col-lg-4 text-center mt-4 mt-lg-0 shadow">
                 <div className="bg-white pb-5 pt-5 pl-4 pr-4 rounded-right">
-                <h3><strong>Professional</strong></h3>
+                <h3><strong>Enterprise</strong></h3>
                   <p className="h4 hide">&gt;100 employees</p>
-                  <p className="h1 mt-5">$20 <span className="lead">/ Dapp / month</span></p>
-                  <p>Separated they live in Bookmarksgrove right at the coast of the Semantics.</p>
+                  <p className="h1 mt-5">Let's chat</p>
+                  <p>Create unlimited Enterprise Dapps with only a smart contract ABI. No coding required.</p>
                   <hr />
-                  <p><em>All Standard Features</em></p>
+                  <p><em>All <b>Standard</b> Features</em></p>
                   <p><em>Custom Subdomain</em></p>
                   <p className="text-center pt-5">
-                    <a href="#" className="btn btn-outline-dark disabled">Shipping Soon</a>
+                    <a className="btn btn-outline-primary" href="mailto:hello@eximchain?Subject=DappBot%20Enterprise" target="_blank" rel="noopener norefferer">Contact Us</a>
                   </p>
                 </div>
               </div>
