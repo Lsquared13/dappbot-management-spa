@@ -184,7 +184,7 @@ const MarketingContent = () => {
                 <h3><strong>Free Trial</strong></h3>
                   <p className="h4 hide">&lt; 10 employees</p>
                   <p className="h1 mt-5">$0 <span className="lead"> 1 Dapp for 14 Days</span></p>
-                  <p>Create Dapps with only a smart contract ABI. No coding required.</p>
+                  <p>Create a Dapp with only a smart contract ABI. No coding required.</p>
                   <hr />
                   <p><em>Only 1 Dapp</em></p>
                   <p><em>Free hosting</em></p>
