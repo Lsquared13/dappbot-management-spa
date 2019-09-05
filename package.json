@@ -21,7 +21,7 @@
     "@types/react-s-alert": "^1.3.2",
     "@types/react-stripe-elements": "^1.1.10",
     "@types/request-promise-native": "^1.0.16",
-    "@types/stripe": "^6.31.13",
+    "@types/stripe": "6.31.25",
     "@types/styled-components": "^4.1.12",
     "@types/twix": "^0.6.38",
     "@types/validator": "^10.11.0",
