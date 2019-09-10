@@ -75,10 +75,10 @@ export const Payment:FC<PaymentProps> = ({user, API, stripe, requireCreditCard})
 
   const isRequired = requireCreditCard;
   const noCreditCardSignupArgs = { 
-    plans: { standard:10, professional:0, enterprise:0 },
+    plans: { standard:1, professional:0, enterprise:0 },
     email, name, coupon 
   };
-  const creditCardSignupArgs   = { 
+  const creditCardSignupArgs = { 
     plans: { standard:+numDapps, professional:0, enterprise:0 },
     token: "",
     email, name, coupon
