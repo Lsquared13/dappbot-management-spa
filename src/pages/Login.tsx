@@ -13,7 +13,6 @@ import '../components/froala/froala_blocks.min.css';
 import { ErrorBox, NewPassChallenge, PassResetChallenge } from '../components';
 import { getErrMsg } from '../services/util';
 
-
 export interface LoginProps extends RouteComponentProps {
   rememberUser: boolean
   setRememberUser: (shouldRemember: boolean) => void
@@ -105,7 +104,7 @@ export const Login: FC<LoginProps> = (props) => {
   }, [passResetResponse])
 
   useEffect(function handleChallengeResult() {
-    if (challenge.ChallengeName === User.Challenges.Types.Default && user.Authorization !== '' && user.User) {
+    if (challenge.ChallengeName === User.Challenges.Types.Default && API.hasActiveAuth()) {
       navigate && navigate('/home');
     }
   }, [challenge, setChallenge, user, navigate])

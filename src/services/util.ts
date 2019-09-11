@@ -35,3 +35,9 @@ export function getErrMsg(err:any):string {
 export function bodyHas(object:Object, propNames:string[]) {
   return propNames.every(propName => object.hasOwnProperty(propName))
 }
+
+export function sleep(seconds: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, seconds * 1000);
+  })
+}

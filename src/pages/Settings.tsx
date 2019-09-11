@@ -12,13 +12,7 @@ import { Container, Breadcrumb, Title, LayoutContainer } from "../layout";
 import { Box } from "../components/ui";
 import Billing from '../components/Billing';
 import { injectStripe, ReactStripeElements as RSE } from "react-stripe-elements";
-import { getErrMsg } from "../services/util";
-
-function sleep(seconds: number) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, seconds * 1000);
-  })
-}
+import { getErrMsg, sleep } from "../services/util";
 
 export interface SettingsContainerProps extends RouteComponentProps, RSE.InjectedStripeProps {
   user: User.AuthData;
@@ -92,7 +86,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   ///////////////////////////////////
   // FETCHING USER'S DAPP COUNT
   ///////////////////////////////////
-  const [listResponse, requestList] = useResource(API.private.list.resource);
+  const [listResponse, requestList] = useResource(API.private.listDapps.resource);
   const [usedNumDapps, markUsedNumOfDapps] = useState(-1)
   const makeListRequest = async () => {
     if (API.hasActiveAuth()) {

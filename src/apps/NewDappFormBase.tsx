@@ -49,7 +49,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({ user, API, ..
   ///////////////////////////
   // GET DAPP LIST LOGIC
   ///////////////////////////
-  const [listResponse, requestList] = useResource(API.private.list.resource);
+  const [listResponse, requestList] = useResource(API.private.listDapps.resource);
   const [availableNumOfDapps, markAvailableNumOfDapps] = useState(-1)
   async function makeListRequest() {
     if (API.hasActiveAuth()) {
@@ -67,6 +67,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({ user, API, ..
     // anything when the API is stale; it will get called
     // again once it is fresh.
     makeListRequest()
+    return listResponse.cancel
   }, [API]);
   useEffect(function handleListResponse() {
     const { isLoading, error, data } = listResponse;
@@ -89,7 +90,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({ user, API, ..
   ///////////////////////////
   // DAPP CREATE LOGIC
   ///////////////////////////
-  const [createResponse, requestCreate] = useResource(API.private.create.resource);
+  const [createResponse, requestCreate] = useResource(API.private.createDapp.resource);
   async function makeCreateRequest(dappName:string, dappArgs: CreateDappTypes.Args) {
     if (API.hasActiveAuth()) {
       requestCreate(dappName, dappArgs);

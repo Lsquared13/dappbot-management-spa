@@ -38,6 +38,7 @@ const App: FC = () => {
       Alert.error("Just attempted to set an invalid user value, check console for more information.");
     }
   }
+
   const API = new DappbotAPI({
     authData : user as User.AuthData,
     setAuthData : setUser,

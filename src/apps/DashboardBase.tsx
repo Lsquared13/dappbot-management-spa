@@ -7,7 +7,7 @@ import Dapp from '@eximchain/dappbot-types/spec/dapp';
 import { isSuccessResponse } from "@eximchain/dappbot-types/spec/responses";
 
 import { DashboardContainer, DappDetailsContainer, DeleteDappContainer } from "../pages/dashboard";
-import { getErrMsg } from '../services/util';
+import { getErrMsg, sleep } from '../services/util';
 import { DeleteDappState } from "../components";
 import { NotFound } from "../pages";
 
@@ -53,12 +53,17 @@ export const DashboardBase: React.SFC<Props> = ({ API, ...props }) => {
   ///////////////////////////
   // GET DAPP LIST LOGIC
   ///////////////////////////
-  const [listResponse, requestList] = useResource(API.private.list.resource);
+  const [listResponse, requestList] = useResource(API.private.listDapps.resource);
   async function makeListRequest() {
     if (API.hasActiveAuth()) {
       requestList();
     } else if (API.hasStaleAuth()) {
-      API.loginViaRefresh();
+      try {
+        API.loginViaRefresh();
+      } catch (err) {
+        console.log('Tried to refresh API, was auth stale?: ',API.hasStaleAuth());
+        console.log('Error refreshing API: ',err);
+      }
     }
   }
   useEffect(function fetchListOnStartAndAPI() {
@@ -70,6 +75,7 @@ export const DashboardBase: React.SFC<Props> = ({ API, ...props }) => {
     // anything when the API is stale; it will get called
     // again once it is fresh.
     makeListRequest()
+    return listResponse.cancel
   }, [API]);
   useEffect(function handleListResponse() {
     const { isLoading, error } = listResponse;
@@ -90,12 +96,17 @@ export const DashboardBase: React.SFC<Props> = ({ API, ...props }) => {
   ///////////////////////////
   // DAPP DELETE LOGIC
   ///////////////////////////
-  const [deleteResponse, requestDelete] = useResource(API.private.delete.resource);
+  const [deleteResponse, requestDelete] = useResource(API.private.deleteDapp.resource);
   async function makeDeleteRequest(dappName: string) {
     if (API.hasActiveAuth()) {
       requestDelete(dappName);
     } else if (API.hasStaleAuth()) {
-      API.loginViaRefresh();
+      try {
+        API.loginViaRefresh();
+      } catch (err) {
+        console.log('Tried to refresh API, was auth stale?: ',API.hasStaleAuth());
+        console.log('Error refreshing API: ',err);
+      }
     }
   }
   useEffect(function handleDeleteResponse() {
@@ -113,14 +124,17 @@ export const DashboardBase: React.SFC<Props> = ({ API, ...props }) => {
       }
     }
     else if (data) {
-      Alert.success(`Your dapp was successfully deleted!`, { timeout: 500 });
-      makeListRequest()
+      Alert.success(`Your dapp was successfully deleted!  It should disappear from the list in a moment.`, { timeout: 1500 });
+      // Taking a one-second nap here ensures that the DynamoDB
+      // records are actually updated by the time our request
+      // hits the Lambda.
+      sleep(1).then(makeListRequest) 
       navigate(`/home`);
     }
   }, [deleteResponse])
 
   //EDIT RESPONSE HANDLER
-  const [editResponse, sendEditRequest] = useResource(API.private.update.resource);
+  const [editResponse, sendEditRequest] = useResource(API.private.updateDapp.resource);
 
   //PROP DRILL: props for DappDetailsContainer && DashboardContainer
   let dappList: Dapp.Item.Api[] = isSuccessResponse(listResponse.data) ? listResponse.data.data.items : [];
