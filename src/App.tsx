@@ -41,7 +41,7 @@ const App: FC = () => {
 
   const API = new DappbotAPI({
     authData : user as User.AuthData,
-    setAuthData : setUser,
+    setAuthData : safeSetUser,
     dappbotUrl : process.env.REACT_APP_DAPPBOT_API_ENDPOINT as string
   });
 
