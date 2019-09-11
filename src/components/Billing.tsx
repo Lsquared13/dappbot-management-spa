@@ -1,6 +1,6 @@
 import React, { FC, useState, ReactElement } from 'react';
-import { ICard as CardType, subscriptions } from 'stripe';
 import { confirmAlert } from 'react-confirm-alert';
+import { StripeTypes } from '@eximchain/dappbot-types/spec/methods/payment';
 import {
   CardElement as NewCardElement,
   ReactStripeElements as RSE,
@@ -15,7 +15,6 @@ import CustomConfirmFactory from './CustomConfirmAlert';
 import { NumberField, Uints } from '../components/fields';
 import { Box, Text, Button } from './ui';
 import InvoiceTable from './InvoiceTable';
-import { Invoice } from '../services/api/types';
 
 interface EasyInputGroupProps {
   title: string
@@ -51,9 +50,9 @@ const EvenBlocks: FC<EvenBlocksProps> = ({ left, right }) => {
 
 export interface BillingProps extends RSE.InjectedStripeProps {
   hasStripe: boolean
-  source: XOR<CardType, null>
-  subscription: XOR<subscriptions.ISubscription, null>
-  invoice: XOR<Invoice, null>
+  source: XOR<StripeTypes.Card, null>
+  subscription: XOR<StripeTypes.Subscription, null>
+  invoice: XOR<StripeTypes.Invoice, null>
   name: string
   email: string
   submitWithToken: (token: stripe.Token) => Promise<any>

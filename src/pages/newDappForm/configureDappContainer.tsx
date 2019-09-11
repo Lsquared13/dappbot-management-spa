@@ -1,13 +1,12 @@
 import * as React from "react";
+import { RouteComponentProps } from "@reach/router";
 import { ConfigureDapp, ConfigureDappProps } from "../../components";
 import { Breadcrumb, Container, Title } from "../../layout";
 import { Box } from "../../components/ui";
-import { RouteComponentProps } from "@reach/router";
 
-export interface Props extends RouteComponentProps, ConfigureDappProps {
+export interface ConfigureDappContainerProps extends RouteComponentProps, ConfigureDappProps {}
 
-}
-export const ConfigureDappContainer: React.SFC<Props> = props => (
+export const ConfigureDappContainer: React.SFC<ConfigureDappContainerProps> = props => (
   <Box>
     {/* BREADCRUMBS */}
     <Breadcrumb title="DAPPS / CONFIGURE DAPP" />

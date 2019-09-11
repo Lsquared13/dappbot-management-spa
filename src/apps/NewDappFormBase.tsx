@@ -2,29 +2,22 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useResource } from 'react-request-hook';
 import { Router, navigate, RouteComponentProps, NavigateFn } from "@reach/router";
 import Alert from 'react-s-alert';
-import omit from 'lodash.omit';
 
-import { NotFound } from "../pages/notFound";
+import DappbotAPI from '@eximchain/dappbot-api-client';
+import Dapp from '@eximchain/dappbot-types/spec/dapp';
+import User from '@eximchain/dappbot-types/spec/user';
+import Response from '@eximchain/dappbot-types/spec/responses';
+import { CreateDapp as CreateDappTypes } from '@eximchain/dappbot-types/spec/methods/private';
+
+import { NotFound } from '../pages'
 import { NewDappContainer, BuildDetailsContainer, ConfigureDappContainer } from "../pages/newDappForm"
-import API from '../services/api';
-import { ListResponse } from '../services/api/types'
-
-import { DappCreateArgs, DappData, Tiers, emptyUserResponse, UserResponseData } from '../types';
-import { CreateDappState, ConfigureDappState, DappDetail, CreateDapp } from "../components";
+import { CreateDappState, ConfigureDappState } from "../components";
 import { getErrMsg } from '../services/util';
 
 
 export interface NewDappFormBaseProps extends RouteComponentProps {
-  user: UserResponseData
-  API: API
-}
-
-export interface DappArgs {
-  DappName: string
-  Abi: string
-  Web3URL: string
-  GuardianURL: string
-  ContractAddr: string
+  user: User.AuthData
+  API: DappbotAPI
 }
 
 const SETTING_OPTIONS = [
@@ -50,22 +43,19 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({ user, API, ..
     Web3URL: "Building ... ",
     ContractAddr: "Building ... ",
     DnsName: "Building ... "
-  } as DappDetail);
+  } as Dapp.Item.Api);
   const [DappName, setDappName] = useState("")
 
   ///////////////////////////
   // GET DAPP LIST LOGIC
   ///////////////////////////
-  const [listResponse, requestList] = useResource(API.private.list());
+  const [listResponse, requestList] = useResource(API.private.list.resource);
   const [availableNumOfDapps, markAvailableNumOfDapps] = useState(-1)
   async function makeListRequest() {
-    try {
-      const refreshedAPI = await API.refreshAuthorization();
-      if (refreshedAPI === API) {
-        requestList();
-      }
-    } catch (err) {
-      Alert.error(`Error fetching dapp list : ${getErrMsg(err)}`)
+    if (API.hasActiveAuth()) {
+      requestList()
+    } else if (API.hasStaleAuth()) {
+      API.loginViaRefresh()
     }
   }
   useEffect(function fetchListOnStartAndAPI() {
@@ -87,7 +77,7 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({ user, API, ..
           Alert.error(`Error fetching your dapp list : ${getErrMsg(error)}`);
         }
       }
-    } else if (data) {
+    } else if (Response.isSuccessResponse(data)) {
       const { count } = data.data
       const totalAvailableDapps = parseInt(user.User.UserAttributes['custom:standard_limit'])
       markAvailableNumOfDapps(totalAvailableDapps - count)
@@ -99,13 +89,12 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({ user, API, ..
   ///////////////////////////
   // DAPP CREATE LOGIC
   ///////////////////////////
-  const [createResponse, requestCreate] = useResource(API.private.create());
-  async function makeCreateRequest(dappArgs: DappCreateArgs) {
-    const dappData: DappData = omit(dappArgs, ['DappName'])
-    const refreshedAPI = await API.refreshAuthorization({ userMustRetry : true });
-    if (refreshedAPI === API) {
-      Alert.info(`Making request...`)
-      requestCreate(dappData, dappArgs.DappName)
+  const [createResponse, requestCreate] = useResource(API.private.create.resource);
+  async function makeCreateRequest(dappName:string, dappArgs: CreateDappTypes.Args) {
+    if (API.hasActiveAuth()) {
+      requestCreate(dappName, dappArgs);
+    } else {
+      API.loginViaRefresh();
     }
   }
   useEffect(function handleCreateResponse() {
@@ -148,18 +137,17 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({ user, API, ..
       Alert.error("We need you to enter the dapp's name again; please do not refresh the page while creating a dapp.");
     }
     else {
-      let args: DappCreateArgs = {
-        DappName: DappName,
+      let args: CreateDappTypes.Args = {
         Abi: contractABI,
         Web3URL: web3URL,
         GuardianURL: "https://guardian.dapp.bot",
         ContractAddr: contractAddress,
-        Tier: Tiers.Standard
+        Tier: Dapp.Tiers.Standard
       }
       buildingDappDetails.current.DappName = DappName;
       buildingDappDetails.current.Web3URL = web3URL;
       buildingDappDetails.current.ContractAddr = contractAddress;
-      makeCreateRequest(args)
+      makeCreateRequest(DappName, args)
     }
   }
 

@@ -2,24 +2,19 @@ import React, { useEffect, useState } from "react";
 import { useResource } from "react-request-hook";
 import { Router, navigate, RouteComponentProps } from "@reach/router";
 import Alert from 'react-s-alert';
+import DappbotAPI from '@eximchain/dappbot-api-client';
+import Dapp from '@eximchain/dappbot-types/spec/dapp';
+import { isSuccessResponse } from "@eximchain/dappbot-types/spec/responses";
+
 import { DashboardContainer, DappDetailsContainer, DeleteDappContainer } from "../pages/dashboard";
-import API from '../services/api';
 import { getErrMsg } from '../services/util';
 import { DeleteDappState } from "../components";
-import { NotFound } from "../pages/notFound";
-import { UserResponseData } from "../types";
+import { NotFound } from "../pages";
 
 export interface Props extends RouteComponentProps {
-  API: API
+  API: DappbotAPI
 }
-export interface DappDetail {
-  DappName: string;
-  DnsName: string;
-  ContractAddr: string;
-  Web3URL: string;
-  Abi: string;
-  GuardianURL: string
-}
+
 const SETTING_OPTIONS = [
   {
     title: "General Settings",
@@ -58,15 +53,12 @@ export const DashboardBase: React.SFC<Props> = ({ API, ...props }) => {
   ///////////////////////////
   // GET DAPP LIST LOGIC
   ///////////////////////////
-  const [listResponse, requestList] = useResource(API.private.list());
+  const [listResponse, requestList] = useResource(API.private.list.resource);
   async function makeListRequest() {
-    try {
-      const refreshedAPI = await API.refreshAuthorization();
-      if (refreshedAPI === API) {
-        requestList();
-      }
-    } catch (err) {
-      Alert.error(`Error refreshing your session : ${getErrMsg(err)}`)
+    if (API.hasActiveAuth()) {
+      requestList();
+    } else if (API.hasStaleAuth()) {
+      API.loginViaRefresh();
     }
   }
   useEffect(function fetchListOnStartAndAPI() {
@@ -98,15 +90,12 @@ export const DashboardBase: React.SFC<Props> = ({ API, ...props }) => {
   ///////////////////////////
   // DAPP DELETE LOGIC
   ///////////////////////////
-  const [deleteResponse, requestDelete] = useResource(API.private.delete());
+  const [deleteResponse, requestDelete] = useResource(API.private.delete.resource);
   async function makeDeleteRequest(dappName: string) {
-    try {
-      const refreshedAPI = await API.refreshAuthorization({ userMustRetry : true });
-      if (refreshedAPI === API) {
-        requestDelete(dappName);
-      }
-    } catch (err) {
-      Alert.error(`Error sending delete : ${getErrMsg(err)}`)
+    if (API.hasActiveAuth()) {
+      requestDelete(dappName);
+    } else if (API.hasStaleAuth()) {
+      API.loginViaRefresh();
     }
   }
   useEffect(function handleDeleteResponse() {
@@ -131,21 +120,11 @@ export const DashboardBase: React.SFC<Props> = ({ API, ...props }) => {
   }, [deleteResponse])
 
   //EDIT RESPONSE HANDLER
-  const [editResponse, sendEditRequest] = useResource(API.private.edit());
+  const [editResponse, sendEditRequest] = useResource(API.private.update.resource);
 
   //PROP DRILL: props for DappDetailsContainer && DashboardContainer
-  let dappList: DappDetail[] = [];
-  let dappsLoading: boolean = true;
-  try {
-    if (listResponse.data) {
-      dappList.push(...(listResponse as any).data.data.items)
-      dappsLoading = false;
-    }
-  }
-  catch (e) {
-    console.log('Error when trying to load from listResponse: ', e);
-    dappsLoading = false;
-  }
+  let dappList: Dapp.Item.Api[] = isSuccessResponse(listResponse.data) ? listResponse.data.data.items : [];
+  let dappsLoading: boolean = listResponse.isLoading;
 
   return (
     <div>

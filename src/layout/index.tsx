@@ -9,4 +9,3 @@ export * from "./SettingMenu";
 
 export * from "./utils"
 export * from "./SettingMenu";
-export * from "./SubscriptionTable";

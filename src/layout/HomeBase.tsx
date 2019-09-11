@@ -3,10 +3,10 @@ import { RouteComponentProps } from "@reach/router";
 import Footer from "../components/froala/Footer";
 import {PaymentStatusBanner} from "../components/PaymentStatusBanner"
 import Header  from "./Header";
-import { UserResponseData} from "../types";
+import User from "@eximchain/dappbot-types/spec/user";
 
 export interface HomeBaseProps extends RouteComponentProps {
-  user: UserResponseData
+  user: User.AuthData
   logOut: () => void
 }
 

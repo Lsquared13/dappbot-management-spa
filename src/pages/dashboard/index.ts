@@ -1,3 +1,3 @@
-export * from "./dappDetailsContainer"
-export * from "./dashboardContainer"
-export * from "./deleteDappContainer"
+export * from "./DappDetailsContainer"
+export * from "./DashboardContainer"
+export * from "./DeleteDappContainer"

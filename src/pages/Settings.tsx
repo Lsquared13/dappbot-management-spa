@@ -1,16 +1,17 @@
 import React, { FC, useState, useEffect } from "react";
 import { RouteComponentProps } from "@reach/router";
 import Alert from 'react-s-alert';
+import { useResource } from "react-request-hook";
+import { XOR } from "ts-xor";
+
+import DappbotAPI from '@eximchain/dappbot-api-client';
+import User from "@eximchain/dappbot-types/spec/user";
+import { StripePlans, StripeTypes } from '@eximchain/dappbot-types/spec/methods/payment';
+
 import { Container, Breadcrumb, Title, LayoutContainer } from "../layout";
 import { Box } from "../components/ui";
-import Profile from "../layout/Profile";
 import Billing from '../components/Billing';
-import { UserResponseData, StripePlans } from "../types";
 import { injectStripe, ReactStripeElements as RSE } from "react-stripe-elements";
-import API, { StripeUserData, Invoice } from "../services/api";
-import { useResource } from "react-request-hook";
-import { ICard, subscriptions } from "stripe";
-import { XOR } from "ts-xor";
 import { getErrMsg } from "../services/util";
 
 function sleep(seconds: number) {
@@ -20,8 +21,8 @@ function sleep(seconds: number) {
 }
 
 export interface SettingsContainerProps extends RouteComponentProps, RSE.InjectedStripeProps {
-  user: UserResponseData;
-  API: API;
+  user: User.AuthData;
+  API: DappbotAPI;
 }
 
 export interface SettingState {
@@ -53,20 +54,17 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   ///////////////////////////////////
   // FETCHING USER'S STRIPE DATA
   ///////////////////////////////////
-  const [stripeResponse, requestStripe] = useResource(API.payment.getUserStripeData(), []);
+  const [stripeResponse, requestStripe] = useResource(API.payment.readStripe.resource);
   let [hasStripe, setHasStripe] = useState(false);
   let [name, setName] = useState('Loading...');
-  let [source, setSource] = useState(null as XOR<ICard, null>);
-  let [subscription, setSubscription] = useState(null as XOR<subscriptions.ISubscription, null>);
-  let [invoice, setInvoice] = useState(null as XOR<Invoice, null>);
+  let [source, setSource] = useState(null as XOR<StripeTypes.Card, null>);
+  let [subscription, setSubscription] = useState(null as XOR<StripeTypes.Subscription, null>);
+  let [invoice, setInvoice] = useState(null as XOR<StripeTypes.Invoice, null>);
   async function makeStripeRequest(){
-    try {
-      const refreshedAPI = await API.refreshAuthorization();
-      if (refreshedAPI === API) {
-        requestStripe();
-      }
-    } catch (err) {
-      Alert.error(`Error fetching Stripe data : ${getErrMsg(err)}`)
+    if (API.hasActiveAuth()) {
+      requestStripe();
+    } else if (API.hasStaleAuth()) {
+      API.refreshAuth()
     }
   }
   useEffect(function handleStripeDataLoad() {
@@ -75,11 +73,10 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
       console.log('error fetching Stripe data: ', error);
       Alert.error(`Error fetching your subscription data: ${getErrMsg(error)}`)
     }
-    if (data) {
-      const userData: StripeUserData = data.data;
-      const { customer, subscription, invoice } = userData;
+    if (data && data.data && data.data.user) {
+      const { customer, subscription, invoice } = data.data;
       if (customer) {
-        setSource(customer.default_source as XOR<ICard, null>);
+        setSource(customer.default_source as XOR<StripeTypes.Card, null>);
         setName(customer.name || '');
         setInvoice(invoice || null);
         setHasStripe(true);
@@ -95,16 +92,13 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   ///////////////////////////////////
   // FETCHING USER'S DAPP COUNT
   ///////////////////////////////////
-  const [listResponse, requestList] = useResource(API.private.list());
+  const [listResponse, requestList] = useResource(API.private.list.resource);
   const [usedNumDapps, markUsedNumOfDapps] = useState(-1)
   const makeListRequest = async () => {
-    try {
-      const refreshedAPI = await API.refreshAuthorization();
-      if (refreshedAPI === API) {
-        requestList();
-      }
-    } catch (err) {
-      Alert.error(`Error requesting your dapp count : ${getErrMsg(err)}`)
+    if (API.hasActiveAuth()) {
+      requestList();
+    } else if (API.hasStaleAuth()) {
+      API.refreshAuth()
     }
   }
   useEffect(function handleListResponse() {
@@ -116,7 +110,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
         }
       }
     }
-    if (data && !isLoading) {
+    if (data && data.data && !isLoading) {
       const { count } = data.data
       markUsedNumOfDapps(count);
     }
@@ -125,7 +119,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   ///////////////////////////////////
   // UPDATING USER'S DAPP ALLOTMENT
   ///////////////////////////////////
-  const [updateDappsResponse, requestUpdateDapps] = useResource(API.payment.updatePlanCounts())
+  const [updateDappsResponse, requestUpdateDapps] = useResource(API.payment.updatePlanCounts.resource)
   async function makeUpdateDappsRequest(numDapps: number) {
     let plans: StripePlans = {
       standard: numDapps,
@@ -135,9 +129,10 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     let request = {
       plans: plans
     }
-    const refreshedAPI = await API.refreshAuthorization({ userMustRetry : true });
-    if (refreshedAPI === API) {
-      requestUpdateDapps(request)
+    if (API.hasActiveAuth) {
+      requestUpdateDapps(request);
+    } else {
+      API.loginViaRefresh()
     }
   }
   useEffect(function handleUpdateDappsResponse() {
@@ -146,7 +141,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
       console.log('error: ',error);
       Alert.error(`Error updating your subscription: ${getErrMsg(error)}`)
     } else if (data && !isLoading) {
-      API.refreshUser()
+      API.loginViaRefresh()
       requestStripe()
     }
   }, [updateDappsResponse])
@@ -155,11 +150,12 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   ///////////////////////////////////
   // UPDATING USER'S PAYMENT
   ///////////////////////////////////
-  const [updatePaymentResponse, requestUpdatePayment] = useResource(API.payment.updatePaymentMethod());
+  const [updatePaymentResponse, requestUpdatePayment] = useResource(API.payment.updateCard.resource);
   async function makeUpdatePaymentRequest(token: stripe.Token) {
-    const refreshedAPI = await API.refreshAuthorization({ userMustRetry : true });
-    if (refreshedAPI === API) {
-      requestUpdatePayment({ token: token.id });
+    if (API.hasActiveAuth()) {
+      requestUpdatePayment({ token : token.id })
+    } else if (API.hasStaleAuth()) {
+      await API.loginViaRefresh();
     }
   }
   useEffect(function handleUpdatedPaymentResponse() {
@@ -171,7 +167,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
       sleep(5).then(() => {
         // Payment status may take a few seconds to propagate,
         // this sleep gives the infra a moment to do its magic.
-        API.refreshUser();
+        API.loginViaRefresh();
       })
     }
   }, [updatePaymentResponse, requestStripe]);

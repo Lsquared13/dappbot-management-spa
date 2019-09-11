@@ -1,33 +1,21 @@
-import * as React from "react";
-import Alert from 'react-s-alert';
-import {Breadcrumb, Container, DappStatus, SettingMenu, SettingMenuProps} from "../../layout";
-import {DeployDapp, DeployDappProps} from "../../components";
-import {Box} from "../../components/ui";
-
+import React, { useState } from "react";
 import {RouteComponentProps, navigate} from "@reach/router";
-import {useEffect, useState} from "react";
-import BuildDapp from "../../components/BuildDapp";
+import Alert from 'react-s-alert';
 
-export interface DappDetail {
-    DappName : string;
-    DnsName : string;
-    ContractAddr : string;
-    Web3URL : string;
-    Abi : string;
-    GuardianURL : string
-}
-export interface buildDetailsContainerProps extends RouteComponentProps,
+import {Breadcrumb, Container, DappStatus, SettingMenu, SettingMenuProps} from "../../layout";
+import {Box} from "../../components/ui";
+import BuildDapp from "../../components/BuildDapp";
+import Dapp from "@eximchain/dappbot-types/spec/dapp";
+
+export interface BuildDetailsContainerProps extends RouteComponentProps,
 SettingMenuProps {
     onStatusCopy?: () => void;
-    dapp: DappDetail;
+    dapp: Dapp.Item.Api;
     redirect: ()=>void;
-    
 }
 
-export const BuildDetailsContainer : React.SFC < buildDetailsContainerProps > = props => {
+export const BuildDetailsContainer : React.SFC <BuildDetailsContainerProps> = props => {
     
-    let [dappDetailProps,
-        setDappDetailProps] = useState(props.dapp)
     let dapp = (
         <Box>
             <Breadcrumb title={props.dappName}/>
@@ -38,11 +26,11 @@ export const BuildDetailsContainer : React.SFC < buildDetailsContainerProps > = 
                 defaultTab={props.defaultTab}
                 settingOptions={props.settingOptions}
                 onTabChange={props.onTabChange}/>
-            <DappStatus status={"Building"} onStatusCopy={props.onStatusCopy}/>
+            <DappStatus buildStatus={"Building"} onStatusCopy={props.onStatusCopy}/>
 
             <Container>
                 <BuildDapp
-                    dappDetail={dappDetailProps}
+                    dappDetail={props.dapp}
                     onBuildDapp={() => {
                     alert("onBuildDapp is called");
                 }}/>

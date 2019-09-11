@@ -1,13 +1,13 @@
 import React, { FC, useState } from 'react';
+import User, { Challenges } from '@eximchain/dappbot-types/spec/user';
 import { Button } from '../ui';
 import { StringField } from '../fields';
-import {UserResponseData} from '../../types'
 
 interface MfaChallengeProps {
-  user: UserResponseData
-  setUser: (user:UserResponseData)=>void
+  user: User.AuthData
+  setUser: (user:User.AuthData)=>void
   setErr: (err:string)=>void
-  setChallenge: (challenge:string)=>void
+  setChallenge: (challenge:Challenges.Data)=>void
 }
 
 export const MfaChallenge:FC<MfaChallengeProps> = ({user, setUser, setErr, setChallenge})=>{
@@ -19,7 +19,7 @@ export const MfaChallenge:FC<MfaChallengeProps> = ({user, setUser, setErr, setCh
     setLoading(true);
     try {
       //TODO: implement the new version of MFA api
-      setChallenge('');
+      // setChallenge('');
     } catch (e) {
       setErr(e.toString())
     }

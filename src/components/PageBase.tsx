@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { RouteComponentProps } from '@reach/router';
-import Alert from 'react-s-alert';
 import Modal from 'react-modal';
+import User from '@eximchain/dappbot-types/spec/user';
 import Navigation from './froala/Navigation';
 import Footer from './froala/Footer';
 
@@ -23,7 +23,7 @@ Modal.defaultStyles = {
 
 export interface PageBaseProps extends RouteComponentProps {
   user?: any
-  setUser: (newUser:any)=>void
+  setUser: (newUser:User.AuthData)=>void
 }
 
 export const PageBase: FC<PageBaseProps> = ({user, setUser, ...props}) => {

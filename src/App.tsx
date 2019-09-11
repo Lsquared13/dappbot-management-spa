@@ -2,6 +2,9 @@ import React, { FC, useState, useEffect } from 'react';
 import { Router } from '@reach/router';
 import { StripeProvider, Elements } from 'react-stripe-elements';
 import Alert from 'react-s-alert';
+import DappbotAPI from '@eximchain/dappbot-api-client';
+import { Login as LoginTypes } from '@eximchain/dappbot-types/spec/methods/auth';
+import User from '@eximchain/dappbot-types/spec/user';
 import './App.css';
 import './variable.css';
 import './custom.css'
@@ -10,39 +13,36 @@ import PageBase from './layout/PageBase';
 import { HomeBase } from "./layout/HomeBase";
 import AppBase from './layout/AppBase';
 import { useLocalStorage } from './services/localStorage';
-import APIFactory from './services/api';
-import { bodyHas } from './services/util';
 import { SettingsContainerBase } from "./apps/SettingsContainerBase";
 import {  Welcome, Login, Privacy, PaymentPage, Terms } from './pages';
 import { DashboardBase } from './apps/DashboardBase';
 import { NewDappFormBase } from './apps';
-import { emptyUserResponse, UserResponseData } from './types';
 
 
 const App: FC = () => {
-  const [user, setUser] = useState(emptyUserResponse());
+  const [user, setUser] = useState(User.newAuthData() as User.AuthData);
   const [rememberUser, setRememberUser] = useLocalStorage('saveUser', true);
-  const [savedUser, setSavedUser] = useLocalStorage('user', emptyUserResponse());
+  const [savedUser, setSavedUser] = useLocalStorage('user', User.newAuthData());
 
   // We're seeing errors where the user document gets broken because
   // it's set to null, or something with an invalid shape.  This fxn
   // validates that the newUser always has the correct shape.  The
   // update doesn't happen if it's missing required keys, and we also
   // get a notification, helping us determine root cause.
-  const safeSetUser:React.Dispatch<UserResponseData> = (newUser) => {
-    let sampleResponse = emptyUserResponse();
-    if (
-      bodyHas(newUser, Object.keys(sampleResponse)) &&
-      bodyHas(newUser.User, Object.keys(sampleResponse.User))
-    ) {
-      setUser(newUser)
+  const safeSetUser:React.Dispatch<LoginTypes.Result> = (newUser) => {
+    if (User.isAuthData(newUser)) {
+      setUser(newUser);
       if (rememberUser) setSavedUser(newUser);
     } else {
       console.error("Attempted to setUser to the following broken value: ",newUser);
       Alert.error("Just attempted to set an invalid user value, check console for more information.");
     }
   }
-  const API = new APIFactory({user, setUser});
+  const API = new DappbotAPI({
+    authData : user as User.AuthData,
+    setAuthData : setUser,
+    dappbotUrl : process.env.REACT_APP_DAPPBOT_API_ENDPOINT as string
+  });
 
   // Runs at startup, refreshing user in memory with the
   // value available from local storage.
@@ -51,7 +51,7 @@ const App: FC = () => {
   }, []);
 
   function logOut(){
-    safeSetUser(emptyUserResponse());
+    safeSetUser(User.newAuthData());
   }
 
   let appData = { 
