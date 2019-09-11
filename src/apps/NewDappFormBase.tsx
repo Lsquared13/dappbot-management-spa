@@ -55,7 +55,11 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({ user, API, ..
     if (API.hasActiveAuth()) {
       requestList()
     } else if (API.hasStaleAuth()) {
-      API.loginViaRefresh()
+      try {
+        API.loginViaRefresh()
+      } catch (err) {
+        console.error('Unable to perform refresh login: ',err);
+      }
     }
   }
   useEffect(function fetchListOnStartAndAPI() {
@@ -95,7 +99,11 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({ user, API, ..
     if (API.hasActiveAuth()) {
       requestCreate(dappName, dappArgs);
     } else {
-      API.loginViaRefresh();
+      try {
+        API.loginViaRefresh()
+      } catch (err) {
+        console.error('Unable to perform refresh login: ',err);
+      }
     }
   }
   useEffect(function handleCreateResponse() {

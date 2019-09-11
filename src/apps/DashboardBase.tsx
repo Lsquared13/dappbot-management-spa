@@ -61,7 +61,6 @@ export const DashboardBase: React.SFC<Props> = ({ API, ...props }) => {
       try {
         API.loginViaRefresh();
       } catch (err) {
-        console.log('Tried to refresh API, was auth stale?: ',API.hasStaleAuth());
         console.log('Error refreshing API: ',err);
       }
     }
@@ -104,7 +103,6 @@ export const DashboardBase: React.SFC<Props> = ({ API, ...props }) => {
       try {
         API.loginViaRefresh();
       } catch (err) {
-        console.log('Tried to refresh API, was auth stale?: ',API.hasStaleAuth());
         console.log('Error refreshing API: ',err);
       }
     }

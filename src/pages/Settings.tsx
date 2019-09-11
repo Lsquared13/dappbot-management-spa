@@ -58,7 +58,11 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     if (API.hasActiveAuth()) {
       requestStripe();
     } else if (API.hasStaleAuth()) {
-      API.refreshAuth()
+      try {
+        API.loginViaRefresh()
+      } catch (err) {
+        console.error('Unable to perform refresh login: ',err);
+      }
     }
   }
   useEffect(function handleStripeDataLoad() {
@@ -92,7 +96,11 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     if (API.hasActiveAuth()) {
       requestList();
     } else if (API.hasStaleAuth()) {
-      API.refreshAuth()
+      try {
+        API.loginViaRefresh()
+      } catch (err) {
+        console.error('Unable to perform refresh login: ',err);
+      }
     }
   }
   useEffect(function handleListResponse() {
@@ -123,10 +131,14 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     let request = {
       plans: plans
     }
-    if (API.hasActiveAuth) {
+    if (API.hasActiveAuth()) {
       requestUpdateDapps(request);
-    } else {
-      API.loginViaRefresh()
+    } else if (API.hasStaleAuth()) {
+      try {
+        API.loginViaRefresh()
+      } catch (err) {
+        console.error('Unable to perform refresh login: ',err);
+      }
     }
   }
   useEffect(function handleUpdateDappsResponse() {
@@ -135,7 +147,6 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
       console.log('error: ',error);
       Alert.error(`Error updating your subscription: ${getErrMsg(error)}`)
     } else if (data && !isLoading) {
-      API.loginViaRefresh()
       requestStripe()
     }
   }, [updateDappsResponse])
@@ -149,7 +160,11 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     if (API.hasActiveAuth()) {
       requestUpdatePayment({ token : token.id })
     } else if (API.hasStaleAuth()) {
-      await API.loginViaRefresh();
+      try {
+        API.loginViaRefresh()
+      } catch (err) {
+        console.error('Unable to perform refresh login: ',err);
+      }
     }
   }
   useEffect(function handleUpdatedPaymentResponse() {
@@ -161,17 +176,13 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
       sleep(5).then(() => {
         // Payment status may take a few seconds to propagate,
         // this sleep gives the infra a moment to do its magic.
+        // Note that we don't expect the auth to be stale; we
+        // are logging in again so that we refetch the user's
+        // profile data.
         API.loginViaRefresh();
       })
     }
   }, [updatePaymentResponse, requestStripe]);
-
-  ///////////////////////////////////
-  // STARTUP EFFECT
-  ///////////////////////////////////
-  useEffect(() => {
-    makeListRequest()
-  }, [API]);
 
   let paymentStatus = user.User.UserAttributes['custom:payment_status'] || 'ACTIVE';
   return (
