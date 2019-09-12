@@ -7,6 +7,7 @@ import {Box} from "../../components/ui";
 import BuildDapp from "../../components/BuildDapp";
 import Dapp from "@eximchain/dappbot-types/spec/dapp";
 
+
 export interface BuildDetailsContainerProps extends RouteComponentProps,
 SettingMenuProps {
     onStatusCopy?: () => void;

@@ -6,6 +6,7 @@ import { Box } from "../../components/ui";
 
 export interface NewDappContainerProps extends RouteComponentProps, CreateDappProps {}
 
+
 export const NewDappContainer: React.SFC<NewDappContainerProps> = props => (
   <Box>
     {/* BREADCRUMBS */}

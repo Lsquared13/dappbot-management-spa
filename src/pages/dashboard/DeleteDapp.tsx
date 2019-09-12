@@ -15,7 +15,6 @@ export interface DeleteDappContainerProps extends RouteComponentProps, DeleteDap
   dappName: string;
 }
 
-
 export const DeleteDappContainer: React.FC<DeleteDappContainerProps> = props => {
   
   return (

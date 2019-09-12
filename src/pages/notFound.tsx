@@ -8,4 +8,3 @@ export const NotFound: React.SFC<NotFoundProps> = props => {
 };
 
 export default NotFound;
-  
