@@ -1,4 +1,5 @@
 import * as React from "react";
+import Dapp from '@eximchain/dappbot-types/spec/dapp';
 import { Box, Button, Text, Input} from "../components/ui";
 import {
   LayoutContainer,
@@ -8,7 +9,7 @@ import {
   InputGroup,
   InputTitle
 } from "../layout";
-import { isValidDappName, cleanDappName, isValidUrl} from "./ui/Input/utils";
+import { isValidUrl } from "./ui/Input/utils";
 
 import { ReactComponent as GithubIcon } from "../assets/images/Github.svg";
 
@@ -83,7 +84,6 @@ export class CreateDapp extends React.Component<
   render() {
     let { onConfigDapp, onCancel, onGithubLink, onNoneLink } = this.props;
     let { dappName, buildDestination } = this.state;
-    let disableSubmit = !(dappName!=="" && isValidDappName(dappName))
     return (
       <LayoutContainer>
         <Box display="flex" marginBottom={12}>
@@ -97,8 +97,7 @@ export class CreateDapp extends React.Component<
                   type={"text"}
                   value={dappName} 
                   name={'dappName'} 
-                  clean={cleanDappName}
-                  isValid={isValidDappName}
+                  clean={Dapp.cleanName}
                   stateHook={this.onDappNameChange}
                   errorMessage={"This name will be lower-cased, and must begin and end with a letter or number.  Only letters, numbers, and hyphens please!"}
                   placeholder= {"Dapp Name"}/>
@@ -195,9 +194,7 @@ export class CreateDapp extends React.Component<
             size="small"
             style="standard"
             theme="cta"
-            onClick={e => onConfigDapp(e, this.state)}
-            disabled={disableSubmit}
-          >
+            onClick={e => onConfigDapp(e, this.state)}>
             <ButtonText>Configure Dapp</ButtonText>
           </Button>
           <Button

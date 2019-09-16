@@ -1,13 +1,14 @@
 import React, { FC } from "react";
 import { Router, RouteComponentProps } from "@reach/router";
+import DappbotAPI from '@eximchain/dappbot-api-client';
+import User from "@eximchain/dappbot-types/spec/user";
 //TODO: add the full settings panel
 import SettingContainer from "../pages/Settings";
-import { UserResponseData } from '../types';
-import API from "../services/api";
+
 
 export interface Props extends RouteComponentProps {
-  user : UserResponseData
-  API : API
+  user : User.AuthData
+  API : DappbotAPI
 }
 export const SettingsContainerBase: React.SFC<Props> = ({user, API }) => {
   

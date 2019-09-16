@@ -1,4 +1,5 @@
 import * as React from "react";
+import { RouteComponentProps } from "@reach/router";
 import {
   Breadcrumb,
   Container,
@@ -8,23 +9,18 @@ import {
 } from "../../layout";
 import { Box } from "../../components/ui";
 import { DeleteDapp, DeleteDappProps } from "../../components";
-import { RouteComponentProps } from "@reach/router";
 
 
-export interface DeleteDappContainerProps extends RouteComponentProps,DeleteDappProps, SettingMenuProps {
+export interface DeleteDappContainerProps extends RouteComponentProps, DeleteDappProps, SettingMenuProps {
   dappName: string;
 }
 
-
-export const DeleteDappContainer: React.FC<
-DeleteDappContainerProps
-> = props => {
+export const DeleteDappContainer: React.FC<DeleteDappContainerProps> = props => {
   
   return (
     <Box>
       {/* BREADCRUMBS */}
       <Breadcrumb title={props.dappName} />
-
       <SettingMenu
         building = {props.building}
         dappName={props.dappName}
@@ -32,9 +28,7 @@ DeleteDappContainerProps
         settingOptions={props.settingOptions}
         onTabChange={props.onTabChange}
       />
-
       <Title title="Dapp Deletion" />
-
       <Container>
         <DeleteDapp {...props} />
       </Container>

@@ -1,20 +1,21 @@
 import * as React from "react";
+import { RouteComponentProps } from '@reach/router';
+import Dapp from '@eximchain/dappbot-types/spec/dapp';
 import {
   Breadcrumb,
   Container,
   ButtonText,
 } from "../../layout";
 import EmptyState from "../../assets/images/SDK.svg";
-import {  Box, Button,Text,Divider} from "../../components/ui";
-import { DappTable, DappTableProps } from "../../layout/DashboardLayout";
+import { Box, Button,Text,Divider} from "../../components/ui";
+import { DappTable } from "../../layout/DashboardLayout";
 import { ReactComponent as RefreshIcon } from "../../assets/images/refresh.svg";
-import { RouteComponentProps } from '@reach/router';
 
 
 export interface DashboardContainerProps extends RouteComponentProps {
   onRefresh?: () => void;
   onCreateNewApp?: () => void;
-  dapps: DappTableProps["dapps"];
+  dapps: Dapp.Item.Api[];
   dappsLoading: boolean;
 };
 

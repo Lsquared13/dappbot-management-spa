@@ -1,18 +1,19 @@
 import React, { FC, useState, useEffect } from 'react';
 import { useResource } from 'react-request-hook';
 import Alert from 'react-s-alert';
+import DappbotAPI from '@eximchain/dappbot-api-client';
+import User from '@eximchain/dappbot-types/spec/user';
+import { isSuccessResponse } from '@eximchain/dappbot-types/spec/responses';
+import { ConfirmPassReset } from '@eximchain/dappbot-types/spec/methods/auth';
 import { Button } from '../ui';
 import { StringField } from '../fields';
-import API, { challengeDataFactory } from '../../services/api';
-import { passwordChecker, ConfirmPasswordResetArgs } from '../../services/api/auth';
-import {ChallengeData,ChallengeType} from '../../types'
 import { getErrMsg } from '../../services/util';
 
 interface PassResetChallengeProps {
   email: string
-  setChallenge: (challenge:ChallengeData)=>void
+  setChallenge: (challenge:User.Challenges.Data)=>void
   setErr: (err:string)=>void
-  API: API
+  API: DappbotAPI
 }
 
 
@@ -21,9 +22,9 @@ export const PassResetChallenge:FC<PassResetChallengeProps> = ({email, setChalle
   const [confirmPass, setConfirmPass] = useState('');
   const [code, setCode] = useState('');
 
-  const [confirmResetResponse, requestConfirmReset] = useResource(API.auth.confirmPasswordReset())
+  const [confirmResetResponse, requestConfirmReset] = useResource(API.auth.confirmPasswordReset.resource);
   function makeConfirmResetRequest() {
-    const newPassDetails:ConfirmPasswordResetArgs = {
+    const newPassDetails:ConfirmPassReset.Args = {
       'username': email,
       'newPassword': confirmPass,
       'passwordResetCode': code
@@ -41,9 +42,9 @@ export const PassResetChallenge:FC<PassResetChallengeProps> = ({email, setChalle
           break;
         }
       }
-    } else if (data && data.data) {
+    } else if (isSuccessResponse(data)) {
       Alert.success(`${data.data.message}`)
-      setChallenge(challengeDataFactory(ChallengeType.Default))
+      setChallenge(User.Challenges.newData())
     }
   }, [error, data, setChallenge])
 
@@ -58,7 +59,7 @@ export const PassResetChallenge:FC<PassResetChallengeProps> = ({email, setChalle
         value={newPass}
         displayName='New Password'
         fieldType='password'
-        isValid={(val)=>passwordChecker.validate(val)}
+        isValid={User.validatePassword}
         help="Minimum of 8 characters; include upper and lowercase letters, numbers, and a symbol."
         onChange={setNewPass}
         name='newPassword' />
@@ -66,7 +67,7 @@ export const PassResetChallenge:FC<PassResetChallengeProps> = ({email, setChalle
         value={confirmPass}
         displayName='Confirm Password'
         fieldType='password'
-        isValid={(val)=>passwordChecker.validate(val)}
+        isValid={User.validatePassword}
         help="Must match the field above."
         onChange={setConfirmPass}
         name='confirmPassword' />

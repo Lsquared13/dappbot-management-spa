@@ -18,7 +18,7 @@ export default class NoScrollBehavior extends React.Component<Props> {
   }
 
   componentWillUnmount() {
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && typeof this.prevOverflow === 'string') {
       window.document.body.style.overflow = this.prevOverflow;
     }
   }

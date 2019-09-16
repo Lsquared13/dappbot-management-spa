@@ -1,4 +1,5 @@
 import * as React from "react";
+import Dapp from "@eximchain/dappbot-types/spec/dapp";
 import { Base, Box, Button, Text, Console } from "./ui";
 import {
   ButtonText,
@@ -6,23 +7,15 @@ import {
   InputTitle,
   ReferenceLink,
   NetworkReferenceLink,
-  EXCAddresLink,
+  EXCAddressLink,
 } from "../layout";
 import {StaticConsole} from "./ui/Console/StaticConsole"
 import { ReactComponent as LinkIcon } from "../assets/images/link.svg";
 import { ReactComponent as CheckIcon } from "../assets/images/check.svg";
 import { FancyLink } from '../layout/utils';
 
-export interface DappDetail {
-  DappName: string;
-  DnsName: string;
-  ContractAddr: string;
-  Web3URL: string;
-  Abi: string;
-  GuardianURL: string
-}
 export interface DeployDappProps {
-  dappDetail: DappDetail;
+  dappDetail: Dapp.Item.Api;
   onDeployDapp?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
@@ -50,7 +43,7 @@ export const DeployDapp: React.SFC<DeployDappProps> = props => {
           <InputTitle>Contract Address</InputTitle>
           <Box marginTop={2}>
             <Text color="blue" size="xs" smSize="xs" mdSize="xs" lgSize="xs">
-            <EXCAddresLink address={dappDetail.ContractAddr}/>
+            <EXCAddressLink address={dappDetail.ContractAddr}/>
             </Text>
           </Box>
         </Box>

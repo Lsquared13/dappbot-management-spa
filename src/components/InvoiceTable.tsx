@@ -2,12 +2,12 @@ import React, { FC, CSSProperties } from 'react';
 import moment from 'moment';
 import chunk from 'lodash.chunk';
 import { XOR } from 'ts-xor';
+import { StripeTypes } from '@eximchain/dappbot-types/spec/methods/payment';
 import { Text } from './ui';
-import { Invoice, LineItem } from '../services/api/types';
 require('twix');
 
 export interface InvoiceTableProps {
-  invoice: XOR<Invoice, null>
+  invoice: XOR<StripeTypes.Invoice, null>
   loadingData: boolean
 }
 
@@ -79,7 +79,7 @@ export const InvoiceTable: FC<InvoiceTableProps> = (props) => {
   } = invoice;
 
   const lineItems = lines.data.slice();
-  const subscriptionLine = lineItems.pop() as LineItem;
+  const subscriptionLine = lineItems.pop() as StripeTypes.LineItem;
   lineItems.reverse()
 
   // Use invoice items to build a list of change events,

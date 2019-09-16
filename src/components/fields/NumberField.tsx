@@ -160,8 +160,6 @@ export enum Ints {
     size256 = "int256"
 }
 
-export const NumberTypeStrings = Object.values(Uints).concat(Object.values(Ints));
-
 export const selectNumberType:(type:string)=>NumberTypes = (type:string) => {
     if (type.charAt(0) === 'u'){
         // @ts-ignore

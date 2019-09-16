@@ -1,22 +1,8 @@
 import * as React from "react";
 import { Container } from "./../Container";
 import { StyledTab } from "./StyledMenu";
-import {
-  Box,
-  Divider,
-  Dropdown,
-  DropdownContent,
-  DropdownItem,
-  DropdownTrigger,
-  Text,
-  TextProps
-} from "../../components/ui";
+import { Box, Divider, Text } from "../../components/ui";
 
-const Typo: React.SFC<TextProps> = props => (
-  <Text inline size="sm" smSize="sm" mdSize="sm" lgSize="sm" {...props}>
-    {props.children}
-  </Text>
-);
 
 export type SettingMenuTabs = "status" | "settings";
 

@@ -1,29 +1,24 @@
 import React, { FC, useState, useEffect } from 'react';
 import { RouteComponentProps } from '@reach/router';
 import isEmail from 'validator/lib/isEmail';
+import DappbotAPI from '@eximchain/dappbot-api-client';
+import User from '@eximchain/dappbot-types/spec/user';
+import Auth from '@eximchain/dappbot-types/spec/methods/auth';
 import { Button, Checkbox } from '../components/ui';
 import { StringField } from '../components/fields';
 import Alert from 'react-s-alert';
 import { useResource } from 'react-request-hook';
-import {
-  UserResponseData, emptyUserResponse,
-  ChallengeType
-} from '../types';
-import API from '../services/api';
-import { challengeDataFactory } from '../services/api/types';
-import { BeginPasswordResetArgs, SignInArgs } from '../services/api/auth';
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
 import { ErrorBox, NewPassChallenge, PassResetChallenge } from '../components';
 import { getErrMsg } from '../services/util';
 
-
 export interface LoginProps extends RouteComponentProps {
   rememberUser: boolean
   setRememberUser: (shouldRemember: boolean) => void
-  setUser: (user: UserResponseData) => void
-  user: UserResponseData,
-  API: API
+  setUser: (user: User.AuthData) => void
+  user: User.AuthData,
+  API: DappbotAPI
 }
 
 export const Login: FC<LoginProps> = (props) => {
@@ -32,13 +27,12 @@ export const Login: FC<LoginProps> = (props) => {
   const [password, setPassword] = useState("");
 
   const [err, setErr] = useState('');
-  const initialChallenge = challengeDataFactory(ChallengeType.Default);
-  const [challenge, setChallenge] = useState(initialChallenge);
-  const [signInResponse, requestSignIn] = useResource(API.auth.signIn())
-  const [passResetResponse, requestPassReset] = useResource(API.auth.beginPasswordReset())
+  const [challenge, setChallenge] = useState(User.Challenges.newData());
+  const [signInResponse, requestSignIn] = useResource(API.auth.login.resource)
+  const [passResetResponse, requestPassReset] = useResource(API.auth.beginPasswordReset.resource)
 
   function makeSignInRequest() {
-    const loginDetails: SignInArgs = {
+    const loginDetails: Auth.Login.Args = {
       'username': email,
       'password': password
     }
@@ -59,11 +53,11 @@ export const Login: FC<LoginProps> = (props) => {
         }
       }
     }
-    else if (data) {
+    else if (data && data.data) {
       // A Session implies more challenges
       if (data.data.Session) {
         //This tempUser refers to when the password needs to be reset for the first login.
-        let tempUser = emptyUserResponse()
+        let tempUser = User.newAuthData()
         tempUser.User.Username = email
         setUser(tempUser)
         setChallenge(data.data)
@@ -72,7 +66,7 @@ export const Login: FC<LoginProps> = (props) => {
       // Authorization implies success
       if (data.data.Authorization) {
         setUser(data.data)
-        setChallenge(challengeDataFactory(ChallengeType.Default))
+        setChallenge(User.Challenges.newData())
         Alert.success("Authenticated with credentials for: " + data.data.User.Email)
       }
 
@@ -80,7 +74,7 @@ export const Login: FC<LoginProps> = (props) => {
   }, [signInResponse])
 
   function makePassResetRequest() {
-    const forgottenPassDetails: BeginPasswordResetArgs = {
+    const forgottenPassDetails: Auth.BeginPassReset.Args = {
       'username': email
     }
     requestPassReset(forgottenPassDetails)
@@ -102,13 +96,15 @@ export const Login: FC<LoginProps> = (props) => {
         }
       }
     }
-    else if (data) {
-      setChallenge(challengeDataFactory(ChallengeType.ForgotPassword))
+    else if (data && data.data) {
+      let forgotPassChallenge = User.Challenges.newData();
+      forgotPassChallenge.ChallengeName = User.Challenges.Types.ForgotPassword;
+      setChallenge(forgotPassChallenge)
     }
   }, [passResetResponse])
 
   useEffect(function handleChallengeResult() {
-    if (challenge.ChallengeName === ChallengeType.Default && user.Authorization !== '' && user.User) {
+    if (challenge.ChallengeName === User.Challenges.Types.Default && API.hasActiveAuth()) {
       navigate && navigate('/home');
     }
   }, [challenge, setChallenge, user, navigate])
@@ -179,7 +175,7 @@ export const Login: FC<LoginProps> = (props) => {
         </div>
       )
       break;
-    case (ChallengeType.NewPasswordRequired):
+    case (User.Challenges.Types.NewPasswordRequired):
       loginFields = (
         <NewPassChallenge setUser={setUser}
           user={user}
@@ -188,11 +184,7 @@ export const Login: FC<LoginProps> = (props) => {
           {...challengeProps} />)
       break;
 
-    case (ChallengeType.Mfa):
-      // loginFields = <MfaChallenge setUser={setUser} user={user} {...challengeProps} />
-      break;
-
-    case (ChallengeType.ForgotPassword):
+    case (User.Challenges.Types.ForgotPassword):
       loginFields =
         <React.Fragment>
           <div className="row">

@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
-import { ICard as CardType } from 'stripe';
+import { StripeTypes } from '@eximchain/dappbot-types/spec/methods/payment';
 import './CreditCard.scss';
 import Card from 'react-credit-cards';
 
 export interface CreditCardProps {
-  card: CardType
+  card: StripeTypes.Card
 }
 
 export const CreditCard: FC<CreditCardProps> = ({ card }) => {

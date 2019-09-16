@@ -4,12 +4,12 @@ import StyledHeader from "./StyledHeader";
 import { ReactComponent as AvatarImage } from "../../assets/images/avatar.svg";
 
 import { ReactComponent as Logo } from "../../assets/images/Dapp_Logo.svg";
-import { UserResponseData } from '../../types'
 import { WindowLocation } from "@reach/router";
+import User from "@eximchain/dappbot-types/spec/user";
 
 export interface HeaderProps {
   location?: WindowLocation
-  user: UserResponseData
+  user: User.AuthData
   logOut: () => void
   goToSettings: () => void
   goToHome: () => void
