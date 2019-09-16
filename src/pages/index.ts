@@ -3,4 +3,4 @@ export * from './Payment';
 export * from './Welcome';
 export * from './Privacy';
 export * from './Terms';
-export * from './NotFound';
+export * from './404NotFound';
