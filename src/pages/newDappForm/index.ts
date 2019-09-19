@@ -1,3 +1,3 @@
-export * from "./buildDetailsContainer"
-export * from "./configureDappContainer"
-export * from "./newDappContainer"
+export * from "./BuildDetails"
+export * from "./ConfigureDapp"
+export * from "./NewDapp"

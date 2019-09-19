@@ -1,9 +1,10 @@
 import React, { FC, useState, useEffect } from 'react';
+import DappbotAPI from '@eximchain/dappbot-api-client';
+import { NewPassChallenge as NewPassTypes } from '@eximchain/dappbot-types/spec/methods/auth';
+import User, { Challenges, validatePassword } from '@eximchain/dappbot-types/spec/user';
+import { isSuccessResponse } from '@eximchain/dappbot-types/spec/responses';
 import { Button } from '../ui';
-import { UserResponseData, ChallengeData, ChallengeType } from '../../types'
 import { StringField } from '../fields';
-import API, { challengeDataFactory } from '../../services/api';
-import {passwordChecker, NewPasswordArgs} from '../../services/api/auth';
 import Alert from 'react-s-alert';
 
 import { ErrorBox } from '..';
@@ -12,12 +13,12 @@ import { getErrMsg } from '../../services/util';
 
 
 interface NewPassChallengeProps {
-  user : UserResponseData,
-  challenge: ChallengeData,
-  setChallenge : (challenge: ChallengeData)=>void
+  user : User.AuthData,
+  challenge: Challenges.Data,
+  setChallenge : (challenge: Challenges.Data)=>void
   setErr: (err:string)=>void
-  setUser: (user:UserResponseData)=>void
-  API: API
+  setUser: (user:User.AuthData)=>void
+  API: DappbotAPI
 }
 
 export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChallenge, user, setUser, API})=>{
@@ -25,9 +26,9 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
   const [confirmPass, setConfirmPass] = useState('');
   const [err, setErr] = useState('');
 
-  const [newPassResponse, requestNewPass] = useResource(API.auth.newPassword())
+  const [newPassResponse, requestNewPass] = useResource(API.auth.newPassword.resource);
   const makeNewPassRequest = async () => {
-    const newPassDetails:NewPasswordArgs = {
+    const newPassDetails:NewPassTypes.Args = {
       'username': user.User.Username,
       'newPassword': newPass,
       'session': challenge.Session
@@ -45,9 +46,9 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
         }
       }
     }
-    if(data && data.data && data.data.Authorization){
-      setUser(data.data);
-      setChallenge(challengeDataFactory(ChallengeType.Default))
+    if(isSuccessResponse(data)){
+      if (User.isAuthData(data.data)) setUser(data.data);
+      setChallenge(Challenges.newData())
     }
   }, [error, data])
 
@@ -71,7 +72,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
                       displayName='New Password'
                       fieldType='password'
                       disabled={isLoading}
-                      isValid={(val)=>passwordChecker.validate(val)}
+                      isValid={validatePassword}
                       help="Minimum of 8 characters; include upper and lowercase letters, numbers, and a symbol."
                       errorMsg="Passwords must be at least 8 characters long, including upper and lowercase letters, a number, and a symbol."
                       onChange={setNewPass}
@@ -86,7 +87,7 @@ export const NewPassChallenge:FC<NewPassChallengeProps> = ({challenge, setChalle
                       displayName='Confirm New Password'
                       fieldType='password'
                       disabled={isLoading}
-                      isValid={(val)=>passwordChecker.validate(val)}
+                      isValid={validatePassword}
                       help="Must match field above."
                       errorMsg="Make sure this matches the field above."
                       onChange={setConfirmPass}

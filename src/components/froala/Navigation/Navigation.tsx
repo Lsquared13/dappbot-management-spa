@@ -1,8 +1,8 @@
 import React, { FC, useState } from 'react';
+import User from '@eximchain/dappbot-types/spec/user';
 import './../bootstrap.min.css';
 import './../froala_blocks.min.css';
 import { Link } from '@reach/router';
-import { emptyUserResponse } from '../../../types';
 
 export interface NavProps {
   hideLogin?: boolean
@@ -19,7 +19,7 @@ export const Navigation:FC<NavProps> = ({hideLogin, user, setUser}) => {
   };
   
   const logOut = () => {
-    setUser(emptyUserResponse());
+    setUser(User.newAuthData());
   }
 
   const loginLogoutLink = user.signInUserSession ? (

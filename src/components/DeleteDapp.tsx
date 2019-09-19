@@ -8,6 +8,7 @@ import {
   InputGroup,
   InputTitle
 } from "../layout";
+import Dapp from "@eximchain/dappbot-types/spec/dapp";
 
 export interface DeleteDappState {
   dappNameInput: string;
@@ -26,16 +27,6 @@ export interface DeleteDappProps {
   onInputChange?: (inputs: DeleteDappState) => void;
 }
 
-const cleanDappName = (val:string) => {
-  return val.toLowerCase()
-    .replace(/\s/g, '-') // Convert spaces to hyphens
-    .replace(/[^A-Za-z0-9-]/g, '') // Remove non-alphanumerics
-}
-
-const matchesDappName = (target:string) => {
-
-  return (value:string)=>{return value == target}
-}
 
 
 export class DeleteDapp extends Component<DeleteDappProps, DeleteDappState> {
@@ -83,8 +74,8 @@ export class DeleteDapp extends Component<DeleteDappProps, DeleteDappState> {
               type={"text"}
             value={dappNameInput} 
             name={'DappName'} 
-            clean={cleanDappName}
-            isValid={matchesDappName(dappName)}
+            clean={Dapp.cleanName}
+            isValid={val => val === dappName}
             stateHook={this.onDappNameChange}
             errorMessage={"confirm dapp name to continue"}
             placeholder= {dappName}/>

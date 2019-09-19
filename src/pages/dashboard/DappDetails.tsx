@@ -1,24 +1,15 @@
-import * as React from "react";
-import {Breadcrumb, Container, DappStatus, SettingMenu, SettingMenuProps} from "../../layout";
-import {DeployDapp, DeployDappProps} from "../../components";
-import {Box} from "../../components/ui";
+import React, { useEffect, useState } from "react";
+import { RouteComponentProps } from "@reach/router";
+import Dapp from '@eximchain/dappbot-types/spec/dapp';
 
-import {RouteComponentProps} from "@reach/router";
-import {DappTableProps} from "../../layout/DashboardLayout";
-import {useEffect, useState} from "react";
+import { Breadcrumb, Container, DappStatus, SettingMenu, SettingMenuProps } from "../../layout";
+import { DeployDapp } from "../../components";
+import { Box } from "../../components/ui";
+import { DappTableProps } from "../../layout/DashboardLayout";
 
-export interface DappDetail {
-    DappName : string;
-    DnsName : string;
-    ContractAddr : string;
-    Web3URL : string;
-    Abi : string;
-    GuardianURL : string
-}
-export interface DappDetailsContainerProps extends RouteComponentProps,
-SettingMenuProps {
+export interface DappDetailsContainerProps extends RouteComponentProps, SettingMenuProps {
     onStatusCopy?: () => void;
-    dapps: DappTableProps["dapps"];
+    dapps: Dapp.Item.Api[];
     building:boolean;
 }
 
@@ -27,57 +18,48 @@ let LOADING_DAPP = {
     Web3URL: "Loading ... ",
     ContractAddr: "Loading ... ",
     DnsName: "Loading ... "
-}as DappDetail
+} as Dapp.Item.Api
+
 let DAPP_NOT_FOUND = {
     DappName: "Dapp Not Found ... ",
     Web3URL: "Dapp Not Found ... ",
     ContractAddr: "Dapp Not Found ... ",
     DnsName: "Dapp Not Found ... "
-}as DappDetail
+} as Dapp.Item.Api
 
 export const DappDetailsContainer : React.SFC < DappDetailsContainerProps > = props => {
-    let [dappNotFound,
-        setDappNotFound] = useState(false)
+    let [dappNotFound, setDappNotFound] = useState(false)
     // SET DEFAULT: set dapp loading state, update it when ever the dapp changes and
     // pass onto render layer
-    let [dappDetailProps,
-        setDappDetailProps] = useState(LOADING_DAPP)
+    let [dappDetailProps, setDappDetailProps] = useState(LOADING_DAPP)
 
     // FETCH DAPP DETAIL: currently just using the list api changes, saves anpther
     // fetch, can use this to replace an api call later
     useEffect(() => {
-        let didCancel = false;
-        async function getDappByName(dappList : DappDetail[], DappName : string) {
+        async function getDappByName(dappList : Dapp.Item.Api[], DappName : string) {
             // SET LOADING IF NO DATA IS PASSED THROUGH
             if (dappList.length == 0) {
-                setDappDetailProps(LOADING_DAPP// SEARCH FOR OUR DAPP BY NAME ON PASSED THROUGH DATA
-                )
+                // SEARCH FOR OUR DAPP BY NAME ON PASSED THROUGH DATA
+                setDappDetailProps(LOADING_DAPP)
             } else {
-                let dapps = await dappList.filter((value) => {
-                    if (value.DappName == DappName) {
-                        return value
-                    }
-                })
-                if (dapps.length == 0) {
+                let dapp = await dappList.find(value => value.DappName === DappName)
+                if (dapp) {
+                    // DISPLAY DAPP DATA
+                    setDappDetailProps(dapp)
+                } else {
                     // IF NO MATCHING DAPP DISPLAY DAPP_NOT_FOUND
                     setDappDetailProps(DAPP_NOT_FOUND)
                     setDappNotFound(true)
-                } else {
-                    // DISPLAY DAPP DATA
-                    setDappDetailProps(dapps.pop()as DappDetail)
                 }
             }
         }
         getDappByName(props.dapps, props.dappName);
-        return () => {
-            didCancel = true
-        }; // Remember if we start fetching something else
     }, [props.dapps, props.dappName]);
 
     let notFound = (
         <Box>
             <Breadcrumb title={"404 - not found"}/>
-            <DappStatus onStatusCopy={props.onStatusCopy} status={"404 Access Denied: this demo account has insufficient permissions "}/>
+            <DappStatus onStatusCopy={props.onStatusCopy} buildStatus={"404 Access Denied: this demo account has insufficient permissions "}/>
         </Box>
     )
     let foundDapp = (
@@ -90,7 +72,7 @@ export const DappDetailsContainer : React.SFC < DappDetailsContainerProps > = pr
                 defaultTab={props.defaultTab}
                 settingOptions={props.settingOptions}
                 onTabChange={props.onTabChange}/>
-            <DappStatus status={"Available"} onStatusCopy={props.onStatusCopy}/>
+            <DappStatus buildStatus={"Available"} onStatusCopy={props.onStatusCopy}/>
 
             <Container>
                 <DeployDapp

@@ -1,6 +1,7 @@
 import React,{FC} from 'react';
 import { Box, Text } from './ui';
 import styled from "styled-components";
+import { PaymentStatus } from '@eximchain/dappbot-types/spec/user';
 
 const RedWarningDiv = styled.div`
   background-color: red;
@@ -8,7 +9,7 @@ const RedWarningDiv = styled.div`
 `
 
 export interface PaymentStatusBannerProps{
-  paymentState: string
+  paymentState: PaymentStatus
 }
 export const PaymentStatusBanner:FC<PaymentStatusBannerProps> = ({paymentState}) => {
   if (!paymentState) return null;

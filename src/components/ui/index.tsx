@@ -29,7 +29,6 @@ export * from "./LeftSidebar";
 export * from "./RightSidebar";
 export * from "./Image";
 export * from "./AddressSwitcher";
-export * from "./TopPanel";
 export * from "./NavTop";
 export * from "./TabButtons";
 

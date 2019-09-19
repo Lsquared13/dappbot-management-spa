@@ -1,5 +1,6 @@
 import React, { FC, useState, useEffect } from 'react';
 import { RouteComponentProps, Link } from '@reach/router';
+import DappbotAPI from '@eximchain/dappbot-api-client';
 import { StringField, NumberField, Uints, BooleanField } from '../components/fields';
 import { Button, Box, Text, Checkbox } from '../components/ui';
 import { Container } from "../layout";
@@ -8,7 +9,6 @@ import EmailImage from "../assets/images/CheckEmail.svg";
 
 import { CardElement, injectStripe, ReactStripeElements } from 'react-stripe-elements';
 import validate from 'validator';
-import API from '../services/api';
 import Alert from 'react-s-alert';
 
 import '../components/froala/bootstrap.min.css';
@@ -19,7 +19,7 @@ import { getErrMsg } from '../services/util';
 
 interface PaymentProps extends RouteComponentProps, ReactStripeElements.InjectedStripeProps {
   user?: any
-  API: API
+  API: DappbotAPI
   requireCreditCard?: boolean
 
 }
@@ -70,15 +70,15 @@ export const Payment:FC<PaymentProps> = ({user, API, stripe, requireCreditCard})
   const [agreeTerms, setAgreeTerms] = useState(false) ;
 
 
-  const [createUserResponse, sendCreateUserRequest] = useResource(API.payment.createUser());
+  const [createUserResponse, sendCreateUserRequest] = useResource(API.payment.signUp.resource);
   const [createUserSent, markCreateUserSent] = useState(false);
 
   const isRequired = requireCreditCard;
   const noCreditCardSignupArgs = { 
-    plans: { standard:10, professional:0, enterprise:0 },
+    plans: { standard:1, professional:0, enterprise:0 },
     email, name, coupon 
   };
-  const creditCardSignupArgs   = { 
+  const creditCardSignupArgs = { 
     plans: { standard:+numDapps, professional:0, enterprise:0 },
     token: "",
     email, name, coupon

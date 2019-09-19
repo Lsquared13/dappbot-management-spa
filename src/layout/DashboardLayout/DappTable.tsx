@@ -1,19 +1,11 @@
 import * as React from "react";
+import Dapp from '@eximchain/dappbot-types/spec/dapp';
 import { Box, Table, Text, TextProps } from "../../components/ui";
-import { NetworkReferenceLink, EXCAddresLink, DappDetailLink, FancyLink } from "../utils";
+import { NetworkReferenceLink, EXCAddressLink, DappDetailLink, FancyLink } from "../utils";
 import { ReactComponent as CheckIcon } from "../../assets/images/check.svg";
 
-export interface DappDetail {
-  DappName: string;
-  DnsName: string;
-  ContractAddr: string;
-  Web3URL: string;
-  Abi: string;
-  GuardianURL: string
-}
-
 export interface DappTableProps {
-  dapps: DappDetail[];
+  dapps: Dapp.Item.Api[];
 }
 
 const Title: React.SFC = props => (
@@ -48,7 +40,7 @@ export const DappTable: React.SFC<DappTableProps> = props => {
   let records = props.dapps.map(dapp => ({
     name: <DappDetailLink dappName={dapp.DappName}/>,
     network: <NetworkReferenceLink href={dapp.Web3URL}></NetworkReferenceLink>,
-    address: <EXCAddresLink short address={dapp.ContractAddr} /> ,
+    address: <EXCAddressLink short address={dapp.ContractAddr} /> ,
     url: <FancyLink href={`https://${dapp.DnsName}`}>{`https://${dapp.DnsName}`}</FancyLink>,
     status: (
       //TODO: FACTOR OUT ONCE WE HAVE STATUS API

@@ -9,7 +9,7 @@ import Alert from 'react-s-alert';
 import EXCAddress from '../components/ui/EXCAddress/index';
 
 
-export const EXCAddresLink: React.FC<EXCAddressProps> = props => {
+export const EXCAddressLink: React.FC<EXCAddressProps> = props => {
   let {address,short} = props
  
   return  <Box display={"inlineBlock"}>
