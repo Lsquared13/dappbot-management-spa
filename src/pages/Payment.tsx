@@ -73,15 +73,16 @@ export const Payment:FC<PaymentProps> = ({user, API, stripe, requireCreditCard})
   const [createUserResponse, sendCreateUserRequest] = useResource(API.payment.signUp.resource);
   const [createUserSent, markCreateUserSent] = useState(false);
 
+  const metadata = { occupation, organization };
   const isRequired = requireCreditCard;
   const noCreditCardSignupArgs = { 
     plans: { standard:1, professional:0, enterprise:0 },
-    email, name, coupon 
+    email, name, coupon, metadata
   };
   const creditCardSignupArgs = { 
     plans: { standard:+numDapps, professional:0, enterprise:0 },
     token: "",
-    email, name, coupon
+    email, name, coupon, metadata
   };
 
   const handleCreateUser= async () => {

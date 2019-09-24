@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@eximchain/dappbot-api-client": "^1.0.1",
-    "@eximchain/dappbot-types": "^1.2.4",
+    "@eximchain/dappbot-types": "^1.5.2",
     "@reach/router": "^1.2.1",
     "@reach/tooltip": "^0.2.0",
     "@types/classnames": "^2.2.7",
