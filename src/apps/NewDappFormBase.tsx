@@ -195,7 +195,6 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({ user, API, ..
         building={true}
         dappName={buildingDappDetails.current.DappName}
         dapp={buildingDappDetails.current}
-        onStatusCopy={() => { }}
         defaultTab="status"
         settingOptions={SETTING_OPTIONS}
         onTabChange={(dappName: string) => {

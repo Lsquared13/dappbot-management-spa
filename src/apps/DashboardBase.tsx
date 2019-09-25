@@ -181,9 +181,6 @@ export const DashboardBase: React.SFC<Props> = ({ API, ...props }) => {
           dappName="loading"
           building={false}
           dapps={dappList}
-          onStatusCopy={() => {
-            Alert.success("Value copied to clipboard");
-          }}
           defaultTab="status"
           settingOptions={SETTING_OPTIONS}
           onTabChange={(dappName: string) => {

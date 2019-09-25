@@ -1,11 +1,13 @@
 import * as React from "react";
+import { copyAndAlert } from "../utils";
 import { Box, Text, Icon, Button } from "../../components/ui";
 import { Container } from "./../Container";
 
 export interface DappStatusProps {
-  onStatusCopy?: () => void;
+  onAbiCopy?: () => void;
   buildStatus: string;
 }
+
 export const DappStatus: React.SFC<DappStatusProps> = props => {
   return (
     <Container>
@@ -29,7 +31,7 @@ export const DappStatus: React.SFC<DappStatusProps> = props => {
           </Text>
         </Text>
         <Box>
-          <Button size="small" theme="outlineBlue" onClick={props.onStatusCopy} >
+          <Button size="small" theme="outlineBlue" onClick={props.onAbiCopy} >
             ABI <Icon icon="copy" color="blue"/>
           </Button>
         </Box>
