@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {RouteComponentProps, navigate} from "@reach/router";
 import Alert from 'react-s-alert';
 
-import {Breadcrumb, Container, DappStatus, SettingMenu, SettingMenuProps} from "../../layout";
+import {Breadcrumb, Container, DappStatus, SettingMenu, SettingMenuProps, copyAndAlert } from "../../layout";
 import {Box} from "../../components/ui";
 import BuildDapp from "../../components/BuildDapp";
 import Dapp from "@eximchain/dappbot-types/spec/dapp";
@@ -10,12 +10,12 @@ import Dapp from "@eximchain/dappbot-types/spec/dapp";
 
 export interface BuildDetailsContainerProps extends RouteComponentProps,
 SettingMenuProps {
-    onStatusCopy?: () => void;
     dapp: Dapp.Item.Api;
     redirect: ()=>void;
 }
 
 export const BuildDetailsContainer : React.SFC <BuildDetailsContainerProps> = props => {
+    let onAbiCopy = () => { copyAndAlert(props.dapp.Abi, 3800) };
     
     let dapp = (
         <Box>
@@ -27,7 +27,7 @@ export const BuildDetailsContainer : React.SFC <BuildDetailsContainerProps> = pr
                 defaultTab={props.defaultTab}
                 settingOptions={props.settingOptions}
                 onTabChange={props.onTabChange}/>
-            <DappStatus buildStatus={"Building"} onStatusCopy={props.onStatusCopy}/>
+            <DappStatus buildStatus={"Building"} onAbiCopy={onAbiCopy}/>
 
             <Container>
                 <BuildDapp

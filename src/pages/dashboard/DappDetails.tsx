@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
+import Alert from 'react-s-alert';
 import { RouteComponentProps } from "@reach/router";
 import Dapp from '@eximchain/dappbot-types/spec/dapp';
 
-import { Breadcrumb, Container, DappStatus, SettingMenu, SettingMenuProps } from "../../layout";
+import { Breadcrumb, Container, DappStatus, SettingMenu, SettingMenuProps, copyAndAlert } from "../../layout";
 import { DeployDapp } from "../../components";
 import { Box } from "../../components/ui";
 import { DappTableProps } from "../../layout/DashboardLayout";
 
 export interface DappDetailsContainerProps extends RouteComponentProps, SettingMenuProps {
-    onStatusCopy?: () => void;
     dapps: Dapp.Item.Api[];
     building:boolean;
 }
@@ -29,6 +29,7 @@ let DAPP_NOT_FOUND = {
 
 export const DappDetailsContainer : React.SFC < DappDetailsContainerProps > = props => {
     let [dappNotFound, setDappNotFound] = useState(false)
+    let [abi, setAbi] = useState('');
     // SET DEFAULT: set dapp loading state, update it when ever the dapp changes and
     // pass onto render layer
     let [dappDetailProps, setDappDetailProps] = useState(LOADING_DAPP)
@@ -45,6 +46,7 @@ export const DappDetailsContainer : React.SFC < DappDetailsContainerProps > = pr
                 let dapp = await dappList.find(value => value.DappName === DappName)
                 if (dapp) {
                     // DISPLAY DAPP DATA
+                    setAbi(dapp.Abi)
                     setDappDetailProps(dapp)
                 } else {
                     // IF NO MATCHING DAPP DISPLAY DAPP_NOT_FOUND
@@ -56,10 +58,12 @@ export const DappDetailsContainer : React.SFC < DappDetailsContainerProps > = pr
         getDappByName(props.dapps, props.dappName);
     }, [props.dapps, props.dappName]);
 
+    let onAbiCopy = abi ? () => { copyAndAlert(abi, 3800) } : () => { Alert.error("No ABI found to copy") };
+
     let notFound = (
         <Box>
             <Breadcrumb title={"404 - not found"}/>
-            <DappStatus onStatusCopy={props.onStatusCopy} buildStatus={"404 Access Denied: this demo account has insufficient permissions "}/>
+            <DappStatus onAbiCopy={onAbiCopy} buildStatus={"404 Access Denied: this demo account has insufficient permissions "}/>
         </Box>
     )
     let foundDapp = (
@@ -72,7 +76,7 @@ export const DappDetailsContainer : React.SFC < DappDetailsContainerProps > = pr
                 defaultTab={props.defaultTab}
                 settingOptions={props.settingOptions}
                 onTabChange={props.onTabChange}/>
-            <DappStatus buildStatus={"Available"} onStatusCopy={props.onStatusCopy}/>
+            <DappStatus buildStatus={"Available"} onAbiCopy={onAbiCopy}/>
 
             <Container>
                 <DeployDapp

@@ -8,6 +8,13 @@ import copy from 'copy-to-clipboard';
 import Alert from 'react-s-alert';
 import EXCAddress from '../components/ui/EXCAddress/index';
 
+export const copyAndAlert = (val: string, timeout: number | undefined) => {
+  copy(val)
+  Alert.success("Successfully copied to your clipboard!", {
+    timeout: timeout , offset: -20, 
+  });
+  return;
+}
 
 export const EXCAddressLink: React.FC<EXCAddressProps> = props => {
   let {address,short} = props
@@ -20,10 +27,7 @@ export const EXCAddressLink: React.FC<EXCAddressProps> = props => {
           </Box>
 }
 const handleCopy2Clipboard = (val: string) => {
-    copy(val)
-    Alert.success("Successfully copied to your clipboard!", {
-      timeout: 3800 , offset: -20, 
-    });
+    copyAndAlert(val, 3800);
     return
 }
 
@@ -126,10 +130,7 @@ export const FancyLink: React.SFC<LinkProps> = props => {
 
 const handleCopy = (val: React.SyntheticEvent<HTMLAnchorElement>) => {
   val.preventDefault()
-  copy(val.currentTarget.href)
-  Alert.success("Successfully copied to your clipboard!",{
-    timeout: 3900, offset: -20
-});
+  copyAndAlert(val.currentTarget.href, 3900);
   return
 }
 
