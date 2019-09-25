@@ -148,6 +148,11 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
       Alert.error(`Error updating your subscription: ${getErrMsg(error)}`)
     } else if (data && !isLoading) {
       requestStripe()
+      try {
+        API.loginViaRefresh()
+      } catch (err) {
+        console.error('Unable to perform refresh login: ', err);
+      }
     }
   }, [updateDappsResponse])
 
