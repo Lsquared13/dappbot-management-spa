@@ -15,7 +15,7 @@ SettingMenuProps {
 }
 
 export const BuildDetailsContainer : React.SFC <BuildDetailsContainerProps> = props => {
-    let onAbiCopy = () => { copyAndAlert(props.dapp.Abi, 3800) };
+    let onAbiCopy = () => { copyAndAlert(props.dapp.Abi) };
     
     let dapp = (
         <Box>

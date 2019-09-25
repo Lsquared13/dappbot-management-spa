@@ -58,7 +58,7 @@ export const DappDetailsContainer : React.SFC < DappDetailsContainerProps > = pr
         getDappByName(props.dapps, props.dappName);
     }, [props.dapps, props.dappName]);
 
-    let onAbiCopy = abi ? () => { copyAndAlert(abi, 3800) } : () => { Alert.error("No ABI found to copy") };
+    let onAbiCopy = abi ? () => { copyAndAlert(abi) } : () => { Alert.error("No ABI found to copy") };
 
     let notFound = (
         <Box>

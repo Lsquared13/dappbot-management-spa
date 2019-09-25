@@ -8,7 +8,7 @@ import copy from 'copy-to-clipboard';
 import Alert from 'react-s-alert';
 import EXCAddress from '../components/ui/EXCAddress/index';
 
-export const copyAndAlert = (val: string, timeout: number | undefined) => {
+export const copyAndAlert = (val: string, timeout: number=3800) => {
   copy(val)
   Alert.success("Successfully copied to your clipboard!", {
     timeout: timeout , offset: -20, 
@@ -27,7 +27,7 @@ export const EXCAddressLink: React.FC<EXCAddressProps> = props => {
           </Box>
 }
 const handleCopy2Clipboard = (val: string) => {
-    copyAndAlert(val, 3800);
+    copyAndAlert(val);
     return
 }
 
