@@ -1,6 +1,8 @@
 
 import { Box, Text, TextProps, Link, LinkProps, EXCAddressProps, Icon } from "../components/ui";
 import { ReactComponent as LinkIcon } from "../assets/images/link.svg";
+import { ReactComponent as CheckIcon } from "../assets/images/check.svg";
+import { Dapp } from "@eximchain/dappbot-types";
 import { RouteComponentProps, navigate, Link as RouterLink } from "@reach/router";
 
 import * as React from "react";
@@ -163,6 +165,32 @@ export const DappDetailLink: React.FC<DappDetailLinkProps> = ({dappName, ...prop
        
        </RouterLink>
     </Content>
+  )
+  // return ;
+}
+
+export interface DappStateIndicatorProps {
+  state: Dapp.States;
+};
+
+export const DappStateIndicator: React.FC<DappStateIndicatorProps> = ({state, ...props}) =>{
+
+  return (
+    //TODO: EDIT BASED ON STATE
+    <Box marginLeft={-5}display="flex" alignItems="start" justifyContent="center" >
+      {/* <Box marginRight={2}>
+        {dapp.status === "available" ? (
+          <CheckIcon height={24} width={24} />
+        ) : (
+          <LoadingIcon height={24} width={24} />
+        )}
+      </Box> */}
+      <Box marginRight={2}>
+        <CheckIcon height={20} width={20} />
+      </Box>
+      
+      <Content textTransform="capitalize">available</Content>
+    </Box>
   )
   // return ;
 }
