@@ -3,7 +3,7 @@ import { Box, Text, TextProps, Link, LinkProps, EXCAddressProps, Icon } from "..
 import { ReactComponent as LinkIcon } from "../assets/images/link.svg";
 import { ReactComponent as CheckIcon } from "../assets/images/check.svg";
 import { ReactComponent as WarnIcon } from "../assets/images/warning.svg";
-import FadeLoader from 'react-spinners/FadeLoader';
+import PulseLoader from 'react-spinners/PulseLoader';
 import { Dapp } from "@eximchain/dappbot-types";
 import { RouteComponentProps, navigate, Link as RouterLink } from "@reach/router";
 
@@ -11,6 +11,8 @@ import * as React from "react";
 import copy from 'copy-to-clipboard';
 import Alert from 'react-s-alert';
 import EXCAddress from '../components/ui/EXCAddress/index';
+
+const eximchainBlueColor = '#267EDC';
 
 export const copyAndAlert = (val: string, timeout: number=3800) => {
   copy(val)
@@ -176,31 +178,38 @@ export interface DappStateIndicatorProps {
 };
 
 export const DappStateIndicator: React.FC<DappStateIndicatorProps> = ({state, ...props}) =>{
+  let displayState:string = state;
+  // Default icon for unexpected state.  Should never be displayed in prod.
+  let icon = (<WarnIcon height={20} width={20} />);
 
   switch (state) {
     case Dapp.States.AVAILABLE:
-      return (
-        //TODO: EDIT BASED ON STATE
-        <Box marginLeft={-5}display="flex" alignItems="start" justifyContent="center" >
-          <Box marginRight={2}>
-            <CheckIcon height={20} width={20} />
-          </Box>
-            
-          <Content textTransform="capitalize">{state}</Content>
-        </Box>
-      )
+      icon = (<CheckIcon height={20} width={20} />);
+      break;
+    case Dapp.States.BUILDING_DAPP:
+      displayState = 'BUILDING DAPP';
+    case Dapp.States.CREATING:
+    case Dapp.States.DELETING:
+      icon = (<PulseLoader size={6} sizeUnit={"px"} color={eximchainBlueColor} />);
+      break;
+    case Dapp.States.DEPOSED:
+    case Dapp.States.FAILED:
+      icon = (<WarnIcon height={20} width={20} />);
+      break;
     default:
-      return (
-        //TODO: SET ACTUAL DEFAULT
-        <Box marginLeft={-5}display="flex" alignItems="start" justifyContent="center" >
-          <Box marginRight={2}>
-            <CheckIcon height={20} width={20} />
-          </Box>
-              
-          <Content textTransform="capitalize">{state}</Content>
-        </Box>
-      )
+      displayState = 'UNEXPECTED STATE';
+      break;
   }
+
+  return (
+    <Box marginLeft={-5}display="flex" alignItems="start" justifyContent="center" >
+      <Box marginRight={2}>
+        { icon }
+      </Box>
+          
+      <Content textTransform="capitalize">{displayState}</Content>
+    </Box>
+  )
 }
 
 
