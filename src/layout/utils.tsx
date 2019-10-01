@@ -175,24 +175,30 @@ export interface DappStateIndicatorProps {
 
 export const DappStateIndicator: React.FC<DappStateIndicatorProps> = ({state, ...props}) =>{
 
-  return (
-    //TODO: EDIT BASED ON STATE
-    <Box marginLeft={-5}display="flex" alignItems="start" justifyContent="center" >
-      {/* <Box marginRight={2}>
-        {dapp.status === "available" ? (
-          <CheckIcon height={24} width={24} />
-        ) : (
-          <LoadingIcon height={24} width={24} />
-        )}
-      </Box> */}
-      <Box marginRight={2}>
-        <CheckIcon height={20} width={20} />
-      </Box>
-      
-      <Content textTransform="capitalize">available</Content>
-    </Box>
-  )
-  // return ;
+  switch (state) {
+    case Dapp.States.AVAILABLE:
+      return (
+        //TODO: EDIT BASED ON STATE
+        <Box marginLeft={-5}display="flex" alignItems="start" justifyContent="center" >
+          <Box marginRight={2}>
+            <CheckIcon height={20} width={20} />
+          </Box>
+            
+          <Content textTransform="capitalize">{state}</Content>
+        </Box>
+      )
+    default:
+      return (
+        //TODO: SET ACTUAL DEFAULT
+        <Box marginLeft={-5}display="flex" alignItems="start" justifyContent="center" >
+          <Box marginRight={2}>
+            <CheckIcon height={20} width={20} />
+          </Box>
+              
+          <Content textTransform="capitalize">{state}</Content>
+        </Box>
+      )
+  }
 }
 
 
