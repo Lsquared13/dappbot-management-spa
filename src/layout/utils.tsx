@@ -2,6 +2,8 @@
 import { Box, Text, TextProps, Link, LinkProps, EXCAddressProps, Icon } from "../components/ui";
 import { ReactComponent as LinkIcon } from "../assets/images/link.svg";
 import { ReactComponent as CheckIcon } from "../assets/images/check.svg";
+import { ReactComponent as WarnIcon } from "../assets/images/warning.svg";
+import FadeLoader from 'react-spinners/FadeLoader';
 import { Dapp } from "@eximchain/dappbot-types";
 import { RouteComponentProps, navigate, Link as RouterLink } from "@reach/router";
 
