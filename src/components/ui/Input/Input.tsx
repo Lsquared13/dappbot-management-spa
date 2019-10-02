@@ -25,7 +25,7 @@ export function inputUpdater (onChange:Function, options:UpdaterOptions={}) {
 export function inputValidator (validator:ValidatorFunc, withError:Function, errorMsg:string="Invalid value.") {
   return function(e:FocusEvent<HTMLInputElement>){ 
       if (!validator(e.target.value)){ 
-          withError(errorMsg) 
+          withError(errorMsg)
       } else {
           withError('')
       }
@@ -125,7 +125,7 @@ export type InputTypeOptions =
   }
 
 export const Input: FunctionComponent<Props> = (
-  {id, value, placeholder,type, stateHook, name, isValid, errorMessage,clean,disabled,autoComplete, ...props}
+  {id, value, placeholder,type, stateHook, name, isValid, errorMessage, clean, disabled, autoComplete, ...props}
   ) =>{
     let textfield:HTMLInputElement; 
     const textfieldRef = React.createRef<HTMLInputElement>();
@@ -136,7 +136,6 @@ export const Input: FunctionComponent<Props> = (
     useEffect(()=>{
       textfield = textfieldRef.current!;
     },[])
-    
 
     let validator = (e:FocusEvent<HTMLInputElement>)=>{ };
     if (isValid){

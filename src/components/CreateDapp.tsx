@@ -81,6 +81,10 @@ export class CreateDapp extends React.Component<
   
   };
 
+  dappNameValid = (dappName: string) => {
+    return dappName === '' ? false : dappName === Dapp.cleanName(dappName);
+  }
+
   render() {
     let { onConfigDapp, onCancel, onGithubLink, onNoneLink } = this.props;
     let { dappName, buildDestination } = this.state;
@@ -97,9 +101,9 @@ export class CreateDapp extends React.Component<
                   type={"text"}
                   value={dappName} 
                   name={'dappName'} 
-                  clean={Dapp.cleanName}
+                  isValid={this.dappNameValid}
                   stateHook={this.onDappNameChange}
-                  errorMessage={"This name will be lower-cased, and must begin and end with a letter or number.  Only letters, numbers, and hyphens please!"}
+                  errorMessage={"This name must be all lowercase, and must begin and end with a letter or number.  Only letters, numbers, and hyphens please!"}
                   placeholder= {"Dapp Name"}/>
               </Box>
                
@@ -194,6 +198,7 @@ export class CreateDapp extends React.Component<
             size="small"
             style="standard"
             theme="cta"
+            disabled={!this.dappNameValid(this.state.dappName)}
             onClick={e => onConfigDapp(e, this.state)}>
             <ButtonText>Configure Dapp</ButtonText>
           </Button>
