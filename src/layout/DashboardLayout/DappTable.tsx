@@ -1,7 +1,7 @@
 import * as React from "react";
 import Dapp from '@eximchain/dappbot-types/spec/dapp';
 import { Box, Table, Text, TextProps } from "../../components/ui";
-import { NetworkReferenceLink, EXCAddressLink, DappDetailLink, FancyLink } from "../utils";
+import { NetworkReferenceLink, EXCAddressLink, DappDetailLink, FancyLink, DappStateIndicator } from "../utils";
 import { ReactComponent as CheckIcon } from "../../assets/images/check.svg";
 
 export interface DappTableProps {
@@ -42,23 +42,7 @@ export const DappTable: React.SFC<DappTableProps> = props => {
     network: <NetworkReferenceLink href={dapp.Web3URL}></NetworkReferenceLink>,
     address: <EXCAddressLink short address={dapp.ContractAddr} /> ,
     url: <FancyLink href={`https://${dapp.DnsName}`}>{`https://${dapp.DnsName}`}</FancyLink>,
-    status: (
-      //TODO: FACTOR OUT ONCE WE HAVE STATUS API
-      <Box marginLeft={-5}display="flex" alignItems="start" justifyContent="center" >
-        {/* <Box marginRight={2}>
-          {dapp.status === "available" ? (
-            <CheckIcon height={24} width={24} />
-          ) : (
-            <LoadingIcon height={24} width={24} />
-          )}
-        </Box> */}
-        <Box marginRight={2}>
-          <CheckIcon height={20} width={20} />
-        </Box>
-        
-        <Content textTransform="capitalize">available</Content>
-      </Box>
-    ),
+    status: <DappStateIndicator dappState={dapp.State} />,
   }));
 
   return (
