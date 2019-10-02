@@ -82,7 +82,7 @@ export class CreateDapp extends React.Component<
   };
 
   dappNameValid = (dappName: string) => {
-    return dappName && dappName === Dapp.cleanName(dappName);
+    return dappName === '' ? false : dappName === Dapp.cleanName(dappName);
   }
 
   render() {
@@ -101,7 +101,7 @@ export class CreateDapp extends React.Component<
                   type={"text"}
                   value={dappName} 
                   name={'dappName'} 
-                  isValid={(dappName:string) => dappName === Dapp.cleanName(dappName)}
+                  isValid={this.dappNameValid}
                   stateHook={this.onDappNameChange}
                   errorMessage={"This name must be all lowercase, and must begin and end with a letter or number.  Only letters, numbers, and hyphens please!"}
                   placeholder= {"Dapp Name"}/>
