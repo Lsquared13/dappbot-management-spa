@@ -174,15 +174,15 @@ export const DappDetailLink: React.FC<DappDetailLinkProps> = ({dappName, ...prop
 }
 
 export interface DappStateIndicatorProps {
-  state: Dapp.States;
+  dappState: Dapp.States;
 };
 
-export const DappStateIndicator: React.FC<DappStateIndicatorProps> = ({state, ...props}) =>{
-  let displayState:string = state;
+export const DappStateIndicator: React.FC<DappStateIndicatorProps> = ({dappState, ...props}) =>{
+  let displayState:string = dappState;
   // Default icon for unexpected state.  Should never be displayed in prod.
   let icon = (<WarnIcon height={20} width={20} />);
 
-  switch (state) {
+  switch (dappState) {
     case Dapp.States.AVAILABLE:
       icon = (<CheckIcon height={20} width={20} />);
       break;

@@ -42,7 +42,7 @@ export const DappTable: React.SFC<DappTableProps> = props => {
     network: <NetworkReferenceLink href={dapp.Web3URL}></NetworkReferenceLink>,
     address: <EXCAddressLink short address={dapp.ContractAddr} /> ,
     url: <FancyLink href={`https://${dapp.DnsName}`}>{`https://${dapp.DnsName}`}</FancyLink>,
-    status: <DappStateIndicator state={dapp.State} />,
+    status: <DappStateIndicator dappState={dapp.State} />,
   }));
 
   return (
