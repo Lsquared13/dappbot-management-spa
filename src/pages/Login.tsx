@@ -10,7 +10,7 @@ import Alert from 'react-s-alert';
 import { useResource } from 'react-request-hook';
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
-import { ErrorBox, NewPassChallenge, PassResetChallenge } from '../components';
+import { ErrorBox, NewPassChallenge, PassResetChallenge, MfaChallenge } from '../components';
 import { getErrMsg } from '../services/util';
 
 export interface LoginProps extends RouteComponentProps {
@@ -194,9 +194,18 @@ export const Login: FC<LoginProps> = (props) => {
           </div>
           <PassResetChallenge email={email} API={API} {...challengeProps} />
         </React.Fragment>
-
       break;
-
+    
+    case (User.Challenges.Types.AppMfa):
+    case (User.Challenges.Types.SmsMfa):
+      loginFields = (
+        <MfaChallenge setUser={setUser}
+        user={user}
+        API={API}
+        challenge={challenge}
+        {...challengeProps} />
+      )
+      break;
   }
   return (
     <section className="fdb-block fp-active" data-block-type="forms">
