@@ -151,7 +151,7 @@ export const ConfigureMfa: FC<ConfigureMfaProps> = ({ email, API, refreshToken, 
     let mfaBtnOnClick:()=>void;
     if (loadingData || mfaStateLoading) {
       mfaStatusDisplay = "Loading...";
-      mfaBtnDisplay = "Configure";
+      mfaBtnDisplay = "Configure MFA";
       mfaCallLoading = true;
       mfaBtnOnClick = ()=>{};
     } else {
