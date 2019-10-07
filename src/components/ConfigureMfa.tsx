@@ -1,15 +1,18 @@
-import React, { FC, useState, useEffect, } from 'react';
-import { useResource } from 'react-request-hook';
-import Alert from 'react-s-alert';
-import { BeginSetupAppMfa, ConfirmSetupAppMfa, SetMfaPreference } from '@eximchain/dappbot-types/spec/methods/auth';
-import { isSuccessResponse } from '@eximchain/dappbot-types/spec/responses';
-import DappbotAPI from '@eximchain/dappbot-api-client';
-import QRCode from 'qrcode.react';
-import { XOR } from 'ts-xor';
 import { Text, Button, EasyInputGroup } from './ui';
-import { Challenges } from '@eximchain/dappbot-types/spec/user';
 import { NumberField, Uints } from '../components/fields';
 import { getErrMsg } from '../services/util';
+
+import DappbotAPI from '@eximchain/dappbot-api-client';
+import { isSuccessResponse } from '@eximchain/dappbot-types/spec/responses';
+import { Challenges } from '@eximchain/dappbot-types/spec/user';
+import { BeginSetupAppMfa, ConfirmSetupAppMfa, SetMfaPreference } from '@eximchain/dappbot-types/spec/methods/auth';
+
+import React, { FC, useState, useEffect, } from 'react';
+import Alert from 'react-s-alert';
+import { useResource } from 'react-request-hook';
+
+import QRCode from 'qrcode.react';
+import { XOR } from 'ts-xor';
 
 export interface ConfigureMfaProps {
   email: string
