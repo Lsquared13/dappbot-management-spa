@@ -1,10 +1,7 @@
-import React, { FC, useState, useEffect, ReactElement } from 'react';
+import React, { FC, useState, ReactElement } from 'react';
 import { confirmAlert } from 'react-confirm-alert';
-import { useResource } from 'react-request-hook';
 import DappbotAPI from '@eximchain/dappbot-api-client';
 import { StripeTypes } from '@eximchain/dappbot-types/spec/methods/payment';
-import { BeginSetupAppMfa, ConfirmSetupAppMfa, SetMfaPreference } from '@eximchain/dappbot-types/spec/methods/auth';
-import { isSuccessResponse } from '@eximchain/dappbot-types/spec/responses';
 import {
   CardElement as NewCardElement,
   ReactStripeElements as RSE,
@@ -13,30 +10,14 @@ import {
 import { XOR } from 'ts-xor';
 import moment from 'moment';
 import Alert from 'react-s-alert';
-import QRCode from 'qrcode.react';
-import { InputGroup, InputTitle, InputContainer } from '../layout';
 import CreditCard from './CreditCard';
+import ConfigureMfa from './ConfigureMfa';
 import CustomConfirmFactory from './CustomConfirmAlert';
 import { NumberField, Uints } from '../components/fields';
-import { Box, Text, Button } from './ui';
+import { InputTitle } from '../layout';
+import { Box, Text, Button, EasyInputGroup } from './ui';
 import InvoiceTable from './InvoiceTable';
-import { getErrMsg } from '../services/util';
 import { Challenges } from '@eximchain/dappbot-types/spec/user';
-
-interface EasyInputGroupProps {
-  title: string
-  children: ReactElement
-}
-const EasyInputGroup: FC<EasyInputGroupProps> = ({ title, children }) => (
-  <InputGroup>
-    <InputTitle color="gray">{title}</InputTitle>
-    <InputContainer>
-      <Box column={12} mdColumn={12} width='100%'>
-        {children}
-      </Box>
-    </InputContainer>
-  </InputGroup>
-)
 
 interface EvenBlocksProps {
   left: ReactElement
@@ -70,7 +51,7 @@ export interface BillingProps extends RSE.InjectedStripeProps {
   paymentStatus: string
   API: DappbotAPI
   refreshToken: string
-  preferredMfa?: Challenges.MfaTypes
+  preferredMfa: XOR<Challenges.MfaTypes, null>
 }
 
 const Billing: FC<BillingProps> = ({
@@ -250,167 +231,6 @@ const Billing: FC<BillingProps> = ({
     )
 
   /////////////////////////////////
-  // CONFIGURE MFA
-  /////////////////////////////////
-  const [appMfaSetupSecret, setAppMfaSetupSecret] = useState('');
-  const [appMfaVerifyCode, setAppMfaVerifyCode] = useState('');
-
-  const [beginSetupAppMfaResponse, requestBeginSetupAppMfa] = useResource(API.auth.beginSetupAppMfa.resource);
-  const [confirmSetupAppMfaResponse, requestConfirmSetupAppMfa] = useResource(API.auth.confirmSetupAppMfa.resource);
-  const [setMfaPreferenceResponse, requestSetPreferredMfa] = useResource(API.auth.setMfaPreference.resource);
-
-  function beginConfigureMfa() {
-    const beginConfigureMfaDetails:BeginSetupAppMfa.Args = {
-      'refreshToken': refreshToken
-    }
-    requestBeginSetupAppMfa(beginConfigureMfaDetails)
-  }
-  useEffect(function handleBeginSetupMfaResponse(){
-    const { error, data } = beginSetupAppMfaResponse;
-    if(error){
-      switch (error.code) {
-        default: {
-          let msg = `Error beginning MFA setup : ${getErrMsg(error)}`
-          Alert.error(msg);
-        }
-      }
-    }
-    if(isSuccessResponse(data)){
-      setAppMfaSetupSecret(data.data.secretCode)
-    }
-  }, [beginSetupAppMfaResponse.error, beginSetupAppMfaResponse.data])
-
-  function confirmAppMfa() {
-    const confirmAppMfaDetails:ConfirmSetupAppMfa.Args = {
-      'refreshToken': refreshToken,
-      'mfaVerifyCode': appMfaVerifyCode
-    }
-    requestConfirmSetupAppMfa(confirmAppMfaDetails)
-  }
-  useEffect(function handleConfirmSetupMfaResponse(){
-    const { error, data } = confirmSetupAppMfaResponse;
-    if(error){
-      switch (error.code) {
-        default: {
-          let msg = `Error confirming MFA setup : ${getErrMsg(error)}`
-          Alert.error(msg);
-        }
-      }
-    }
-    if(isSuccessResponse(data)){
-      enableAppMfa()
-    }
-  }, [confirmSetupAppMfaResponse.error, confirmSetupAppMfaResponse.data])
-
-  function enableAppMfa() {
-    const enableMfaDetails:SetMfaPreference.Args = {
-      'mfaEnabled': true,
-      'preferredMfa': Challenges.Types.AppMfa
-    }
-    requestSetPreferredMfa(enableMfaDetails)
-  }
-  function disableMfa() {
-    const disableMfaDetails:SetMfaPreference.Args = {
-      'mfaEnabled': false
-    }
-    requestSetPreferredMfa(disableMfaDetails)
-  }
-  useEffect(function handleSetMfaPreferenceResponse(){
-    const { error, data } = setMfaPreferenceResponse;
-    if(error){
-      switch (error.code) {
-        default: {
-          let msg = `Error setting MFA preference : ${getErrMsg(error)}`
-          Alert.error(msg);
-        }
-      }
-    }
-    if(isSuccessResponse(data)){
-      switch (data.data.enabledMfa) {
-        case Challenges.Types.AppMfa:
-          setAppMfaSetupSecret('');
-          setAppMfaVerifyCode('');
-        case Challenges.Types.SmsMfa:
-          Alert.success("MFA successfully enabled");
-          break;
-        default:
-          Alert.success("MFA successfully disabled");
-          break;
-      }
-      API.loginViaRefresh();
-    }
-  }, [setMfaPreferenceResponse.error, setMfaPreferenceResponse.data])
-
-  let configureMfaElement:JSX.Element;
-  if (appMfaSetupSecret) {
-    // User initiated App MFA setup and is being presented a secret code
-    let label = "DappBot"
-    let qrValue = `otpauth://totp/${label}:${email}?secret=${appMfaSetupSecret}&issuer=${label}`;
-    configureMfaElement = (
-      <>
-        <QRCode value={qrValue}
-          renderAs='svg'
-          size={128} />
-        <NumberField name='appMfaVerifyCode'
-        value={appMfaVerifyCode}
-        displayName={'App-Generated MFA Code'}
-        size={Uints.size32}
-        onChange={setAppMfaVerifyCode} />
-        <Button onClick={confirmAppMfa}
-          size='small'
-          theme='outlineBlue'
-          disabled={noUpdatesAllowed || loadingData || confirmSetupAppMfaResponse.isLoading || setMfaPreferenceResponse.isLoading}>
-          Verify Code
-        </Button>
-      </>
-    );
-  } else {
-    let mfaStatusDisplay:string;
-    let mfaBtnDisplay:string;
-    let mfaCallLoading:boolean;
-    let mfaBtnOnClick:()=>void;
-    if (loadingData) {
-      mfaStatusDisplay = "Loading...";
-      mfaBtnDisplay = "Configure";
-      mfaCallLoading = true;
-      mfaBtnOnClick = ()=>{};
-    } else {
-      switch (preferredMfa) {
-        case Challenges.Types.AppMfa:
-          mfaStatusDisplay = "App-based MFA Enabled";
-          mfaBtnDisplay = "Disable MFA";
-          mfaCallLoading = setMfaPreferenceResponse.isLoading;
-          mfaBtnOnClick = disableMfa;
-          break;
-        case Challenges.Types.SmsMfa:
-          mfaStatusDisplay = "SMS MFA Enabled";
-          mfaBtnDisplay = "Disable MFA";
-          mfaCallLoading = setMfaPreferenceResponse.isLoading;
-          mfaBtnOnClick = disableMfa;
-          break;
-        default:
-          mfaStatusDisplay = "MFA Disabled";
-          mfaBtnDisplay = "Set Up MFA";
-          mfaCallLoading = beginSetupAppMfaResponse.isLoading;
-          mfaBtnOnClick = beginConfigureMfa;
-          break;
-      }
-    }
-
-    configureMfaElement = (
-      <>
-        <Text className='marginBottom1'>{mfaStatusDisplay}</Text>
-        <Button onClick={mfaBtnOnClick}
-          size='small'
-          theme='outlineBlue'
-          disabled={noUpdatesAllowed || loadingData || mfaCallLoading}>
-          {mfaBtnDisplay}
-        </Button>
-      </>
-    );
-  }
-
-  /////////////////////////////////
   // SUBSCRIPTION DETAIL PRESENTATION LOGIC
   /////////////////////////////////
   let subscriptionStatus = 'Loading...';
@@ -447,9 +267,11 @@ const Billing: FC<BillingProps> = ({
               {updateDappsBtn}
             </>
           </EasyInputGroup>
-          <EasyInputGroup title='MFA Configuration'>
-            {configureMfaElement}
-          </EasyInputGroup>
+          <ConfigureMfa loadingData={loadingData}
+            email={email}
+            API={API}
+            refreshToken={refreshToken}
+            preferredMfa={preferredMfa} />
         </div>
         <div className='col-sm-12 col-md-6 my-auto'>
           <InputTitle color="gray">Credit Card</InputTitle>

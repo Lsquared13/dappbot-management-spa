@@ -190,7 +190,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   }, [updatePaymentResponse, requestStripe]);
 
   let paymentStatus = user.User.UserAttributes['custom:payment_status'] || 'ACTIVE';
-  let preferredMfa = user.User.PreferredMfaSetting ? user.User.PreferredMfaSetting as Challenges.MfaTypes : undefined;
+  let preferredMfa = user.User.PreferredMfaSetting ? user.User.PreferredMfaSetting as Challenges.MfaTypes : null;
   return (
     <Box>
       <Breadcrumb title={"none"} />

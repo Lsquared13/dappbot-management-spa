@@ -22,6 +22,7 @@ export * from './Dropdown';
 export * from './Console';
 export * from './Input';
 export * from './SelectList';
+export * from './EasyInputGroup';
 
 export * from "./Nav";
 export * from "./NavLeft";
