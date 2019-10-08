@@ -157,13 +157,8 @@ export const ConfigureMfa: FC<ConfigureMfaProps> = ({ email, API, refreshToken, 
     } else {
       switch (preferredMfa) {
         case Challenges.Types.AppMfa:
-          mfaStatusDisplay = "App-based MFA Enabled";
-          mfaBtnDisplay = "Disable MFA";
-          mfaCallLoading = setMfaPreferenceResponse.isLoading;
-          mfaBtnOnClick = disableMfa;
-          break;
         case Challenges.Types.SmsMfa:
-          mfaStatusDisplay = "SMS MFA Enabled";
+          mfaStatusDisplay = preferredMfa === Challenges.Types.AppMfa ? "App-based MFA Enabled" : "SMS MFA Enabled";
           mfaBtnDisplay = "Disable MFA";
           mfaCallLoading = setMfaPreferenceResponse.isLoading;
           mfaBtnOnClick = disableMfa;
