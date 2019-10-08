@@ -132,7 +132,7 @@ export const ConfigureMfa: FC<ConfigureMfaProps> = ({ email, API, refreshToken, 
       <>
         <QRCode value={qrValue}
           renderAs='svg'
-          size={128} />
+          size={192} />
         <NumberField name='appMfaVerifyCode'
         value={appMfaVerifyCode}
         placeholder={'App-Generated MFA Code'}
