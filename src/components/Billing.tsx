@@ -256,11 +256,6 @@ const Billing: FC<BillingProps> = ({
               {email}
             </Text>
           </EasyInputGroup>
-          <EasyInputGroup title='Subscription Status'>
-            <Text>
-              {subscriptionStatus}
-            </Text>
-          </EasyInputGroup>
           <EasyInputGroup title='Standard Dapp Slots'>
             <>
               {updateDappsElement}
@@ -274,6 +269,11 @@ const Billing: FC<BillingProps> = ({
             preferredMfa={preferredMfa} />
         </div>
         <div className='col-sm-12 col-md-6 my-auto'>
+          <EasyInputGroup title='Subscription Status'>
+            <Text>
+              {subscriptionStatus}
+            </Text>
+          </EasyInputGroup>
           <InputTitle color="gray">Credit Card</InputTitle>
           <div className='marginTop2 marginBottom3'>
             <div className='marginBottom2'>
