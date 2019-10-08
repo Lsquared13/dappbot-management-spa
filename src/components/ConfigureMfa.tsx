@@ -25,6 +25,8 @@ export interface ConfigureMfaProps {
 export const ConfigureMfa: FC<ConfigureMfaProps> = ({ email, API, refreshToken, loadingData, preferredMfa }) => {
   const [appMfaSetupSecret, setAppMfaSetupSecret] = useState('');
   const [appMfaVerifyCode, setAppMfaVerifyCode] = useState('');
+  // mfaStateLoading is used to avoid displaying out-of-date data while waiting for login refresh
+  // TODO: Use Reducks to manage user and remove this loading state
   const [mfaStateLoading, setMfaStateLoading] = useState(false);
 
   const [beginSetupAppMfaResponse, requestBeginSetupAppMfa] = useResource(API.auth.beginSetupAppMfa.resource);
