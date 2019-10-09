@@ -21,10 +21,6 @@
     "jsx": "preserve",
     "strict": true,
     "alwaysStrict": true,
-    "typeRoots": [
-      "./types",
-      "./node_modules/@types"
-    ],
     "types": [
       "node",
       "react",
