@@ -40,21 +40,6 @@ export const toUsd = (etherAmount = "0", etherPriceUSD: any) => {
   ).toFixed(2);
 };
 
-export const networkIdToName = (networkId: number) => {
-  switch (networkId) {
-    case 1:
-      return "Main";
-    case 3:
-      return "Ropsten";
-    case 4:
-      return "Rinkeby";
-    case 42:
-      return "Kovan";
-    default:
-      return "Private";
-  }
-};
-
 // FIXME wrapper for EthTools.formatBalance
 export const formatBalance = () => {};
 
