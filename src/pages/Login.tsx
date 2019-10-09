@@ -65,6 +65,12 @@ export const Login: FC<LoginProps> = (props) => {
 
       // Authorization implies success
       if (data.data.Authorization) {
+        window.analytics.track('Successful Browser Login', {
+          userId: data.data.User.Email,
+          properties: {
+            apiUrl: process.env.REACT_APP_DAPPBOT_API_ENDPOINT
+          }
+        })
         setUser(data.data)
         setChallenge(User.Challenges.newData())
         Alert.success("Authenticated with credentials for: " + data.data.User.Email)
