@@ -56,7 +56,7 @@ export const NewPassChallengeBox: FC<NewPassChallengeBoxProps> = ({ API, user, c
     <BaseChallengeBox title='Set a New Password'
       errorMsg={err}
       onClick={makeNewPassRequest}
-      disabled={isLoading || !matchesNewPass(confirmPass)} >
+      disabled={isLoading || !matchesNewPass(confirmPass) || !validatePassword(newPass)} >
         <ChallengeBoxInput 
           value={newPass}
           displayName='New Password'

@@ -55,7 +55,7 @@ export const PassResetChallengeBox:FC<PassResetChallengeBoxProps> = ({ API, emai
     <BaseChallengeBox title='Reset Forgotten Password'
       errorMsg={err}
       onClick={makeConfirmResetRequest}
-      disabled={isLoading || !matchesNewPass(confirmPass)} >
+      disabled={isLoading || !matchesNewPass(confirmPass) || !validatePassword(newPass)} >
         <ChallengeBoxInput 
           value={code}
           displayName='Confirmation Code'
