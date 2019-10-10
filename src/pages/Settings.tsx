@@ -5,7 +5,7 @@ import { useResource } from "react-request-hook";
 import { XOR } from "ts-xor";
 
 import DappbotAPI from '@eximchain/dappbot-api-client';
-import User from "@eximchain/dappbot-types/spec/user";
+import User, { Challenges } from "@eximchain/dappbot-types/spec/user";
 import { StripePlans, StripeTypes } from '@eximchain/dappbot-types/spec/methods/payment';
 
 import { Container, Breadcrumb, Title, LayoutContainer } from "../layout";
@@ -190,6 +190,7 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   }, [updatePaymentResponse, requestStripe]);
 
   let paymentStatus = user.User.UserAttributes['custom:payment_status'] || 'ACTIVE';
+  let preferredMfa = user.User.PreferredMfaSetting ? user.User.PreferredMfaSetting as Challenges.MfaTypes : null;
   return (
     <Box>
       <Breadcrumb title={"none"} />
@@ -210,6 +211,9 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
               totalNumDapps={parseInt(user.User.UserAttributes['custom:standard_limit'])}
               submitUpdateDapps={makeUpdateDappsRequest}
               usedNumDapps={usedNumDapps}
+              API={API} // TODO factor MFA out of billing
+              refreshToken={user.RefreshToken} // TODO factor MFA out of billing
+              preferredMfa={preferredMfa} // TODO factor MFA out of billing
             />
           </LayoutContainer>
         </Box>

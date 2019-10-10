@@ -11,6 +11,7 @@ interface Props extends FieldProps {
     size: NumberTypes
     disabled?:boolean
     help?: string
+    placeholder?: string
 }
 
 const isValidFactory: (size:NumberTypes)=>[(val:string)=>boolean, string] = (size:NumberTypes) => {
@@ -39,7 +40,7 @@ const isValidFactory: (size:NumberTypes)=>[(val:string)=>boolean, string] = (siz
     return [validator, errMsg];
 }
 
-export const NumberField: FunctionComponent<Props> = ({value, onChange, name, displayName, size, ...props }) => {
+export const NumberField: FunctionComponent<Props> = ({value, onChange, name, displayName, size, placeholder, ...props }) => {
 
     const [errMsg, setErrMsg] = useState("");
     const [isValid, wrongSizeErr] = isValidFactory(size);
@@ -67,6 +68,7 @@ export const NumberField: FunctionComponent<Props> = ({value, onChange, name, di
                                     id={name}
                                     name={name} 
                                     value={value} 
+                                    placeholder={placeholder}
                                     disabled={props.disabled}
                                     onChange={updater} 
                                     showError={errMsg !== ""}

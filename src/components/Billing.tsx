@@ -1,5 +1,6 @@
 import React, { FC, useState, ReactElement } from 'react';
 import { confirmAlert } from 'react-confirm-alert';
+import DappbotAPI from '@eximchain/dappbot-api-client';
 import { StripeTypes } from '@eximchain/dappbot-types/spec/methods/payment';
 import {
   CardElement as NewCardElement,
@@ -9,27 +10,14 @@ import {
 import { XOR } from 'ts-xor';
 import moment from 'moment';
 import Alert from 'react-s-alert';
-import { InputGroup, InputTitle, InputContainer } from '../layout';
 import CreditCard from './CreditCard';
+import ConfigureMfa from './ConfigureMfa';
 import CustomConfirmFactory from './CustomConfirmAlert';
 import { NumberField, Uints } from '../components/fields';
-import { Box, Text, Button } from './ui';
+import { InputTitle } from '../layout';
+import { Box, Text, Button, EasyInputGroup } from './ui';
 import InvoiceTable from './InvoiceTable';
-
-interface EasyInputGroupProps {
-  title: string
-  children: ReactElement
-}
-const EasyInputGroup: FC<EasyInputGroupProps> = ({ title, children }) => (
-  <InputGroup>
-    <InputTitle color="gray">{title}</InputTitle>
-    <InputContainer>
-      <Box column={12} mdColumn={12} width='100%'>
-        {children}
-      </Box>
-    </InputContainer>
-  </InputGroup>
-)
+import { Challenges } from '@eximchain/dappbot-types/spec/user';
 
 interface EvenBlocksProps {
   left: ReactElement
@@ -61,12 +49,15 @@ export interface BillingProps extends RSE.InjectedStripeProps {
   submitUpdateDapps: (numDapps: number) => Promise<any>
   usedNumDapps: number
   paymentStatus: string
+  API: DappbotAPI
+  refreshToken: string
+  preferredMfa: XOR<Challenges.MfaTypes, null>
 }
 
 const Billing: FC<BillingProps> = ({
   source, subscription, stripe, name, submitWithToken, paymentStatus,
   loadingData, hasStripe, totalNumDapps, submitUpdateDapps, usedNumDapps,
-  invoice, email
+  invoice, email, API, refreshToken, preferredMfa
 }) => {
 
   /////////////////////////////////
@@ -265,19 +256,24 @@ const Billing: FC<BillingProps> = ({
               {email}
             </Text>
           </EasyInputGroup>
-          <EasyInputGroup title='Subscription Status'>
-            <Text>
-              {subscriptionStatus}
-            </Text>
-          </EasyInputGroup>
           <EasyInputGroup title='Standard Dapp Slots'>
             <>
               {updateDappsElement}
               {updateDappsBtn}
             </>
           </EasyInputGroup>
+          <ConfigureMfa loadingData={loadingData}
+            email={email}
+            API={API}
+            refreshToken={refreshToken}
+            preferredMfa={preferredMfa} />
         </div>
         <div className='col-sm-12 col-md-6 my-auto'>
+          <EasyInputGroup title='Subscription Status'>
+            <Text>
+              {subscriptionStatus}
+            </Text>
+          </EasyInputGroup>
           <InputTitle color="gray">Credit Card</InputTitle>
           <div className='marginTop2 marginBottom3'>
             <div className='marginBottom2'>
