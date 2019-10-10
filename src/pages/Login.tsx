@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect } from 'react';
 import { RouteComponentProps } from '@reach/router';
 import isEmail from 'validator/lib/isEmail';
 import DappbotAPI from '@eximchain/dappbot-api-client';
-import User from '@eximchain/dappbot-types/spec/user';
+import User, { Challenges } from '@eximchain/dappbot-types/spec/user';
 import Auth from '@eximchain/dappbot-types/spec/methods/auth';
 import { Button, Checkbox } from '../components/ui';
 import { StringField } from '../components/fields';
@@ -10,7 +10,7 @@ import Alert from 'react-s-alert';
 import { useResource } from 'react-request-hook';
 import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
-import { ErrorBox, NewPassChallenge, PassResetChallenge, MfaChallenge } from '../components';
+import { ErrorBox, ChallengeBox } from '../components';
 import { getErrMsg } from '../services/util';
 
 export interface LoginProps extends RouteComponentProps {
@@ -113,100 +113,76 @@ export const Login: FC<LoginProps> = (props) => {
   let loginFields;
   let challengeProps = { setChallenge, setErr }
 
-  switch (challenge.ChallengeName) {
-
-    default:
-      loginFields = (
-        <div className="fdb-box fdb-touch">
-          <div className="row">
-            <div className="col">
-              <h2>Log In to Your Account</h2>
-            </div>
+  if (challenge.ChallengeName === Challenges.Types.Default) {
+    loginFields = (
+      <div className="fdb-box fdb-touch">
+        <div className="row">
+          <div className="col">
+            <h2>Log In to Your Account</h2>
           </div>
-          <div className="row mt-4">
-            <div className="col">
-              {/* <input type="text" className="form-control" placeholder="Email" /> */}
-              <StringField
-                value={email}
-                onChange={setEmail}
-                displayName='Email'
-                disabled={signInResponse.isLoading}
-                isValid={isEmail}
-                name='email' />
-            </div>
+        </div>
+        <div className="row mt-4">
+          <div className="col">
+            {/* <input type="text" className="form-control" placeholder="Email" /> */}
+            <StringField
+              value={email}
+              onChange={setEmail}
+              displayName='Email'
+              disabled={signInResponse.isLoading}
+              isValid={isEmail}
+              name='email' />
           </div>
-          <div className="row mt-4">
-            <div className="col">
-              {/* <input type="password" className="form-control mb-1" placeholder="Password" /> */}
-              <StringField
-                fieldType='password'
-                name='password'
-                displayName='Password'
-                disabled={signInResponse.isLoading}
-                onChange={setPassword}
-                onPressEnter={makeSignInRequest}
-                value={password} />
-            </div>
+        </div>
+        <div className="row mt-4">
+          <div className="col">
+            {/* <input type="password" className="form-control mb-1" placeholder="Password" /> */}
+            <StringField
+              fieldType='password'
+              name='password'
+              displayName='Password'
+              disabled={signInResponse.isLoading}
+              onChange={setPassword}
+              onPressEnter={makeSignInRequest}
+              value={password} />
           </div>
-          <div className='row mt-4'>
-            <div className='col flex d-flex flex-row'>
-              <div className='mt-1'>
-                <Checkbox id='remember-login' checked={rememberUser} onChange={({ checked }) => setRememberUser(checked)} />
-              </div>
-              <label htmlFor='remember-login' className='text-left mr-2 pl-2'>
-                Stay Logged In?  Uncheck if you're using a shared computer.
-              </label>
+        </div>
+        <div className='row mt-4'>
+          <div className='col flex d-flex flex-row'>
+            <div className='mt-1'>
+              <Checkbox id='remember-login' checked={rememberUser} onChange={({ checked }) => setRememberUser(checked)} />
             </div>
+            <label htmlFor='remember-login' className='text-left mr-2 pl-2'>
+              Stay Logged In?  Uncheck if you're using a shared computer.
+            </label>
           </div>
-          <div className="row mt-4">
-            <div className='col' style={{textAlign: 'left'}}>
-              <p>Don't have an account yet? <a href="/signup">Sign Up</a></p>
-            </div>
+        </div>
+        <div className="row mt-4">
+          <div className='col' style={{textAlign: 'left'}}>
+            <p>Don't have an account yet? <a href="/signup">Sign Up</a></p>
           </div>
-          <div className="row mt-4">
-            <div className="col">
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <Button disabled={signInResponse.isLoading} onClick={makeSignInRequest}>Log In</Button>
-                <Button onClick={makePassResetRequest} style='standard' theme='outlineBlue'>Forgot Password?</Button>
-                <ErrorBox errMsg={err}></ErrorBox>
-              </div>
+        </div>
+        <div className="row mt-4">
+          <div className="col">
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <Button disabled={signInResponse.isLoading} onClick={makeSignInRequest}>Log In</Button>
+              <Button onClick={makePassResetRequest} style='standard' theme='outlineBlue'>Forgot Password?</Button>
+              <ErrorBox errMsg={err}></ErrorBox>
             </div>
           </div>
         </div>
-      )
-      break;
-    case (User.Challenges.Types.NewPasswordRequired):
-      loginFields = (
-        <NewPassChallenge setUser={setUser}
-          user={user}
-          API={API}
-          challenge={challenge}
-          {...challengeProps} />)
-      break;
-
-    case (User.Challenges.Types.ForgotPassword):
-      loginFields =
-        <React.Fragment>
-          <div className="row">
-            <div className="col">
-              <h2>Set New Password</h2>
-            </div>
-          </div>
-          <PassResetChallenge email={email} API={API} {...challengeProps} />
-        </React.Fragment>
-      break;
-    
-    case (User.Challenges.Types.AppMfa):
-    case (User.Challenges.Types.SmsMfa):
-      loginFields = (
-        <MfaChallenge setUser={setUser}
+      </div>
+    )
+  } else {
+    loginFields = (
+      <ChallengeBox setUser={setUser}
         user={user}
+        email={email}
         API={API}
         challenge={challenge}
         {...challengeProps} />
-      )
-      break;
+    )
   }
+
   return (
     <section className="fdb-block fp-active" data-block-type="forms">
       <div className="container">

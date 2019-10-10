@@ -1,3 +1,3 @@
-export * from './MfaChallenge';
-export * from './NewPassChallenge';
-export * from './PassResetChallenge';
+import ChallengeBox from './ChallengeBox';
+export * from './ChallengeBox';
+export default ChallengeBox;
