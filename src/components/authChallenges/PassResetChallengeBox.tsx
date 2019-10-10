@@ -49,11 +49,13 @@ export const PassResetChallengeBox:FC<PassResetChallengeBoxProps> = ({ API, emai
     }
   }, [error, data])
 
+  const matchesNewPass = (pass:string) => pass === newPass;
+
   return (
     <BaseChallengeBox title='Reset Forgotten Password'
       errorMsg={err}
       onClick={makeConfirmResetRequest}
-      disabled={isLoading} >
+      disabled={isLoading || !matchesNewPass(confirmPass) || !validatePassword(newPass)} >
         <ChallengeBoxInput 
           value={code}
           displayName='Confirmation Code'
@@ -77,7 +79,7 @@ export const PassResetChallengeBox:FC<PassResetChallengeBoxProps> = ({ API, emai
           displayName='Confirm New Password'
           fieldType='password'
           disabled={isLoading}
-          isValid={validatePassword}
+          isValid={matchesNewPass}
           help="Must match field above."
           errorMsg="Make sure this matches the field above."
           onChange={setConfirmPass}
