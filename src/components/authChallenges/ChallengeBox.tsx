@@ -1,7 +1,7 @@
 import MfaChallengeBox from './MfaChallengeBox';
 import NewPassChallengeBox from './NewPassChallengeBox';
 import PassResetChallengeBox from './PassResetChallengeBox';
-import { ChallengeBoxOuter, ChallengeBoxTitle } from './utils';
+import BaseChallengeBox from './BaseChallengeBox';
 
 import DappbotAPI from '@eximchain/dappbot-api-client';
 import User, { Challenges } from '@eximchain/dappbot-types/spec/user';
@@ -37,10 +37,11 @@ export const ChallengeBox: FC<ChallengeBoxProps> = ({ API, user, email, challeng
                 email={email}
                 setChallenge={setChallenge} />
     default:
+      const title = `Unrecognized Login Challenge Type '${challenge.ChallengeName}'`;
       return (
-        <ChallengeBoxOuter>
-          <ChallengeBoxTitle title='Unrecognized Login Challenge Type' />
-        </ChallengeBoxOuter>
+        <BaseChallengeBox title={title}
+          errorMsg=''
+          disabled={true} />
       )
   }
 }

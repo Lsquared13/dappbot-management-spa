@@ -1,4 +1,4 @@
-import { ChallengeBoxOuter, ChallengeBoxTitle, ChallengeBoxInput, ChallengeBoxSubmitButton } from './utils';
+import BaseChallengeBox, { ChallengeBoxInput } from './BaseChallengeBox';
 import { getErrMsg } from '../../services/util';
 
 import DappbotAPI from '@eximchain/dappbot-api-client';
@@ -51,9 +51,10 @@ export const NewPassChallengeBox: FC<NewPassChallengeBoxProps> = ({ API, user, c
   }, [error, data])
 
   return (
-    <ChallengeBoxOuter>
-      <>
-        <ChallengeBoxTitle title='Set a new password' />
+    <BaseChallengeBox title='Set a New Password'
+      errorMsg={err}
+      onClick={makeNewPassRequest}
+      disabled={isLoading} >
         <ChallengeBoxInput 
           value={newPass}
           displayName='New Password'
@@ -75,12 +76,7 @@ export const NewPassChallengeBox: FC<NewPassChallengeBoxProps> = ({ API, user, c
           onChange={setConfirmPass}
           onPressEnter={makeNewPassRequest}
           name='confirmPassword' />
-        <ChallengeBoxSubmitButton 
-          onClick={makeNewPassRequest}
-          disabled={isLoading}
-          errorMsg={err} />
-      </>
-    </ChallengeBoxOuter>
+    </BaseChallengeBox>
   );
 }
 

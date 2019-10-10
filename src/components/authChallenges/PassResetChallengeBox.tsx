@@ -1,4 +1,4 @@
-import { ChallengeBoxOuter, ChallengeBoxTitle, ChallengeBoxInput, ChallengeBoxSubmitButton } from './utils';
+import BaseChallengeBox, { ChallengeBoxInput } from './BaseChallengeBox';
 import { getErrMsg } from '../../services/util';
 
 import DappbotAPI from '@eximchain/dappbot-api-client';
@@ -50,9 +50,10 @@ export const PassResetChallengeBox:FC<PassResetChallengeBoxProps> = ({ API, emai
   }, [error, data])
 
   return (
-    <ChallengeBoxOuter>
-      <>
-        <ChallengeBoxTitle title='Reset Forgotten Password' />
+    <BaseChallengeBox title='Reset Forgotten Password'
+      errorMsg={err}
+      onClick={makeConfirmResetRequest}
+      disabled={isLoading} >
         <ChallengeBoxInput 
           value={code}
           displayName='Confirmation Code'
@@ -82,12 +83,7 @@ export const PassResetChallengeBox:FC<PassResetChallengeBoxProps> = ({ API, emai
           onChange={setConfirmPass}
           onPressEnter={makeConfirmResetRequest}
           name='confirmPassword' />
-        <ChallengeBoxSubmitButton 
-          onClick={makeConfirmResetRequest}
-          disabled={isLoading}
-          errorMsg={err} />
-      </>
-    </ChallengeBoxOuter>
+    </BaseChallengeBox>
   )
 }
 
