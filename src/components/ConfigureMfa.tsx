@@ -1,3 +1,4 @@
+import CustomConfirmFactory from './CustomConfirmAlert';
 import { Text, Button, EasyInputGroup } from './ui';
 import { NumberField, Uints } from '../components/fields';
 import { getErrMsg } from '../services/util';
@@ -8,6 +9,7 @@ import { Challenges } from '@eximchain/dappbot-types/spec/user';
 import { BeginSetupAppMfa, ConfirmSetupAppMfa, SetMfaPreference } from '@eximchain/dappbot-types/spec/methods/auth';
 
 import React, { FC, useState, useEffect, } from 'react';
+import { confirmAlert } from 'react-confirm-alert';
 import Alert from 'react-s-alert';
 import { useResource } from 'react-request-hook';
 
@@ -88,8 +90,22 @@ export const ConfigureMfa: FC<ConfigureMfaProps> = ({ email, API, refreshToken, 
     const disableMfaDetails:SetMfaPreference.Args = {
       'mfaEnabled': false
     }
-    requestSetPreferredMfa(disableMfaDetails)
-    setMfaStateLoading(true)
+    const makeDisableRequest = () => {
+      requestSetPreferredMfa(disableMfaDetails)
+      setMfaStateLoading(true)
+    }
+    confirmAlert({
+      customUI: CustomConfirmFactory({
+        title: 'Confirm Disable MFA',
+        message: [
+          'You are about to disable MFA.',
+          'Login will no longer require confirmation with an MFA code. This may increase the risk of unauthorized access to your account.',
+          'Your existing MFA App association will be removed. You will need to perform MFA setup again to re-enable MFA.',
+          'Would you like to continue?'
+        ],
+        onConfirm: makeDisableRequest
+      })
+    })
   }
   useEffect(function handleSetMfaPreferenceResponse() {
     const { error, data } = setMfaPreferenceResponse;
