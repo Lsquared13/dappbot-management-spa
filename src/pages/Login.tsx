@@ -65,7 +65,11 @@ export const Login: FC<LoginProps> = (props) => {
 
       // Authorization implies success
       if (data.data.Authorization) {
+<<<<<<< HEAD
         analytics.track('Successful Dapp.Bot Login', {
+=======
+        window.analytics.track('Successful Dapp.Bot Login', {
+>>>>>>> 0d3390693aa4792d9b8a0799f5a323d2972fe169
           userId: data.data.User.Email,
           properties: {
             apiUrl: process.env.REACT_APP_DAPPBOT_API_ENDPOINT
