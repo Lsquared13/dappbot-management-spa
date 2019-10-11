@@ -51,12 +51,13 @@ export const NewPassChallengeBox: FC<NewPassChallengeBoxProps> = ({ API, user, c
   }, [error, data])
 
   const matchesNewPass = (pass:string) => pass === newPass;
+  const submitDisabled = isLoading || !matchesNewPass(confirmPass) || !validatePassword(newPass);
 
   return (
     <BaseChallengeBox title='Set a New Password'
       errorMsg={err}
       onClick={makeNewPassRequest}
-      disabled={isLoading || !matchesNewPass(confirmPass) || !validatePassword(newPass)} >
+      disabled={submitDisabled} >
         <ChallengeBoxInput 
           value={newPass}
           displayName='New Password'
@@ -76,7 +77,7 @@ export const NewPassChallengeBox: FC<NewPassChallengeBoxProps> = ({ API, user, c
           help="Must match field above."
           errorMsg="Make sure this matches the field above."
           onChange={setConfirmPass}
-          onPressEnter={makeNewPassRequest}
+          onPressEnter={submitDisabled ? undefined : makeNewPassRequest}
           name='confirmPassword' />
     </BaseChallengeBox>
   );
