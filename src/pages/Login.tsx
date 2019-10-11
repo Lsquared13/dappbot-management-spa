@@ -29,7 +29,6 @@ export const Login: FC<LoginProps> = (props) => {
   const [err, setErr] = useState('');
   const [challenge, setChallenge] = useState(User.Challenges.newData());
   const [signInResponse, requestSignIn] = useResource(API.auth.login.resource)
-  const [passResetResponse, requestPassReset] = useResource(API.auth.beginPasswordReset.resource)
 
   function makeSignInRequest() {
     const loginDetails: Auth.Login.Args = {
@@ -66,42 +65,19 @@ export const Login: FC<LoginProps> = (props) => {
       // Authorization implies success
       if (data.data.Authorization) {
         setUser(data.data)
-        setChallenge(User.Challenges.newData())
+        setChallenge(Challenges.newData())
         Alert.success("Authenticated with credentials for: " + data.data.User.Email)
       }
 
     }
   }, [signInResponse])
 
-  function makePassResetRequest() {
-    const forgottenPassDetails: Auth.BeginPassReset.Args = {
-      'username': email
-    }
-    requestPassReset(forgottenPassDetails)
+  function beginPassReset() {
+    const beginForgotPassChallenge = Challenges.newData();
+    beginForgotPassChallenge.ChallengeName = Challenges.Types.BeginForgotPassword;
+    setEmail('');
+    setChallenge(beginForgotPassChallenge);
   }
-  useEffect(function handlePassResetResult() {
-    const { isLoading, error, data } = passResetResponse;
-    if (isLoading) {
-      Alert.info("Attempting password reset", { timeout: 1750 })
-    }
-    else if (error) {
-      console.log(error)
-      switch (error.code) {
-        case '401': {
-          Alert.error("Authorization failure when resetting your password.");
-          break;
-        }
-        default: {
-          Alert.error("Failed to reset password, check the username field and make sure it is a valid email address");
-        }
-      }
-    }
-    else if (data && data.data) {
-      let forgotPassChallenge = User.Challenges.newData();
-      forgotPassChallenge.ChallengeName = User.Challenges.Types.ForgotPassword;
-      setChallenge(forgotPassChallenge)
-    }
-  }, [passResetResponse])
 
   useEffect(function handleChallengeResult() {
     if (challenge.ChallengeName === User.Challenges.Types.Default && API.hasActiveAuth()) {
@@ -165,7 +141,7 @@ export const Login: FC<LoginProps> = (props) => {
           <div className="col">
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <Button disabled={signInResponse.isLoading} onClick={makeSignInRequest}>Log In</Button>
-              <Button onClick={makePassResetRequest} style='standard' theme='outlineBlue'>Forgot Password?</Button>
+              <Button onClick={beginPassReset} style='standard' theme='outlineBlue'>Forgot Password?</Button>
               <ErrorBox errMsg={err}></ErrorBox>
             </div>
           </div>
@@ -176,6 +152,7 @@ export const Login: FC<LoginProps> = (props) => {
     loginFields = (
       <ChallengeBox setUser={setUser}
         user={user}
+        setEmail={setEmail}
         email={email}
         API={API}
         challenge={challenge}
