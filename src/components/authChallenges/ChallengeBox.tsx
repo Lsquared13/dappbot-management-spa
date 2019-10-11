@@ -7,6 +7,7 @@ import DappbotAPI from '@eximchain/dappbot-api-client';
 import User, { Challenges } from '@eximchain/dappbot-types/spec/user';
 
 import React, { FC } from 'react';
+import BeginPassResetChallengeBox from './BeginPassResetChallengeBox';
 
 export interface ChallengeBoxProps {
     API: DappbotAPI
@@ -14,10 +15,11 @@ export interface ChallengeBoxProps {
     email: string
     challenge: Challenges.Data
     setUser: (user:User.AuthData)=>void
-    setChallenge: (challenge: Challenges.Data)=>void
+    setEmail: (email:string)=>void
+    setChallenge: (challenge:Challenges.Data)=>void
 }
 
-export const ChallengeBox: FC<ChallengeBoxProps> = ({ API, user, email, challenge, setUser, setChallenge }) => {
+export const ChallengeBox: FC<ChallengeBoxProps> = ({ API, user, email, challenge, setUser, setEmail, setChallenge }) => {
   switch (challenge.ChallengeName) {
     case Challenges.Types.NewPasswordRequired:
       return <NewPassChallengeBox API={API}
@@ -32,6 +34,11 @@ export const ChallengeBox: FC<ChallengeBoxProps> = ({ API, user, email, challeng
                 challenge={challenge}
                 setUser={setUser}
                 setChallenge={setChallenge}/>
+    case Challenges.Types.BeginForgotPassword:
+      return <BeginPassResetChallengeBox API={API}
+                email={email}
+                setEmail={setEmail}
+                setChallenge={setChallenge} />
     case Challenges.Types.ForgotPassword:
       return <PassResetChallengeBox API={API}
                 email={email}
