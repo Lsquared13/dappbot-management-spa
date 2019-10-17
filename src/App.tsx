@@ -35,11 +35,10 @@ const App: FC = () => {
 
       // Update user in memory, potentially Tracking a fresh login
       // if the new auth is active and the old one wasn't.
-      let isActive = (authData:AuthData) => User.authStatus(authData).isActive;
       setUser(oldUser => {
 
         // Bail out and just set if newUser isn't active
-        if (!isActive(newUser)) return newUser;
+        if (!User.authStatus(newUser).isActive) return newUser;
 
         const oldStatus = User.authStatus(oldUser);
         if (oldStatus.isStale) Track.userLogin(newUser.User.Email, true);
