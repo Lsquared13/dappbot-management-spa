@@ -3,13 +3,8 @@
   "version": "0.2.0",
   "private": true,
   "dependencies": {
-<<<<<<< HEAD
-    "@eximchain/dappbot-api-client": "^1.2.0",
-    "@eximchain/dappbot-types": "^1.7.3",
-=======
-    "@eximchain/dappbot-api-client": "^1.1.2",
-    "@eximchain/dappbot-types": "^1.7.0",
->>>>>>> 0d3390693aa4792d9b8a0799f5a323d2972fe169
+    "@eximchain/dappbot-api-client": "^1.2.2",
+    "@eximchain/dappbot-types": "^1.7.6",
     "@reach/router": "^1.2.1",
     "@reach/tooltip": "^0.2.0",
     "@segment/analytics.js-core": "^3.9.0",

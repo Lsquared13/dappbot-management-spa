@@ -17,6 +17,7 @@ import { SettingsContainerBase } from "./apps/SettingsContainerBase";
 import {  Welcome, Login, Privacy, PaymentPage, Terms } from './pages';
 import { DashboardBase } from './apps/DashboardBase';
 import { NewDappFormBase } from './apps';
+import Track from './services/analytics';
 
 
 const App: FC = () => {
@@ -31,8 +32,22 @@ const App: FC = () => {
   // get a notification, helping us determine root cause.
   const safeSetUser:React.Dispatch<LoginTypes.Result> = (newUser) => {
     if (User.isAuthData(newUser)) {
-      setUser(newUser);
+
+      // Update user in memory, potentially Tracking a fresh login
+      // if the new auth is active and the old one wasn't.
+      setUser(oldUser => {
+        if (
+          User.authStatus(oldUser).isActive && 
+          !User.authStatus(newUser).isActive
+        ) {
+          Track.userLogin(newUser.User.Email)
+        }
+        return newUser;
+      });
+
+      // Update user in localStorage if they'd like that
       if (rememberUser) setSavedUser(newUser);
+
     } else {
       console.error("Attempted to setUser to the following broken value: ",newUser);
       Alert.error("Just attempted to set an invalid user value, check console for more information.");
@@ -44,6 +59,8 @@ const App: FC = () => {
     setAuthData : safeSetUser,
     dappbotUrl : process.env.REACT_APP_DAPPBOT_API_ENDPOINT as string
   });
+
+  
 
   // Runs at startup, refreshing user in memory with the
   // value available from local storage.

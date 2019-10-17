@@ -16,6 +16,7 @@ import '../components/froala/froala_blocks.min.css';
 import { ErrorBox } from '../components';
 import { useResource } from 'react-request-hook';
 import { getErrMsg } from '../services/util';
+import Track from '../services/analytics';
 
 interface PaymentProps extends RouteComponentProps, ReactStripeElements.InjectedStripeProps {
   user?: any
@@ -45,7 +46,7 @@ export const CheckoutBox:FC<{numDapps:string, requireCreditCard:boolean}> = ({nu
     return (
       <Box>
         <Text>
-          You will receive access to <strong>{numDapps} dapps</strong> on your <strong>Free Trial</strong>, lasting 14 days.
+          You will receive access to <strong>{numDapps} dapps</strong>, and can add a credit card later to create more.
         </Text>
       </Box>
     )
@@ -128,6 +129,7 @@ export const Payment:FC<PaymentProps> = ({user, API, stripe, requireCreditCard})
       setLoading(false);
       setSuccessful(true);
       markCreateUserSent(false);
+      Track.userSignup(email);
     }
   }, [createUserResponse]);
   

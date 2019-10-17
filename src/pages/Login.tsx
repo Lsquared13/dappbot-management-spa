@@ -12,6 +12,8 @@ import '../components/froala/bootstrap.min.css';
 import '../components/froala/froala_blocks.min.css';
 import { ErrorBox, ChallengeBox } from '../components';
 import { getErrMsg } from '../services/util';
+import Responses from '@eximchain/dappbot-types/spec/responses';
+import Track from '../services/analytics';
 
 export interface LoginProps extends RouteComponentProps {
   rememberUser: boolean
@@ -53,33 +55,20 @@ export const Login: FC<LoginProps> = (props) => {
         }
       }
     }
-    else if (data && data.data) {
-      // A Session implies more challenges
-      if (data.data.Session) {
+    else if (Responses.isSuccessResponse(data)) {
+      if (Challenges.isData(data.data)) {
         //This tempUser refers to when the password needs to be reset for the first login.
+        let challenge = data.data;
         let tempUser = User.newAuthData()
         tempUser.User.Username = email
         setUser(tempUser)
-        setChallenge(data.data)
-      }
-
-      // Authorization implies success
-      if (data.data.Authorization) {
-<<<<<<< HEAD
-        analytics.track('Successful Dapp.Bot Login', {
-=======
-        window.analytics.track('Successful Dapp.Bot Login', {
->>>>>>> 0d3390693aa4792d9b8a0799f5a323d2972fe169
-          userId: data.data.User.Email,
-          properties: {
-            apiUrl: process.env.REACT_APP_DAPPBOT_API_ENDPOINT
-          }
-        })
-        setUser(data.data)
+        setChallenge(challenge)
+      } else if (User.isAuthData(data.data)) {
+        let authData = data.data;
+        setUser(authData)
         setChallenge(User.Challenges.newData())
-        Alert.success("Authenticated with credentials for: " + data.data.User.Email)
+        Alert.success("Authenticated with credentials for: " + authData.User.Email)
       }
-
     }
   }, [signInResponse])
 
