@@ -74,7 +74,6 @@ export class DeleteDapp extends Component<DeleteDappProps, DeleteDappState> {
               type={"text"}
             value={dappNameInput} 
             name={'DappName'} 
-            clean={Dapp.cleanName}
             isValid={val => val === dappName}
             stateHook={this.onDappNameChange}
             errorMessage={"confirm dapp name to continue"}
