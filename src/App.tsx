@@ -4,7 +4,7 @@ import { StripeProvider, Elements } from 'react-stripe-elements';
 import Alert from 'react-s-alert';
 import DappbotAPI from '@eximchain/dappbot-api-client';
 import { Login as LoginTypes } from '@eximchain/dappbot-types/spec/methods/auth';
-import User from '@eximchain/dappbot-types/spec/user';
+import User, { AuthData } from '@eximchain/dappbot-types/spec/user';
 import './App.css';
 import './variable.css';
 import './custom.css'
@@ -35,13 +35,15 @@ const App: FC = () => {
 
       // Update user in memory, potentially Tracking a fresh login
       // if the new auth is active and the old one wasn't.
+      let isActive = (authData:AuthData) => User.authStatus(authData).isActive;
       setUser(oldUser => {
-        if (
-          User.authStatus(oldUser).isActive && 
-          !User.authStatus(newUser).isActive
-        ) {
-          Track.userLogin(newUser.User.Email)
-        }
+
+        // Bail out and just set if newUser isn't active
+        if (!isActive(newUser)) return newUser;
+
+        const oldStatus = User.authStatus(oldUser);
+        if (oldStatus.isStale) Track.userLogin(newUser.User.Email, true);
+        if (oldStatus.isEmpty) Track.userLogin(newUser.User.Email, false);
         return newUser;
       });
 
