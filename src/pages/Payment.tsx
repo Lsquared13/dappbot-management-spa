@@ -129,7 +129,7 @@ export const Payment:FC<PaymentProps> = ({user, API, stripe, requireCreditCard})
       setLoading(false);
       setSuccessful(true);
       markCreateUserSent(false);
-      Track.userSignup(email);
+      Track.userSignup(email, metadata);
     }
   }, [createUserResponse]);
   

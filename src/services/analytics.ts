@@ -9,7 +9,8 @@ export function userLogin(email:string, isRefresh:boolean) {
   })
 }
 
-export function userSignup(email:string) {
+export function userSignup(email:string, metadata:Record<string,any>) {
+  window.analytics.identify(email, metadata);
   window.analytics.track('User Signup - Dapp.Bot', {
     email, apiUrl
   });
