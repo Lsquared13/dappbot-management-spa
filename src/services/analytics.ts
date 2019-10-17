@@ -68,7 +68,7 @@ export function appMfaDisabled(email:string) {
 export const Track = {
   userLogin, userSignup, dappCreated, dappDeleted,
   cardAdded, cardUpdated, capacityUpdated,
-  appMfaEnabled
+  appMfaEnabled, appMfaDisabled
 }
 
 export default Track;
