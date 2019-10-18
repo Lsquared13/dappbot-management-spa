@@ -1,8 +1,11 @@
 import { CreateDapp } from "@eximchain/dappbot-types/spec/methods/private";
 
-const apiUrl = process.env.REACT_APP_DAPPBOT_API_ENDPOINT as string;
-const client = 'dapp.bot';
-function defaultTrackProps(){ return { apiUrl, client } }
+function defaultTrackProps(){ 
+  return { 
+    apiUrl : process.env.REACT_APP_DAPPBOT_API_ENDPOINT as string,
+    client : 'dapp.bot'
+  }
+}
 
 export function userLogin(email:string, isRefresh:boolean) {
   window.analytics.identify(email);
