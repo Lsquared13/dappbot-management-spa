@@ -47,7 +47,7 @@ const usdFormatter = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 });
 function formatStripeAmount(amount:number){
-  return amount > 0 ?
+  return amount >= 0 ?
     usdFormatter.format(amount / 100) :
     `(${usdFormatter.format(-1 * amount / 100)})`
 }
