@@ -36,3 +36,5 @@ export function useLocalStorage<ValueType>(key:string, initialValue:ValueType):[
 
   return [storedValue, setValue];
 }
+
+export default useLocalStorage;

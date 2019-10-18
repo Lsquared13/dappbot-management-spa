@@ -15,6 +15,7 @@ import { useResource } from 'react-request-hook';
 
 import QRCode from 'qrcode.react';
 import { XOR } from 'ts-xor';
+import Track from '../services/analytics';
 
 export interface ConfigureMfaProps {
   email: string
@@ -124,8 +125,10 @@ export const ConfigureMfa: FC<ConfigureMfaProps> = ({ email, API, refreshToken, 
           setAppMfaVerifyCode('');
         case Challenges.Types.SmsMfa:
           Alert.success("MFA successfully enabled");
+          Track.appMfaEnabled(email)
           break;
         default:
+          Track.appMfaDisabled(email);
           Alert.success("MFA successfully disabled");
           break;
       }
