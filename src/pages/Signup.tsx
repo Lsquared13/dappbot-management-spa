@@ -3,7 +3,7 @@ import { RouteComponentProps, Link } from '@reach/router';
 import DappbotAPI from '@eximchain/dappbot-api-client';
 import { StringField, NumberField, Uints, BooleanField } from '../components/fields';
 import { Button, Box, Text, Checkbox } from '../components/ui';
-import { Container } from "../layout";
+import { Container, monthlyDappCost, PLAN_PRICES } from "../layout";
 import EmailImage from "../assets/images/CheckEmail.svg";
 
 
@@ -25,22 +25,14 @@ interface SignupProps extends RouteComponentProps, ReactStripeElements.InjectedS
   requireCreditCard?: boolean
 }
 
-export const PLAN_PRICES = {
-  ENTHUSIAST : 10,
-  PROJECT : 100,
-  STARTUP : 150
-}
-
-const FREE_CAPACITY = Payment.trialStripePlan().standard;
+const FREE_CAPACITY = Payment.freeTierStripePlan().standard;
 
 export const CheckoutBox:FC<{numDapps:string, requireCreditCard:boolean}> = ({numDapps, requireCreditCard}) => {
-  const standardPrice = PLAN_PRICES.ENTHUSIAST;
-  const priceTag = Math.max((parseInt(numDapps) - FREE_CAPACITY) * standardPrice, 0);
   if (requireCreditCard){
     return (
       <Box>
         <Text>
-          You are purchasing <strong>{numDapps} dapps</strong> at a total cost of <strong>${priceTag} per month</strong> ({FREE_CAPACITY} for free, then ${standardPrice} apiece).
+          You are purchasing <strong>{numDapps} dapps</strong> at a total cost of <strong>${monthlyDappCost(parseInt(numDapps))} per month</strong> ({FREE_CAPACITY} for free, then ${PLAN_PRICES.ENTHUSIAST} apiece).
         </Text>
       </Box>
     )

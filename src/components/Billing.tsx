@@ -1,7 +1,7 @@
 import React, { FC, useState, ReactElement } from 'react';
 import { confirmAlert } from 'react-confirm-alert';
 import DappbotAPI from '@eximchain/dappbot-api-client';
-import { StripeTypes } from '@eximchain/dappbot-types/spec/methods/payment';
+import Payment, { StripeTypes } from '@eximchain/dappbot-types/spec/methods/payment';
 import {
   CardElement as NewCardElement,
   ReactStripeElements as RSE,
@@ -14,10 +14,10 @@ import CreditCard from './CreditCard';
 import ConfigureMfa from './ConfigureMfa';
 import CustomConfirmFactory from './CustomConfirmAlert';
 import { NumberField, Uints } from '../components/fields';
-import { InputTitle } from '../layout';
+import { InputTitle, monthlyDappCost, PLAN_PRICES } from '../layout';
 import { Box, Text, Button, EasyInputGroup } from './ui';
 import InvoiceTable from './InvoiceTable';
-import { Challenges } from '@eximchain/dappbot-types/spec/user';
+import User, { Challenges } from '@eximchain/dappbot-types/spec/user';
 
 interface EvenBlocksProps {
   left: ReactElement
@@ -48,7 +48,7 @@ export interface BillingProps extends RSE.InjectedStripeProps {
   totalNumDapps: number
   submitUpdateDapps: (numDapps: number) => Promise<any>
   usedNumDapps: number
-  paymentStatus: string
+  paymentStatus: User.PaymentStatus
   API: DappbotAPI
   refreshToken: string
   preferredMfa: XOR<Challenges.MfaTypes, null>
@@ -91,16 +91,9 @@ const Billing: FC<BillingProps> = ({
     cardElt = <CreditCard card={source} />
   } else if (!loadingData) {
     if (hasStripe) {
-      if (subscription && subscription.status === 'trialing') {
-        let end = moment(subscription.current_period_end * 1000);
-        let endDate = end.format('dddd, MMM D')
-        let endTime = end.format('h:mm A')
-        cardElt = <Text>No card on file, please add one before your trial ends on <strong>{endDate}</strong> at <strong>{endTime}</strong>.</Text>
-      } else {
-        cardElt = <Text>No Card on File</Text>
-      }
+      cardElt = <Text>No Card on File</Text>
     } else {
-      cardElt = <Text>No Stripe Payment Details</Text>
+      cardElt = <Text>No Stripe Customer</Text>
     }
   }
   let updateCardBtns = null;
@@ -171,21 +164,19 @@ const Billing: FC<BillingProps> = ({
       toggleUpdatingNumDapps();
       Alert.info("Updating your subscription, it may take a moment for the new values to be reflected here.");
     }
-    if (!(subscription && subscription.status === 'trialing')) {
-      runUpdate();
-    } else {
-      let billingCost = 10 * parseInt(numDapps);
+    const MAX_FREE = Payment.freeTierStripePlan().standard;
+    if (totalNumDapps <= MAX_FREE && updateNumber > MAX_FREE) {
       confirmAlert({
         customUI: CustomConfirmFactory({
           title: 'Confirm Purchase',
           message: [
-            `You are still in your free trial.  If you increase your number of dapps, the trial will end immediately and you will be billed $${billingCost} USD (${numDapps} Standard Dapps at $10 each).`,
+            `You are currently within DappBot's free tier.  If you increase your dapp capacity to ${updateNumber}, you will be billed $${monthlyDappCost(updateNumber)} USD (${MAX_FREE} for free, then $${PLAN_PRICES.ENTHUSIAST} apiece).`,
             'Would you like to continue?'
           ],
           onConfirm: runUpdate
         })
       })
-    }
+    } else { runUpdate() }
   }
   let updateDappsElement = <Text className='marginBottom1'>Loading...</Text>;
   let noUpdatesAllowed = !source;
@@ -233,18 +224,13 @@ const Billing: FC<BillingProps> = ({
   /////////////////////////////////
   // SUBSCRIPTION DETAIL PRESENTATION LOGIC
   /////////////////////////////////
-  let subscriptionStatus = 'Loading...';
+  let paymentStatusText = 'Loading...';
   let invoiceTitle = 'Upcoming Invoice';
   if (subscription) {
     if (['FAILED', 'LAPSED'].includes(paymentStatus)) invoiceTitle = 'Failed Invoice';
-    if (subscription.status === 'trialing') {
-      subscriptionStatus = 'Trial';
-      invoiceTitle = 'First Invoice';
-    } else {
-      subscriptionStatus = paymentStatus.charAt(0).toUpperCase() + paymentStatus.slice(1).toLowerCase();
-    }
+    paymentStatusText = paymentStatus.charAt(0).toUpperCase() + paymentStatus.slice(1).toLowerCase();
   } else if (!loadingData && !hasStripe) {
-    subscriptionStatus = 'N/A'
+    paymentStatusText = 'N/A'
   }
 
   return (
@@ -271,7 +257,7 @@ const Billing: FC<BillingProps> = ({
         <div className='col-sm-12 col-md-6 my-auto'>
           <EasyInputGroup title='Subscription Status'>
             <Text>
-              {subscriptionStatus}
+              {paymentStatusText}
             </Text>
           </EasyInputGroup>
           <InputTitle color="gray">Credit Card</InputTitle>
