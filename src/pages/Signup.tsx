@@ -31,13 +31,15 @@ export const PLAN_PRICES = {
   STARTUP : 150
 }
 
+const FREE_CAPACITY = Payment.trialStripePlan().standard;
+
 export const CheckoutBox:FC<{numDapps:string, requireCreditCard:boolean}> = ({numDapps, requireCreditCard}) => {
-  const priceTag = parseInt(numDapps) * PLAN_PRICES.ENTHUSIAST;
+  const priceTag = Math.max((parseInt(numDapps) - FREE_CAPACITY) * PLAN_PRICES.ENTHUSIAST, 0);
   if (requireCreditCard){
     return (
       <Box>
         <Text>
-          You are purchasing <strong>{numDapps} dapps</strong> on our <strong>Basic Plan</strong>, at a cost of <strong>${priceTag} per month</strong>.
+          You are purchasing <strong>{numDapps} dapps</strong> at a total cost of <strong>${priceTag} per month</strong> ().
         </Text>
       </Box>
     )
@@ -61,7 +63,7 @@ export const Signup:FC<SignupProps> = ({user, API, stripe, requireCreditCard}) =
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [coupon, setCoupon] = useState('');
-  const [numDapps, setNumDapps] = useState(Payment.trialStripePlan().standard.toString());
+  const [numDapps, setNumDapps] = useState(FREE_CAPACITY.toString());
   
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
@@ -164,7 +166,7 @@ export const Signup:FC<SignupProps> = ({user, API, stripe, requireCreditCard}) =
               color="gray"
               align="center"
               className="mb-5">
-                You can make up to {numDapps} dapps with DappBot!
+                You can now make up to {numDapps} dapps with DappBot!
                 <br />
                 We've sent you an email with your temporary password, <Link to='/login'>login here</Link>.
               </Text>
