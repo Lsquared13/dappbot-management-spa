@@ -34,12 +34,13 @@ export const PLAN_PRICES = {
 const FREE_CAPACITY = Payment.trialStripePlan().standard;
 
 export const CheckoutBox:FC<{numDapps:string, requireCreditCard:boolean}> = ({numDapps, requireCreditCard}) => {
-  const priceTag = Math.max((parseInt(numDapps) - FREE_CAPACITY) * PLAN_PRICES.ENTHUSIAST, 0);
+  const standardPrice = PLAN_PRICES.ENTHUSIAST;
+  const priceTag = Math.max((parseInt(numDapps) - FREE_CAPACITY) * standardPrice, 0);
   if (requireCreditCard){
     return (
       <Box>
         <Text>
-          You are purchasing <strong>{numDapps} dapps</strong> at a total cost of <strong>${priceTag} per month</strong> ({FREE_CAPACITY} for free, then $10 apiece).
+          You are purchasing <strong>{numDapps} dapps</strong> at a total cost of <strong>${priceTag} per month</strong> ({FREE_CAPACITY} for free, then ${standardPrice} apiece).
         </Text>
       </Box>
     )
