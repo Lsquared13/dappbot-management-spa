@@ -14,7 +14,7 @@ const CallToAction = () => (
           <h2>Create Dapps with only a smart contract ABI. No coding required.</h2>
           <p className="lead">Five Minutes, Three Steps, Zero coding, build and share your Blockchain Application with a unique URL using DappBot today.</p>
           <p className="mt-5">
-            <Link className="btn btn-primary" to='/signup'>Start Your Free Trial</Link>
+            <Link className="btn btn-primary" to='/signup'>Get Started</Link>
           </p>
           <p className="mt-3">
             <a className="link" href='#apps'>Learn How it Works</a>
