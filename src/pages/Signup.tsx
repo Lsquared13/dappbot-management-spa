@@ -17,12 +17,12 @@ import { ErrorBox } from '../components';
 import { useResource } from 'react-request-hook';
 import { getErrMsg } from '../services/util';
 import Track from '../services/analytics';
+import { Payment } from '@eximchain/dappbot-types/spec/methods';
 
-interface PaymentProps extends RouteComponentProps, ReactStripeElements.InjectedStripeProps {
+interface SignupProps extends RouteComponentProps, ReactStripeElements.InjectedStripeProps {
   user?: any
   API: DappbotAPI
   requireCreditCard?: boolean
-
 }
 
 export const PLAN_PRICES = {
@@ -57,11 +57,11 @@ export const CheckoutBox:FC<{numDapps:string, requireCreditCard:boolean}> = ({nu
 
       
 
-export const Payment:FC<PaymentProps> = ({user, API, stripe, requireCreditCard}) => {
+export const Signup:FC<SignupProps> = ({user, API, stripe, requireCreditCard}) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [coupon, setCoupon] = useState('');
-  const [numDapps, setNumDapps] = useState('1');
+  const [numDapps, setNumDapps] = useState(Payment.trialStripePlan().standard.toString());
   
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
@@ -164,7 +164,7 @@ export const Payment:FC<PaymentProps> = ({user, API, stripe, requireCreditCard})
               color="gray"
               align="center"
               className="mb-5">
-                You've successfully purchased {numDapps} slots on DappBot.
+                You can make up to {numDapps} dapps with DappBot!
                 <br />
                 We've sent you an email with your temporary password, <Link to='/login'>login here</Link>.
               </Text>
@@ -299,10 +299,10 @@ export const Payment:FC<PaymentProps> = ({user, API, stripe, requireCreditCard})
   )
 }
 
-Payment.defaultProps = {
+Signup.defaultProps = {
   requireCreditCard: false,
 }
 
-export const PaymentPage = injectStripe(Payment);
+export const SignupPage = injectStripe(Signup);
 
-export default PaymentPage;
+export default SignupPage;
