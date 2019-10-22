@@ -159,7 +159,7 @@ export const Signup:FC<SignupProps> = ({user, API, stripe, requireCreditCard}) =
               color="gray"
               align="center"
               className="mb-5">
-                You can now make up to {numDapps} dapps with DappBot!
+                You're ready to make up to {numDapps} dapps with DappBot!
                 <br />
                 We've sent you an email with your temporary password, <Link to='/login'>login here</Link>.
               </Text>
