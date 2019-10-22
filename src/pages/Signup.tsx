@@ -48,7 +48,7 @@ export const CheckoutBox:FC<{numDapps:string, requireCreditCard:boolean}> = ({nu
     return (
       <Box>
         <Text>
-          You will receive access to <strong>{numDapps} dapps</strong>, and can add a credit card later to create more.
+          You will receive access to <strong>{numDapps} dapps</strong> on our free tier.  If you would like to create more, you can add a credit card later.
         </Text>
       </Box>
     )
