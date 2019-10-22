@@ -1,6 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import { RouteComponentProps, Link } from '@reach/router';
 import DappbotAPI from '@eximchain/dappbot-api-client';
+import { freeTierStripePlan } from '@eximchain/dappbot-types/spec/methods/payment';
 import { StringField, NumberField, Uints, BooleanField } from '../components/fields';
 import { Button, Box, Text, Checkbox } from '../components/ui';
 import { Container } from "../layout";
@@ -61,7 +62,7 @@ export const Payment:FC<PaymentProps> = ({user, API, stripe, requireCreditCard})
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [coupon, setCoupon] = useState('');
-  const [numDapps, setNumDapps] = useState('1');
+  const [numDapps, setNumDapps] = useState(freeTierStripePlan().standard.toString());
   
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
@@ -77,7 +78,11 @@ export const Payment:FC<PaymentProps> = ({user, API, stripe, requireCreditCard})
   const metadata = { occupation, organization };
   const isRequired = requireCreditCard;
   const noCreditCardSignupArgs = { 
-    plans: { standard:1, professional:0, enterprise:0 },
+    plans: {
+      standard: freeTierStripePlan().standard,
+      professional: freeTierStripePlan().professional,
+      enterprise: freeTierStripePlan().enterprise
+    },
     email, name, coupon, metadata
   };
   const creditCardSignupArgs = { 
