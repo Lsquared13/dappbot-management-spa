@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "private": true,
   "dependencies": {
-    "@eximchain/dappbot-api-client": "^1.2.2",
+    "@eximchain/dappbot-api-client": "^1.2.3",
     "@eximchain/dappbot-types": "^1.7.8",
     "@reach/router": "^1.2.1",
     "@reach/tooltip": "^0.2.0",
