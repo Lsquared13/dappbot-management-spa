@@ -11,6 +11,7 @@ import * as React from "react";
 import copy from 'copy-to-clipboard';
 import Alert from 'react-s-alert';
 import EXCAddress from '../components/ui/EXCAddress/index';
+import { Payment } from "@eximchain/dappbot-types/spec/methods";
 
 const eximchainBlueColor = '#267EDC';
 
@@ -257,3 +258,13 @@ export const NetworkReferenceLink: React.SFC<LinkProps> = props => {
     </Box>
   );
 };
+
+export const PLAN_PRICES = {
+  standard : 10,
+  professional : 100,
+  enterprise : 150
+}
+
+export function monthlyDappCost(numStandardDapps:number) {
+  return Math.max((numStandardDapps - Payment.freeTierStripePlan().standard) * PLAN_PRICES.standard, 0);
+}

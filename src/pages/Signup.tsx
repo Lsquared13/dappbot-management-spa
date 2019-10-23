@@ -3,7 +3,7 @@ import { RouteComponentProps, Link } from '@reach/router';
 import DappbotAPI from '@eximchain/dappbot-api-client';
 import { StringField, NumberField, Uints, BooleanField } from '../components/fields';
 import { Button, Box, Text, Checkbox } from '../components/ui';
-import { Container } from "../layout";
+import { Container, monthlyDappCost, PLAN_PRICES } from "../layout";
 import EmailImage from "../assets/images/CheckEmail.svg";
 
 
@@ -17,27 +17,22 @@ import { ErrorBox } from '../components';
 import { useResource } from 'react-request-hook';
 import { getErrMsg } from '../services/util';
 import Track from '../services/analytics';
+import { Payment } from '@eximchain/dappbot-types/spec/methods';
 
-interface PaymentProps extends RouteComponentProps, ReactStripeElements.InjectedStripeProps {
+interface SignupProps extends RouteComponentProps, ReactStripeElements.InjectedStripeProps {
   user?: any
   API: DappbotAPI
   requireCreditCard?: boolean
-
 }
 
-export const PLAN_PRICES = {
-  ENTHUSIAST : 10,
-  PROJECT : 100,
-  STARTUP : 150
-}
+const FREE_CAPACITY = Payment.freeTierStripePlan().standard;
 
 export const CheckoutBox:FC<{numDapps:string, requireCreditCard:boolean}> = ({numDapps, requireCreditCard}) => {
-  const priceTag = parseInt(numDapps) * PLAN_PRICES.ENTHUSIAST;
   if (requireCreditCard){
     return (
       <Box>
         <Text>
-          You are purchasing <strong>{numDapps} dapps</strong> on our <strong>Basic Plan</strong>, at a cost of <strong>${priceTag} per month</strong>.
+          You are purchasing <strong>{numDapps} dapps</strong> at a total cost of <strong>${monthlyDappCost(parseInt(numDapps))} per month</strong> ({FREE_CAPACITY} for free, then ${PLAN_PRICES.standard} apiece).
         </Text>
       </Box>
     )
@@ -46,7 +41,7 @@ export const CheckoutBox:FC<{numDapps:string, requireCreditCard:boolean}> = ({nu
     return (
       <Box>
         <Text>
-          You will receive access to <strong>{numDapps} dapps</strong>, and can add a credit card later to create more.
+          You will receive access to <strong>{numDapps} dapps</strong> on our free tier.  If you would like to create more, you can add a credit card later.
         </Text>
       </Box>
     )
@@ -57,11 +52,11 @@ export const CheckoutBox:FC<{numDapps:string, requireCreditCard:boolean}> = ({nu
 
       
 
-export const Payment:FC<PaymentProps> = ({user, API, stripe, requireCreditCard}) => {
+export const Signup:FC<SignupProps> = ({user, API, stripe, requireCreditCard}) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [coupon, setCoupon] = useState('');
-  const [numDapps, setNumDapps] = useState('1');
+  const [numDapps, setNumDapps] = useState(FREE_CAPACITY.toString());
   
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
@@ -164,7 +159,7 @@ export const Payment:FC<PaymentProps> = ({user, API, stripe, requireCreditCard})
               color="gray"
               align="center"
               className="mb-5">
-                You've successfully purchased {numDapps} slots on DappBot.
+                You're ready to make up to {numDapps} dapps with DappBot!
                 <br />
                 We've sent you an email with your temporary password, <Link to='/login'>login here</Link>.
               </Text>
@@ -299,10 +294,10 @@ export const Payment:FC<PaymentProps> = ({user, API, stripe, requireCreditCard})
   )
 }
 
-Payment.defaultProps = {
+Signup.defaultProps = {
   requireCreditCard: false,
 }
 
-export const PaymentPage = injectStripe(Payment);
+export const SignupPage = injectStripe(Signup);
 
-export default PaymentPage;
+export default SignupPage;

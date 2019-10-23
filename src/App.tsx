@@ -14,7 +14,7 @@ import { HomeBase } from "./layout/HomeBase";
 import AppBase from './layout/AppBase';
 import { useLocalStorage } from './services/localStorage';
 import { SettingsContainerBase } from "./apps/SettingsContainerBase";
-import {  Welcome, Login, Privacy, PaymentPage, Terms } from './pages';
+import {  Welcome, Login, Privacy, SignupPage, Terms } from './pages';
 import { DashboardBase } from './apps/DashboardBase';
 import { NewDappFormBase } from './apps';
 import Track from './services/analytics';
@@ -88,7 +88,7 @@ const App: FC = () => {
                 rememberUser={rememberUser}
                 setRememberUser={setRememberUser}
                 setUser={safeSetUser} />
-              <PaymentPage path='signup' {...appData}/>
+              <SignupPage path='signup' {...appData}/>
               <Privacy path='privacy'  />
               <Terms path='terms'  />
             </PageBase>
