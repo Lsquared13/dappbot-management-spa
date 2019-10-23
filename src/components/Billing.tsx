@@ -170,7 +170,7 @@ const Billing: FC<BillingProps> = ({
         customUI: CustomConfirmFactory({
           title: 'Confirm Purchase',
           message: [
-            `You are currently within DappBot's free tier.  If you increase your dapp capacity to ${updateNumber}, you will be billed $${monthlyDappCost(updateNumber)} USD (${MAX_FREE} for free, then $${PLAN_PRICES.ENTHUSIAST} apiece).`,
+            `You are currently within DappBot's free tier.  If you increase your dapp capacity to ${updateNumber}, you will be billed $${monthlyDappCost(updateNumber)} USD (${MAX_FREE} for free, then $${PLAN_PRICES.standard} apiece).`,
             'Would you like to continue?'
           ],
           onConfirm: runUpdate

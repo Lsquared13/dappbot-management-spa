@@ -260,11 +260,11 @@ export const NetworkReferenceLink: React.SFC<LinkProps> = props => {
 };
 
 export const PLAN_PRICES = {
-  ENTHUSIAST : 10,
-  PROJECT : 100,
-  STARTUP : 150
+  standard : 10,
+  professional : 100,
+  enterprise : 150
 }
 
 export function monthlyDappCost(numStandardDapps:number) {
-  return Math.max((numStandardDapps - Payment.freeTierStripePlan().standard) * PLAN_PRICES.ENTHUSIAST, 0);
+  return Math.max((numStandardDapps - Payment.freeTierStripePlan().standard) * PLAN_PRICES.standard, 0);
 }

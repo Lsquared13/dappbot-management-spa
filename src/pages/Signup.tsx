@@ -32,7 +32,7 @@ export const CheckoutBox:FC<{numDapps:string, requireCreditCard:boolean}> = ({nu
     return (
       <Box>
         <Text>
-          You are purchasing <strong>{numDapps} dapps</strong> at a total cost of <strong>${monthlyDappCost(parseInt(numDapps))} per month</strong> ({FREE_CAPACITY} for free, then ${PLAN_PRICES.ENTHUSIAST} apiece).
+          You are purchasing <strong>{numDapps} dapps</strong> at a total cost of <strong>${monthlyDappCost(parseInt(numDapps))} per month</strong> ({FREE_CAPACITY} for free, then ${PLAN_PRICES.standard} apiece).
         </Text>
       </Box>
     )

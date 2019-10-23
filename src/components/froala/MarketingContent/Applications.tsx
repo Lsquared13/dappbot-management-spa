@@ -13,7 +13,7 @@ export const Applications = () => (
         <div className="col-12 col-sm-4">
           <img alt="Hosted Infrastructure" className="fdb-icon" src="Hosted.svg" />
           <h3 className="text-left"><strong>Educational Tool</strong><br />Spend your time on smart contracts rather than web apps</h3>
-          <p className="text-left">Whether you’re learning about smart contracts or participating a Hackathon want an interface, but don’t want to spend time creating a front-end for your Dapps. We can get you a responsive Dapp infterface in five minutes.</p>
+          <p className="text-left">Are you learning about smart contracts, or need an interface for your Hackathon project, but don’t want to spend time creating a front-end for your Dapps? We can get you a responsive Dapp interface in five minutes.</p>
         </div>
         <div className="col-12 col-sm-4 pt-4 pt-sm-0">
           <img alt="Rapid Prototyping" className="fdb-icon" src="Rapid.svg" />
@@ -23,7 +23,7 @@ export const Applications = () => (
         <div className="col-12 col-sm-4 pt-4 pt-sm-0">
           <img alt="Educational Tool" className="fdb-icon" src="Edu.svg" />
           <h3 className="text-left"><strong>Rapid Prototyping</strong><br />Decrease DevOps for your Dapps to zero</h3>
-          <p className="text-left">If you need generate live demos for client pitch or would like to explore the best smart contract use-cases, we help you dramatically cut iteration time and reduce DevOps effort to zero.</p>
+          <p className="text-left">If you are exploring smart contract use-cases, or need to generate live demos for client pitches, we help you dramatically cut iteration time and reduce DevOps effort to zero.</p>
         </div>
       </div>
     </div>
