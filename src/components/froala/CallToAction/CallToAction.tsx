@@ -12,7 +12,7 @@ const CallToAction = () => (
         <div className="col-12 col-sm-10 col-md-8 col-lg-6 text-left" style={{zIndex: 10000}}>
           {/* <h1>DappBot</h1> */}
           <h2>Create Dapps with only a smart contract ABI. No coding required.</h2>
-          <p className="lead">Five Minutes, Three Steps, Zero coding, build and share your Blockchain Application with a unique URL using DappBot today.</p>
+          <p className="lead">Five Minutes. Three Steps. Zero Coding. Build and share your Blockchain Application with a unique URL using DappBot today!</p>
           <p className="mt-5">
             <Link className="btn btn-primary" to='/signup'>Get Started</Link>
           </p>

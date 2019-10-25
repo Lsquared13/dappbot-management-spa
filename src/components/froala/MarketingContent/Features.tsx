@@ -17,7 +17,7 @@ export const Features = () => (
       <div className="row mt-5">
         <div className="col-12 col-sm-4">
           <h3><strong>Speed</strong></h3>
-          <p>Save thousands of hours in prototyping your first blockchain application and ongoing DevOps effort with three steps and five minutes.</p>
+          <p>Save thousands of hours on prototyping your first blockchain application and ongoing DevOps effort with three steps and five minutes.</p>
         </div>
         <div className="col-12 col-sm-4 pt-3 pt-sm-0">
           <h3><strong>Scalability</strong></h3>

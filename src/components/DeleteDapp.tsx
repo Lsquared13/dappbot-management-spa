@@ -58,10 +58,10 @@ export class DeleteDapp extends Component<DeleteDappProps, DeleteDappState> {
           <Box smColumn={12} mdColumn={8}>
             <Box marginBottom={9}>
               <Description>
-                Deleting a Dapp will remove it’s history from your account.
-                Before deleting yout account it will require you to confirm the
+                Deleting a dapp will remove its history from your account.
+                Before deleting your dapp it will require you to confirm the
                 deletion by inputing the name of your dapp below. After inputing
-                the name click the button at the bottom right to complete Dapp
+                the name, click the button at the bottom right to complete dapp
                 deletion.
               </Description>
             </Box>
@@ -82,9 +82,9 @@ export class DeleteDapp extends Component<DeleteDappProps, DeleteDappState> {
                 
              
               <Description>
-                Deleting this Dapp will make the name immediately available to
-                other users. If you wish to keep the name be sure to create
-                another Dapp with the same name soon after.
+                Deleting this dapp will make the name immediately available to
+                other users. If you wish to keep the name, be sure to create
+                another dapp with the same name soon after.
               </Description>
             </InputGroup>
           </Box>
