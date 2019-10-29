@@ -1,6 +1,6 @@
 import * as React from "react";
 import StyledStaticConsole from "./StyledStaticConsole";
-import ConsoleText from "./ConsoleText";
+import ConsoleText from "./DappGenerationConsoleText";
 
 export const StaticConsole: React.SFC = props => (
   <StyledStaticConsole>
