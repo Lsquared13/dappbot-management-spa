@@ -5,7 +5,7 @@ export const Learn = () => (
     <div className="container">
       <div className="row justify-content-center">
         <div className="col-12 text-center">
-          <h1>How does it work?</h1>
+          <h1>How to Launch a Dapp</h1>
           <p className="lead">Three simple steps to deploy your Dapp from only a contract ABI.</p>
         </div>
       </div>
