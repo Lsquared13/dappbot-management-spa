@@ -11,7 +11,7 @@ export const Applications = () => (
       </div>
       <div className="row justify-content-center">
         <div className="col-12 text-center">
-          <svg width="1000" height="622" viewBox="0 0 1000 622" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="100%" height="auto" viewBox="0 0 1000 622" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="1000" height="622" fill="white"/>
             <path d="M703.094 471.761C703.649 471.761 704.1 471.31 704.1 470.754C704.1 470.198 703.649 469.748 703.094 469.748C702.538 469.748 702.087 470.198 702.087 470.754C702.087 471.31 702.538 471.761 703.094 471.761Z" fill="#E8F2FE"/>
             <path d="M720.481 426.189C720.936 426.189 721.305 425.82 721.305 425.365C721.305 424.91 720.936 424.541 720.481 424.541C720.025 424.541 719.656 424.91 719.656 425.365C719.656 425.82 720.025 426.189 720.481 426.189Z" fill="#E8F2FE"/>
@@ -870,7 +870,7 @@ export const Applications = () => (
       </div>  
       <div className="row justify-content-center">
         <div className="col-12 text-center">
-        <svg width="1000" height="500" viewBox="0 0 1000 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="100%" height="auto" viewBox="0 0 1000 500" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="1000" height="500" fill="white"/>
             <path d="M724.094 221.761C724.649 221.761 725.1 221.31 725.1 220.754C725.1 220.198 724.649 219.748 724.094 219.748C723.538 219.748 723.087 220.198 723.087 220.754C723.087 221.31 723.538 221.761 724.094 221.761Z" fill="#E8F2FE"/>
             <path d="M741.481 176.189C741.936 176.189 742.305 175.82 742.305 175.365C742.305 174.91 741.936 174.541 741.481 174.541C741.025 174.541 740.656 174.91 740.656 175.365C740.656 175.82 741.025 176.189 741.481 176.189Z" fill="#E8F2FE"/>
