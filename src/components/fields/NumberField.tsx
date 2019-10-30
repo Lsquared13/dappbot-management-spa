@@ -61,6 +61,7 @@ export const NumberField: FunctionComponent<Props> = ({value, onChange, name, di
                             <div className="input-group">
                                 <div className="input-group-header">
                                     {displayName}
+                                    {props.required ? ' (*)' : ''}
                                     {props.help ? '  ' : ''}
                                     {props.help ? <HelpIcon helpTxt={props.help} /> : null}
                                 </div>
@@ -73,6 +74,7 @@ export const NumberField: FunctionComponent<Props> = ({value, onChange, name, di
                                     onChange={updater} 
                                     showError={errMsg !== ""}
                                     errorMessage={errMsg}
+                                    required={props.required}
                                     onBlur={validator} />
                             </div>
                         </div>
