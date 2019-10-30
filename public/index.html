@@ -33,7 +33,7 @@
     -->
 
     <title>DappBot - Blockchain Dapp Development in 5 minutes</title>
-    <meta name="description" content="DappBot enables blockchain developer to build Blockchain Application (Dapp) through Five Minutes, Three Steps and Zero coding with a unique URL.">
+    <meta name="description" content="DappBot enables blockchain developer to build Blockchain Application (Dapp) through Five Minutes, Three Steps, and Zero Coding with a unique URL.">
     <meta name="keywords" content="eximchain, block chain, blockchain, dapp, developer, development, app, application, abi, contract, smart contract, dapp bot, dappbot, mvp">
 
     <!-- Open Graph -->
@@ -41,13 +41,13 @@
      <meta name="twitter:site" content="@eximchainexc" />
      <meta name="twitter:creator" content="@eximchainexc">
      <meta name="twitter:title" content="DappBot - Blockchain Dapp Development in 5 minutes" />
-     <meta name="twitter:description" content="DappBot enables blockchain developer to build Blockchain Application (Dapp) through Five Minutes, Three Steps and Zero coding with a unique URL." />
+     <meta name="twitter:description" content="DappBot enables blockchain developer to build Blockchain Application (Dapp) through Five Minutes, Three Steps, and Zero Coding with a unique URL." />
      <meta name="twitter:image" content="https://dapp.bot/Twitter.jpg" />
      <meta property="fb:app_id" content="171916436880863" />
      <meta property="og:type" content="website" />
      <meta property="og:url" content="https://dapp.bot" />
      <meta property="og:title" content="DappBot - Blockchain Dapp Development in 5 minutes" />
-     <meta property="og:description" content="DappBot enables blockchain developer to build Blockchain Application (Dapp) through Five Minutes, Three Steps and Zero coding with a unique URL." />
+     <meta property="og:description" content="DappBot enables blockchain developer to build Blockchain Application (Dapp) through Five Minutes, Three Steps, and Zero Coding with a unique URL." />
      <meta property="og:image:height" content="630" />
      <meta property="og:image:width" content="1200" />
      <meta property="og:image:type" content="image/jpeg" />
@@ -68,6 +68,36 @@
         })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
     </script>
     <script src="https://js.stripe.com/v3/"></script>
+
+    <!-- 
+      Load Segment's analytics object, it becomes available on 
+      `window.analytics`.  The original snippet can be found
+      on the setup page for a browser Source.
+    -->
+    <script>
+      !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t,e){var n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src="https://cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(n,a);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.1.0";
+      analytics.load("%REACT_APP_SEGMENT_BROWSER_WRITE_KEY%");
+      analytics.page();
+      }}();
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '838175743060338');
+      fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=838175743060338&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Facebook Pixel Code -->
 
   </head>
   <body>

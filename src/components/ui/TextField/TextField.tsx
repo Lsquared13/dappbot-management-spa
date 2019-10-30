@@ -87,6 +87,10 @@ export interface TextFieldProps {
    * @default "text"
    **/
   type?: TextFieldTypes;
+  /**
+   * Whether or not to add the HTML `required` attribute to the input
+   */
+  required?: boolean;
 }
 
 export default class TextField extends React.Component<
@@ -184,6 +188,7 @@ export default class TextField extends React.Component<
             pattern={pattern}
             placeholder={placeholder}
             innerRef={this.textfieldRef}
+            required={!!this.props.required}
             type={type}
             value={value}
           />

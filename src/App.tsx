@@ -4,7 +4,7 @@ import { StripeProvider, Elements } from 'react-stripe-elements';
 import Alert from 'react-s-alert';
 import DappbotAPI from '@eximchain/dappbot-api-client';
 import { Login as LoginTypes } from '@eximchain/dappbot-types/spec/methods/auth';
-import User from '@eximchain/dappbot-types/spec/user';
+import User, { AuthData } from '@eximchain/dappbot-types/spec/user';
 import './App.css';
 import './variable.css';
 import './custom.css'
@@ -14,9 +14,10 @@ import { HomeBase } from "./layout/HomeBase";
 import AppBase from './layout/AppBase';
 import { useLocalStorage } from './services/localStorage';
 import { SettingsContainerBase } from "./apps/SettingsContainerBase";
-import {  Welcome, Login, Privacy, PaymentPage, Terms } from './pages';
+import {  Welcome, Login, Privacy, SignupPage, Terms } from './pages';
 import { DashboardBase } from './apps/DashboardBase';
 import { NewDappFormBase } from './apps';
+import Track from './services/analytics';
 
 
 const App: FC = () => {
@@ -31,8 +32,23 @@ const App: FC = () => {
   // get a notification, helping us determine root cause.
   const safeSetUser:React.Dispatch<LoginTypes.Result> = (newUser) => {
     if (User.isAuthData(newUser)) {
-      setUser(newUser);
+
+      // Update user in memory, potentially Tracking a fresh login
+      // if the new auth is active and the old one wasn't.
+      setUser(oldUser => {
+
+        // Bail out and just set if newUser isn't active
+        if (!User.authStatus(newUser).isActive) return newUser;
+
+        const oldStatus = User.authStatus(oldUser);
+        if (oldStatus.isStale) Track.userLogin(newUser.User.Email, true);
+        if (oldStatus.isEmpty) Track.userLogin(newUser.User.Email, false);
+        return newUser;
+      });
+
+      // Update user in localStorage if they'd like that
       if (rememberUser) setSavedUser(newUser);
+
     } else {
       console.error("Attempted to setUser to the following broken value: ",newUser);
       Alert.error("Just attempted to set an invalid user value, check console for more information.");
@@ -44,6 +60,8 @@ const App: FC = () => {
     setAuthData : safeSetUser,
     dappbotUrl : process.env.REACT_APP_DAPPBOT_API_ENDPOINT as string
   });
+
+  
 
   // Runs at startup, refreshing user in memory with the
   // value available from local storage.
@@ -70,7 +88,7 @@ const App: FC = () => {
                 rememberUser={rememberUser}
                 setRememberUser={setRememberUser}
                 setUser={safeSetUser} />
-              <PaymentPage path='signup' {...appData}/>
+              <SignupPage path='signup' {...appData}/>
               <Privacy path='privacy'  />
               <Terms path='terms'  />
             </PageBase>

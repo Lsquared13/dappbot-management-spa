@@ -3,7 +3,7 @@ import { FieldProps, inputUpdater, inputValidator } from './shared'
 import TextField, { TextFieldTypes } from '../ui/TextField';
 import HelpIcon from '../ui/HelpIcon';
 
-interface Props extends FieldProps {
+export interface StringFieldProps extends FieldProps {
     value: string
     onChange: (newVal:string)=>void
     onPressEnter?:()=>void
@@ -17,7 +17,7 @@ interface Props extends FieldProps {
     password?: boolean
 }
 
-const StringField: FunctionComponent<Props> = ({
+export const StringField: FunctionComponent<StringFieldProps> = ({
     value, onChange, name, displayName, isValid, 
     errorMsg, clean, ...props
 }) => {
@@ -50,6 +50,7 @@ const StringField: FunctionComponent<Props> = ({
                             <div className="input-group text-left">
                                 <div className="input-group-header">
                                     {displayName}
+                                    {props.required ? ' (*)' : ''}
                                     {props.help ? '  ' : ''}
                                     {props.help ? <HelpIcon helpTxt={props.help} /> : null}
                                 </div>
@@ -63,6 +64,7 @@ const StringField: FunctionComponent<Props> = ({
                                     showError={errMsg !== ""}
                                     errorMessage={errMsg}
                                     onBlur={validator}
+                                    required={props.required}
                                     />
                             </div>
                         </div>

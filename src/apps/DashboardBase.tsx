@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useResource } from "react-request-hook";
 import { Router, navigate, RouteComponentProps } from "@reach/router";
 import Alert from 'react-s-alert';
@@ -8,6 +8,7 @@ import { isSuccessResponse } from "@eximchain/dappbot-types/spec/responses";
 
 import { DashboardContainer, DappDetailsContainer, DeleteDappContainer } from "../pages/dashboard";
 import { getErrMsg, sleep } from '../services/util';
+import Track from '../services/analytics';
 import { DeleteDappState } from "../components";
 import { NotFound } from "../pages";
 
@@ -95,10 +96,17 @@ export const DashboardBase: React.SFC<Props> = ({ API, ...props }) => {
   ///////////////////////////
   // DAPP DELETE LOGIC
   ///////////////////////////
+  // Refs are mutable variables which don't trigger
+  // re-renders when updated, but are always up to
+  // date in the current render.  I just need to pass
+  // the dappName from this scope into the effect's
+  // scope, so a ref works neatly..
+  const deletingDappName = useRef('');
   const [deleteResponse, requestDelete] = useResource(API.private.deleteDapp.resource);
   async function makeDeleteRequest(dappName: string) {
     if (API.hasActiveAuth()) {
       requestDelete(dappName);
+      deletingDappName.current = dappName;
     } else if (API.hasStaleAuth()) {
       try {
         API.loginViaRefresh();
@@ -123,11 +131,17 @@ export const DashboardBase: React.SFC<Props> = ({ API, ...props }) => {
     }
     else if (data) {
       Alert.success(`Your dapp was successfully deleted!  It should disappear from the list in a moment.`, { timeout: 1500 });
+
       // Taking a one-second nap here ensures that the DynamoDB
       // records are actually updated by the time our request
       // hits the Lambda.
-      sleep(1).then(makeListRequest) 
+      sleep(1).then(makeListRequest)
       navigate(`/home`);
+
+      // Note that we only trigger an event upon getting
+      // a success response, and how we use the ref to
+      // find out which Dapp was just deleted
+      Track.dappDeleted(deletingDappName.current);
     }
   }, [deleteResponse])
 
@@ -163,7 +177,6 @@ export const DashboardBase: React.SFC<Props> = ({ API, ...props }) => {
             const dappName = inputs;
             if (dappName) {
               makeDeleteRequest(dappName);
-              navigate(`/home`);
             }
           }}
           onInputChange={inputs => {
@@ -181,9 +194,6 @@ export const DashboardBase: React.SFC<Props> = ({ API, ...props }) => {
           dappName="loading"
           building={false}
           dapps={dappList}
-          onStatusCopy={() => {
-            Alert.success("Value copied to clipboard");
-          }}
           defaultTab="status"
           settingOptions={SETTING_OPTIONS}
           onTabChange={(dappName: string) => {

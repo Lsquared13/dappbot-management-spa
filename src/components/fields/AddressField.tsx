@@ -40,6 +40,7 @@ const AddressField: FunctionComponent<Props> = ({value, onChange, name, displayN
                             <div className="input-group">
                                 <div className="input-group-header">
                                     {displayName}
+                                    {props.required ? ' (*)' : ''}
                                     {props.help ? '  ' : ''}
                                     {props.help ? <HelpIcon helpTxt={props.help} /> : null}
                                 </div>
@@ -51,6 +52,7 @@ const AddressField: FunctionComponent<Props> = ({value, onChange, name, displayN
                                     onChange={update} 
                                     showError={errorMsg !== ""}
                                     errorMessage={errorMsg}
+                                    required={props.required}
                                     onBlur={validator} />
                             </div>
                         </div>

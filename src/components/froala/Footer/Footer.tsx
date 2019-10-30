@@ -21,7 +21,7 @@ const Footer = () => (
               <Link to='/terms' className='nav-link'>Terms of Use</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" target="_blank" href="https://support.eximchain.com/hc/en-us/requests/new" rel="noopener noreferrer">Support</a>
+              <a className="nav-link" target="_blank" href="https://eximchain.zendesk.com/hc/en-us/requests/new" rel="noopener noreferrer">Support</a>
             </li>
           </ul>
         </div>

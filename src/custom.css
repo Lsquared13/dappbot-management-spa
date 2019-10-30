@@ -4403,3 +4403,7 @@ input {
   .marginTop10{
     margin-top:15%;
   }
+
+  #infographic{
+    padding-bottom: 0px;
+  }

@@ -13,6 +13,7 @@ import { NotFound } from '../pages'
 import { NewDappContainer, BuildDetailsContainer, ConfigureDappContainer } from "../pages/newDappForm"
 import { CreateDappState, ConfigureDappState } from "../components";
 import { getErrMsg } from '../services/util';
+import Track from '../services/analytics';
 
 
 export interface NewDappFormBaseProps extends RouteComponentProps {
@@ -95,8 +96,12 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({ user, API, ..
   // DAPP CREATE LOGIC
   ///////////////////////////
   const [createResponse, requestCreate] = useResource(API.private.createDapp.resource);
+  const newDappName = useRef('');
+  const newDappArgs = useRef({} as CreateDappTypes.Args);
   async function makeCreateRequest(dappName:string, dappArgs: CreateDappTypes.Args) {
     if (API.hasActiveAuth()) {
+      newDappArgs.current = dappArgs;
+      newDappName.current = dappName;
       requestCreate(dappName, dappArgs);
     } else {
       try {
@@ -119,6 +124,11 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({ user, API, ..
       }
     } else if (data) {
       Alert.success(` Build for: ${DappName} started`);
+      Track.dappCreated(
+        user.User.Email, 
+        newDappName.current,
+        newDappArgs.current
+      )
       navigate(`/home/new/${DappName}/build`);
     }
 
@@ -195,7 +205,6 @@ export const NewDappFormBase: React.SFC<NewDappFormBaseProps> = ({ user, API, ..
         building={true}
         dappName={buildingDappDetails.current.DappName}
         dapp={buildingDappDetails.current}
-        onStatusCopy={() => { }}
         defaultTab="status"
         settingOptions={SETTING_OPTIONS}
         onTabChange={(dappName: string) => {

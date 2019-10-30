@@ -1,11 +1,11 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState, useEffect, useRef } from "react";
 import { RouteComponentProps } from "@reach/router";
 import Alert from 'react-s-alert';
 import { useResource } from "react-request-hook";
 import { XOR } from "ts-xor";
 
 import DappbotAPI from '@eximchain/dappbot-api-client';
-import User from "@eximchain/dappbot-types/spec/user";
+import User, { Challenges } from "@eximchain/dappbot-types/spec/user";
 import { StripePlans, StripeTypes } from '@eximchain/dappbot-types/spec/methods/payment';
 
 import { Container, Breadcrumb, Title, LayoutContainer } from "../layout";
@@ -13,6 +13,7 @@ import { Box } from "../components/ui";
 import Billing from '../components/Billing';
 import { injectStripe, ReactStripeElements as RSE } from "react-stripe-elements";
 import { getErrMsg, sleep } from "../services/util";
+import Track from "../services/analytics";
 
 export interface SettingsContainerProps extends RouteComponentProps, RSE.InjectedStripeProps {
   user: User.AuthData;
@@ -122,12 +123,14 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
   // UPDATING USER'S DAPP ALLOTMENT
   ///////////////////////////////////
   const [updateDappsResponse, requestUpdateDapps] = useResource(API.payment.updatePlanCounts.resource)
+  const newDappCapacity = useRef(parseInt(user.User.UserAttributes["custom:standard_limit"]));
   async function makeUpdateDappsRequest(numDapps: number) {
     let plans: StripePlans = {
       standard: numDapps,
       professional: parseInt(user.User.UserAttributes['custom:professional_limit']),
       enterprise: parseInt(user.User.UserAttributes['custom:enterprise_limit'])
     }
+    newDappCapacity.current = numDapps;
     let request = {
       plans: plans
     }
@@ -147,7 +150,21 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
       console.log('error: ',error);
       Alert.error(`Error updating your subscription: ${getErrMsg(error)}`)
     } else if (data && !isLoading) {
+
+      // We know that we just successfully updated the
+      // dapp capacity, track the change.
+      Track.capacityUpdated(
+        user.User.Email, 
+        parseInt(user.User.UserAttributes["custom:standard_limit"]),
+        newDappCapacity.current
+      )
+
       requestStripe()
+      try {
+        API.loginViaRefresh()
+      } catch (err) {
+        console.error('Unable to perform refresh login: ', err);
+      }
     }
   }, [updateDappsResponse])
 
@@ -172,19 +189,32 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
     if (error) {
       Alert.error(`Error updating your card: ${getErrMsg(error)}`)
     } else if (data && !isLoading) {
+
+      // We know updating payment was just successful.  Depending
+      // on whether we already had a payment source, track an
+      // appropriate event.
+      if (source === null) {
+        Track.cardAdded(API.authData.User.Email);
+      } else {
+        Track.cardUpdated(API.authData.User.Email);
+      }
+
+      // Refetch all updated payment details
       requestStripe();
+
+      // Payment status on the Cognito user document may take 
+      // a few seconds to propagate, this sleep gives the infra
+      // a moment to do its magic.  Note that we don't expect 
+      // the auth to be stale; we are logging in again so that 
+      // we refetch the user's profile data.
       sleep(5).then(() => {
-        // Payment status may take a few seconds to propagate,
-        // this sleep gives the infra a moment to do its magic.
-        // Note that we don't expect the auth to be stale; we
-        // are logging in again so that we refetch the user's
-        // profile data.
         API.loginViaRefresh();
       })
     }
   }, [updatePaymentResponse, requestStripe]);
 
   let paymentStatus = user.User.UserAttributes['custom:payment_status'] || 'ACTIVE';
+  let preferredMfa = user.User.PreferredMfaSetting ? user.User.PreferredMfaSetting as Challenges.MfaTypes : null;
   return (
     <Box>
       <Breadcrumb title={"none"} />
@@ -205,6 +235,9 @@ const SettingContainer: FC<SettingsContainerProps> = (props) => {
               totalNumDapps={parseInt(user.User.UserAttributes['custom:standard_limit'])}
               submitUpdateDapps={makeUpdateDappsRequest}
               usedNumDapps={usedNumDapps}
+              API={API} // TODO factor MFA out of billing
+              refreshToken={user.RefreshToken} // TODO factor MFA out of billing
+              preferredMfa={preferredMfa} // TODO factor MFA out of billing
             />
           </LayoutContainer>
         </Box>

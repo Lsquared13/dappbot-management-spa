@@ -1,5 +1,5 @@
 export * from './Login';
-export * from './Payment';
+export * from './Signup';
 export * from './Welcome';
 export * from './Privacy';
 export * from './Terms';

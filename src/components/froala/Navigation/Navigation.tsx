@@ -47,13 +47,16 @@ export const Navigation:FC<NavProps> = ({hideLogin, user, setUser}) => {
                   <a className="nav-link" href="#features">Features</a>
               </li>
               <li className="nav-item">
+                  <a className="nav-link" href="#pricing">Pricing</a>
+              </li>
+              <li className="nav-item">
                   <a className="nav-link" href="#learn">Learn</a>
               </li>
               <li className="nav-item">
-                  <a className="nav-link" target="_blank" href="https://dappbot.drift.help/category/getting-started/" rel="noopener noreferrer">Docs</a>
+                  <a className="nav-link" target="_blank" href="https://eximchain.zendesk.com/hc/en-us/categories/360002211513-DappBot" rel="noopener noreferrer">Docs</a>
               </li>
               <li className="nav-item">
-                  <a className="nav-link mr-3 mb-2" href="https://support.eximchain.com/hc/en-us/requests/new" rel="noopener noreferrer">Support</a>
+                  <a className="nav-link mr-3 mb-2" target="_blank" href="https://eximchain.zendesk.com/hc/en-us/requests/new" rel="noopener noreferrer">Support</a>
               </li>
               <li className="nav-item">
                 { loginLogoutLink }
