@@ -61,7 +61,7 @@ export class SettingMenu extends React.Component<
                 }}
                 hide={building}
               >
-                Settings
+                Delete
               </StyledTab>
               {/* TODO IMPLEMENT OTHER DROP DOWN OPTIONS */}
               {/* <Dropdown>
