@@ -50,6 +50,7 @@ export const StringField: FunctionComponent<StringFieldProps> = ({
                             <div className="input-group text-left">
                                 <div className="input-group-header">
                                     {displayName}
+                                    {props.required ? ' (*)' : ''}
                                     {props.help ? '  ' : ''}
                                     {props.help ? <HelpIcon helpTxt={props.help} /> : null}
                                 </div>

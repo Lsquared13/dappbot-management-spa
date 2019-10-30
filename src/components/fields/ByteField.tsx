@@ -25,6 +25,7 @@ const ByteField: FunctionComponent<Props> = ({value, onChange, name, ...props}) 
                             <div className="input-group">
                                 <div className="input-group-header">
                                     {props.displayName}
+                                    {props.required ? ' (*)' : ''}
                                     {props.help ? '  ' : ''}
                                     {props.help ? <HelpIcon helpTxt={props.help} /> : null}
                                 </div>
