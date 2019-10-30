@@ -33,6 +33,7 @@ const ByteField: FunctionComponent<Props> = ({value, onChange, name, ...props}) 
                                     name={name} 
                                     value={value} 
                                     disabled={props.disabled}
+                                    required={props.required}
                                     onChange={update} 
                                     />
                             </div>

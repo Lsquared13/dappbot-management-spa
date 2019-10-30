@@ -63,6 +63,7 @@ export const StringField: FunctionComponent<StringFieldProps> = ({
                                     showError={errMsg !== ""}
                                     errorMessage={errMsg}
                                     onBlur={validator}
+                                    required={props.required}
                                     />
                             </div>
                         </div>

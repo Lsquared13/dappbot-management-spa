@@ -51,6 +51,7 @@ const AddressField: FunctionComponent<Props> = ({value, onChange, name, displayN
                                     onChange={update} 
                                     showError={errorMsg !== ""}
                                     errorMessage={errorMsg}
+                                    required={props.required}
                                     onBlur={validator} />
                             </div>
                         </div>

@@ -8,6 +8,7 @@ export interface FieldProps {
     validate?: ValidatorFunc
     withError?: (errorStr:string)=>void
     disabled?: boolean
+    required?: boolean
 }
 
 export interface UpdaterOptions {

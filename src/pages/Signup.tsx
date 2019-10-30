@@ -185,7 +185,7 @@ export const Signup:FC<SignupProps> = ({user, API, stripe, requireCreditCard}) =
                 </div>
                 <div className="row mt-4">
                   <div className="col">
-                    <StringField name='name' 
+                    <StringField required name='name' 
                     value={name}
                     isValid={(val:string) => val.trim() !== ''}
                     errorMsg='Please provide your name'
@@ -198,7 +198,7 @@ export const Signup:FC<SignupProps> = ({user, API, stripe, requireCreditCard}) =
              
                 <div className="row mt-4">
                   <div className="col">
-                    <StringField name='email' 
+                    <StringField required name='email' 
                     value={email} 
                     isValid={validate.isEmail}
                     errorMsg='Please provide a valid email address'
