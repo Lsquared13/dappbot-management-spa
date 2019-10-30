@@ -69,7 +69,7 @@ export const Signup:FC<SignupProps> = ({user, API, stripe, requireCreditCard}) =
   const [createUserResponse, sendCreateUserRequest] = useResource(API.payment.signUp.resource);
   const [createUserSent, markCreateUserSent] = useState(false);
 
-  const submitAllowed = agreeTerms && validate.isEmail(email) && name !== '';
+  const submitAllowed = agreeTerms && validate.isEmail(email) && name.trim() !== '';
 
   const metadata = { occupation, organization };
   const isRequired = requireCreditCard;
@@ -187,7 +187,7 @@ export const Signup:FC<SignupProps> = ({user, API, stripe, requireCreditCard}) =
                   <div className="col">
                     <StringField name='name' 
                     value={name}
-                    isValid={(val:string) => val !== ''}
+                    isValid={(val:string) => val.trim() !== ''}
                     errorMsg='Please provide your name'
                     disabled={loading}
                     displayName='Name'
