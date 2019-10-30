@@ -69,6 +69,8 @@ export const Signup:FC<SignupProps> = ({user, API, stripe, requireCreditCard}) =
   const [createUserResponse, sendCreateUserRequest] = useResource(API.payment.signUp.resource);
   const [createUserSent, markCreateUserSent] = useState(false);
 
+  const submitAllowed = agreeTerms && validate.isEmail(email) && name !== '';
+
   const metadata = { occupation, organization };
   const isRequired = requireCreditCard;
   const noCreditCardSignupArgs = { 
@@ -184,7 +186,9 @@ export const Signup:FC<SignupProps> = ({user, API, stripe, requireCreditCard}) =
                 <div className="row mt-4">
                   <div className="col">
                     <StringField name='name' 
-                    value={name} 
+                    value={name}
+                    isValid={(val:string) => val !== ''}
+                    errorMsg='Please provide your name'
                     disabled={loading}
                     displayName='Name'
                     onChange={setName}/>
@@ -197,6 +201,7 @@ export const Signup:FC<SignupProps> = ({user, API, stripe, requireCreditCard}) =
                     <StringField name='email' 
                     value={email} 
                     isValid={validate.isEmail}
+                    errorMsg='Please provide a valid email address'
                     disabled={loading}
                     displayName='Email'
                     onChange={setEmail}/>
@@ -279,7 +284,7 @@ export const Signup:FC<SignupProps> = ({user, API, stripe, requireCreditCard}) =
                   </div>
                 </div>
 
-                <Button disabled={loading} onClick={handleCreateUser} block>
+                <Button disabled={loading || !submitAllowed} onClick={handleCreateUser} block>
                   Submit
                 </Button>
 
