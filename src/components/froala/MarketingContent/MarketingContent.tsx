@@ -11,12 +11,12 @@ import Learn from './Learn';
 export const MarketingContent = () => {
   return (
     <>
-      <Features />
+      <Newsletter />
       <Infographic/>
       <PricingTable />
+      <Features />
       <Applications />
       <Learn />
-      <Newsletter />
     </>
   )
 }

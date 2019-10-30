@@ -47,6 +47,9 @@ export const Navigation:FC<NavProps> = ({hideLogin, user, setUser}) => {
                   <a className="nav-link" href="#features">Features</a>
               </li>
               <li className="nav-item">
+                  <a className="nav-link" href="#pricing">Pricing</a>
+              </li>
+              <li className="nav-item">
                   <a className="nav-link" href="#learn">Learn</a>
               </li>
               <li className="nav-item">

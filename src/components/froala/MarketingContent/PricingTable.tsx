@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from '@reach/router';
 
 export const PricingTable = () => (
-  <section className="fdb-block fp-active">
+  <section className="fdb-block" id="pricing">
           <div className="container">
             <div className="row text-center">
               <div className="col">
@@ -17,7 +17,7 @@ export const PricingTable = () => (
                   <p className="h1 mt-5">$0 <span className="lead"> 5 Dapps </span></p>
                   <p>Create a Dapp with only a smart contract ABI. No coding required.</p>
                   <hr />
-                  <p><em>5 Dapps</em></p>
+                  <p><em>Your first 5 Dapps are on us</em></p>
                   <p><em>Free hosting</em></p>
                   <p className="text-center pt-5">
                     <Link className="btn btn-outline-primary" to='/signup'>Start your Free Trial</Link>
