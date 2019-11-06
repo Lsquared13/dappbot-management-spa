@@ -26,12 +26,20 @@ interface SignupProps extends RouteComponentProps, ReactStripeElements.InjectedS
 
 const FREE_CAPACITY = Payment.freeTierStripePlan().standard;
 
-export const CheckoutBox:FC<{numDapps:string, usingCreditCard:boolean}> = ({numDapps, usingCreditCard}) => {
-  if (usingCreditCard){
+export const CheckoutBox:FC<{numDapps:number, usingCreditCard:boolean}> = ({numDapps, usingCreditCard}) => {
+  if (numDapps < FREE_CAPACITY) {
     return (
       <Box>
         <Text>
-          You are purchasing <strong>{numDapps} dapps</strong> at a total cost of <strong>${monthlyDappCost(parseInt(numDapps))} per month</strong> ({FREE_CAPACITY} for free, then ${PLAN_PRICES.standard} apiece).
+          You get <strong>{FREE_CAPACITY.toString()}</strong> dapps for <strong>free</strong>! Please set your number of dapps to <strong>{FREE_CAPACITY.toString()}</strong> to enjoy DappBot without paying.
+        </Text>
+      </Box>
+    )
+  } else if (usingCreditCard){
+    return (
+      <Box>
+        <Text>
+          You are purchasing <strong>{numDapps.toString()} dapps</strong> at a total cost of <strong>${monthlyDappCost(numDapps)} per month</strong> ({FREE_CAPACITY} for free, then ${PLAN_PRICES.standard} apiece).
         </Text>
       </Box>
     )
@@ -40,7 +48,7 @@ export const CheckoutBox:FC<{numDapps:string, usingCreditCard:boolean}> = ({numD
     return (
       <Box>
         <Text>
-          You will receive access to <strong>{numDapps} dapps</strong> on our free tier.  If you would like to create more, you can add a credit card later.
+          You will receive access to <strong>{numDapps.toString()} dapps</strong> on our free tier.  If you would like to create more, you can add a credit card later.
         </Text>
       </Box>
     )
@@ -70,6 +78,7 @@ export const Signup:FC<SignupProps> = ({user, API, stripe}) => {
   const [createUserSent, markCreateUserSent] = useState(false);
 
   const submitAllowed = agreeTerms && validate.isEmail(email) && name.trim() !== '';
+  const numDappsNumber:number = parseInt(numDapps) || 0;
 
   const metadata = { occupation, organization };
   const noCreditCardSignupArgs = { 
@@ -301,11 +310,11 @@ export const Signup:FC<SignupProps> = ({user, API, stripe}) => {
                 
                 <div className="row mt-4 mb-4">
                   <div className="col">
-                    <CheckoutBox numDapps={numDapps} usingCreditCard={!!usingCreditCard}/>
+                    <CheckoutBox numDapps={numDappsNumber} usingCreditCard={!!usingCreditCard}/>
                   </div>
                 </div>
 
-                <Button disabled={loading || !submitAllowed} onClick={handleCreateUser} block>
+                <Button disabled={loading || !submitAllowed || numDappsNumber < FREE_CAPACITY} onClick={handleCreateUser} block>
                   Submit
                 </Button>
 
