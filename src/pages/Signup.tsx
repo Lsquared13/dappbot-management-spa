@@ -31,7 +31,7 @@ export const CheckoutBox:FC<{numDapps:number, usingCreditCard:boolean}> = ({numD
     return (
       <Box>
         <Text>
-          You get <strong>{FREE_CAPACITY}</strong> dapps for <strong>free</strong>! Please set your number of dapps to <strong>{FREE_CAPACITY}</strong> to enjoy DappBot without paying.
+          You get <strong>{FREE_CAPACITY} dapps</strong> for <strong>free</strong>! Please set your number of dapps to <strong>{FREE_CAPACITY}</strong> to enjoy DappBot without paying.
         </Text>
       </Box>
     )
