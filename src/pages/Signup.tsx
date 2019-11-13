@@ -22,17 +22,24 @@ import { Payment } from '@eximchain/dappbot-types/spec/methods';
 interface SignupProps extends RouteComponentProps, ReactStripeElements.InjectedStripeProps {
   user?: any
   API: DappbotAPI
-  requireCreditCard?: boolean
 }
 
 const FREE_CAPACITY = Payment.freeTierStripePlan().standard;
 
-export const CheckoutBox:FC<{numDapps:string, requireCreditCard:boolean}> = ({numDapps, requireCreditCard}) => {
-  if (requireCreditCard){
+export const CheckoutBox:FC<{numDapps:number, usingCreditCard:boolean}> = ({numDapps, usingCreditCard}) => {
+  if (numDapps < FREE_CAPACITY) {
     return (
       <Box>
         <Text>
-          You are purchasing <strong>{numDapps} dapps</strong> at a total cost of <strong>${monthlyDappCost(parseInt(numDapps))} per month</strong> ({FREE_CAPACITY} for free, then ${PLAN_PRICES.standard} apiece).
+          You get <strong>{FREE_CAPACITY} dapps</strong> for <strong>free</strong>! Please set your number of dapps to <strong>{FREE_CAPACITY}</strong> to enjoy DappBot without paying.
+        </Text>
+      </Box>
+    )
+  } else if (usingCreditCard){
+    return (
+      <Box>
+        <Text>
+          You are purchasing <strong>{numDapps} dapps</strong> at a total cost of <strong>${monthlyDappCost(numDapps)} per month</strong> ({FREE_CAPACITY} for free, then ${PLAN_PRICES.standard} apiece).
         </Text>
       </Box>
     )
@@ -52,7 +59,7 @@ export const CheckoutBox:FC<{numDapps:string, requireCreditCard:boolean}> = ({nu
 
       
 
-export const Signup:FC<SignupProps> = ({user, API, stripe, requireCreditCard}) => {
+export const Signup:FC<SignupProps> = ({user, API, stripe}) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [coupon, setCoupon] = useState('');
@@ -63,18 +70,19 @@ export const Signup:FC<SignupProps> = ({user, API, stripe, requireCreditCard}) =
   const [successful, setSuccessful] = useState(false);
   const [organization, setOrganization] = useState("");
   const [occupation, setOccupation] = useState("");
-  const [agreeTerms, setAgreeTerms] = useState(false) ;
+  const [agreeTerms, setAgreeTerms] = useState(false);
 
+  const [usingCreditCard, setUsingCreditCard] = useState(false);
 
   const [createUserResponse, sendCreateUserRequest] = useResource(API.payment.signUp.resource);
   const [createUserSent, markCreateUserSent] = useState(false);
 
   const submitAllowed = agreeTerms && validate.isEmail(email) && name.trim() !== '';
+  const numDappsNumber:number = parseInt(numDapps) || 0;
 
   const metadata = { occupation, organization };
-  const isRequired = requireCreditCard;
   const noCreditCardSignupArgs = { 
-    plans: { standard:1, professional:0, enterprise:0 },
+    plans: { standard:FREE_CAPACITY, professional:0, enterprise:0 },
     email, name, coupon, metadata
   };
   const creditCardSignupArgs = { 
@@ -86,7 +94,7 @@ export const Signup:FC<SignupProps> = ({user, API, stripe, requireCreditCard}) =
   const handleCreateUser= async () => {
     markCreateUserSent(true);
     setErr('');
-    if (isRequired && stripe) {
+    if(usingCreditCard && stripe) {
       try {
         let {token} = await stripe.createToken({'name': name});
         if (token && token.id) { 
@@ -249,8 +257,30 @@ export const Signup:FC<SignupProps> = ({user, API, stripe, requireCreditCard}) =
                     </div>	                 
                   </div>
                 </div>
+
+                <div className="row mt-4">
+                  <div className="col">	                  
+                    <div className="col flex d-flex flex-row">
+                      
+                      <div className="mt-1">
+                        <Checkbox
+                          checked={usingCreditCard}
+                          disabled={false}
+                          indeterminate={false}
+                          id='usingCreditCard'
+                          name='usingCreditCard'
+                          size='sm'
+                          onChange={({ event, checked }) => {
+                            setUsingCreditCard(!usingCreditCard)
+                          }}
+                        />
+                      </div>
+                      <label className="text-left mr-2 pl-2" htmlFor="usingCreditCard">I would like to provide a Credit Card now to purchase more than {FREE_CAPACITY} dapps.</label>
+                    </div>	                 
+                  </div>
+                </div>
                 
-                { !requireCreditCard ? null : (
+                { !usingCreditCard ? null : (
                   <div>
                       <div className="row mb-4">
                         <div className="col" style={{textAlign: "left"}}>
@@ -280,11 +310,11 @@ export const Signup:FC<SignupProps> = ({user, API, stripe, requireCreditCard}) =
                 
                 <div className="row mt-4 mb-4">
                   <div className="col">
-                    <CheckoutBox numDapps={numDapps} requireCreditCard={!!requireCreditCard}/>
+                    <CheckoutBox numDapps={numDappsNumber} usingCreditCard={!!usingCreditCard}/>
                   </div>
                 </div>
 
-                <Button disabled={loading || !submitAllowed} onClick={handleCreateUser} block>
+                <Button disabled={loading || !submitAllowed || numDappsNumber < FREE_CAPACITY} onClick={handleCreateUser} block>
                   Submit
                 </Button>
 
@@ -297,10 +327,6 @@ export const Signup:FC<SignupProps> = ({user, API, stripe, requireCreditCard}) =
       <ErrorBox errMsg={err} />
     </div>
   )
-}
-
-Signup.defaultProps = {
-  requireCreditCard: false,
 }
 
 export const SignupPage = injectStripe(Signup);
